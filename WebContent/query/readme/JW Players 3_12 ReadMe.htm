@@ -1,0 +1,615 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0048)http://www.jeroenwijering.com/extras/readme.html -->
+<HTML><HEAD><TITLE>JW Players 3.12 ReadMe</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<STYLE type=text/css>BODY {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 13px; PADDING-BOTTOM: 0px; MARGIN: 0px; COLOR: #000; LINE-HEIGHT: 18px; PADDING-TOP: 0px; FONT-FAMILY: Arial, sans-serif; BACKGROUND-COLOR: #eee; TEXT-ALIGN: center
+}
+H1 {
+	MARGIN-TOP: 40px; FONT-SIZE: 20px; LINE-HEIGHT: 24px; BORDER-BOTTOM: #c00 2px solid
+}
+H2 {
+	MARGIN-TOP: 50px; FONT-SIZE: 14px
+}
+H3 {
+	FONT-SIZE: 14px; MARGIN: 25px 0px 10px 30px
+}
+P {
+	MARGIN-TOP: 5px; MARGIN-BOTTOM: 15px
+}
+A {
+	COLOR: #c00
+}
+A:hover {
+	COLOR: #000
+}
+TABLE {
+	MARGIN-TOP: 10px; FONT-SIZE: 12px; MARGIN-BOTTOM: 30px; WIDTH: 100%; FONT-FAMILY: monospace; BORDER-COLLAPSE: collapse
+}
+TD {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; PADDING-BOTTOM: 5px; VERTICAL-ALIGN: top; PADDING-TOP: 5px; BORDER-BOTTOM: #fff 1px solid
+}
+#thead {
+	COLOR: #fff; BACKGROUND-COLOR: #c00
+}
+#name {
+	WIDTH: 100px
+}
+#values {
+	WIDTH: 125px
+}
+.tlight {
+	BACKGROUND-COLOR: #eee
+}
+PRE {
+	MARGIN-TOP: 5px; FONT-SIZE: 12px; MARGIN-BOTTOM: 15px; COLOR: #c00; FONT-FAMILY: monospace
+}
+UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 5px 0px 15px 50px; PADDING-TOP: 0px; LIST-STYLE-TYPE: square
+}
+OL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 5px 0px 15px 50px; PADDING-TOP: 0px; LIST-STYLE-TYPE: square
+}
+#wrapper {
+	PADDING-RIGHT: 50px; PADDING-LEFT: 50px; PADDING-BOTTOM: 10px; MARGIN: 0px auto; WIDTH: 780px; PADDING-TOP: 10px; BACKGROUND-COLOR: #fff; TEXT-ALIGN: left
+}
+#lead {
+	FONT-WEIGHT: bold; FONT-STYLE: italic
+}
+#footer {
+	CLEAR: both; MARGIN-TOP: 60px; FONT-SIZE: 11px; PADDING-BOTTOM: 5px; WIDTH: 480px
+}
+</STYLE>
+
+<META content="MSHTML 6.00.3790.4106" name=GENERATOR></HEAD>
+<BODY>
+<DIV id=wrapper>
+<H1>JW PLAYERS 3.12 README</H1>
+<P id=lead>This readme contains information regarding the installation and 
+configuration of the <A 
+href="http://www.jeroenwijering.com/?item=JW_MP3_Player">JW MP3 Player</A>, <A 
+href="http://www.jeroenwijering.com/?item=JW_FLV_Player">JW FLV Player</A>, <A 
+href="http://www.jeroenwijering.com/?item=JW_Media_Player">JW Media Player</A> 
+and <A href="http://www.jeroenwijering.com/?item=JW_Image_Rotator">JW Image 
+Rotator</A>. It's also <A 
+href="http://onewww.net/blog/article.asp?id=98">available in Chinese</A>. 
+Contents of this readme:</P>
+<UL>
+  <LI><A 
+  href="http://www.jeroenwijering.com/extras/readme.html#installing">Installing</A> 
+  (embed codes for your site) 
+  <LI><A 
+  href="http://www.jeroenwijering.com/extras/readme.html#flashvars">Flashvars</A> 
+  (all configuration options): 
+  <UL>
+    <LI><A href="http://www.jeroenwijering.com/extras/readme.html#basic">Basic 
+    flashvars</A> 
+    <LI><A href="http://www.jeroenwijering.com/extras/readme.html#color">Color 
+    flashvars</A> 
+    <LI><A 
+    href="http://www.jeroenwijering.com/extras/readme.html#appearance">Appearance 
+    flashvars</A> 
+    <LI><A 
+    href="http://www.jeroenwijering.com/extras/readme.html#playback">Playback 
+    flashvars</A> 
+    <LI><A 
+    href="http://www.jeroenwijering.com/extras/readme.html#interaction">Interaction 
+    flashvars</A> </LI></UL>
+  <LI><A 
+  href="http://www.jeroenwijering.com/extras/readme.html#playlists">Playlists</A> 
+  (how to create playlists) 
+  <LI><A 
+  href="http://www.jeroenwijering.com/extras/readme.html#customization">Customization</A> 
+  (how to customize the players) 
+  <LI><A 
+  href="http://www.jeroenwijering.com/extras/readme.html#support">Support</A> 
+  (common pitfalls plus support links) </LI></UL>
+<P>For a quick setup of flashvars, check out the <A 
+href="http://www.jeroenwijering.com/extras/wizard.html">setup wizard</A>.</P>
+<H2 id=installing>INSTALLING</H2>
+<P>The example HTML file in the download works right out of the box. If you look 
+at it's source code (in a text or HTML editor), you can see that the SWF files 
+are inserted in the page with a small javascript. These javascripts use the 
+external swfobject.js script by <A 
+href="http://blog.deconcept.com/swfobject/">Geoff Stearns</A> in order to 
+prevent the annoying "click here to activate" message. If you copy the SWF to 
+your website, make sure you don't forget to copy the swfobject.js file as well. 
+It is inserted in the HTML page right at the top:</P><PRE>&lt;script type="text/javascript" src="swfobject.js"&gt;&lt;/script&gt;</PRE>
+<P>An insertion javascript allows you to set the location of the SWF, it's width 
+and height, a name, the version of Flash that is needed and the backgroundcolor 
+of the movie. You can also send a list of flashvars (with the addVariable() 
+command) to the SWF to configure it (for that see the next paragraph). When the 
+HTML page loads, the javascript replaces the element of your HTML with the "id" 
+you provided in the javascript (make sure you have an element with that 
+id!).</P><PRE>&lt;p id="player"&gt;&lt;a href="http://www.macromedia.com/go/getflashplayer"&gt;Get Flash&lt;/a&gt; to see this player.&lt;/p&gt;
+&lt;script type="text/javascript"&gt;
+	var so = new SWFObject('mediaplayer.swf','player','400','400','7');
+	so.addParam("allowfullscreen","true");
+	so.addVariable("file","test.flv");
+	so.addVariable("displayheight","300");
+	so.write('player');
+&lt;/script&gt;</PRE>
+<P>If you cannot use javascript on your website (for example if you run the SWF 
+on a profile site like MySpace), you can use an "embed" code instead of the 
+javascript. Your SWF will probably be on another server then. That is OK, but 
+note that your XML playlist (if used) should always reside on the same server 
+than your SWF, or else the security restrictions won't allow the player to load 
+it. Having MP3 or JPG or FLV files on a different server is no problem.</P><PRE>&lt;embed src="http://www.myfileserver.com/folder/mediaplayer.swf" width="400" height="400" 
+type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" 
+flashvars="file=http://www.myfileserver.com/folder/test.flv&amp;displayheight=300" /&gt;</PRE>
+<H2 id=flashvars>FLASHVARS</H2>
+<P>Flashvars are variables you can insert into your HTML code to control both 
+behavior and appearance of the player/rotator. With the swfobject embed method, 
+you add them with the addVariable() function and in the embed method they are 
+inside the "flashvars" attribute, stacked with an "&amp;" symbol. <A 
+href="http://www.jeroenwijering.com/extras/wizard.html">At this page</A> you'll 
+find a wizard in which you can easily set all flashvars. In the lists below, all 
+flashvars are explained.</P>
+<P><B>All variables with an * are also available to the rotator.</B></P>
+<H3 id=basic>BASIC FLASHVARS</H3>
+<UL>
+  <LI><B>displayheight</B> (number): This flashvar is used by the players and 
+  sets the height of the display. It defaults to the height of the SWF object 
+  minus the controlbar (20px), but if you set it to a smaller height, the 
+  playlist will show up. If you set it to the height of the player itself (or 
+  larger), the controlbar will auto-hide over the video. 
+  <LI><B>file</B>* (url): The location of the file to play. It can be a single 
+  file (MP3/FLV/RTMP/JPG/SWF/PNG/GIF) or a <A 
+  href="http://www.jeroenwijering.com/extras/readme.html#playlists">playlist</A> 
+  for the players. The rotator only accepts playlists. 
+  <LI><B>height</B>* (number): As with the width of the player/rotator, this 
+  variable is already set with a default embed code. However, sometimes (notably 
+  on IE), this won't get through (so you get a messed-up display). Then use this 
+  flashvar to tell the player/rotator how many pixels high it should be. 
+  <LI><B>image</B> (url): If you play MP3 of FLV files, you can use this 
+  flashvar to show a preview image or album cover. It can be a JPG/SWF/PNG/GIF 
+  file. You can also assign an image for every item in a <A 
+  href="http://www.jeroenwijering.com/extras/readme.html#playlists">playlist</A>. 
+
+  <LI><B>shownavigation</B>* (true,false): Another flashvar only for the 
+  rotator. It enables/disables the navigation bar. 
+  <LI><B>transition</B>* 
+  (bgfade,blocks,bubbles,circles,fade,flash,fluids,lines,random,slowfade): This 
+  flashvar is only used by the rotator. It sets the transition to use between 
+  images. "random" will show all transitions randomly. The default is "fade". 
+  <LI><B>width</B>* (number): As with the height of the player/rotator, this 
+  variable is already set with a default embed code. However, sometimes (notably 
+  on IE), this won't get through (so you get a messed-up display). Then use this 
+  flashvar to tell the player/rotator how many pixels wide it should be. 
+</LI></UL>
+<H3 id=color>COLOR FLASHVARS</H3>
+<UL>
+  <LI><B>backcolor</B>* (color): Backgroundcolor of the player/rotator. In the 
+  "extras" folder of this download there's a colorpicker script with which you 
+  can pick a color value. The default for the players is 0xFFFFFF (white) and 
+  for the rotator 0x000000 (black). 
+  <LI><B>frontcolor</B>* (color): Texts / buttons color of the player/rotator. 
+  The default for the players is 0x000000 (black) and for the rotator 0xFFFFFF 
+  (white). 
+  <LI><B>lightcolor</B>* (color): Rollover/ active color of the player/rotator. 
+  The default for the players is 0x000000 (black) and for the rotator 0xCC0000 
+  (red). 
+  <LI><B>screencolor</B> (color): Color of the display background screen. The 
+  default is 0x000000 (black). Instead of choosing another color, you can of 
+  course also set a <A 
+  href="http://www.jeroenwijering.com/extras/readme.html#basic">background 
+  image</A>. </LI></UL>
+<H3 id=appearance>APPEARANCE FLASHVARS</H3>
+<UL>
+  <LI><B>autoscroll</B> (true,false): By default, the playlist area of the 
+  players will have a scrollbar if the number of items is too long. If you set 
+  this flashvar to "true", the scrollbar wil disappear and the playlist will 
+  scroll automatically, depending upon the mouse position. 
+  <LI><B>displaywidth</B> (number of pixels): Instead of the "displayheight", 
+  you can set "displaywidth" to a size smaller that the SWF width to make the 
+  playlist appear at the right side of the display. 
+  <LI><B>kenburns</B>* (true,false): Set this to true to apply the <A 
+  href="http://en.wikipedia.org/wiki/Ken_Burns_Effect">Ken Burns effect</A> to 
+  images in the rotator. Note that this works best when using large images from 
+  the same server on a fast computer. Small images from different servers and 
+  slow computers produce blurry results and choppy motion. Works also best in 
+  combination with the "slowfade" transition. 
+  <LI><B>largecontrols</B> (true,false): Set this to true to make the controlbar 
+  twice as large. This is useful to visually impaired users. 
+  <LI><B>logo</B>* (url): Set this flashvar to put a watermark logo in the top 
+  right corner of the display. All image formats are supported, but transparent 
+  PNG files give the best results. 
+  <LI><B>overstretch</B>* (true,false,fit,none): Defines how to stretch 
+  images/movies to make them fit the display. "true" will stretch them 
+  proportionally to fill the display, "false" will stretch them to fit. "fit" 
+  will stretch them disproportionally to fit both height and width. "none" will 
+  show all items in their original dimensions. Defaults to "fit" for the players 
+  and "false" for the rotator. 
+  <LI><B>showdigits</B> (true,false,total): Set this to false if you don't want 
+  the elapsed/remaining time to display in the controlbar of the players. Quite 
+  handy to save some space. Set it to "total" to show the total time instead of 
+  the remaining time. 
+  <LI><B>showdownload</B> (true,false): Set this to true to show a 
+  downloadbutton in the controlbar. The downloadbutton links to the <A 
+  href="http://www.jeroenwijering.com/extras/readme.html#interaction">link 
+  flashvar</A>. 
+  <LI><B>showeq</B> (true,false): Set to true to show a fake equalizer in the 
+  display. It adds a nice graphical touch when you are playing MP3 files. 
+  <LI><B>showicons</B>* (true,false): Show or hide the play and activity icons 
+  in the middle of the display. Defaults to true for the players and false for 
+  the rotator. If set to false, the overlaid controlbar will also hide with the 
+  players. 
+  <LI><B>showvolume</B> (true,false): Set this to false to hide the volume 
+  button and save space. 
+  <LI><B>thumbsinplaylist</B> (true,false): If you have a playlist that also 
+  includes preview images with the &lt;image&gt; element, you can set this 
+  flashvar to "true" to show them in the playlist. </LI></UL>
+<H3 id=playback>PLAYBACK FLASHVARS</H3>
+<UL>
+  <LI><B>autostart</B> (true,false,muted): Set this to "true" to make the player 
+  automatically start playing when the page loads. If set to "muted", the player 
+  will autostart with the volume set to 0 and an unmute icon in the display. 
+  <LI><B>bufferlength</B> (number): This sets the number of seconds an FLV 
+  should be buffered ahead before the player starts it. Set this smaller for 
+  fast connections or short videos. Set this bigger for slow connections. The 
+  default is 3 seconds. 
+  <LI><B>repeat</B>* (true,false,list): By default, the players will stop 
+  playback after every item to preserve bandwidth (repeat=false). You can set 
+  this to "list" to playback all items in a playlist once, or to "true" to 
+  continously playback your song/movie/playlist. 
+  <LI><B>rotatetime</B>* (number): Use this flashvar to set the number of 
+  seconds you want an image to display. The default is "10" for the mediaplayer 
+  and "5" for the rotator. 
+  <LI><B>shuffle</B>* (true,false): If you use a playlist, the players and 
+  rotator will automatically shuffle the entries to prevent boredom. Set this 
+  flashvar to "false" to play all items sequentially. 
+  <LI><B>smoothing</B> (true,false): If set to "false", video will not smooth, 
+  resulting in a more pixelated, but better performing display. Use this for 
+  large screen / slow computer combinations. 
+  <LI><B>start</B>* (second): If you use RTMP or HTTP streaming (not for regular 
+  FLV or MP3 files); use this flashvar to specify an offset start position. You 
+  can also use this flashvar in <A 
+  href="http://www.jeroenwijering.com/extras/readme.html#playlists">XSPF 
+  playlists</A>, so you can make a chapter index of a single file. 
+  <LI><B>volume</B>* (number): The default volume for playback of sounds/movies 
+  is 80, but you can set another startup value with this flashvar. </LI></UL>
+<H3 id=interaction>INTERACTION FLASHVARS</H3>
+<UL>
+  <LI><B>audio</B>* (url): You can set this flashvar to the location of an 
+  external mp3 file that should serve as an additional audiotrack. Use this for 
+  accessibility commentary, director's comments or, with the imagerotator, 
+  background music.</A> 
+  <LI><B>bwfile</B> (url): Image to use for bandwidth checking; used in 
+  conjunction with <I>bwstreams</I>. Assign a simple image to this flashvar (<A 
+  href="http://www.jeroenwijering.com/upload/100k.jpg">this one</A> will do 
+  nice), or the rtmp location of the serverside bwcheck script that <A 
+  href="http://www.adobe.com/devnet/flashcom/articles/flvideo_bandwidth_print.html">can 
+  be downloaded here</A>. Here's an <A 
+  href="http://www.jeroenwijering.com/extras/bandwidthcheck.html">example 
+  bandwidth checking player</A>. 
+  <LI><B>bwstreams</B> (comma-separated list of bitrates): The different streams 
+  to use for bandwidth checking; used in conjunction with <I>bwfile</I>. If, for 
+  example, you want to play the video <I>video.flv</I> and set this to 
+  <I>100,250,500,1000</I> and the player detects a bandwidth of 349kbps, the 
+  file <I>video_250.flv</I> will be played. Here's an <A 
+  href="http://www.jeroenwijering.com/extras/bandwidthcheck.html">example 
+  bandwidth checking player</A>. Note that bandwidth checking is ignored for 
+  audio and images! 
+  <LI><B>callback</B> (url): Set this flashvar to the location of a serverside 
+  script (PHP/ASP) that can process callbacks. The players will send a callback 
+  every time an item starts/stops, so you can save statistics with the 
+  serverside script. More info can be found in this <A 
+  href="http://www.jeroenwijering.com/extras/statistics.html">demonstration 
+  page</A>. An example callback script is placed in the "extras" folder of the 
+  downloads. Set this to "analytics" to send the callbacks automatically to 
+  Google Analytics. 
+  <LI><B>captions</B> (url): You can set this flashvar to the location of an 
+  external textfile with captions. The players support SMIL's TimedText format 
+  (<A 
+  href="http://www.jeroenwijering.com/upload/subtitles_example.xml">example</A>) 
+  and the SRT format (<A 
+  href="http://www.jeroenwijering.com/upload/subtitles_example.txt">example</A>) 
+  used with ripped DVD's. Set this flashvar to "captionate" if your FLV file has 
+  <A href="http://www.buraks.com/captionate/">Captionate captions</A> embedded. 
+  If you use multitrack Captionate captions, you can set this flashvar to 
+  "captionate0", "captionate3" etc. to display a certain track. A live example 
+  of different captions <A 
+  href="http://www.jeroenwijering.com/extras/accessibility.html">can be found 
+  here</A>. You can also assign captions for every item in a <A 
+  href="http://www.jeroenwijering.com/extras/readme.html#playlists">playlist</A>. 
+
+  <LI><B>enablejs</B>* (true,false): Set this to true to enable javascript 
+  interaction. This'll only work online! Javascript interaction includes 
+  playback control, asynchroneous loading of media files and return of track 
+  information to javascript.An example of all supported javascript functions can 
+  be found <A href="http://www.jeroenwijering.com/extras/javascript.html">on 
+  this page</A>. 
+  <LI><B>fsbuttonlink</B> (url): The players automatically shows a fullscreen 
+  button if a user has installed a capable flashplayer (from 9.0.28). With this 
+  flashvar, you can link to an alternative page to display a sort-of fullscreen 
+  version of the player. Use serverside variables or the getQueryParamValue() 
+  function of <A href="http://blog.deconcept.com/swfobject/">SWF Object</A> to 
+  send the "file" and any other flashvars to that fullscreen-substitute page. 
+  <LI><B>id</B> (string): The unique identifier of the file to play. It will be 
+  sent to serverside callbacks(see below here, and is also used when using RTMP 
+  streams. In the latter case, the "file" flashvar points to the rtmp:// stream, 
+  and this "id" flashvar to the precise file to play. You can also assign an id 
+  for every item in a <A 
+  href="http://www.jeroenwijering.com/extras/readme.html#playlists">playlist</A>. 
+
+  <LI><B>javascriptid</B>* (string): If you control multiple players/rotators 
+  with javascript, you can use this flashvar to give each of them a unique ID. 
+  It will be returned with every call to the getUpdate() event. Demo <A 
+  href="http://www.jeroenwijering.com/extras/javascript.html">on this page</A>. 
+  <LI><B>link</B> (url): Set here the url to an external URL, downloadeable 
+  version of the file, or <A 
+  href="http://www.jeroenwijering.com/extras/">force-download script</A> you can 
+  use for downloading the file. You can assign link-clicks to the display (see 
+  below), the <A 
+  href="http://www.jeroenwijering.com/extras/readme.html#appearance">downloadbutton</A> 
+  and every item in a <A 
+  href="http://www.jeroenwijering.com/extras/readme.html#playlists">playlist</A>. 
+
+  <LI><B>linkfromdisplay</B>* (true,false): You can set this flashvar to "true" 
+  to make a click on the image/video display to result in a jump to the "link" 
+  webpage. By default, a click on the display will play/pause the movie. 
+  <LI><B>linktarget</B>* (frame): The targetframe a link (from the display or 
+  playlist buttons) will open into. The default is "_self". Set it to "_blank" 
+  to open links in a new window. 
+  <LI><B>streamscript</B> (url): This flashvar is the URL of an optional script 
+  to use for 'fake streaming' FLV files, eg. through PHP, ASP or LigHTTPD. The 
+  parameters 'file' and 'pos' are sent to the script. An example file, 
+  "stream.php", can be found in the "extras" folder of the downloads. If you use 
+  the LigHTTPD FLV module, set this to the value "lighttpd". Note that all FLV 
+  files you want to fake-stream should have an <A 
+  href="http://www.buraks.com/flvmdi/">array with keyframe-positions</A> in 
+  their metadata! More info and a running example can be found <A 
+  href="http://www.jeroenwijering.com/extras/streaming.html">at this page</A>. 
+  <LI><B>type</B> (mp3,flv,rtmp,jpg,png,gif,swf,rbs,3gp,mp4,m4v): The players 
+  determine the type of file to play based upon the last three characters of the 
+  "file" flashvar. This method doesn't work if you use database id's or 
+  mod_rewrite to retrieve the files. Therefore you can set this flashvar to tell 
+  the players of which filetype the file you want to play is. The type is also 
+  assigned to every item in a <A 
+  href="http://www.jeroenwijering.com/extras/readme.html#playlists">playlist</A>. 
+  If no match is found, the player assumes it loads a playlist. 
+  <LI><B>useaudio</B> (true,false): Set this to false to force the additional 
+  audiotrack to mute by default. 
+  <LI><B>usecaptions</B> (true,false): Set this to false to force the captions 
+  to hide by default. 
+  <LI><B>usefullscreen</B> (true,false): Set this flashvar to false if you don't 
+  want to use the flash9 fullscreen functionality. If you added a "fsbuttonlink" 
+  flashvar as well, this link will become the default action for the fullscreen 
+  page. 
+  <LI><B>usekeys</B> (true,false): Set this to false to disable keyboard input 
+  (SPACE,UP,DOWN,LEFT,RIGHT) for the players. </LI></UL>
+<P>Note that you must urlencode any ? = &amp; symbols inside flashvars. The 
+urlencoded values for these symbols are: <I>?</I> → <I>%3F</I>, <I>=</I> → 
+<I>%3D</I>, <I>&amp;</I> → <I>%26</I>. So if your "file" flashvar has the value 
+of getplaylist.php?id=123, you can set it like this: 
+getplaylist.php%3Fid%3D123.</P>
+<H2 id=playlists>PLAYLISTS</H2>
+<P>You can load a single file as well as an entire playlist of files into the 
+players. The players look at the filename to determine whether a single file or 
+a playlist is loaded. For example, if your file is test.mp3, it will presume you 
+load a single MP3 file, because the extension is "mp3". If your filename is 
+getlist.php, the SWF will see a playlist. If you use dynamic scripts to load a 
+single file (e.g. getmovie.php%3Fid%3D123), you can tell the player which file 
+it loads by using the additional "type" flashvar: "type=flv".</P>
+<P>The players support three commonly used playlist formats to ensure maximum 
+compatibility: <A href="http://en.wikipedia.org/wiki/XSPF">XSPF</A> (much used 
+for CC music), <A href="http://en.wikipedia.org/wiki/RSS">RSS</A> (much-used for 
+Podcasts) and <A href="http://en.wikipedia.org/wiki/ATOM">ATOM</A> (much-used by 
+Blogs). The example playlist.xml that comes with the downloads is in XSPF 
+format. On my website, I've placed additional examples of both <A 
+href="http://www.jeroenwijering.com/upload/xspf_example.xml">an xspf 
+playlist</A> and <A 
+href="http://www.jeroenwijering.com/upload/rss_example.xml">an rss playlist</A>, 
+with nearly all supported tags included. If you assign a regular feed without 
+any media enclosures to the player, the player will use the API from <A 
+href="http://www.talkr.com/">Talkr.com</A> to perform a text-to-speech operation 
+on the feed's items, instantly turning your feed into a podcast! 
+<P>Here is a complete list of all flashvars with corresponding XSPF/RSS/ATOM 
+tags that are supported by the player/rotator:</P>
+<TABLE>
+  <TBODY>
+  <TR id=thead>
+    <TD>Flashvar</TD>
+    <TD>XSPF Tag</TD>
+    <TD>RSS Tag</TD>
+    <TD>ATOM Tag</TD></TR>
+  <TR>
+    <TD>file</TD>
+    <TD>&lt;location&gt;</TD>
+    <TD>&lt;enclosure&gt; or &lt;media:content&gt;</TD>
+    <TD>&lt;link rel="enclosure"&gt;</TD></TR>
+  <TR class=tlight>
+    <TD>title</TD>
+    <TD>&lt;title&gt;</TD>
+    <TD>&lt;title&gt;</TD>
+    <TD>&lt;title&gt;</TD></TR>
+  <TR>
+    <TD>link</TD>
+    <TD>&lt;info&gt;</TD>
+    <TD>&lt;link&gt;</TD>
+    <TD>&lt;link&gt;</TD></TR>
+  <TR class=tlight>
+    <TD>id</TD>
+    <TD>&lt;identifier&gt;</TD>
+    <TD>&lt;guid&gt;</TD>
+    <TD>&lt;id&gt;</TD></TR>
+  <TR>
+    <TD>image</TD>
+    <TD>&lt;image&gt;</TD>
+    <TD>&lt;media:thumbnail&gt; or &lt;itunes:image&gt;</TD>
+    <TD>&lt;link rel="image"&gt;</TD></TR>
+  <TR class=tlight>
+    <TD>author</TD>
+    <TD>&lt;creator&gt;</TD>
+    <TD>&lt;author&gt;</TD>
+    <TD>&lt;name&gt;</TD></TR>
+  <TR>
+    <TD>captions</TD>
+    <TD>&lt;link rel="captions"&gt;</TD>
+    <TD>&lt;enclosure type="captions"&gt;</TD>
+    <TD>&lt;link rel="captions"&gt;</TD></TR>
+  <TR class=tlight>
+    <TD>audio*</TD>
+    <TD>&lt;link rel="audio"&gt;</TD>
+    <TD>&lt;enclosure type="audio"&gt;</TD>
+    <TD>&lt;link rel="audio"&gt;</TD></TR>
+  <TR>
+    <TD>category**</TD>
+    <TD>&lt;album&gt;</TD>
+    <TD>&lt;category&gt;</TD>
+    <TD>&lt;category&gt;</TD></TR>
+  <TR class=tlight>
+    <TD>start***</TD>
+    <TD>&lt;meta rel="start"&gt;</TD>
+    <TD>-</TD>
+    <TD>-</TD></TR>
+  <TR>
+    <TD>type****</TD>
+    <TD>last three characters of &lt;location&gt;or &lt;meta rel="type"&gt;</TD>
+    <TD>mimetype of &lt;enclosure&gt;</TD>
+    <TD>mimetype of &lt;link rel="enclosure"&gt;</TD></TR></TBODY></TABLE>
+<P>* The Image Rotator will only playback the 'audio' of the first item in the 
+playlist, to provide background music. The players support a per-element extra 
+audio track.</P>
+<P>** The "category" element can be used to specify advertisements. You can set 
+it to "preroll", "postroll" or "overlay". Use the "link" element of the 
+playlistentry to set the commercial's URL. In the extras of my website, there's 
+an <A 
+href="http://www.jeroenwijering.com/extras/advertisements.html">advertisements 
+example page</A>.</P>
+<P>*** The "start" element is only supported by XSPF playlists, and only works 
+with streaming files (HTTP or RTMP). Use it to specify the starting position in 
+seconds. <A href="http://www.jeroenwijering.com/extras/streaming.html">Here's an 
+example page</A>.</P>
+<P>**** If the XSPF "location" url doesn't contain a useful extension (e.g. 
+"mp3" or "flv"), use the "meta" element to tell the player which filetype it is 
+(e.g. &lt;meta rel='"type"&gt;mp3&lt;/meta&gt; ). For RSS and ATOM, the filetype 
+is automatically extracted from the mimetype.</P>
+<P>Note that, if you play a single file, you can send each item in this table as 
+a flashvar to the SWF. This way, you can add an image, title, id, link, etc. to 
+a single file as well. So if you have, for example, the flvplayer and a single 
+file "video.flv" and want to display a preview image too, you can set the 
+flashvars "file=video.flv" and "image=preview.jpg". For refering to RTMP 
+streams, the additional "id" flashvar has to be sent as well. Example: 
+"file=rtmp://my.streaming.server/mypath" and "id=video_one".</P>
+<P>I'd like to point out two common pitfalls users encounter when using 
+playlists. First, a playlist should always reside on the same server as the SWF 
+file, due to security restrictions of the Flash Player (there is a small 
+workaround, tunneling the external feed through a serverside script. <A 
+href="http://www.jeroenwijering.com/upload/external_feed.zip">Here's an example 
+in PHP</A>.). Second, always try to use full URL's (including the http:// part) 
+when referring to files, links or images in your playlists. It will save you a 
+lot of troubles with unresponsive SWF's or "file not found" errors!</P>
+<P>I've included some additional PHP scripts in the <A 
+href="http://www.jeroenwijering.com/extras/">"extras" folder of my website</A>, 
+two for auto-creating playlists and one for force-downloading files.</P>
+<H2 id=customization>CUSTOMIZATION</H2>
+<P>I receive a lot of requests for creating customized versions of my players. 
+In most cases however, a clever setting of the flashvars already fulfilled the 
+requests, so please make sure you check these first! <A 
+href="http://www.jeroenwijering.com/extras/wizard.html">I've made an online 
+wizard you can use to easily set all flashvars</A>. Additionally, I do not 
+design or program any particular (paid-for) customizations (I just don't have 
+time for it), but interesting features will be plugged into the next update of 
+the players.</P>
+<P>If you are familiar with actionscripting yourself, you should find that 
+changing or adding to the players is quite simple. To get started, check out 
+this schematic overview of the player's code. Note that the flvplayer, mp3player 
+and mediaplayer are identical in terms of code:</P>
+<P><IMG alt="schematic overview of the players" 
+src="JW Players 3_12 ReadMe_files/schematics.gif"></P>
+<P>A player starts by instantiating either the ImageRotator or Mediaplayer 
+class, which loads all config and playlist variables and sets up the MCV cycle. 
+The config and feeder objects are available to each member of the MCV cycle. The 
+two <SPAN style="COLOR: #c00">objects in red</SPAN> have javascript handlers, so 
+all their functions are available through javascript. Here is <A 
+href="http://www.jeroenwijering.com/extras/javascript.html">an online page with 
+examples of all javascript functions</A>.</P>
+<P>Communication between the MCV's members is strictly defined (with the 
+updates, changes and events). Creating a complete new look for any of the 
+players (or adding something like a rating field or recommendations) can be done 
+by creating a new class that extends the AbstractView and instantiating it in 
+the MediaPlayer.as class. The ControlbarView class is a good AbstractView 
+extension to copy and modify for this purpose (it contains all controlbar 
+graphics).</P>
+<P>Because of the many requests to hide part of the url for media files to 
+prevent stealing, I have added a single line of code to the script in the FLA's 
+timeline. If you un-comment this line (//var prefix = "..."), you can set here a 
+prefix url the players will use for the FLV/MP3/etc. Set this e.g. to the 
+directory where your mediafiles are located 
+(http://www.jeroenwijering.com/uploads/), and then you only have to add the 
+filename of your mediafiles to the flashvars/playlists.</P>
+<P>Placing the player/rotator into another Flash file is also possible. Just 
+copy-paste the player or rotator symbol from the FLA file in the download to 
+your FLA file. Also make sure you copy the "com" directory to the directory of 
+your FLA file as well; it contains all scripting. If that's done, you can set 
+all flashvars as variables in the root timeline and start the player from there 
+as well. Make sure you set the "width" and "height" flashvar too, or the 
+player/rotator will stretch to your entire stage! Here's an example:</P><PRE>// Set the flashvars (booleans and numbers should also be quoted)
+var width = "320";
+var height = "240";
+var file = "my_video.flv";
+var autostart = "true";
+// Start the player
+var mpl = new com.jeroenwijering.players.MediaPlayer(this.player);</PRE>
+<P>Additionally, I have made the controller a public object, so you can control 
+the mediaplayer with the getEvent() function from anywhere in your flash site 
+(the schematic above has a list of all getEvent() options). Let's continue the 
+small script above:</P><PRE>// Control the mediaplayer
+mpl.controller.getEvent("volume",50);
+mpl.controller.getEvent("playpause");</PRE>
+<H2 id=support>SUPPORT</H2>
+<P>Here's a small list with frequently-encountered problems:</P>
+<UL>
+  <LI>If you get strange display errors on IE (most notably after refreshing), 
+  the Stage dimensions are probably not properly set. You can use flashvars 
+  "width" and "height" to force specific dimensions to the player/rotator and 
+  fix this problem. 
+  <LI>Note that, due to security restrictions in the Flash Player, javascript 
+  interaction will not work when testing locally. Accessing remote media files 
+  or jumping to remote URL's also won't work because of this. Both will work 
+  fine if you test from your webserver. 
+  <LI>True fullscreen only works if you have the <A 
+  href="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash">Flash 
+  Player 9,0,28,0</A> or higher installed. If you use the <A 
+  href="http://blog.deconcept.com/swfobject/">SWFObject javascript</A> to embed 
+  your player, you can use it's auto-update functionality. Also make sure you 
+  have the parameter "allowfullscreen" set to "true" in your embed code! 
+  <LI>If the progressbar isn't running with your FLV file, or if your video 
+  dimensions are messed-up, your FLV file doesn't have correct metadata 
+  inserted. You can fix this by using the small tool available at <A 
+  title="The Buraks FLV Metadata Injector" 
+  href="http://www.buraks.com/flvmdi/">www.buraks.com/flvmdi/</A>. 
+  <LI>If the player plays FLV files on your computer but not on your website and 
+  your website is running of an IIS server, then the FLV mimetype isn't added to 
+  the server yet. You can check this by typing in the direct address to your FLV 
+  file in your browser. If you get a 404, you're on IIS without mimetype. Please 
+  contact your webserver administrator on this (if you're an admin, <A 
+  href="http://www.adobe.com/cfusion/knowledgebase/index.cfm?id=tn_19439">here's 
+  how to fix it</A>). 
+  <LI>If you encounter too fast or too slow playback of MP3 files or if your 
+  progressbar is messed up, your MP3 files contains variable bitrate encoding. 
+  Flash isn't very good at handling these, it's best to stick to constant 
+  bitrate encoding. Also make sure to stick to a sampling frequency that is a 
+  multitude of 11.025kHz (48kHz, for example, also poses problems). The free <A 
+  href="http://www.apple.com/itunes">iTunes software</A> has a basic, decent MP3 
+  encoder. 
+  <LI>The player/rotator will run quite OK inside the Flash Player 7. However, 
+  the following features are not supported: display of GIF/PNG images, smoothing 
+  of scaled images/video, VP6 encoded video, javascript control and the digits 
+  in the controlbar. </LI></UL>
+<P>An up-to-date list of third-party plugins for each list can be found on <A 
+href="http://www.jeroenwijering.com/">my website</A>, at the respective player's 
+page. If you have written or seen an unlisted plugin, please <A 
+href="http://www.jeroenwijering.com/?thread=3009">report so in my forum</A>!</P>
+<P>For tips, tricks, additional info and bug reports, you can always have a look 
+at my <A href="http://www.jeroenwijering.com/?forum=all">Support Forum</A>.</P>
+<P>For more info about the embedding of Flash in HTML, have a look at my <A 
+href="http://www.jeroenwijering.com/?item=Embedding_Flash">Embedding Flash 
+article</A>.</P>
+<P>For more info about Flash Video and some compression tips, check out my <A 
+href="http://www.jeroenwijering.com/?item=FLV_Video_Compression">Flash Video 
+Compression article</A>.</P>
+<DIV id=footer>all extras: <A 
+href="http://www.jeroenwijering.com/extras/">jeroenwijering.com/extras/</A> | 
+last update: september 25th, 2007</DIV></DIV></BODY></HTML>

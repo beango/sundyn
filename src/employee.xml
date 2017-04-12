@@ -1,0 +1,235 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="employee" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor name="registerCheck" class="registerCheck">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+			<result name="register">base/register.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="employeeView" class="employeeAction"
+			method="employeeView">
+			<result name="success">/employee/view.jsp</result>
+		</action>
+		<action name="employeeManage" class="employeeAction"
+			method="employeeManage">
+			<result name="success">/employee/employeeQuery.jsp</result>
+			<result name="error">/employee/error.jsp</result>
+		</action>
+		<action name="employeeAddDialog" class="employeeAction"
+			method="employeeAddDialog">
+			<result name="success">/employee/addDialog.jsp</result>
+		</action>
+		<action name="employeeAdd" class="employeeAction"
+			method="employeeAdd">
+			<result name="success">/employee/success.jsp</result>
+		</action>
+		<action name="employeeDel" class="employeeAction"
+			method="employeeDel">
+			<result name="success">/employee/success.jsp</result>
+		</action>
+		<action name="employeeEditDialog" class="employeeAction"
+			method="employeeEditDialog">
+			<result name="success">/employee/editDialog.jsp</result>
+		</action>
+		<action name="employeeUpload" class="employeeAction"
+			method="employeeUpload">
+			<result name="success">/employee/success.jsp</result>
+		</action>
+		<action name="employeeEdit" class="employeeAction"
+			method="employeeEdit">
+			<result name="success">/employee/success.jsp</result>
+		</action>
+		<action name="employeeOut" class="employeeAction"
+			method="employeeOut">
+			<result name="success">/employee/success.jsp</result>
+		</action>
+		<action name="employeeOutView" class="employeeAction"
+			method="employeeOutView">
+			<result name="success">/employee/employeeOut.jsp</result>
+		</action>
+		<action name="employeeIn" class="employeeAction"
+			method="employeeIn">
+			<result name="success">/employee/success.jsp</result>
+		</action>
+		<action name="employeeQueryKeyword" class="employeeAction"
+			method="employeeQueryKeyword">
+			<result name="success">/employee/employeeQuery.jsp</result>
+		</action>
+		<action name="employeeReset" class="employeeAction"
+			method="employeeReset">
+			<result name="success">/employee/success.jsp</result>
+		</action>
+		<action name="employeeExsits" class="employeeAction"
+			method="employeeExsits">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeFindByCardnumOrName"
+			class="employeeAction" method="employeeFindByCardnumOrName">
+			<result name="success">/employee/employeeAjax.jsp</result>
+		</action>
+		<action name="staffMobility" class="employeeAction" method="staffMobility">
+			<result name="success">/employee/staffMobility.jsp</result>
+		</action>
+		<action name="staffMobilityDetail" class="employeeAction" method="staffMobilityDetail">
+			<result name="success">/employee/staffMobilityDetail.jsp</result>
+		</action>
+		
+		
+	</package>
+	<package name="employeeM7" extends="struts-default">
+		<action name="employeeLogin" class="employeeAction"
+			method="employeeLogin">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeLogout" class="employeeAction"
+			method="employeeLogout">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeLogout2" class="employeeAction"
+			method="employeeLogout2">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeLogin2" class="employeeAction"
+			method="employeeLogin2">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeLogin3" class="employeeAction"
+			method="employeeLogin3">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<!-- 用户登陆 -->
+		<action name="employeeLogin4" class="employeeAction"
+			method="employeeLogin4">
+			<result name="success" type="chain">queryEmployee</result>
+			<result name="error">/login.jsp</result>
+		</action>
+		<action name="employeeChangePsw" class="employeeAction"
+			method="employeeChangePsw">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeGetPic" class="employeeAction"
+			method="employeeGetPic">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeGetInfo" class="employeeAction"
+			method="employeeGetInfo">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeGetPicAndInfo" class="employeeAction"
+			method="employeeGetPicAndInfo">
+			<result name="success">/employee/employeeInfo.jsp</result>
+			<result name="error">/employee/msg.jsp</result>
+		</action>
+
+		<action name="getPauseByMac" class="deptAction"
+			method="getPauseByMac">
+			<result name="success">/dept/deptInfo.jsp</result>
+			<result name="error">/dept/msg.jsp</result>
+		</action>
+
+		<action name="getButtom" class="deptAction"
+			method="getButtom">
+			<result name="success">/dept/deptInfo.jsp</result>
+			<result name="error">/dept/msg.jsp</result>
+		</action>
+		<action name="upDateFlag" class="deptAction"
+			method="upDateFlag">
+
+			<result name="success">/dept/msg.jsp</result>
+		</action>
+
+		<action name="employeeHeart" class="employeeAction"
+			method="employeeHeart">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeServerTime" class="employeeAction"
+			method="employeeServerTime">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeMac" class="employeeAction"
+			method="employeeMac">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeUpdate" class="employeeAction"
+			method="employeeUpdate">
+			<result name="success" type="stream">
+				<param name="contentType">text/plain</param>
+				<param name="inputName">excel</param> 
+				<param name="contentDisposition">
+					attachment;filename="${filename}"
+				</param>
+				<param name="bufferSize">1024</param>
+			</result>
+			<result name="error">employee/msg.jsp</result>
+			<result name="url" type="redirect">${url}</result>
+			
+		</action>
+		<action name="employeeUpdateConfig" class="employeeAction"
+			method="employeeUpdateConfig">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="getUpdateVersion" class="employeeAction"
+			method="getUpdateVersion">
+			<result name="success">employee/msg.jsp</result>
+			<result name="error">employee/msg.jsp</result>
+			<result name="url" type="redirect">${url}</result>
+		</action>
+		<action name="getDeptVideo" class="employeeAction" method="getDeptVideo">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="getDeptNotice" class="employeeAction" method="getDeptNotice">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		
+		<action name="employeeFindByName" class="employeeAction"
+			method="employeeFindByName">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeFindByExt2" class="employeeAction"
+			method="employeeFindByExt2">
+			<result name="success">/employee/msg.jsp</result>
+		</action>
+		<action name="employeeGetAllNameAndCardNum"
+			class="employeeAction" method="employeeGetAllNameAndCardNum">
+			<result name="success" type="redirect">
+				update/employee.xml
+			</result>
+		</action>
+		<action name="employeeExcel" class="employeeAction"
+			method="employeeExcel">
+			<result name="success" type="redirect">standard.xls</result>
+		</action>
+		<action name="employeeByWindowMac" class="employeeAction"
+			method="employeeByWindowMac">
+			<result name="success">employee/json.jsp</result>
+		</action>
+		<action name="employeeM7Upload" class="employeeAction"
+			method="employeeUpload">
+			<result name="success">/employee/m7Upload.jsp</result>
+		</action>
+		<action name="employeeTotalByCardNum" class="employeeAction"
+			method="employeeTotalByCardNum">
+			<result name="success">employee/json.jsp</result>
+		</action>
+		
+		<action name="queryDetailZongHe" class="employeeAction"
+			   method="findEmployee">
+			<result name="employeeVoInfo">/query/detailzonghe.jsp</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,121 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="manager" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor name="registerCheck"
+				class="registerCheck">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">login.jsp</result>
+			<result name="register">base/register.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="managerChangePsw" class="managerAction"
+			method="managerChangePsw">
+			<result name="success">/manager/changePsw.jsp</result>
+		</action>
+		<action name="managerChangePswDeal" class="managerAction"
+			method="managerChangePswDeal">
+			<result name="success">/msg.jsp</result>
+			<result name="input" type="chain">managerChangePsw</result>
+			<result name="error">/msg.jsp</result>
+		</action>
+		<action name="managerChangePswDeal2" class="managerAction"
+			method="managerChangePswDeal2">
+<!--		<result name="success" type="chain">managerChangePsw</result>-->
+		<result name="success" >/msg.jsp</result>
+		<result name="input" >/msg.jsp</result>
+		<result name="error" >/msg.jsp</result>
+		</action>
+		<!--<action name="ManagerQuery" class="managerAction"
+			method="ManagerQuery">
+			<result name="success">manager/query.jsp</result>
+		</action>
+		-->
+		<action name="LowerManagerQuery" class="managerAction"
+			method="LowerManagerQuery">
+			<result name="success">manager/query.jsp</result>
+		</action>
+		<action name="managerAddDialog" class="managerAction"
+			method="managerAddDialog">
+			<result name="success">manager/addDialog.jsp</result>
+		</action><!--暂时没有修改，发现不仅manager/query.jsp,manager/queryAjax.jsp中也用到此action
+		--><action name="lowerManagerAddDialog" class="managerAction"
+			method="lowerManagerAddDialog">
+			<result name="success">manager/addDialog.jsp</result>
+		</action>
+		<action name="managerAdd" class="managerAction"
+			method="managerAdd">
+			<result name="success">manager/success.jsp</result>
+		</action>
+		<action name="managerEditDialog" class="managerAction"
+			method="managerEditDialog">
+			<result name="success">manager/editDialog.jsp</result>
+		</action>
+		<action name="managerEdit" class="managerAction"
+			method="managerEdit">
+			<result name="success">manager/success.jsp</result>
+		</action>
+		<action name="managerQueryAjax" class="managerAction"
+			method="managerQueryAjax">
+			<result name="success">manager/queryAjax.jsp</result>
+		</action>
+		<action name="lowerManagerQueryAjax" class="managerAction"
+			method="lowerManagerQueryAjax">
+			<result name="success">manager/queryAjax.jsp</result>
+		</action>
+		<action name="managerDel" class="managerAction"
+			method="managerDel">
+			<result name="success">manager/success.jsp</result>
+		</action>
+		<action name="managerReset" class="managerAction"
+			method="managerReset">
+			<result name="success">manager/success.jsp</result>
+		</action>
+		
+		<action name="managerLogout" class="managerAction"
+			method="managerLogout">
+			<result name="success" type="redirect">login.jsp</result>
+		</action>
+		<action name="managerExist" class="managerAction"
+			method="managerExist">
+			<result name="success">manager/success.jsp</result>
+		</action>
+		<action name="managerQx" class="managerAction"
+			method="managerQx">
+			<result name="success">manager/success.jsp</result>
+		</action>
+		<action name="deleteVideoFile" class="queryAction"
+			method="deleteVideoFile">
+			<result name="success">manager/deleteVideoFile.jsp</result>
+		</action>
+		<action name="deleteVideoFileDeal" class="queryAction"
+			method="deleteVideoFileDeal">
+			<result name="success">manager/success.jsp</result>
+		</action>
+		
+	</package>
+	<package name="login" extends="struts-default">
+		<action name="managerLogin" class="managerAction"
+			method="managerLogin">
+			<result name="success">index.html</result>
+			<result name="input">login.jsp</result>
+		</action>
+		<action name="createTxt" class="managerAction"
+			method="createTxt">
+			<result name="success">/manager/success.jsp</result>
+		</action>
+	</package>
+</struts>

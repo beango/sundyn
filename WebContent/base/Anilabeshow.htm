@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+		<title>游屏信息预览</title>
+		<script type="text/javascript" src="../js/function.js"></script>
+	</head>
+	<body>
+		<img src="../system/upload/1.jpg" width="320" height="216" />
+		<script language=javascript>
+	var Content = SQ('Content');
+
+	var Time = SQ('Time');
+	Time = Time * 500;
+	var FontColor = SQ('FontColor');
+	var FontBackColor = SQ('FontBackColor');
+	var marqueestr
+	marqueestr = "<marquee scrollamount='18' direction= 'left' scrolldelay='"
+			+ Time + "' style='font-size:18px;color:#" + FontColor
+			+ ";background-color:#" + FontBackColor + "'>" + Content
+			+ "</marquee>"
+	document.write(marqueestr);
+	//alert(marqueestr);
+</script>
+	</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="weahter" extends="struts-default">
+		<action name="weatherM7Get" class="weatherAction" method="weatherM7Get">
+			<result name="success">msg.jsp</result>
+		</action>
+		<action name="weatherQuery" class="weatherAction" method="weatherQuery">
+			<result name="success">msg.jsp</result>
+		</action>
+		<action name="weatherSave" class="weatherAction" method="weatherSave">
+			<result name="success">msg.jsp</result>
+		</action>
+		<action name="weatherAjax" class="weatherAction" method="weatherAjax">
+			<result name="success">msg.jsp</result>
+		</action>
+		<action name="weatherM7GetById" class="weatherAction" method="weatherM7GetById">
+			<result name="success">msg.jsp</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,90 @@
+DIV {
+	border-width: 0px;
+}
+
+.login {
+	width: 99%;
+	height: 368px;
+	background-image: url("../images/login_bg.gif");
+	background-repeat: repeat-x;
+	position: absolute;
+	top: 50%;
+	margin-top: -185px;
+	text-align: center;
+}
+
+.login .main {
+	height: 368px;
+	width: 665px;
+	margin: 0px auto;
+	background-image: url("../images/login_bg_bg.jpg");
+	background-repeat: no-repeat;
+	text-align: left;
+}
+.login .main .logo{
+ width: 133px;
+ height: 37px;
+ margin-top:0px;
+ margin-left: 50px;
+}
+.login .main .text{
+ width: 250px;
+ height: 25px;
+ text-align: left;
+ margin-top: 100px;
+ margin-left: 100px;
+ color: #fff;
+ font-size: 14px;
+ font-family:宋体;
+ letter-spacing:2px;
+}
+.login .main .content {
+	padding: 0px;
+	height: 75px;
+	width: 400px;
+	float: left;
+	margin-top: 80px;
+	margin-left: 60px;
+	color: #333333;
+	font-family: "宋体";
+	font-size: 12px;
+}
+
+.login .main .content TABLE {
+	color: #333333;
+	font-family: "宋体";
+	font-size: 12px;
+}
+
+.login .main .content .input_user {
+	height: 18px;
+	width: 128px;
+	border: 1px solid #4172b7;
+}
+
+.login .main .content .input_yzm {
+	height: 18px;
+	width: 59px;
+	border: 1px solid #4172b7;
+}
+
+.login .main .msg {
+	padding: 0px;
+	height: 75px;
+	width: 300px;
+	float: left;
+	margin-top: 1px;
+	margin-left: 60px;
+	color: red;
+	font-family: "宋体";
+	font-size: 12px;
+}
+.login  .msg {
+	magin:0px auto;
+ 	color: red;
+	font-family: "宋体";
+	font-size: 12px;
+	width:600px;
+	text-align:left;
+	
+}

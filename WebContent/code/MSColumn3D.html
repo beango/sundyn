@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=GB18030" pageEncoding="GB18030" />
+<title>FusionCharts Free Documentation</title>
+ <meta http-equiv="content-type" content="text/html; charset=GB18030">
+<link rel="stylesheet" href="../Contents/Style.css" type="text/css" />
+<script language="JavaScript" src="../JSClass/FusionCharts.js"></script>
+</head>
+
+<body>
+<table width="98%" border="0" cellspacing="0" cellpadding="3" align="center">
+  <tr> 
+    <td valign="top" class="text" align="center"><h2><font align="center" >2011年部门A、部门B、部门C季度工作效率对比表</font></h2><div id="chartdiv" align="center"> 
+        FusionCharts. </div>
+      <script type="text/javascript">
+		   var chart = new FusionCharts("../Charts/FCF_MSColumn3D.swf", "ChartId", "600", "350");
+		   chart.setDataURL("MSColumn3D.xml");		   
+		   chart.render("chartdiv");
+		</script> 
+		</td>
+  </tr>
+ <tr></tr><tr></tr><tr></tr>
+  <tr> 
+    <td valign="top" class="text" align="center"> <h2><font align="center" >2011年部门A、部门B、部门C季度工作量对比表</font></h2> <div id="chartdiv1" align="center"> 
+        FusionCharts. </div>
+      <script type="text/javascript">
+		   var chart1 = new FusionCharts("../Charts/FCF_MSColumn3D.swf", "ChartId", "600", "350");
+		   chart1.setDataURL("MSColumn3D1.xml");		   
+		   chart1.render("chartdiv1");
+		</script> </td>
+  </tr>
+  <tr>
+    <td valign="top" class="text" align="center">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

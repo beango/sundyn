@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- the proxool configuration can be embedded within your own application's.      
+	Anything outside the "proxool" tag is ignored. -->
+<something-else-entirely>
+	<proxool>
+		<alias>DbPool</alias>
+		<driver-url>jdbc:microsoft:sqlserver://192.168.100.34:1433;DatabaseName=appries</driver-url>
+		<driver-class>com.microsoft.jdbc.sqlserver.SQLServerDriver</driver-class>
+		<driver-properties>
+			<property name="user" value="sa" />
+			<property name="password" value="" />
+		</driver-properties>
+		<minimum-connection-count>5</minimum-connection-count>
+		<maximum-connection-count>100</maximum-connection-count>
+		<maximum-active-time>6000000</maximum-active-time>
+		<house-keeping-test-sql>select 1</house-keeping-test-sql>
+		<prototype-count>5</prototype-count>
+		<house-keeping-sleep-time>100000</house-keeping-sleep-time>
+ 	</proxool>
+</something-else-entirely>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weatherlist>
+	<weather>
+		<source>weather</source>
+		<title>中国天气网</title>
+		<isUse>true</isUse>
+		<url>http://m.weather.com.cn/data/101040100.html</url>
+	</weather>
+	<weather>
+		<source>google</source>
+		<title>Web服务</title>
+		<isUse>false</isUse>
+		<url>http://www.webxml.com.cn/WebServices/WeatherWebService.asmx/getWeatherbyCityName?theCityName=57516</url>
+	</weather>
+	<weather>
+		<source>hand</source>
+		<title>手动输入</title>
+		<isUse>false</isUse>
+		<temp>36</temp>
+		<weather>晴</weather>
+		<city>重庆</city>
+		<weatherImg>0.gif</weatherImg>
+		<f>微风</f>
+	</weather>
+</weatherlist>

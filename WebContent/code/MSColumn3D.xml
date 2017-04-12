@@ -1,0 +1,29 @@
+<graph xaxisname='Department' yaxisname='Effective(%)' hovercapbg='DEDEBE' hovercapborder='889E6D' rotateNames='0' yAxisMaxValue='100' numdivlines='9' divLineColor='CCCCCC' divLineAlpha='80' decimalPrecision='0' showAlternateHGridColor='1' AlternateHGridAlpha='30' AlternateHGridColor='CCCCCC' caption='' subcaption='' >
+   <categories font='Arial' fontSize='14' fontColor='000000'>
+      <category name='1JiDu' hoverText='1 JiDu'/>
+      <category name='2JiDu'/>
+      <category name='3JiDu'/>
+      <category name='4JiDu'/>    
+   </categories>
+   <dataset seriesname='DeptA' color='FDC12E'>
+      <set value='30' />
+      <set value='26' />
+      <set value='29' />
+      <set value='31' />
+      <set value='34' />
+   </dataset>
+    <dataset seriesname='DeptB' color='56B9F9'>
+      <set value='67' />
+      <set value='51' />
+      <set value='79' />
+      <set value='73' />
+      <set value='80' />
+   </dataset>
+    <dataset seriesname='DeptC' color='C9198D' >
+      <set value='27' />
+      <set value='25' />
+      <set value='28' />
+      <set value='26' />
+      <set value='10' />
+   </dataset>
+</graph>

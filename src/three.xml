@@ -1,0 +1,46 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="three" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+ 		<action name="threeView" class="threeAction"
+			method="threeView">
+			<result name="success">three/view.jsp</result>
+		</action>
+		<action name="threeLoad" class="threeAction"
+			method="threeLoad">
+			<result name="success">three/success.jsp</result>
+		</action>
+		<action name="threeSuit" class="threeAction"
+			method="threeSuit">
+			<result name="success">three/msg.jsp</result>
+		</action>
+		<action name="threeQuery" class="threeAction"
+			method="threeQuery">
+			<result name="success">three/query.jsp</result>
+		</action>
+		<action name="threeQueryDeal" class="threeAction"
+			method="threeQueryDeal">
+			<result name="success">three/queryDeal.jsp</result>
+		</action>
+		<action name="threeExcel" class="threeAction"
+			method="threeExcel">
+			<result name="success" type="redirect">standard.xls</result>
+		</action>
+	</package>
+</struts>

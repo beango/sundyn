@@ -1,0 +1,94 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="business" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="businessQuery" class="businessAction"
+			method="businessQuery">
+			<result name="success">/business/query.jsp</result>
+		</action>
+		<action name="businessUpdate" class="businessAction"
+			method="businessUpdate">
+			<result name="success">/business/msg.jsp</result>
+		</action>
+		<action name="businessView" class="businessAction"
+			method="businessView">
+			<result name="success">/business/view.jsp</result>
+		</action>
+		<action name="businessReg" class="businessAction"
+			method="businessReg">
+			<result name="success">/business/reg.jsp</result>
+		</action>
+		<action name="businessAddDialog" class="businessAction"
+			method="businessAddDialog">
+			<result name="success">/business/addDialog.jsp</result>
+		</action>
+		<action name="businessAdd" class="businessAction"
+			method="businessAdd">
+			<result name="success">/business/json.jsp</result>
+		</action>
+		<action name="businessEditDialog" class="businessAction"
+			method="businessEditDialog">
+			<result name="success">/business/editDialog.jsp</result>
+		</action>
+		<action name="businessEdit" class="businessAction"
+			method="businessEdit">
+			<result name="success">/business/json.jsp</result>
+		</action>
+		<action name="businessDel" class="businessAction"
+			method="businessDel">
+			<result name="success">/business/json.jsp</result>
+		</action>
+		<action name="businessExportDc" class="businessAction"
+			method="businessExportDc">
+			<result name="success" type="redirect">standard.xls</result>
+ 		</action>
+ 		<action name="businessExportTitle" class="businessAction"
+			method="businessExportTitle">
+			<result name="success" type="redirect">standard.xls</result>
+ 		</action>
+ 		<action name="businessImportDialog" class="businessAction"
+			method="businessImportDialog">
+			<result name="success">business/importDialog.jsp</result>
+ 		</action>
+ 		<action name="businessImport" class="businessAction"
+			method="businessImport">
+			<result name="success">business/import.jsp</result>
+ 		</action>
+ 		<action name="businessWj" class="businessAction"
+			method="businessWj">
+			<result name="success">business/wj.jsp</result>
+ 		</action>
+ 		<action name="businessWjDeal" class="businessAction"
+			method="businessWjDeal">
+			<result name="success">business/msg.jsp</result>
+ 		</action>
+ 		<action name="businessListDialog" class="businessAction"
+			method="businessListDialog">
+			<result name="success">business/listDialog.jsp</result>
+ 		</action>
+ 		<action name="businessTitleDialog" class="businessAction"
+			method="businessTitleDialog">
+			<result name="success">business/titleDialog.jsp</result>
+ 		</action>
+ 		<action name="businessWjDialog" class="businessAction"
+			method="businessWjDialog">
+			<result name="success">business/wjDialog.jsp</result>
+ 		</action>
+   	</package>
+</struts>

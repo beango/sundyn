@@ -1,0 +1,37 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="m7Info" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor name="registerCheck" class="registerCheck">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+			<result name="register">base/register.jsp</result>
+		</global-results>
+		<!--   查询M7信息 -->
+		<action name="m7InfoQuery" class="m7InfoAction"
+			method="m7InfoQuery">
+			<result name="success">/m7Info/query.jsp</result>
+		</action>
+		<action name="m7InfoOnline" class="m7InfoAction"
+			method="m7InfoOnline">
+			<result name="success">/m7Info/online.jsp</result>
+		</action>
+		<action name="m7OnlineExcel" class="m7InfoAction"
+			method="m7OnlineExcel">
+			<result name="success" type="redirect">standard.xls</result>
+		</action>
+	</package>
+</struts>

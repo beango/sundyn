@@ -1,0 +1,43 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="duibi" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor name="registerCheck" class="registerCheck">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+	
+	   <action name="duibiAction" class="duiBiAction" method="gongZuoLiang">
+		   <result name="success">/query/duibitu.jsp</result>
+		</action>
+		
+		<action name="daTingDuiBiAction" class="duiBiAction" method="daTingGongZuoLaing">
+		   <result name="success">/query/duibitu.jsp</result>
+		</action>
+		<action name="windowDuiBiAction" class="duiBiAction" method="windowDuiBi">
+		   <result name="success">/query/duibitu.jsp</result>
+		</action>
+		
+		<action name="deptContentDuiBiAction" class="duiBiAction" method="deptCotentDuiBi">
+		   <result name="success">/query/duibitu.jsp</result>
+		</action>
+		
+		<action name="personDuiBiAction" class="duiBiAction" method="personDuiBi">
+		   <result name="success">/query/duibitu.jsp</result>
+		</action>
+		
+	</package>
+</struts>

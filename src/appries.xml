@@ -1,0 +1,88 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="appries" extends="json-default">
+<!--	<result-types>-->
+<!--         <result-type name="json" class="org.apache.struts2.json.JSONResult"/>-->
+<!--    </result-types>-->
+		<action name="appriesAdd" class="appriesAction"
+			method="appriesAdd">
+			<result name="success">/appries/msg.jsp</result>
+		</action>
+		<action name="getWeather" class="appriesAction"
+			method="getWeather">
+			<result name="success" type="json">
+			    <param name="contentType">text/plain</param> 
+                <param name="includeProperties">str</param> 
+			</result>
+		</action>
+		<action name="appriesAddSpByPantryn" class="appriesAction"
+			method="appriesAddSpByPantryn">
+			<result name="success">/appries/msg.jsp</result>
+		</action>
+		<action name="debug" class="appriesAction"
+			method="appriesDebug">
+			<result name="success">/appries/debug.jsp</result>
+		</action>
+		<action name="appriesAddDebug" class="appriesAction"
+			method="appriesAddDebug">
+			<result name="success">/appries/msg.jsp</result>
+		</action>
+		
+		<!-- 下载视频 -->
+		<action name="downloadVideo" class="com.sundyn.action.DownVideo">
+		<result name="success" type="stream">
+			<param name="contentDisposition">filename=${fileName}</param>
+			<param name="inputName">downloadFile</param>
+			<!-- 指定下载资源的缓冲大小 -->
+			<param name="bufferSize">8096</param>
+		</result>
+		</action>
+		
+	<!-- 
+	<action name="videoList" class="appriesAction" method="videoList">
+	   <result name="success">/appries/videolist.jsp</result>
+    </action>
+    -->
+ 	</package>
+ 	<package name="appriesR" extends="json-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login" type="redirect">/login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="appriesDel" class="appriesAction"
+			method="appriesDel">
+			<result name="success">/appries/del.jsp</result>
+		</action>
+		<action name="appriesDelDeal" class="appriesAction"
+			method="appriesDelDeal">
+			<result name="success">/appries/delDeal.jsp</result>
+		</action>
+		<action name="appriesDelDealDel" class="appriesAction"
+			method="appriesDelDealDel">
+			<result name="success">/appries/msg.jsp</result>
+		</action>
+		<action name="appriesDelDealDelAll" class="appriesAction"
+			method="appriesDelDealDelAll">
+			<result name="success">/appries/msg.jsp</result>
+		</action>
+		
+		<action name="checkMacBinding" class="appriesAction"
+			method="macBinding">
+			<result name="success" >/dept/json.jsp</result>
+		</action>
+		
+   	</package>
+</struts>

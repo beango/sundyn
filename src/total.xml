@@ -1,0 +1,207 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="total" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor name="registerCheck"
+				class="registerCheck">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+			<result name="register">base/register.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="totalDept" class="totalAction"
+			method="totalDept">
+			<result name="success">/total/dept.jsp</result>
+		</action>
+		<action name="totalDeptDeal" class="totalAction"
+			method="totalDeptDeal">
+			<result name="success">/total/deptDeal.jsp</result>
+		</action>
+		<action name="totalDeptPrint" class="totalAction"
+			method="totalDeptDeal">
+			<result name="success">/total/deptPrint.jsp</result>
+		</action>
+		<action name="totalDating" class="totalAction"
+			method="totalDating">
+			<result name="success">/total/dating.jsp</result>
+		</action>
+		<action name="totalDatingDeal" class="totalAction"
+			method="totalDatingDeal">
+			<result name="success">/total/datingDeal.jsp</result>
+		</action>
+		<action name="totalWindow" class="totalAction"
+			method="totalWindow">
+			<result name="success">/total/window.jsp</result>
+		</action>
+		<action name="totalWindowDeal" class="totalAction"
+			method="totalWindowDeal">
+			<result name="success">/total/windowDeal.jsp</result>
+		</action>
+		<action name="totalPerson" class="totalAction"
+			method="totalPerson">
+			<result name="success">/total/person.jsp</result>
+		</action>
+		<action name="totalPersonAjax" class="totalAction"
+			method="totalPersonAjax">
+			<result name="success">/total/personAjax.jsp</result>
+		</action>
+		<action name="totalPersonDeal" class="totalAction"
+			method="totalPersonDeal">
+			<result name="success">/total/personDeal.jsp</result>
+		</action>
+		<action name="totalJobNum" class="totalAction"
+			method="totalJobNum">
+			<result name="success">/total/jobNum.jsp</result>
+		</action>
+		<action name="totalBusiness" class="totalAction"
+			method="totalBusiness">
+			<result name="success">/total/business.jsp</result>
+		</action>
+		<action name="totalBusinessDeal" class="totalAction"
+			method="totalBusinessDeal">
+			<result name="success">/total/businessDeal.jsp</result>
+		</action>
+		<!-- 导出 -->
+		<action name="totalDeptExcel" class="totalAction"
+			method="totalDeptExcel">
+			<!-- 
+			<result name="success" type="stream">
+				<param name="contentType">
+					application/vnd.ms-excel
+				</param> 
+				<param name="inputName">excel</param> 
+				<param name="contentDisposition">
+					filename="standard.xls"
+				</param>
+				<param name="bufferSize">1024</param>
+			</result>
+			 -->
+			 <result name="success" type="redirect">standard.xls</result>
+		</action>
+		<action name="totalDatingExcel" class="totalAction"
+			method="totalDatingExcel">
+			<!-- 
+			<result name="success" type="stream">
+				<param name="contentType">
+					application/vnd.ms-excel
+				</param> 
+				 <param name="inputName">excel</param>
+				<param name="contentDisposition">
+					filename="standard.xls"
+				</param>
+				<param name="bufferSize">1024</param>
+			</result>-->
+			<result name="success" type="redirect">standard.xls</result>
+		</action>
+		<action name="totalWindowExcel" class="totalAction"
+			method="totalWindowExcel">
+			<!-- 
+			<result name="success" type="stream">
+				<param name="contentType">
+					application/vnd.ms-excel
+				</param>
+				<param name="inputName">excel</param>
+				<param name="contentDisposition">
+					filename="standard.xls"
+				</param>
+				<param name="bufferSize">1024</param>
+			</result>
+			 -->
+			<result name="success" type="redirect">standard.xls</result>
+		</action>
+		<action name="totalPersonExcel" class="totalAction"
+			method="totalPersonExcel">
+			<!-- 
+			<result name="success" type="stream">
+				<param name="contentType">
+					application/vnd.ms-excel
+				</param>
+				<param name="inputName">excel</param>
+				<param name="contentDisposition">
+					filename="standard.xls"
+				</param>
+				<param name="bufferSize">1024</param>
+			</result>
+			 -->
+			<result name="success" type="redirect">standard.xls</result>
+		</action>
+		<action name="totalBusinessExcel" class="totalAction"
+			method="totalBusinessExcel">
+ 			<result name="success" type="redirect">standard.xls</result>
+		</action>
+ 		
+		
+		<!-- 打印 -->
+		<action name="totalDatingPrint" class="totalAction"
+			method="totalDatingPrint">
+			<result name="success">/total/datingPrint.jsp</result>
+		</action>
+		<action name="totalWindowPrint" class="totalAction"
+			method="totalWindowPrint">
+			<result name="success">/total/windowPrint.jsp</result>
+		</action>
+		<action name="totalPersonPrint" class="totalAction"
+			method="totalPersonPrint">
+			<result name="success">/total/personPrint.jsp</result>
+		</action>
+		<action name="totalBusinessPrint" class="totalAction"
+			method="totalBusinessPrint">
+			<result name="success">/total/businessPrint.jsp</result>
+		</action>
+		<action name="totalD" class="totalAction"
+			method="totalD">
+			<result name="success">/total/d.jsp</result>
+		</action>
+		<action name="totalDDeal" class="totalAction"
+			method="totalDDeal">
+			<result name="success">/total/ddeal.jsp</result>
+		</action>
+		<action name="totalDExcel" class="totalAction"
+			method="totalDExcel">
+			<result name="success" type="redirect">standard.xls</result>
+		</action>
+		<action name="totalDPrint" class="totalAction"
+			method="totalDPrint">
+			<result name="success">total/dPrint.jsp</result>
+		</action>
+		<!-- 分店统计 -->
+		<action name="totalShop" class="totalAction"
+			method="totalShop">
+			<result name="success">total/shop.jsp</result>
+		</action>
+		<action name="totalSection" class="totalAction"
+			method="totalSection">
+			<result name="success">total/section.jsp</result>
+		</action>
+		<action name="totalSectionDeal" class="totalAction"
+			method="totalSectionDeal">
+			<result name="success">total/sectionDeal.jsp</result>
+		</action>
+		<action name="totalSectionExcel" class="totalAction"
+			method="totalSectionExcel">
+			<result name="success" type="redirect">standard.xls</result>
+		</action>
+		<action name="totalSectionPrint" class="totalAction"
+			method="totalSectionPrint">
+			<result name="success">total/sectionPrint.jsp</result>
+		</action>
+
+
+	<action name="videoList" class="totalAction" method="videoList">
+		<result name="success">/appries/videolist.jsp</result>
+	</action>
+	</package>
+</struts>

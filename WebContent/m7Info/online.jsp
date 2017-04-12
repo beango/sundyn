@@ -1,0 +1,100 @@
+<%@ page pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+ 	<head>
+ 		<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" ></META>
+		<META HTTP-EQUIV="Expires" CONTENT="Mon， 04 Dec 1999 21：29：02 GMT" ></META>
+	 	 <STYLE type="text/css">
+			 v\:* { Behavior: url(#default#VML) }
+	         o\:* { behavior: url(#default#VML) }
+	         #PieDiv{
+		         font-family:arial;
+ 		      	 line-height: normal;
+  	         }
+  	         #PieDiv div{
+  	            font-size: 9px;
+             }
+		 </STYLE>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+		<link rel="stylesheet" href="css/dialog.css" type="text/css" />
+		<title><s:text name='sundyn.title'/></title>
+		<script type="text/javascript" src="js/dojo.js"></script>
+		<script type="text/javascript" src="js/dialog.js"></script>
+		<script type="text/javascript" src="js/wz_jsgraphics.js"></script>
+		<script type="text/javascript" src="js/pie.js"></script>
+		<script type="text/javascript" src="js/Pie3D.js"></script>
+ 		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+ 	</head>
+	<body>
+		<div id="man_zone">
+			<div class="sundyn_main">
+			   <div class="fengge">&nbsp;</div>
+			   <table width="98%" class="t" >
+					<tr>
+						<td  class="tdtitle">
+							<s:text name="sundyn.system.checkM7Info.macAddress"/>
+						</td>
+						<td  class="tdtitle">
+							<s:text name="sundyn.column.windowName"/>
+						</td>
+						<td  class="tdtitle">
+						<s:text name="sundyn.system.checkOnlineM7.unitName"/>
+						</td>
+						<td   class="tdtitle">
+						<s:text name="sundyn.system.checkOnlineM7.onlineOrNot"/>
+						</td>
+					</tr>
+					<c:forEach items="${pager.pageList}" var="query">
+						<tr>
+							<td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
+								${query.remark}
+							</td>
+							<td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
+								${query.name}
+							</td>
+							<td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
+								${query.fatherName}
+							</td>
+							<td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
+								<c:if test="${query.online ==  '在线'}">  <s:text name="sundyn.system.m7Online.online"/> </c:if>  <c:if test="${query.online ==  '不在线'}"> <s:text name="sundyn.system.m7Online.offline"/></c:if>
+							</td>
+						</tr>
+					</c:forEach>
+					<c:forEach items="${errorMac}" var="mac">
+						<tr>
+							<td   class="td" style="color:red;">
+								${mac}
+							</td>
+							<td   class="td" style="color:red;">
+								<s:text name="sundyn.system.m7Online.noWindow"/>
+							</td>
+							<td   class="td" style="color:red;">
+								-
+							</td>
+							<td   class="td" style="color:red;">
+								<s:text name="sundyn.system.m7Online.online"/>
+							</td>
+					</tr>
+					</c:forEach>
+				</table>
+				<c:if test="${pager.rowsCount == 0}">
+					<div class="sundyn_rows">
+						<s:text name="sundyn.system.checkM7Info.noRecord" />
+					</div>
+				</c:if>
+				<c:if test="${pager.rowsCount > 0}">
+					<div class="sundyn_rows">
+						${pager.pageTextCn}
+					</div>
+		 		</c:if>
+   				<div><a href="m7OnlineExcel.action" target="_blank"><img src="<s:text name='sundyn.total.pic.excel'/>" /></a>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+		   
+   			</div>
+		</div>
+		<div id="dialog" style="width: 479px; height: 328px; display: none;"></div>
+ 	</body>
+</html>

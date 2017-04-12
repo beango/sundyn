@@ -1,0 +1,26 @@
+<graph xaxisname='Department' yaxisname='Gong Zuo Liang' hovercapbg='DEDEBE' hovercapborder='889E6D' rotateNames='0' yAxisMaxValue='100' numdivlines='9' divLineColor='CCCCCC' divLineAlpha='80' decimalPrecision='0' showAlternateHGridColor='1' AlternateHGridAlpha='30' AlternateHGridColor='CCCCCC' caption='' subcaption='' >
+   <categories font='Arial' fontSize='14' fontColor='000000'>
+      <category name='1JiDu' hoverText='1 JiDu'/>
+      <category name='2JiDu'/>
+      <category name='3JiDu'/>
+      <category name='4JiDu'/>    
+   </categories>
+   <dataset seriesname='DeptA' color='7a112E'>
+      <set value='130' />
+      <set value='179' />
+      <set value='201' />
+      <set value='132' />
+   </dataset>
+    <dataset seriesname='DeptB' color='aFB9F9'>
+      <set value='143' />
+      <set value='197' />
+      <set value='169' />
+      <set value='191' />
+   </dataset>
+    <dataset seriesname='DeptC' color='C00ff0' >
+      <set value='173' />
+      <set value='245' />
+      <set value='301' />
+      <set value='172' />
+   </dataset>
+</graph>

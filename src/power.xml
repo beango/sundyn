@@ -1,0 +1,61 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="power" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="powerQuery" class="powerAction"
+			method="powerQuery">
+			<result name="success">/power/query.jsp</result>
+		</action>
+		<action name="lowerPowerQuery" class="powerAction"
+			method="lowerPowerQuery">
+			<result name="success">/power/query.jsp</result>
+		</action>
+		<action name="powerQueryAjax" class="powerAction"
+			method="powerQueryAjax">
+			<result name="success">/power/queryAjax.jsp</result>
+		</action>
+		<action name="lowerPowerQueryAjax" class="powerAction"
+			method="lowerPowerQueryAjax">
+			<result name="success">/power/queryAjax.jsp</result>
+		</action>
+		<action name="powerDel" class="powerAction" method="powerDel">
+			<result name="success">/power/success.jsp</result>
+		</action>
+
+		<action name="powerAddDialog" class="powerAction"
+			method="powerAddDialog">
+			<result name="success">/power/addDialog.jsp</result>
+		</action>
+		<action name="powerAdd" class="powerAction" method="powerAdd">
+			<result name="success">/power/success.jsp</result>
+		</action>
+		<action name="powerEditDialog" class="powerAction"
+			method="powerEditDialog">
+			<result name="success">/power/editDialog.jsp</result>
+		</action>
+		<action name="powerEdit" class="powerAction"
+			method="powerEdit">
+			<result name="success">/power/success.jsp</result>
+		</action>
+		<action name="powerExist" class="powerAction"
+			method="powerExist">
+			<result name="success">/power/success.jsp</result>
+		</action>
+	</package>
+</struts>

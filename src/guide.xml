@@ -1,0 +1,87 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="guide" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="guideStart" class="guideAction" method="guideStart">
+			<result name="guide">/guide/start.jsp</result>
+			<result name="index" type="redirect">queryIndex.action</result>
+		</action>	
+		<action name="guideSimpleOne" class="guideAction" method="guideSimpleOne">
+			<result name="success">guide/simpleOne.jsp</result>
+		</action>
+		<action name="guideSimpleTwo" class="guideAction" method="guideSimpleTwo">
+			<result name="success">guide/simpleTwo.jsp</result>
+			<result name="multi" type="chain">guideMultiSelect</result>
+		</action>
+		<action name="guideSimpleThree" class="guideAction" method="guideSimpleThree">
+			<result name="success">guide/simpleThree.jsp</result>
+		</action>
+		<action name="guideEdit" class="guideAction" method="guideEdit">
+			<result name="success">guide/json.jsp</result>
+		</action>
+		<action name="guideDel" class="guideAction" method="guideDel">
+			<result name="success">guide/json.jsp</result>
+		</action>
+		<action name="guideAjax" class="guideAction" method="guideAjax">
+			<result name="success">guide/guideAjax.jsp</result>
+		</action>
+		<action name="quideSaveOrUpdate" class="guideAction" method="quideSaveOrUpdate">
+			<result name="success">guide/json.jsp</result>
+		</action>
+		<action name="guideSimpleFour" class="guideAction" method="guideSimpleFour">
+			<result name="success">guide/simpleFour.jsp</result>
+		</action>
+		<action name="guideSimpleEmployeeEdit" class="guideAction" method="guideSimpleEmployeeEdit">
+			<result name="success">guide/json.jsp</result>
+		</action>
+		<action name="guideSimpleEmployeeDel" class="guideAction" method="guideSimpleEmployeeDel">
+			<result name="success">guide/json.jsp</result>
+		</action>
+		<action name="guideSimpleEmployeeSaveOrUpdate" class="guideAction" method="guideSimpleEmployeeSaveOrUpdate">
+			<result name="success">guide/json.jsp</result>
+		</action>
+		<action name="guideSimpleEmployeeAjax" class="guideAction" method="guideSimpleEmployeeAjax">
+			<result name="success">guide/simpleEmployeeAjax.jsp</result>
+		</action>
+		<action name="guideComplete" class="guideAction" method="guideComplete">
+			<result name="success">guide/json.jsp</result>
+		</action>
+		<action name="guideLeft" class="guideAction" method="guideLeft">
+			<result name="success"  >guide/start.jsp</result>
+		</action>
+		<action name="guideMultiSelect" class="guideAction" method="guideMultiSelect">
+		    <result name="success">guide/guideMultiSelect.jsp</result>
+		</action>
+		<action name="guideMultiSelect1" class="guideAction" method="guideMultiSelect1">
+		    <result name="success">guide/guideMultiSelect.jsp</result>
+		</action>
+		<action name="guideMultiDept" class="guideAction" method="guideMultiDept">
+		    <result name="success">guide/guideMultiDept.jsp</result>
+		</action>
+		<action name="guideMultiDeptSaveOrUpdate" class="guideAction" method="guideMultiDeptSaveOrUpdate">
+		    <result name="success">guide/json.jsp</result>
+		</action>
+		<action name="guideMultiAjax" class="guideAction" method="guideMultiAjax">
+			<result name="success">guide/guideAjax.jsp</result>
+		</action>
+		<action name="guideDeptTypeAjax" class="guideAction" method="guideDeptTypeAjax">
+			<result name="success">guide/deptTypeAjax.jsp</result>
+		</action>
+  	</package>
+</struts>

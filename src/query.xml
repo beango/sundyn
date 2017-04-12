@@ -1,0 +1,175 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="query" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor name="registerCheck" class="registerCheck">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="queryDept" class="queryAction"
+			method="queryDept">
+			<result name="success">/query/dept.jsp</result>
+		</action>
+		<action name="queryDeptAjax" class="queryAction"
+			method="queryDeptAjax">
+			<result name="success">/query/deptAjax.jsp</result>
+		</action>
+		<action name="queryDeptDeal" class="queryAction"
+			method="queryDeptDeal">
+			<result name="camera">/query/deptDeal_camera.jsp</result>
+			<result name="success">/query/deptDeal.jsp</result>
+		</action>
+		
+		<!-- 生成对比表 -->
+		<!--  
+		<action name="duibiAction" class="queryAction" method="jiGouGongZuoiLiang">
+		   <result name="success">/query/duibitu.jsp</result>
+		</action>
+		-->
+		<!-- 根据人员查询 -->
+		<action name="queryPeopley" class="queryAction"
+			method="queryPeopley">
+			<result name="success">/query/people.jsp</result>
+		</action>
+		<action name="queryPeopleyAjax" class="queryAction"
+			method="queryPeopleyAjax">
+			<result name="success">/query/peopleAjax.jsp</result>
+		</action>
+	
+		<action name="queryPeopleyAjax2" class="queryAction"
+			method="queryPeopleyAjax2">
+			<result name="success">/query/peopleAjax2.jsp</result>
+		</action>
+		<action name="queryPeopleyDeal" class="queryAction"
+			method="queryPeopleyDeal">
+			<result name="camera">/query/peopleDeal_camera.jsp</result>
+			<result name="success">/query/peopleDeal.jsp</result>
+		</action>
+		<!-- 根据人员删除评价记录 -->
+		<action name="queryPeopleyForDel" class="queryAction"
+			method="queryPeopley">
+			<result name="success">
+				/query/deleteAppriByPeople.jsp
+			</result>
+		</action>
+
+		<!-- 根据结果查询 -->
+		<action name="queryResult" class="queryAction"
+			method="queryResult">
+			<result name="success">/query/result.jsp</result>
+		</action>
+		<action name="queryResultDeal" class="queryAction"
+			method="queryResultDeal">
+			<result name="success">/query/resultDeal.jsp</result>
+			<result name="camera">/query/resultDeal_camera.jsp</result>
+		</action>
+		<!-- 按照手机号查询 -->
+		<action name="queryTel" class="queryAction"
+			method="queryResult">
+			<result name="success">/query/resultTel.jsp</result>
+		</action>
+		<action name="queryResultDealTel" class="queryAction"
+			method="queryResultDealTel">
+			<result name="success">/query/resultDeal2.jsp</result>
+			<result name="camera">/query/resultDeal_camera.jsp</result>
+		</action>
+		<!-- 按照身份证号查询 -->
+		<action name="queryIdCard" class="queryAction"
+			method="queryResult">
+			<result name="success">/query/resultIdCard.jsp</result>
+		</action>
+		<action name="queryResultDealIdCard" class="queryAction"
+			method="queryResultDealIdCard">
+			<result name="success">/query/resultDeal2.jsp</result>
+			<result name="camera">/query/resultDeal_camera.jsp</result>
+		</action>
+		<!-- 综合查询 -->
+		<action name="queryZh" class="queryAction" method="queryZh">
+			<result name="success">/query/zh.jsp</result>
+		</action>
+		<action name="queryZhDeal" class="queryAction"
+			method="queryZhDeal">
+			<result name="success">/query/zhDeal.jsp</result>
+			<result name="camera">/query/zhDeal_camera.jsp</result>
+			<!-- 2012-01-11 -->
+			<!--  
+			<result name="detailzonghe">/query/detailzonghe.jsp</result>
+			-->
+		</action>
+		<!-- 2012-01-11日添加
+		<action name="queryDetailZongHe" class="queryAction"
+			method="queryDetailZongHe">
+			<result name="detailzonghe">/query/detailzonghe.jsp</result>
+		</action>
+		 -->
+		<action name="querySaveAsExcel" class="queryAction"
+			method="querySaveAsExcel">
+			<result name="success" type="stream">
+				<param name="contentType">
+					application/vnd.ms-excel
+				</param><!-- 注意这里的ContentType -->
+				<param name="inputName">excel</param><!-- 这里需要和Action里的变量名一致 -->
+				<param name="contentDisposition">
+					filename="standard.xls"
+				</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+		<action name="queryIndex" class="queryAction"
+			method="queryIndex">
+			<result name="success">/query/index.jsp</result>
+			<result name="camera">/query/index_camera.jsp</result>
+		</action>
+		<action name="queryLeft" class="queryAction"
+			method="queryLeft">
+			<result name="success">/query/left.jsp</result>
+		</action>
+		<action name="getMenu" class="menuAction" method="getQuery">
+			<result name="success">/menujson.jsp</result>
+		</action>
+		<action name="queryDemo" class="queryAction"
+			method="queryDemo">
+			<result name="success">/query/dialog.jsp</result>
+		</action>
+		<action name="queryJobNumDeal" class="queryAction"
+			method="queryJobNumDeal">
+			<result name="camera">/query/jobNumDeal_camera.jsp</result>
+			<result name="success">/query/jobNumDeal.jsp</result>
+		</action>
+		
+		<action name="queryExcel" class="queryAction"
+			method="queryExcel">
+			<result name="success" type="stream">   
+		        <param name="contentType">application/vnd.ms-excel</param>   
+		        <param name="inputName">excel</param>   
+		        <param name="contentDisposition">attachment;filename="${fileName}"</param>   
+		        <param name="bufferSize">4096</param>   
+		    </result>   
+		</action>
+	
+	</package>
+	<package name="queryOther" extends="struts-default">
+		<action name="queryEmployee" class="queryAction"
+			method="queryEmployee">
+			<result name="success">/query/employee.jsp</result>
+		</action>
+		<action name="queryEmployeeDeal" class="queryAction"
+			method="queryEmployeeDeal">
+			<result name="success">/query/employeeDeal.jsp</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,77 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="advice" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+			<result name="register">base/register.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="adviceToAdd" class="adviceSurveyAction" method="adviceToAdd">
+			<result name="adviceToAdd">/adviceSurvey/adviceAddDialog.jsp</result>
+		</action>	
+		<action name="adviceAdd" class="adviceSurveyAction" method="adviceAdd">
+			<result name="addOk" type="redirect">adviceListAjax</result>
+			<result name="inputs">/adviceSurvey/weburl.jsp</result>
+		</action>
+		<action name="adviceToUpdate" class="adviceSurveyAction" method="adviceToUpdate">
+			<result name="adviceToUpdate" >/adviceSurvey/adviceUpdateDialog.jsp</result>
+			<result name="inputs">/adviceSurvey/weburl.jsp</result>
+		</action>
+		<action name="adviceUpdate" class="adviceSurveyAction" method="adviceUpdate">
+			<result name="adviceUpdateOk" type="redirect">adviceListAjax</result>
+			<result name="inputs">/adviceSurvey/weburl.jsp</result>
+		</action>
+		<action name="adviceDelete" class="adviceSurveyAction" method="adviceDelete">
+			<result name="adviceDeleteOk" type="redirect">adviceListAjax</result>
+			<result name="inputs">/adviceSurvey/weburl.jsp</result>
+		</action>
+		<action name="adviceListAjax" class="adviceSurveyAction" method="adviceList">
+			<result name="adviceListOk">/adviceSurvey/adviceListAjax.jsp</result>
+<!--			<result name="INPUT">/adviceSurvey/weburl.jsp</result>-->
+		</action>
+		<action name="adviceList" class="adviceSurveyAction" method="adviceList">
+			<result name="adviceListOk">/adviceSurvey/adviceList.jsp</result>
+<!--			<result name="INPUT">/adviceSurvey/weburl.jsp</result>-->
+		</action>
+<!--		<action name="advicesaveAnswer" class="adviceSurveyAction" method="advicesaveAnswer">-->
+<!--			<result name="advicesaveAnswerOk"></result>-->
+<!--			<result name="input"></result>-->
+<!--		</action>-->
+<!--		 意见调查统计-->
+		<action name="adviceShowAnserTable" class="adviceSurveyAction" method="showAnserTable">
+			<result name="showAnserTableOk">/adviceSurvey/adviceShowStatistics.jsp</result>
+<!--			<result name="INPUT">/adviceSurvey/weburl.jsp</result>-->
+		</action>
+		<!-- 客户选项-->
+		<action name="checkList" class="adviceSurveyAction" method="checkList">
+			<result name="checkListOk">/adviceSurvey/checkList.jsp</result>
+<!--			<result name="INPUT">/adviceSurvey/weburl.jsp</result>-->
+		</action>
+<!--		<action name="adviceDownload" class="adviceSurveyAction" method="adviceDownload">-->
+<!--			<result name="adviceDownloadOk" type="stream">-->
+<!--			 <param name="contentType">text/plain</param>-->
+<!--             <param name="inputName">xml</param>-->
+<!--             <param name="contentDisposition">attachment;filename="advice.db"</param>-->
+<!--             <param name="bufferSize">4096</param>-->
+<!--			</result>-->
+<!--			<result name="inputs">/adviceSurvey/weburl.jsp</result>-->
+<!--		</action>-->
+		<action name="addInputAjax" class="adviceSurveyAction"
+			method="addInputAjax">
+			<result name="addOk">/adviceSurvey/addInputAjax.jsp</result>
+		</action>
+  	</package>
+</struts>

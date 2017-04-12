@@ -1,0 +1,74 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="dept" extends="json-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor name="registerCheck" class="registerCheck">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+			<result name="register">base/register.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="deptView" class="deptAction" method="deptView">
+			<result name="success">/dept/view.jsp</result>
+		</action>
+		<action name="toBindWeburl" class="deptAction" method="toBindWeburl">
+			<result name="ok">/dept/chooseWeburl.jsp</result>
+		</action>
+		<action name="deptWeburlAdd" class="deptAction" method="deptWeburlAdd">
+			<result name="ok">/dept/chooseWeburl.jsp</result>
+		</action>
+		<action name="deptAddChildItem" class="deptAction"
+			method="deptAddChildItem">
+			<result name="success">/dept/json.jsp</result>
+		</action>
+		<action name="deptDel" class="deptAction" method="deptDel">
+			<result name="success">/dept/json.jsp</result>
+		</action>
+		<action name="deptAddDialog" class="deptAction"
+			method="deptAddDialog">
+			<result name="success">/dept/addDialog.jsp</result>
+			<result name="camera">/dept/addDialog_camera.jsp</result>
+		</action>
+		<action name="deptEditDialog" class="deptAction"
+			method="deptEditDialog">
+			<result name="success">/dept/editDialog.jsp</result>
+			<result name="camera">/dept/editDialog_camera.jsp</result>
+		</action>
+		<action name="deptEditItem" class="deptAction"
+			method="deptEditItem">
+			<result name="success">/dept/json.jsp</result>
+		</action>
+		
+		<action name="deptReg" class="deptAction" method="deptReg">
+			<result name="reg0">/dept/reg0.jsp</result>
+			<result name="reg1">/dept/reg1.jsp</result>
+			<result name="reg2">/dept/reg2.jsp</result>
+		</action>
+		<action name="deptExistMac" class="deptAction"
+			method="deptExistMac">
+			<result name="success">/dept/json.jsp</result>
+		</action>
+		<action name="useVideo" class="deptAction" method="useVideo">
+			<result name="success">/dept/json.jsp</result>
+		</action>
+		<action name="getCityss" class="deptAction" method="getCityss">
+			<result name="success" type="json">
+				<param name="contentType">text/plain</param> 
+                <param name="includeProperties">citysString</param> 
+			</result>
+		</action>
+	</package>
+</struts>

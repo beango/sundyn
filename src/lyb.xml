@@ -1,0 +1,46 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="lyb" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="lybQuery" class="lybAction" method="lybQuery">
+			<result name="success">/lyb/query.jsp</result>
+		</action>
+		<action name="lybManage" class="lybAction" method="lybManage">
+			<result name="success">/lyb/manage.jsp</result>
+		</action>
+		<action name="lybAdd" class="lybAction" method="lybAdd">
+			<result name="success">/lyb/add.jsp</result>
+		</action>
+		<action name="lybAddDeal" class="lybAction" method="lybAddDeal">
+			<result name="success">/lyb/success.jsp</result>
+		</action>
+		<action name="lybQueryAjax" class="lybAction" method="lybQueryAjax">
+			<result name="success">/lyb/ajax.jsp</result>
+		</action>
+		<action name="lybDel" class="lybAction" method="lybDel">
+			<result name="success">/lyb/success.jsp</result>
+		</action>
+		<action name="lybEdit" class="lybAction" method="lybEdit">
+			<result name="success">/lyb/edit.jsp</result>
+		</action>
+		<action name="lybEditDeal" class="lybAction" method="lybEditDeal">
+			<result name="success">/lyb/success.jsp</result>
+		</action>		
+ 	</package>
+</struts>

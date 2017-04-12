@@ -1,0 +1,25 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="read" extends="struts-default">
+ 		<action name="readHtmlAjax" class="readAction" method="readHtmlAjax">
+			<result name="success">/read/msg.jsp</result>
+		</action>	
+		<action name="readListAjax" class="readAction" method="readListAjax">
+			<result name="success">/read/msg.jsp</result>
+		</action>
+		<action name="readList" class="readAction" method="readList">
+			<result name="success">/read/list.jsp</result>
+		</action>
+		<action name="readDetails" class="readAction" method="readDetails">
+			<result name="success">/read/details.jsp</result>
+		</action>
+		<action name="readListAjaxJson" class="readAction" method="readListAjaxJson">
+			<result name="success">/read/json.jsp</result>
+		</action>
+		<action name="readHtmlAjaxJson" class="readAction" method="readHtmlAjaxJson">
+			<result name="success">/read/json.jsp</result>
+		</action>
+   	</package>
+</struts>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="gb2312"?>
+<M7Config>
+    <rotate>H</rotate>
+    <update>http://192.168.100.37:80/employeeUpdate.action</update>
+    <CheckDelay>60</CheckDelay>
+    <autoShutDown>70200</autoShutDown>
+    <NetDelay>1</NetDelay>
+    <version>10</version>
+    <server>
+        <ip />
+        <port>80</port>
+    </server>
+    <basic>
+        <approvertime>30</approvertime>
+        <xmlHttpOvertime>60</xmlHttpOvertime>
+        <showtimecontroltime>5</showtimecontroltime>
+        <showwelcometime>30</showwelcometime>
+        <readcardtime>60</readcardtime>
+    </basic>
+    <ShowEmployeePage>1</ShowEmployeePage>
+</M7Config>
+

@@ -1,0 +1,38 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="keyType2" extends="struts-default">
+		<action name="getDissatisfiedKey" class="keyTypeAction"
+			method="getDissatisfiedKey">
+			<result name="success">/keyType/success2.jsp</result>
+		</action>
+	</package>
+
+	<package name="keyType" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="keyTypeQueryDialog" class="keyTypeAction"
+			method="keyTypeQueryDialog">
+			<result name="success">/keyType/dialog.jsp</result>
+		</action>
+		<action name="keyTypeEdit" class="keyTypeAction"
+			method="keyTypeEdit">
+			<result name="success">/keyType/success.jsp</result>
+		</action>
+	
+	</package>
+</struts>

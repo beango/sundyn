@@ -1,0 +1,85 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<include file="struts-default.xml" />
+	<constant name="struts.objectFactory" value="spring"></constant>
+	<constant name="struts.devMode" value="false"></constant>
+ 	<constant name="struts.configuration.xml.reload" value="true"></constant>
+ 	<constant name="struts.custom.i18n.resources" value="sundyn"></constant>
+  	<!-- 
+	<constant name="struts.custom.i18n.resources" value="set"></constant>
+	 -->
+	<constant name= "struts.multipart.maxSize" value="104857600" />
+	<!-- 管理员控制器-->
+	<include file="manager.xml"></include>
+	<include file="duibi.xml"></include>
+	<!-- 快速查询控制器-->
+	<include file="quickly.xml"></include>
+	<!-- 查询统计控制器-->
+	<include file="query.xml"></include>
+	<!-- 错误评价数据控制器-->
+	<include file="errorInfo.xml"></include>
+	<!-- 决策分析控制器-->
+	<include file="analyse.xml"></include>
+	<!-- 部门控制器-->
+	<include file="dept.xml"></include>
+	<!-- 员工管理控制器-->
+	<include file="employee.xml"></include>
+	<!-- 评价器控制器-->
+	<include file="apprieser.xml"></include>
+	<!-- 评价器按键控制器-->
+	<include file="keyType.xml"></include>
+	<!-- 用户组管理-->
+	<include file="power.xml"></include>
+	<!-- 统计管理 -->
+	<include file="total.xml"></include>
+	<!-- 基本设置 -->
+	<include file="base.xml"></include>
+	<!-- 播放资源设置 -->
+	<include file="play.xml"></include>
+	<!-- 播放资源列表设置 -->
+	<include file="playList.xml"></include>
+	<!-- 添加评价数据接口 -->
+	<include file="appries.xml"></include>
+	<!-- 考勤管理 -->
+	<include file="attendance.xml"></include>
+	<!--留言板管理(FAQ) -->
+	<include file="lyb.xml"></include>
+	<!--投票-->
+	<include file="vote.xml"></include>
+	<!-- 业务类型 -->
+	<include file="business.xml"></include>
+	<!-- 配置向导 -->
+	<include file="guide.xml"></include>
+	<!-- 中原国税 -->
+	<include file="read.xml"></include>
+	<!-- 注册 -->
+	<include file="register.xml"></include>
+	<!--第三方 业务结合，一条业务绑定一条评价数据 -->
+	<include file="three.xml"></include>
+	<!--天气预报 -->
+	<include file="weather.xml"></include>
+	<!--自动生成评价数据 -->
+	<include file="auto.xml"></include>
+	<!--显示M7信息 -->
+	<include file="m7Info.xml"></include>
+	<!--自动升级数据库 -->
+	<include file="updateDb.xml"></include>
+	
+	
+	<!--信息查询 -->
+	<include file="weburl.xml"></include>
+	<!--通知公告 -->
+	<include file="notice.xml"></include>
+	<!--意见调查 -->
+	<include file="advice.xml"></include>
+	<!--自动下载意见调查、信息查询、通知公告 -->
+	<include file="download.xml"></include>
+	
+  	<package name="test" extends="struts-default">
+		<action name="testData" class="testAction" method="testData">
+			<result name="success">/msg.jsp</result>
+		</action>
+	</package>
+</struts>

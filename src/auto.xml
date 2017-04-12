@@ -1,0 +1,36 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="auto" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor name="registerCheck" class="registerCheck">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+			<result name="register">base/register.jsp</result>
+		</global-results>
+		<action name="autoView" class="autoAction"
+			method="autoView">
+			<result name="success">/auto/view.jsp</result>
+		</action>
+		<action name="autoView2" class="autoAction"
+			method="autoView2">
+			<result name="success">/auto/view2.jsp</result>
+		</action>
+		<action name="autoDeal2" class="autoAction"
+			method="autoDeal2">
+			<result name="success">/auto/msg.jsp</result>
+		</action>
+	</package>
+</struts>

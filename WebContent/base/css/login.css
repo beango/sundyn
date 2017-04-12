@@ -1,0 +1,64 @@
+DIV {
+	border-width: 0px;
+}
+
+.login {
+	width: 100%;
+	height: 368px;
+	background-image: url("../images/login_bg.gif");
+	background-repeat: repeat-x;
+	position: absolute;
+	top: 50%;
+	margin-top: -185px;
+	text-align: center;
+}
+
+.login .main {
+	height: 368px;
+	width: 665px;
+	margin: 0px auto;
+	background-image: url("../images/login_bg_bg.gif");
+	background-repeat: no-repeat;
+}
+
+.login .main .content {
+	padding: 0px;
+	height: 75px;
+	width: 300px;
+	float: left;
+	margin-top: 260px;
+	margin-left: 60px;
+	color: #333333;
+	font-family: "ËÎÌו";
+	font-size: 12px;
+}
+
+.login .main .content TABLE {
+	color: #333333;
+	font-family: "ËÎÌו";
+	font-size: 12px;
+}
+
+.login .main .content .input_user {
+	height: 18px;
+	width: 128px;
+	border: 1px solid #4172b7;
+}
+
+.login .main .content .input_yzm {
+	height: 18px;
+	width: 59px;
+	border: 1px solid #4172b7;
+}
+
+.login .main .msg {
+	padding: 0px;
+	height: 75px;
+	width: 300px;
+	float: left;
+	margin-top: 1px;
+	margin-left: 60px;
+	color: red;
+	font-family: "ËÎÌו";
+	font-size: 12px;
+}

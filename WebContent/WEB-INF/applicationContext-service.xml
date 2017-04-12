@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="managerService" class="com.sundyn.service.ManagerService" parent="superDao"/>
+	<bean id="menuService" class="com.sundyn.service.MenuService" parent="superDao"/>
+	<bean id="quicklyService" class="com.sundyn.service.QuicklyService" parent="superDao"/>
+	<bean id="powerService" class="com.sundyn.service.PowerService" parent="superDao"/>
+	<bean id="deptService" class="com.sundyn.service.DeptService" parent="superDao"/>
+	<bean id="queryService" class="com.sundyn.service.QueryService" parent="superDao"/>
+	<bean id="employeeService" class="com.sundyn.service.EmployeeService" parent="superDao"></bean>
+	<bean id="errorInfoService" class="com.sundyn.service.ErrorInfoService" parent="superDao"></bean>
+	<bean id="analyseService" class="com.sundyn.service.AnalyseService" parent="superDao"></bean>
+	<bean id="apprieserService" class="com.sundyn.service.ApprieserService" parent="superDao"></bean>
+	<bean id="keyTypeService" class="com.sundyn.service.KeyTypeService" parent="superDao"></bean>
+	<bean id="totalService" class="com.sundyn.service.TotalService" parent="superDao"></bean>
+	<bean id="playService" class="com.sundyn.service.PlayService" parent="superDao"></bean>
+	<bean id="playListService" class="com.sundyn.service.PlayListService" parent="superDao"></bean>
+	<bean id="appriesService" class="com.sundyn.service.AppriesService" parent="superDao"></bean>
+    <bean id="attendanceService" class="com.sundyn.service.AttendanceService" parent="superDao"></bean>	
+    <bean id="lybService" class="com.sundyn.service.LybService" parent="superDao"></bean>
+    <bean id="voteService" class="com.sundyn.service.VoteService" parent="superDao"></bean>
+    <bean id="businessService" class="com.sundyn.service.BusinessService" parent="superDao"></bean>
+    <!--
+    <bean id="loginService" class="com.sundyn.service.LoginService" parent="superDao"></bean>
+    -->
+    <!-- 云南普耳移动 结合   业务数据和评价数据 一一绑定 -->
+    <bean id="threeService" class="com.sundyn.service.ThreeService" parent="superDao"></bean>
+    <!-- 云南普耳移动 结合   业务数据和评价数据 一一绑定 -->
+    <bean id="formlistService" class="com.sundyn.service.FormlistService" parent="superDao"></bean>
+    <bean id="updateDbService" class="com.sundyn.service.UpdateDbService" parent="superDao"></bean>  
+    <bean id="registerImpl" class="com.sundyn.util.impl.RegisterImpl">
+      <property name="use" value="true"  /> 
+    </bean>
+    <bean id="reg" class="com.sundyn.util.Reg"  >
+       <property name="register" ref="registerImpl"></property>
+    </bean>
+    <bean id="registerCheck" class="com.sundyn.util.RegisterCheck">
+       <property name="deptService" ref="deptService" />
+        <property name="reg" ref="reg" /> 
+       <property name="use" value="true" /> 
+    </bean>
+    <!--    信息查询-->
+    <bean id="weburlService" class="com.sundyn.service.WeburlService" parent="superDao"></bean>
+    <!--    通知公告-->
+    <bean id="noticeService" class="com.sundyn.service.NoticeService" parent="superDao"></bean>   
+    <!--    意见调查-->
+    <bean id="adviceService" class="com.sundyn.service.AdviceService" parent="superDao"></bean>
+      <!--    设置最多页数工具类-->
+    <bean id="pageUtils" class="com.sundyn.utils.PageUtils" parent="superDao"></bean>
+    <bean id="citysUtils" class="com.sundyn.utils.CitysUtils" parent="superDao"></bean>
+      
+</beans>

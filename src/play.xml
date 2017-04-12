@@ -1,0 +1,52 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="play" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="playQuery" class="playAction"
+			method="playQuery">
+			<result name="success">/play/query.jsp</result>
+		</action>
+		<action name="playQueryAjax" class="playAction"
+			method="playQueryAjax">
+			<result name="success">/play/queryAjax.jsp</result>
+		</action>
+		<action name="playDel" class="playAction" method="playDel">
+			<result name="success">/play/success.jsp</result>
+		</action>
+
+		<action name="playAddDialog" class="playAction"
+			method="playAddDialog">
+			<result name="success">/play/addDialog.jsp</result>
+		</action>
+		<action name="playAdd" class="playAction" method="playAdd">
+			<result name="success">/play/success.jsp</result>
+		</action>
+		<action name="playEditDialog" class="playAction"
+			method="playEditDialog">
+			<result name="success">/play/editDialog.jsp</result>
+		</action>
+		<action name="playEdit" class="playAction" method="playEdit">
+			<result name="success">/play/success.jsp</result>
+		</action>
+		<action name="playUpload" class="playAction"
+			method="playUpload">
+			<result name="success">/play/success.jsp</result>
+		</action>
+	</package>
+</struts>

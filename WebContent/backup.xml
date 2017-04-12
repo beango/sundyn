@@ -1,0 +1,1886 @@
+<?xml version="1.0" encoding="gb2312"?>
+<updateDb>
+    <tables>
+        <table tableName="appries_appries">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>serviceDate</COLUMN_NAME>
+                <COLUMN_TYPE>date</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>2007-09-09</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>serviceCycle</COLUMN_NAME>
+                <COLUMN_TYPE>float</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>CustorTime</COLUMN_NAME>
+                <COLUMN_TYPE>time</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>00:00:00</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>DeptId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>EmployeeId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>serviceType</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>appriesTime</COLUMN_NAME>
+                <COLUMN_TYPE>time</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>00:00:00</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>updateTime</COLUMN_NAME>
+                <COLUMN_TYPE>datetime</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>JieshouTime</COLUMN_NAME>
+                <COLUMN_TYPE>datetime</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>0000-00-00 00:00:00</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>saveTime</COLUMN_NAME>
+                <COLUMN_TYPE>time</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>00:00:00</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(1000)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>deptarl</COLUMN_NAME>
+                <COLUMN_TYPE>longtext</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext1</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext2</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext3</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext4</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>keyno</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>mechinetype</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>businessType</COLUMN_NAME>
+                <COLUMN_TYPE>int(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_apprieser">
+            <column>
+                <COLUMN_NAME>apprieserid</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>name</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(20)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(250)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>state</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(250)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_appritype">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>name</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(20)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(250)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_attendance">
+            <column>
+                <COLUMN_NAME>attendanceId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>userId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>attendDate</COLUMN_NAME>
+                <COLUMN_TYPE>date</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>attendUp</COLUMN_NAME>
+                <COLUMN_TYPE>time</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>attendDown</COLUMN_NAME>
+                <COLUMN_TYPE>time</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_attendanceinfo">
+            <column>
+                <COLUMN_NAME>attendanceId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>userId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>attendDate</COLUMN_NAME>
+                <COLUMN_TYPE>date</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>optionTime</COLUMN_NAME>
+                <COLUMN_TYPE>time</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>attendDown</COLUMN_NAME>
+                <COLUMN_TYPE>time</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(30)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>other</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(20)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>deptName</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(30)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_business">
+            <column>
+                <COLUMN_NAME>businessId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>businessName</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(255)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>businessDescription</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(255)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>businessFatherId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>businessIndex</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>businessIsUse</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(4)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>businessLevel</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>0</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>businessIsLeaf</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>1</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext1</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext2</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext3</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext4</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_dept">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>fatherId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>name</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(100)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>child</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>lenvel</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(250)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>dev_undownload</COLUMN_NAME>
+                <COLUMN_TYPE>smallint(2) unsigned</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>0</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>dev_savedphoto</COLUMN_NAME>
+                <COLUMN_TYPE>binary(30)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>lastcheck</COLUMN_NAME>
+                <COLUMN_TYPE>datetime</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>2009-06-20 00:00:01</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>client_type</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(4)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>2</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>deptType</COLUMN_NAME>
+                <COLUMN_TYPE>smallint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>dept_camera_url</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>dept_businessId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>dept_playListId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext1</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext2</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext3</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_employee">
+            <column>
+                <COLUMN_NAME>Id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>deptid</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>Name</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(30)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>Sex</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(4)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>job_desc</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(30)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>CardNum</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(10)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>PassWord</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(16)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>4695625C28FADF59</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>birthday</COLUMN_NAME>
+                <COLUMN_TYPE>datetime</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>Phone</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(20)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>beginWorkTime</COLUMN_NAME>
+                <COLUMN_TYPE>datetime</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>picture</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(150)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>images/employee_head_photo.gif</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(250)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext1</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext2</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>showDeptName</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>showWindowName</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_erroinfo">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>double</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>startserver</COLUMN_NAME>
+                <COLUMN_TYPE>datetime</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>appriestime</COLUMN_NAME>
+                <COLUMN_TYPE>datetime</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>serviceTypeId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>keyId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>deptId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>m_devid</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>cardnum</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(20)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>employeeId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext1</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext2</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>reamark</COLUMN_NAME>
+                <COLUMN_TYPE>longtext</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_errortype">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>name</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(100)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_formlist">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>formNum</COLUMN_NAME>
+                <COLUMN_TYPE>int(10)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>flag</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_keytype">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>name</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(20)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>keyNo</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>isJoy</COLUMN_NAME>
+                <COLUMN_TYPE>char(5)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>on</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>apprieserid</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(250)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext1</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext2</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>yes</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_lyb">
+            <column>
+                <COLUMN_NAME>lybId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>lybTitle</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>lybAsk</COLUMN_NAME>
+                <COLUMN_TYPE>mediumtext</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>lybAnswer</COLUMN_NAME>
+                <COLUMN_TYPE>mediumtext</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>lybAskId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>lybAnswerId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>lybAskDate</COLUMN_NAME>
+                <COLUMN_TYPE>datetime</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>lybAnswerDate</COLUMN_NAME>
+                <COLUMN_TYPE>datetime</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>lybState</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(4)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>0</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_manager">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>name</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(20)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>realname</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>password</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(20)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>skinid</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>userGroupId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(100)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>0</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext1</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext2</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_play">
+            <column>
+                <COLUMN_NAME>playId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>playName</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>playType</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(5)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>playSource</COLUMN_NAME>
+                <COLUMN_TYPE>mediumtext</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>playIndex</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>playListId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>playUpdateDate</COLUMN_NAME>
+                <COLUMN_TYPE>datetime</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>2009-05-05 00:00:00</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>playTimes</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_playlist">
+            <column>
+                <COLUMN_NAME>playListId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>playListName</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>playListDescription</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>playIds</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(500)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_power">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>name</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(30)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>search</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>analysis</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>baseSet</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>deptmanage</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>apprieserManage</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>managerManage</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>userGroupManage</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>dataManage</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>dateBaseManage</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>serviceManage</COLUMN_NAME>
+                <COLUMN_TYPE>tinyint(1)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>deptIdGroup</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(500)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(250)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_quickly">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>name</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(30)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>excuteSql</COLUMN_NAME>
+                <COLUMN_TYPE>text</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>startDate</COLUMN_NAME>
+                <COLUMN_TYPE>date</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>endDate</COLUMN_NAME>
+                <COLUMN_TYPE>date</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>count</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>serviceType</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(250)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>resultType</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(100)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>deptIDs</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>employees</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(250)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>managerId</COLUMN_NAME>
+                <COLUMN_TYPE>int(5)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_servicetype">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>businessName</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(30)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(250)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_starlevel">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>name</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(100)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>MinQuantityValue</COLUMN_NAME>
+                <COLUMN_TYPE>float</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>MaxQuantityValue</COLUMN_NAME>
+                <COLUMN_TYPE>float</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>description</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(30)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>remark</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(250)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>MinSatisFactoryValue</COLUMN_NAME>
+                <COLUMN_TYPE>float</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>MaxSatisFactoryValue</COLUMN_NAME>
+                <COLUMN_TYPE>float</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_three">
+            <column>
+                <COLUMN_NAME>ext1</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext2</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext3</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext4</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext5</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext6</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext7</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext8</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext9</COLUMN_NAME>
+                <COLUMN_TYPE>datetime</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>userName</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>realName</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext12</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext13</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>ext14</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>appriesID</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT>0</COLUMN_DEFAULT>
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_userlimit">
+            <column>
+                <COLUMN_NAME>id</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>URL</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(40)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>name</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(40)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="appries_vote">
+            <column>
+                <COLUMN_NAME>voteId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>NO</IS_NULLABLE>
+                <COLUMN_KEY>PRI</COLUMN_KEY>
+                <COLUMN_DEFAULT />
+                <EXTRA>auto_increment</EXTRA>
+            </column>
+            <column>
+                <COLUMN_NAME>voteTitle</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>voteDescription</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>voteNum</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>voteSelect</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(200)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>voteHit</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>voteIsUse</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>voteParentId</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+        <table tableName="temp">
+            <column>
+                <COLUMN_NAME>dt</COLUMN_NAME>
+                <COLUMN_TYPE>datetime</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>unitid</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>updeptid</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>deptid</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>employeeid</COLUMN_NAME>
+                <COLUMN_TYPE>int(11)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>unitname</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>updeptname</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>deptname</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>employeename</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+            <column>
+                <COLUMN_NAME>keyname</COLUMN_NAME>
+                <COLUMN_TYPE>varchar(50)</COLUMN_TYPE>
+                <IS_NULLABLE>YES</IS_NULLABLE>
+                <COLUMN_KEY />
+                <COLUMN_DEFAULT />
+                <EXTRA />
+            </column>
+        </table>
+    </tables>
+    <views>
+        <view name="appriesinfo">DROP  VIEW   IF EXISTS    appriesinfo; &#xD;
+CREATE  VIEW `appriesinfo` AS  &#xD;
+ (select `a`.`id` AS `id`,`a`.`serviceDate` AS `serviceDate`,`a`.`CustorTime` AS `CustorTime`,`a`.`DeptId` AS `DeptId`,`a`.`EmployeeId` AS `EmployeeId`,`a`.`serviceType` AS `serviceType`,`a`.`appriesTime` AS `appriesTime`,`a`.`remark` AS `remark`,`a`.`deptarl` AS `deptarl`,`a`.`keyno` AS `keyno`,`a`.`mechinetype` AS `mechinetype`,`dept`.`name` AS `deptName`,`dept`.`fatherId` AS `fatherId`,`emp`.`Name` AS `employeeName`,`kt`.`name` AS `result`,`kt`.`isJoy` AS `isjoy`,`emp`.`CardNum` AS `EmployeeCardNo`,`st`.`businessName` AS `businessName` from ((((`appries`.`appries_appries` `a` join `appries`.`appries_dept` `dept`) join `appries`.`appries_employee` `emp`) join `appries`.`appries_keytype` `kt`) join `appries`.`appries_servicetype` `st`) where ((`a`.`DeptId` = `dept`.`id`) and (`a`.`EmployeeId` = `emp`.`Id`) and (`a`.`keyno` = `kt`.`keyNo`) and (`a`.`serviceType` = `st`.`id`)));</view>
+        <view name="appriseview">DROP  VIEW   IF EXISTS    appriseview; &#xD;
+CREATE  VIEW `appriseview` AS  &#xD;
+ (select `fdept`.`id` AS `Deptid`,`fdept`.`name` AS `deptName`,`a`.`serviceDate` AS `serviceDate`,`a`.`keyno` AS `Result`,`a`.`CustorTime` AS `serviceTime`,`dept`.`name` AS `PoliceStationName`,`dept`.`id` AS `PoliceStationID`,`emp`.`Name` AS `policename`,`kt`.`name` AS `ResultName`,`emp`.`CardNum` AS `policeID` from (((((`appries`.`appries_appries` `a` join `appries`.`appries_dept` `dept`) join `appries`.`appries_employee` `emp`) join `appries`.`appries_keytype` `kt`) join `appries`.`appries_servicetype` `st`) join `appries`.`appries_dept` `fdept`) where ((`emp`.`deptid` = `dept`.`id`) and (`a`.`EmployeeId` = `emp`.`Id`) and (`a`.`keyno` = `kt`.`keyNo`) and (`fdept`.`id` = `dept`.`fatherId`)));</view>
+        <view name="taiyuan">DROP  VIEW   IF EXISTS    taiyuan; &#xD;
+CREATE  VIEW `taiyuan` AS  &#xD;
+ (select `fdept`.`id` AS `Deptid`,`fdept`.`name` AS `deptName`,`a`.`serviceDate` AS `serviceDate`,`a`.`keyno` AS `keyNo`,`a`.`CustorTime` AS `serviceTime`,`dept`.`name` AS `PoliceStationName`,`dept`.`id` AS `PoliceStationID`,`emp`.`Name` AS `policename`,`kt`.`name` AS `result`,`emp`.`CardNum` AS `policeID` from (((((`appries`.`appries_appries` `a` join `appries`.`appries_dept` `dept`) join `appries`.`appries_employee` `emp`) join `appries`.`appries_keytype` `kt`) join `appries`.`appries_servicetype` `st`) join `appries`.`appries_dept` `fdept`) where ((`emp`.`deptid` = `dept`.`id`) and (`a`.`EmployeeId` = `emp`.`Id`) and (`a`.`keyno` = `kt`.`keyNo`) and (`fdept`.`id` = `dept`.`fatherId`)));</view>
+    </views>
+    <procs>
+        <proc name="appriesAdd">DROP  PROCEDURE   IF EXISTS    appriesAdd ;CREATE   PROCEDURE `appriesAdd`  (IN mac varchar(20), IN tt VARCHAR(50), IN cardnum1 VARCHAR(6), IN pj TINYINT, IN demo VARCHAR(1000),in businessType int)&#xD;
+begin declare deptId Integer; declare employeeId Integer; select id into deptId from appries_dept where remark=mac limit 0,1; select id into employeeId from appries_employee where CardNum= cardnum1 LIMIT 0,1 ; insert into appries_appries (serviceDate,serviceCycle,custortime,deptid,employeeid,keyno,mechinetype,serviceType,JieshouTime,remark,businessType) value (date(cast(tt as datetime)),0,time(cast(tt as datetime)),deptId,employeeId,pj,2,1,tt,demo,businessType); end;</proc>
+        <proc name="appriesAddDemo">DROP  PROCEDURE   IF EXISTS    appriesAddDemo ;CREATE   PROCEDURE `appriesAddDemo`  (IN mac varchar(20), IN tt VARCHAR(50), IN cardnum1 VARCHAR(6), IN pj TINYINT,  IN demo VARCHAR(1000),in businessType  int)&#xD;
+begin&#xD;
+&#xD;
+declare deptId Integer;&#xD;
+&#xD;
+declare employeeId Integer;&#xD;
+&#xD;
+select id into deptId  from appries_dept where    remark=mac limit 0,1;&#xD;
+&#xD;
+select id into employeeId  from appries_employee where  CardNum= cardnum1  LIMIT 0,1 ;&#xD;
+&#xD;
+insert into appries_appries (serviceDate,serviceCycle,custortime,deptid,employeeid,keyno,mechinetype,serviceType,JieshouTime,remark,businessType)&#xD;
+&#xD;
+value (date(cast(tt as datetime)),0,time(cast(tt as datetime)),deptId,employeeId,pj,2,1,tt,demo,businessType);&#xD;
+&#xD;
+end;</proc>
+        <proc name="appriesAddJZ">DROP  PROCEDURE   IF EXISTS    appriesAddJZ ;CREATE   PROCEDURE `appriesAddJZ`  (IN deptId varchar(20), IN tt VARCHAR(50), IN employeeId VARCHAR(6), IN pj TINYINT,  IN demo VARCHAR(1000),in businessType  int)&#xD;
+begin&#xD;
+insert into appries_appries (serviceDate,serviceCycle,custortime,deptid,employeeid,keyno,mechinetype,serviceType,JieshouTime,remark,businessType)&#xD;
+&#xD;
+value (date(cast(tt as datetime)),0,time(cast(tt as datetime)),deptId,employeeId,pj,2,1,now(),demo,businessType);&#xD;
+&#xD;
+end;</proc>
+        <proc name="appries_info">DROP  PROCEDURE   IF EXISTS    appries_info ;CREATE   PROCEDURE `appries_info`  ()&#xD;
+BEGIN
+declare apprie_1,apprie_2,apprie_3,apprie_4,apprie_5,apprie_6,apprie_7 varchar(100);
+declare msql2 varchar(2000);
+set apprie_1=(select name from appries_keytype where keyno=0);
+set apprie_2=(select name from appries_keytype where keyno=1);
+set apprie_3=(select name from appries_keytype where keyno=2);
+set apprie_4=(select name from appries_keytype where keyno=3);
+set apprie_5=(select name from appries_keytype where keyno=4);
+set apprie_6=(select name from appries_keytype where keyno=5);
+set apprie_7=(select name from appries_keytype where keyno=6);
+SET @MyQuery=Concat('select ID,DeptId as 窗口ID,EmployeeId as 员工ID,serviceDate as 评价日期,CustorTime as 评价时间,(case keyno when 0 then 1 else 0 end) as ',apprie_1,',(case keyno when 1 then 1 else 0 end) as ',apprie_2,',(case keyno when 2 then 1 else 0 end) as ',apprie_3,',(case keyno when 3 then 1 else 0 end) as ',apprie_4,',(case keyno when 4 then 1 else 0 end) as ',apprie_5,',(case keyno when 5 then 1 else 0 end) as ',apprie_6,',(case keyno when 6 then 1 else 0 end) as ',apprie_7,' from appries_appries');
+PREPARE msql2 from @MyQuery;
+EXECUTE msql2;
+END;</proc>
+        <proc name="GetAppr">DROP  PROCEDURE   IF EXISTS    GetAppr ;CREATE   PROCEDURE `GetAppr`  (IN mac BIGINT, IN devid VARCHAR(50), IN vcardnum VARCHAR(50))&#xD;
+BEGIN&#xD;
+declare m_dt DATETIME;&#xD;
+declare m_unitid,m_updeptid,m_deptid,m_employeeid INTEGER;&#xD;
+declare m_unitname,m_updeptname,m_deptname,m_employeename,m_keyname VARCHAR(50);&#xD;
+&#xD;
+set m_dt=now();&#xD;
+select id,name into m_unitid,m_unitname from appries_dept where fatherid=-1;&#xD;
+select id,name into m_updeptid,m_updeptname from appries_dept where conv(remark,16,10)=mac;&#xD;
+select id,name into m_deptid,m_deptname from appries_dept where fatherid=m_updeptid and remark=devid;&#xD;
+select id,name into m_employeeid,m_employeename from appries_employee where cardnum=vcardnum and (deptid=m_updeptid or ext1 is not NULL);&#xD;
+create TEMPORARY TABLE t(dt DATETIME,&#xD;
+                unitid int,&#xD;
+                updeptid INTEGER,&#xD;
+                deptid INTEGER,&#xD;
+                employeeid INTEGER,&#xD;
+                unitname VARCHAR(50),&#xD;
+                updeptname VARCHAR(50),&#xD;
+                deptname VARCHAR(50),&#xD;
+                employeename VARCHAR(50),&#xD;
+                keyname VARCHAR(50));&#xD;
+insert into t values(m_dt,m_unitid,m_updeptid,m_deptid,m_employeeid,m_unitname,m_updeptname,m_deptname,m_employeename,m_keyname);&#xD;
+select * from t;&#xD;
+drop table t;&#xD;
+END;</proc>
+        <proc name="GetDetpNameByMac">DROP  PROCEDURE   IF EXISTS    GetDetpNameByMac ;CREATE   PROCEDURE `GetDetpNameByMac`  (mac BIGINT)&#xD;
+BEGIN
+select name from appries_dept where conv(remark,16,10)=mac;
+END;</proc>
+        <proc name="GetDEVs">DROP  PROCEDURE   IF EXISTS    GetDEVs ;CREATE   PROCEDURE `GetDEVs`  ()&#xD;
+BEGIN
+declare maxlevel int;
+set maxlevel=(select max(lenvel) from appries_dept);
+select a.id as groupid,b.id as winid,a.name as deptname,b.name as formname,conv(a.remark,16,10) as mac,b.remark as devid,b.dev_undownload,b.dev_savedphoto,b.lastcheck,b.client_type from appries_dept a inner join appries_dept b on b.fatherid=a.id;
+END;</proc>
+        <proc name="InsertData">DROP  PROCEDURE   IF EXISTS    InsertData ;CREATE   PROCEDURE `InsertData`  (IN mac BIGINT, IN devid VARCHAR(50), IN vcardnum VARCHAR(50), IN pj TINYINT, IN appriesTimes VARCHAR(50), IN atten VARCHAR(1000))&#xD;
+BEGIN&#xD;
+declare m_dt datetime;&#xD;
+declare m_updeptid,m_deptid,m_employeeid int;&#xD;
+set m_dt=now();&#xD;
+set m_updeptid=(select id from appries_dept where conv(remark,16,10)=mac);&#xD;
+set m_deptid=(select id from appries_dept where fatherid=m_updeptid and remark=devid);&#xD;
+set m_employeeid=(select id from appries_employee where (0+cardnum)=(0+vcardnum) and (deptid=m_updeptid or ext1 is not NULL));&#xD;
+insert into appries_appries (serviceDate,serviceCycle,custortime,deptid,employeeid,keyno,mechinetype,serviceType,JieshouTime,remark)&#xD;
+value (date(cast(appriesTimes as datetime)),0,time(cast(appriesTimes as datetime)),m_deptid,m_employeeid,pj,2,1,appriesTimes,atten);&#xD;
+END;</proc>
+        <proc name="InsertError">DROP  PROCEDURE   IF EXISTS    InsertError ;CREATE   PROCEDURE `InsertError`  (IN mac BIGINT, IN devid BIGINT, IN vcardnum VARCHAR(50), IN pj TINYINT)&#xD;
+BEGIN&#xD;
+insert into appries_erroinfo (appriestime,reamark,m_devid,cardnum,keyid) value (now(),hex(mac),devid,vcardnum,pj);&#xD;
+END;</proc>
+        <proc name="UpdateDevChange">DROP  PROCEDURE   IF EXISTS    UpdateDevChange ;CREATE   PROCEDURE `UpdateDevChange`  (vUpdateValue SMALLINT unsigned)&#xD;
+BEGIN
+/*declare MaxLevel int;&#xD;
+set MaxLevel=(select max(lenvel) from appries_dept);*/
+update appries_dept set dev_undownload=vUpdateValue|dev_undownload; /*where lenvel=MaxLevel;*/
+END;</proc>
+    </procs>
+    <execute>
+        <sql />
+    </execute>
+</updateDb>
+

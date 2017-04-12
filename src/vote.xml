@@ -1,0 +1,61 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="vote" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<!-- 投票首页 -->
+		<action name="voteQuery" class="voteAction"
+			method="voteQuery">
+			<result name="success">/vote/query.jsp</result>
+		</action>
+		<action name="voteUse" class="voteAction"
+			method="voteUse">
+			<result name="success">/vote/ajax.jsp</result>
+		</action>
+		<action name="voteCancle" class="voteAction" method="voteCancle">
+		    <result name="success">/vote/ajax.jsp</result>
+		 </action>
+		<action name="voteDel" class="voteAction"
+			method="voteDel">
+			<result name="success">/vote/ajax.jsp</result>
+		</action>
+		<action name="voteAdd" class="voteAction"
+			method="voteAdd">
+			<result name="success">/vote/ajax.jsp</result>
+		</action>
+		<action name="voteDialog" class="voteAction"
+			method="voteDialog">
+			<result name="success">/vote/dialog.jsp</result>
+		</action>
+		<action name="voteM7" class="voteAction"
+			method="voteM7">
+			<result name="success">/vote/m7.jsp</result>
+		</action>
+	</package>
+ 	<package name="voteM7" extends="struts-default">
+ 		<action name="voteM7" class="voteAction"
+			method="voteM7">
+			<result name="success">/vote/msg.jsp</result>
+		</action>
+		<action name="vote" class="voteAction"
+			method="vote">
+			<result name="success">/vote/msg.jsp</result>
+		</action>
+		
+ 	</package>
+</struts>

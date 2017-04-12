@@ -1,0 +1,200 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="base" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor name="registerCheck" class="registerCheck">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+			<result name="register">base/register.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="basePic" class="baseAction" method="basePic">
+			<result name="success">/base/pic.jsp</result>
+		</action>
+		<action name="basePicAjax" class="baseAction"
+			method="basePicAjax">
+			<result name="success">/base/picAjax.jsp</result>
+		</action>
+		<action name="basePicUpload" class="baseAction"
+			method="basePicUpload">
+			<result name="success" type="redirectAction">
+				basePic
+			</result>
+		</action>
+		<action name="baseRead" class="baseAction" method="baseRead">
+			<result name="success">/base/set.jsp</result>
+		</action>
+		<action name="baseSave" class="baseAction" method="baseSave">
+			<result name="success">/base/set.jsp</result>
+		</action>
+		<action name="baseBackUP" class="baseAction"
+			method="baseBackUP">
+			<result name="success">/base/backup.jsp</result>
+		</action>
+		<action name="baseRestore" class="baseAction"
+			method="baseRestore">
+			<result name="success">/msg.jsp</result>
+		</action>
+		<action name="baseDelRestore" class="baseAction"
+			method="baseDelRestore">
+			<result name="success">/base/restoreDialog.jsp</result>
+		</action>
+		<action name="baseRestoreDialog" class="baseAction"
+			method="baseRestoreDialog">
+			<result name="success">/base/restoreDialog.jsp</result>
+		</action>
+		<action name="baseTime" class="baseAction" method="baseTime">
+			<result name="success">/base/settime.jsp</result>
+		</action>
+		<action name="baseTimeSave" class="baseAction"
+			method="baseTimeSave">
+			<result name="success">/base/settime.jsp</result>
+		</action>
+		<action name="baseOnLineEmployee" class="baseAction"
+			method="baseOnLineEmployee">
+			<result name="success">/base/online.jsp</result>
+		</action>
+		<action name="baseOnLineEmployee2" class="baseAction"
+			method="baseOnLineEmployee2">
+			<result name="success">/base/online2.jsp</result>
+		</action>
+		<action name="baseOnLineEmployee2Ajax" class="baseAction"
+			method="baseOnLineEmployee2Ajax">
+			<result name="success">/base/online2Ajax.jsp</result>
+		</action>
+		<action name="baseSundynSet" class="baseAction"
+			method="baseSundynSet">
+			<result name="success">/base/sundynSet.jsp</result>
+		</action>
+		<action name="baseUploadPic" class="baseAction"
+			method="baseUploadPic">
+			<result name="success">/base/baseUploadPic.jsp</result>
+		</action>
+		<action name="baseUploadPicDeal" class="baseAction"
+			method="baseUploadPicDeal">
+			<result name="success">/base/success.jsp</result>
+		</action>
+		<action name="baseUploadTemp" class="baseAction"
+			method="baseUploadTemp">
+			<result name="success">/base/baseUploadTemp.jsp</result>
+		</action>
+		<action name="baseUploadTempDeal" class="baseAction"
+			method="baseUploadTempDeal">
+			<result name="success">/base/baseUploadTempDeal.jsp</result>
+		</action>
+		<action name="baseDelTemp" class="baseAction"
+			method="baseDelTemp">
+			<result name="success">/base/baseDelTemp.jsp</result>
+		</action>
+		<action name="basePreviewTemp" class="baseAction"
+			method="basePreviewTemp">
+			<result name="success">/base/basePreviewTemp.jsp</result>
+		</action>
+		<action name="baseSelectTemp" class="baseAction"
+			method="baseSelectTemp">
+			<result name="success">/base/baseSelectTemp.jsp</result>
+		</action>
+		<action name="baseSetSave" class="baseAction"
+			method="baseSetSave">
+			<result name="success">/msg.jsp</result>
+		</action>
+		<action name="baseGuide" class="baseAction"
+			method="baseGuide">
+			<result name="success">/msg.jsp</result>
+			<result name="true" type="redirect">
+				/queryIndex.action
+			</result>
+			<result name="guide" type="redirect">
+				/baseHelp.action?help=14
+			</result>
+		</action>
+		<action name="baseHelp" class="baseAction" method="baseHelp">
+			<result name="1">/help/1.jsp</result>
+			<result name="2">/help/2.jsp</result>
+			<result name="3">/help/3.jsp</result>
+			<result name="4">/help/4.jsp</result>
+			<result name="5">/help/5.jsp</result>
+			<result name="6">/help/6.jsp</result>
+			<result name="7">/help/7.jsp</result>
+			<result name="8">/help/8.jsp</result>
+			<result name="9">/help/9.jsp</result>
+			<result name="10">/help/10.jsp</result>
+			<result name="11">/help/11.jsp</result>
+			<result name="12">/help/12.jsp</result>
+			<result name="13">/help/13.jsp</result>
+			<result name="14">/help/14.jsp</result>
+			<result name="15">/help/15.jsp</result>
+			<result name="16">/help/16.jsp</result>
+			<result name="17">/help/17.jsp</result>
+			<result name="18">/help/18.jsp</result>
+			<result name="19">/help/19.jsp</result>
+			<result name="20">/help/20.jsp</result>
+			<result name="21">/help/21.jsp</result>
+			<result name="22">/help/22.jsp</result>
+			<result name="23">/help/23.jsp</result>
+
+
+
+			<result name="1_en">/help/1_en.jsp</result>
+			<result name="2_en">/help/2_en.jsp</result>
+			<result name="3_en">/help/3_en.jsp</result>
+			<result name="4_en">/help/4_en.jsp</result>
+			<result name="5_en">/help/5_en.jsp</result>
+			<result name="6_en">/help/6_en.jsp</result>
+			<result name="7_en">/help/7_en.jsp</result>
+			<result name="8_en">/help/8_en.jsp</result>
+			<result name="9_en">/help/9_en.jsp</result>
+			<result name="10_en">/help/10_en.jsp</result>
+			<result name="11_en">/help/11_en.jsp</result>
+			<result name="12_en">/help/12_en.jsp</result>
+			<result name="13_en">/help/13_en.jsp</result>
+			<result name="14_en">/help/14_en.jsp</result>
+			<result name="15_en">/help/15_en.jsp</result>
+			<result name="16_en">/help/16_en.jsp</result>
+			<result name="17_en">/help/17_en.jsp</result>
+			<result name="18_en">/help/18_en.jsp</result>
+			<result name="19_en">/help/19_en.jsp</result>
+			<result name="20_en">/help/20_en.jsp</result>
+			<result name="21_en">/help/21_en.jsp</result>
+			<result name="22_en">/help/22_en.jsp</result>
+			<result name="23_en">/help/23_en.jsp</result>
+		</action>
+		<action name="baseSession" class="baseAction"
+			method="baseSession">
+			<result name="success">/msg.jsp</result>
+		</action>
+		<action name="topframe" class="defaultAction"
+			method="TopFrame">
+			<result name="success">/topframe.jsp</result>
+		</action>
+	</package>
+	<package name="baseO" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<action name="baseSession" class="baseAction"
+			method="baseSession">
+			<result name="success">/msg.jsp</result>
+		</action>
+		
+	</package>
+	
+	
+</struts>

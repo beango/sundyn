@@ -1,0 +1,130 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="analyse" extends="struts-default">
+		<!-- 业务量分析 -->
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor name="registerCheck"
+				class="registerCheck">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+			<result name="register">base/register.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="analyseTotal" class="analyseAction"
+			method="analyseTotal">
+			<result name="success">/analyse/total.jsp</result>
+		</action>
+		<action name="analyseTotalAjaxDay" class="analyseAction"
+			method="analyseTotalAjaxDay">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<action name="analyseTotalAjax" class="analyseAction"
+			method="analyseTotalAjax">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<!-- 满意量分析-->
+		<action name="analyseContent" class="analyseAction"
+			method="analyseContent">
+			<result name="success">/analyse/content.jsp</result>
+		</action>
+		<action name="analyseContentAjaxDay" class="analyseAction"
+			method="analyseContentAjaxDay">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<action name="analyseContentAjax" class="analyseAction"
+			method="analyseContentAjax">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<!-- 满意率 -->
+		<action name="analyseContentRate" class="analyseAction"
+			method="analyseContentRate">
+			<result name="success">/analyse/rate.jsp</result>
+		</action>
+		<action name="analyseContentRateAjaxDay" class="analyseAction"
+			method="analyseContentRateAjaxDay">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<action name="analyseContentRateAjax" class="analyseAction"
+			method="analyseContentRateAjax">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<!-- 部门 -->
+		<action name="analyseDept" class="analyseAction"
+			method="analyseDept">
+			<result name="success">/analyse/dept.jsp</result>
+		</action>
+		
+		<action name="analyseDeptAjax123" class="analyseAction"
+			method="analyseDeptAjax123">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<action name="analyseDeptContentAjax" class="analyseAction"
+			method="analyseDeptContentAjax">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<action name="analyseDeptContentRateAjax" class="analyseAction"
+			method="analyseDeptContentRateAjax">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<!-- 员工 -->
+		<action name="analyseEmployee" class="analyseAction"
+			method="analyseEmployee">
+			<result name="success">/analyse/employee.jsp</result>
+		</action>
+		<action name="analyseEmployeeAjax" class="analyseAction"
+			method="analyseEmployeeAjax">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<action name="analyseEmployeeContentAjax" class="analyseAction"
+			method="analyseEmployeeContentAjax">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<action name="analyseEmployeeContentRateAjax"
+			class="analyseAction" method="analyseEmployeeContentRateAjax">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<!-- 满意度 -->
+		<action name="analyseContentD"
+			class="analyseAction" method="analyseContentD">
+			<result name="success">/analyse/d.jsp</result>
+		</action>
+		<action name="analyseContentDAjaxDay"
+			class="analyseAction" method="analyseContentDAjaxDay">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<action name="analyseContentDAjax"
+			class="analyseAction" method="analyseContentDAjax">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<!-- 部门 -->
+		<action name="analyseSection" class="analyseAction"
+			method="analyseSection">
+			<result name="success">/analyse/section.jsp</result>
+		</action>
+		<action name="analyseSectionAjax" class="analyseAction"
+			method="analyseSectionAjax">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<action name="analyseSectionContentAjax" class="analyseAction"
+			method="analyseSectionContentAjax">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+		<action name="analyseSectionContentRateAjax"
+			class="analyseAction" method="analyseSectionContentRateAjax">
+			<result name="success">/analyse/json.jsp</result>
+		</action>
+	</package>
+</struts>

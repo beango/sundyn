@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+		<title>评价界面预览</title>
+		<script language="JavaScript" src="../js/function.js"></script>
+		<style type="text/css">
+<!--
+body {
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+#L1 {
+	position: absolute;
+	left: 20px;
+	top: 100px;
+	width: 100px;
+	height: 140px;
+	z-index: 1;
+	border: 1px solid #000000;
+}
+
+#L2 {
+	position: absolute;
+	left: 205px;
+	top: 120px;
+	width: 120px;
+	height: 120px;
+	z-index: 1;
+	border: 1px solid #000000;
+}
+
+#L3 {
+	position: absolute;
+	left: 160px;
+	top: 90px;
+	width: 106px;
+	height: 22px;
+	z-index: 1;
+	border: 0px solid #000000;
+	font-size: 20px;
+	color: #000000;
+}
+-->
+</style>
+	</head>
+	<body>
+		<img src="../system/upload/7.jpg" width="320" height="240" />
+		<div id="L1"></div>
+		<div id="L3">
+			★★★★★
+		</div>
+		<div id="L2"></div>
+		<script language="javascript">
+var p1 = SQ('p1');
+var i1 = SQ('i1');
+var s1 = SQ('s1');
+var scolor = SQ('scolor');
+arrp1=p1.split(",");
+arri1=i1.split(",");
+arrs1=s1.split(",");
+
+document.getElementById('L1').style.left=parseInt(arrp1[0],10)+10+'px';
+document.getElementById('L1').style.top=parseInt(arrp1[1],10)+10+'px';
+
+document.getElementById('L2').style.left=parseInt(arri1[0],10)+10+'px';
+document.getElementById('L2').style.top=parseInt(arri1[1],10)+10+'px';
+
+document.getElementById('L3').style.left=parseInt(arrs1[0],10)+10+'px';
+document.getElementById('L3').style.top=parseInt(arrs1[1],10)+10+'px';
+document.getElementById('L3').style.color='#'+scolor;//'1px solid #00f';
+
+
+</script>
+	</body>
+</html>
+
+

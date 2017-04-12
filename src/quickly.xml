@@ -1,0 +1,53 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="quickly" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="quicklyQuery" class="quicklyAction"
+			method="quicklyQuery">
+			<result name="success">/quickly/quicklyQuery.jsp</result>
+		</action>
+		<action name="quicklyQueryAjax" class="quicklyAction"
+			method="quicklyQueryAjax">
+			<result name="success">/quickly/queryAjax.jsp</result>
+		</action>
+		<action name="quicklyDel" class="quicklyAction"
+			method="quicklyDel">
+			<result name="success" type="chain">
+				quicklyQueryAjax
+			</result>
+		</action>
+		<action name="quicklyQueryDeal" class="quicklyAction"
+			method="quicklyQueryDeal">
+			<result name="success">/quickly/searchResult.jsp</result>
+		</action>
+		<action name="quicklyAddDialog" class="quicklyAction"
+			method="quicklyAddDialog">
+			<result name="success">
+				/quickly/quicklyAddDialog.jsp
+			</result>
+		</action>
+		<action name="quicklyAdd" class="quicklyAction"
+			method="quicklyAdd">
+			<result name="success">
+				/quickly/quicklyAddDialog.jsp
+			</result>
+		</action>
+
+	</package>
+</struts>

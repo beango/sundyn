@@ -1,0 +1,127 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="playList" extends="struts-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR"
+				class="com.sundyn.util.UserCheckR">
+			</interceptor>
+			<interceptor name="registerCheck"
+				class="registerCheck">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+			<result name="register">base/register.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+		<action name="playListQuery" class="playListAction"
+			method="playListQuery">
+			<result name="success">/playList/query.jsp</result>
+		</action>
+		<action name="playListQueryAndroid" class="playListAction"
+			method="playListQuery">
+			<result name="success">/playList/queryAndroid.jsp</result>
+		</action>
+		
+		<action name="playListQueryAjax" class="playListAction"
+			method="playListQueryAjax">
+			<result name="success">/playList/queryAjax.jsp</result>
+		</action>
+		<action name="playListQueryAjaxAndroid" class="playListAction"
+			method="playListQueryAjaxAndroid">
+			<result name="success">/playList/queryAndroidAjax.jsp</result>
+		</action>
+		<action name="playListDel" class="playListAction"
+			method="playListDel">
+			<result name="success">/playList/success.jsp</result>
+		</action>
+		<action name="playListDelAndroid" class="playListAction"
+			method="playListDel">
+			<result name="success">/playList/success.jsp</result>
+		</action>
+
+		<action name="playListAddDialog" class="playListAction"
+			method="playListAddDialog">
+			<result name="success">/playList/addDialog.jsp</result>
+		</action>
+		<action name="playListAddDialogAndroid" class="playListAction"
+			method="playListAddDialogAndroid">
+			<result name="success">/playList/addDialogAndroid.jsp</result>
+		</action>
+		
+		<action name="playListAdd" class="playListAction"
+			method="playListAdd">
+			<result name="success">/playList/success.jsp</result>
+		</action>
+		<action name="playListAddAndroid" class="playListAction"
+			method="playListAdd">
+			<result name="success">/playList/success.jsp</result>
+		</action>
+		
+		<action name="playListEditDialog" class="playListAction"
+			method="playListEditDialog">
+			<result name="success">/playList/editDialog.jsp</result>
+		</action>
+		<action name="playListEditDialogAndroid" class="playListAction"
+			method="playListEditDialogAndroid">
+			<result name="success">/playList/editDialogAndroid.jsp</result>
+		</action>
+		<action name="playListEdit" class="playListAction"
+			method="playListEdit">
+			<result name="success">/playList/success.jsp</result>
+		</action>
+		<action name="playListCreateUpdateFile" class="playListAction"
+			method="playListCreateUpdateFile">
+			<result name="success">/playList/success.jsp</result>
+		</action>
+		<action name="playListCreateUpdateBin" class="playListAction"
+			method="playListCreateUpdateFile">
+			<result name="success" type="dispatcher">/playList/success.jsp</result>
+		</action>
+		<action name="playListCreateUpdateZip" class="playListAction"
+			method="playListCreateUpdateZip">
+			<result name="success" >/playList/success.jsp</result>
+		</action>
+		<action name="playListUpdateDialog" class="playListAction"
+			method="playListUpdateDialog">
+			<result name="success">/playList/updateDialog.jsp</result>
+		</action>
+		<action name="playListUpdateDialogAndroid" class="playListAction"
+			method="playListUpdateDialog">
+			<result name="success">/playList/updateDialogAndroid.jsp</result>
+		</action>
+		<action name="playListUpdateDeal" class="playListAction"
+			method="playListUpdateDeal">
+			<result name="success">/playList/updateDeal.jsp</result>
+		</action>
+		<action name="playListUpdateDeal2" class="playListAction"
+			method="playListUpdateDeal2">
+			<result name="success">/playList/updateDeal.jsp</result>
+		</action>
+		<action name="playListConfigDialog" class="playListAction"
+			method="playListConfigDialog">
+			<result name="success">/playList/configDialog.jsp</result>
+		</action>
+		<action name="playListConfigDialogAndroid" class="playListAction"
+			method="playListConfigDialogAndroid">
+			<result name="success">/playList/configDialogAndroid.jsp</result>
+		</action>
+		<action name="playListConfigSave" class="playListAction"
+			method="playListConfigSave">
+			<result name="success">/playList/success.jsp</result>
+		</action>
+		<action name="playListConfigSaveAndroid" class="playListAction"
+			method="playListConfigSaveAndroid">
+			<result name="success">/playList/success.jsp</result>
+		</action>
+		
+	</package>
+</struts>

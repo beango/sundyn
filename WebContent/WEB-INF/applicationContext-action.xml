@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="defaultAction" class="com.sundyn.action.DefaultAction"
+		scope="prototype">
+		<property name="powerService" ref="powerService"></property>
+	</bean>
+	<bean id="managerAction" class="com.sundyn.action.ManagerAction"
+		scope="prototype">
+		<property name="managerService" ref="managerService" />
+		<property name="deptService" ref="deptService"></property>
+		<property name="powerService" ref="powerService"></property>
+		<!--
+		<property name="loginService" ref="loginService"></property>
+		-->
+	</bean>
+	<bean id="menuAction" class="com.sundyn.action.MenuAction"
+		scope="prototype">
+		<property name="menuService" ref="menuService" />
+	</bean>
+	<bean id="quicklyAction" class="com.sundyn.action.QuicklyAction"
+		scope="prototype">
+		<property name="quicklyService" ref="quicklyService" />
+	</bean>
+	<bean id="queryAction" class="com.sundyn.action.QueryAction"
+		scope="prototype">
+		<property name="powerService" ref="powerService"></property>
+		<property name="deptService" ref="deptService"></property>
+		<property name="queryService" ref="queryService"></property>
+		<property name="employeeService" ref="employeeService"></property>
+		<property name="keyTypeService" ref="keyTypeService"></property>
+		<property name="totalService" ref="totalService"></property>
+	</bean>
+	
+	<bean id="duiBiAction" class="com.sundyn.action.DuiBiAction"
+		scope="prototype">
+		<property name="powerService" ref="powerService"></property>
+		<property name="deptService" ref="deptService"></property>
+		<property name="queryService" ref="queryService"></property>
+		<property name="employeeService" ref="employeeService"></property>
+		<property name="keyTypeService" ref="keyTypeService"></property>
+		<property name="totalService" ref="totalService"></property>
+	</bean>
+	
+	<bean id="errorInfoAction" class="com.sundyn.action.ErrorInfoAction"
+		scope="prototype">
+		<property name="errorInfoService" ref="errorInfoService"></property>
+	</bean>
+	<bean id="analyseAction" class="com.sundyn.action.AnalyseAction"
+		scope="prototype">
+		<property name="analyseService" ref="analyseService"></property>
+		<property name="deptService" ref="deptService"></property>
+		<property name="powerService" ref="powerService"></property>
+		<property name="keyTypeService" ref="keyTypeService"></property>
+	</bean>
+	<bean id="deptAction" class="com.sundyn.action.DeptAction"
+		scope="prototype">
+		<property name="deptService" ref="deptService"></property>
+		<property name="powerService" ref="powerService"></property>
+		<property name="businessService" ref="businessService"></property>
+		<property name="playListService" ref="playListService"></property>
+		<property name="weburlService" ref="weburlService"></property>
+		<property name="cityutils" ref="citysUtils"></property>
+		
+	</bean>
+	<bean id="employeeAction" class="com.sundyn.action.EmployeeAction"
+		scope="prototype">
+		<property name="deptService" ref="deptService"></property>
+		<property name="employeeService" ref="employeeService"></property>
+		<property name="attendanceService" ref="attendanceService"></property>
+		<property name="keyTypeService" ref="keyTypeService"></property>
+		<property name="totalService" ref="totalService"></property>
+		<property name="powerService" ref="powerService"></property>
+		<property name="des" ref="des"></property>
+		<property name="cPic" ref="cPic"></property>
+		<property name="playListService" ref="playListService"></property>
+	</bean>
+	<bean id="apprieserAction" class="com.sundyn.action.ApprieserAction"
+		scope="prototype">
+		<property name="apprieserService" ref="apprieserService"></property>
+	</bean>
+	<bean id="keyTypeAction" class="com.sundyn.action.KeyTypeAction"
+		scope="prototype">
+		<property name="keyTypeService" ref="keyTypeService"></property>
+	</bean>
+	<bean id="powerAction" class="com.sundyn.action.PowerAction"
+		scope="prototype">
+		<property name="powerService" ref="powerService"></property>
+		<property name="deptService" ref="deptService"></property>
+		<property name="managerService" ref="managerService"></property>
+	</bean>
+	<bean id="totalAction" class="com.sundyn.action.TotalAction"
+		scope="prototype">
+		<property name="deptService" ref="deptService"></property>
+		<property name="totalService" ref="totalService"></property>
+		<property name="powerService" ref="powerService"></property>
+		<property name="keyTypeService" ref="keyTypeService"></property>
+		<property name="businessService" ref="businessService"></property>
+		<!--<property name="queryService" ref="queryService"></property>
+	--></bean>
+	<bean id="baseAction" class="com.sundyn.action.BaseAction"
+		scope="prototype">
+		<property name="playListService" ref="playListService"></property>
+		<property name="deptService" ref="deptService"></property>
+		<property name="powerService" ref="powerService"></property>
+		<property name="employeeService" ref="employeeService"></property>
+	</bean>
+	<bean id="playAction" class="com.sundyn.action.PlayAction"
+		scope="prototype">
+		<property name="playService" ref="playService"></property>
+		<property name="cPic" ref="cPic"></property>
+	</bean>
+	<bean id="playListAction" class="com.sundyn.action.PlayListAction"
+		scope="prototype">
+		<property name="playListService" ref="playListService"></property>
+		<property name="playService" ref="playService"></property>
+		<property name="deptService" ref="deptService"></property>
+		<property name="powerService" ref="powerService"></property>
+	</bean>
+	<bean id="appriesAction" class="com.sundyn.action.AppriesAction"
+		scope="prototype">
+		<property name="appriesService" ref="appriesService"></property>
+		<property name="employeeService" ref="employeeService"></property>
+		<property name="errorInfoService" ref="errorInfoService"></property>
+		<property name="managerService" ref="managerService"></property>
+		<property name="keyTypeService" ref="keyTypeService"></property>
+		<property name="powerService" ref="powerService"></property>
+		<property name="deptService" ref="deptService"></property>
+		<property name="queryService" ref="queryService"></property>
+		<property name="mobileIp" value=""></property>
+		<property name="cityutils" ref="citysUtils"></property>
+		<property name="clientPort" value="8001"></property>
+		<property name="mobilePort" value="8002"></property>
+	</bean>
+	<bean id="attendanceAction"
+		class="com.sundyn.action.AttendanceAction" scope="prototype">
+		<property name="attendanceService" ref="attendanceService"></property>
+	</bean>
+	<bean id="lybAction" class="com.sundyn.action.LybAction"
+		scope="prototype">
+		<property name="lybService" ref="lybService"></property>
+	</bean>
+	<bean id="voteAction" class="com.sundyn.action.VoteAction"
+		scope="prototype">
+		<property name="voteService" ref="voteService"></property>
+	</bean>
+	<bean id="businessAction" class="com.sundyn.action.BusinessAction"
+		scope="prototype">
+		<property name="businessService" ref="businessService"></property>
+		<property name="appriesService" ref="appriesService"></property>
+		<property name="deptService" ref="deptService"></property>
+		<property name="employeeService" ref="employeeService"></property>
+	</bean>
+	<bean id="guideAction" class="com.sundyn.action.GuideAction"
+		scope="prototype">
+		<property name="deptService" ref="deptService"></property>
+		<property name="employeeService" ref="employeeService"></property>
+	</bean>
+	<bean id="readAction" class="com.sundyn.action.ReadAction"
+		scope="prototype">
+		<property name="serverURL"
+			value="http://www.12366.ha.cn/websites">
+		</property>
+		<property name="delay" value="20"></property>
+	</bean>
+	<bean id="registerAction" class="com.sundyn.action.RegisterAction"
+		scope="prototype">
+		<property name="deptService" ref="deptService"></property>
+		<property name="reg" ref="reg"></property>
+	</bean>
+	<!-- 云南普耳移动 结合   业务数据和评价数据 一一绑定 -->
+	<bean id="threeAction" class="com.sundyn.action.ThreeAction"
+		scope="prototype">
+		<property name="threeService" ref="threeService" />
+		<property name="deptService" ref="deptService" />
+		<property name="keyTypeService" ref="keyTypeService" />
+		<property name="powerService" ref="powerService" />
+		<property name="queryService" ref="queryService" />
+	</bean>
+	<!-- 云南普耳移动 结合   业务数据和评价数据 一一绑定 -->
+	<bean id="testAction" class="com.sundyn.action.TestAction"
+		parent="superDao" scope="prototype" />
+	<!-- 天气预报 -->
+	<bean id="weatherAction" class="com.sundyn.action.WeatherAction"
+		scope="prototype" />
+	<!-- 自动生成评级数据 -->
+	<bean id="autoAction" class="com.sundyn.action.AutoAction"
+		scope="prototype">
+		<property name="appriesService" ref="appriesService"></property>
+		<property name="deptService" ref="deptService"></property>
+		<property name="keyTypeService" ref="keyTypeService"></property>
+		<property name="powerService" ref="powerService"></property>
+		<property name="employeeService" ref="employeeService"></property>
+	</bean>
+	<bean id="m7InfoAction" class="com.sundyn.action.M7InfoAction"   scope="prototype" >
+	   <property name="deptService" ref="deptService"></property>
+	   <property name="powerService" ref="powerService"></property>
+	</bean>
+	<bean id="updateDbAction" class="com.sundyn.action.UpdateDbAction"   scope="prototype" >
+		<property name="updateDbService" ref="updateDbService"></property>
+	</bean>
+	
+    <!--	信息查询Action-->
+	<bean id="weburlAction" class="com.sundyn.action.WeburlAction"   scope="prototype" >
+		<property name="weburlService" ref="weburlService"></property>
+	</bean>
+	<!--	通知公告Action-->
+	<bean id="noticeAction" class="com.sundyn.action.NoticeAction"   scope="prototype" >
+		<property name="noticeService" ref="noticeService"></property>
+	</bean>
+		<!--	意见调查Action-->
+	<bean id="adviceSurveyAction" class="com.sundyn.action.AdviceSurveyAction"   scope="prototype" >
+		<property name="adviceService" ref="adviceService"></property>
+	</bean>
+</beans>

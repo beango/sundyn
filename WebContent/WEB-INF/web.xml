@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<!-- 加载文件 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>WEB-INF/applicationContext-*.xml</param-value>
+	</context-param>
+	<!-- struct 配置 -->
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 验证用户登陆 -->
+	<filter>
+		<filter-name>userCheck</filter-name>
+		<filter-class>com.sundyn.util.UserCheck</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>userCheck</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>userCheck</filter-name>
+		<url-pattern>*.bin</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+
+
+
+
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>proxoolServletConfigurator</servlet-name>
+		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>
+		<init-param>
+			<param-name>xmlFile</param-name>
+			<param-value>WEB-INF/proxool.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- 统计在线人数，M7 -->
+	<listener>
+		<listener-class>com.sundyn.util.OnLineListener</listener-class>
+	</listener>
+	<!--FCKeditor 开始 -->
+	<servlet>
+		<servlet-name>ConnectorServlet</servlet-name>
+		<servlet-class>net.fckeditor.connector.ConnectorServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ConnectorServlet</servlet-name>
+		<!-- Do not wrap this line otherwise Glassfish will fail to load this file -->
+		<url-pattern>/fckeditor/editor/filemanager/connectors/*</url-pattern>
+	</servlet-mapping>
+	<!--FCKeditor 结束 -->
+	<!-- 清空在线设备和员工的缓存数据 -->
+	<servlet>
+		<servlet-name>clearServlet</servlet-name>
+		<servlet-class>com.sundyn.util.ClearServlet</servlet-class>
+		<load-on-startup>3</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>clearServlet</servlet-name>
+		<url-pattern>/clearServlet</url-pattern>
+	</servlet-mapping>
+
+
+	<session-config>
+		<session-timeout>20</session-timeout>
+	</session-config>
+	<welcome-file-list>
+		<welcome-file>login.jsp</welcome-file>
+	</welcome-file-list>
+	<!--<error-page> <error-code>404</error-code> <location>/404.jsp</location> 
+		</error-page> <error-page> <error-code>500</error-code> <location>/error.jsp</location> 
+		</error-page> <error-page> <error-code>501</error-code> <location>/error.jsp</location> 
+		</error-page> <error-page> <error-code>502</error-code> <location>/error.jsp</location> 
+		</error-page> <error-page> <error-code>503</error-code> <location>/error.jsp</location> 
+		</error-page> <error-page> <error-code>504</error-code> <location>/error.jsp</location> 
+		</error-page> <error-page> <error-code>505</error-code> <location>/error.jsp</location> 
+		</error-page> <error-page> <exception-type>java.lang.Exception</exception-type> 
+		<location>/error.jsp</location> </error-page> -->
+
+
+	<mime-mapping>
+		<extension>rar</extension>
+		<mime-type>application/rar</mime-type>
+	</mime-mapping>
+	<!-- <mime-mapping> -->
+	<!-- <extension>3gp</extension> -->
+	<!-- <mime-type>application/3gp</mime-type> -->
+	<!-- </mime-mapping> -->
+
+
+
+</web-app>
