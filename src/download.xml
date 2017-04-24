@@ -33,7 +33,7 @@
 <!--			<result name="inputs">manager/weburl.jsp</result>-->
 		</action>
 		<action name="employeeInfoSetDownload" class="baseAction" method="employeeInfoSetDownload">
-			<result name="downloadOk"  type="stream">
+			<result name="downloadOk" type="stream">
 			 <param name="contentType">text/plain</param>
              <param name="inputName">xml</param>
              <param name="contentDisposition">attachment;filename="employeeInfoSet.xml"</param>
