@@ -21,8 +21,8 @@ public class AdviceUtils extends ActionSupport
             }
             path = String.valueOf(path.replace("\\", "/")) + "/advise.db";
             str.setStr(path);
-            final File pat = new File(path);
-            conn = DriverManager.getConnection("jdbc:sqlite:/c:/advise.db");
+            //final File pat = new File(path);
+            conn = DriverManager.getConnection("jdbc:sqlite:/c:/tmp/advise.db");
             stat = conn.createStatement();
             stat.executeUpdate("DROP TABLE IF EXISTS 'question';");
             stat.executeUpdate("DROP TABLE IF EXISTS 'answer';");
@@ -41,7 +41,7 @@ public class AdviceUtils extends ActionSupport
                 stat.execute(sql2);
             }
             new FileMove();
-            FileMove.copy("c:/advise.db", path);
+            FileMove.copy("c:/tmp/advise.db", path);
         }
         catch (Exception e) {
             e.printStackTrace();
