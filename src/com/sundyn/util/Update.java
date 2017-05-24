@@ -15,7 +15,7 @@ public class Update
     
     public Update(final String[] file) throws FileNotFoundException {
         this.ls = new ArrayList<FileInfo>();
-        System.out.println("update-\u4f20\u5165\u6570\u7ec4-\u76f4\u63a5\u521d\u59cb\u5316");
+        System.out.println("update-传入数组-直接初始化");
         this.init(file);
     }
     

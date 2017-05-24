@@ -413,7 +413,7 @@ public class PlayListAction extends ActionSupport
         }
         final List pls = this.playService.findByIds(ids);
         for (final Object o2 : pls) {
-            System.out.println("\u5f97\u5230\u64ad\u653e\u5217\u8868\u5305\u542b\u7684\u6587\u4ef6\u8be6\u7ec6\u4fe1\u606f=" + o2);
+            System.out.println("得到播放列表包含的文件详细信息=(1)" + o2);
         }
         final Format format = Format.getPrettyFormat();
         format.setIndent("    ");
@@ -452,7 +452,7 @@ public class PlayListAction extends ActionSupport
             os = null;
         }
         for (final Object o3 : playlist) {
-            System.out.println("\u5f97\u5230\u64ad\u653e\u5217\u8868\u6587\u4ef6\u540d=" + o3);
+            System.out.println("得到播放列表文件名=(2)" + o3);
         }
         final SAXBuilder sb = new SAXBuilder();
         final Document doc2 = sb.build(String.valueOf(m7apppath) + File.separator + "CONFIG.XML");
@@ -471,7 +471,7 @@ public class PlayListAction extends ActionSupport
         String[] array;
         for (int length = (array = file).length, k = 0; k < length; ++k) {
             final Object o4 = array[k];
-            System.out.println("\u6700\u7ec8\u786e\u5b9a\u7684\u5f85\u6253bin\u5305\u6587\u4ef6file=" + o4);
+            System.out.println("最终确定的待打bin包文件file=(3)" + o4);
         }
         final Update upadd = new Update(file);
         upadd.createUpdateFile(String.valueOf(m7binpath) + File.separator + "M7Update" + version + ".bin");
@@ -479,7 +479,7 @@ public class PlayListAction extends ActionSupport
         final Update up = new Update(String.valueOf(m7apppath) + File.separator);
         up.add(file);
         up.createUpdateFile(tar);
-        System.out.println("bin\u5305\u751f\u6210\u5b8c\u6210");
+        System.out.println("bin\u5305\u751f\u6210\u5b8c\u6210(4)");
         return "success";
     }
     

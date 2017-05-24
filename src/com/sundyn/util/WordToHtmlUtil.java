@@ -92,6 +92,6 @@ public class WordToHtmlUtil
             System.out.println(imgpath);
             e.attr("src", imgpath);
         }
-        IOUtils.write(doc.toString(), (OutputStream)new FileOutputStream(index));
+        IOUtils.write(doc.toString().getBytes("utf-8"), (OutputStream)new FileOutputStream(index));
     }
 }
