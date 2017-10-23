@@ -8,6 +8,7 @@ body {
 	color: #666;
 	padding:0 2px; margin:0;
 }
+html,body { height: 100%;margin: 0; padding: 0;}
 IMG {
 	border: 0;
 }
@@ -193,11 +194,11 @@ div {
 }
 
 #nav {
-	width:700px;
 	float: left;
 	background-color: #137dbf;
 	margin-top: 10px;
 	margin-left: 15px;
+	margin-right:15px;
 	height:31px;
 }
 
@@ -253,14 +254,14 @@ div {
 	margin-right: 30px;
 }
 #man_zone {
-	float: left;
+	
 	height: 100%;
 	width: 100%;
 	border: 0px solid #0c6db4;
 	border-top-width: 0px;
 	border-bottom-width: 0px;
 	background-color: #FFFFFF;
-	overflow: auto;
+	/*overflow: auto;float: left;*/
 }
 #error{
     width:473px;
@@ -1277,12 +1278,7 @@ td {
 .neirong {
 	/* width: 100%;
 	height:600px;*/
-	position: absolute!important;
-	height:auto!important;
-	position: relative;
-	width:100%;
-	text-align:center;
-	overflow: hidden;
+	
 }
 
 .neirong_lanmu {

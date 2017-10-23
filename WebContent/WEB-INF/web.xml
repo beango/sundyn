@@ -61,9 +61,9 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<!-- 统计在线人数，M7 -->
-	<listener>
+	<!-- <listener>
 		<listener-class>com.sundyn.util.OnLineListener</listener-class>
-	</listener>
+	</listener> -->
 	<!--FCKeditor 开始 -->
 	<servlet>
 		<servlet-name>ConnectorServlet</servlet-name>

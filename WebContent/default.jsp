@@ -37,14 +37,15 @@
 <link rel="stylesheet" type="text/css" href="js/easyui/themes/icon.css" />
 <script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+<script type="text/javascript" src="js/top.js"></script>
 <script type="text/javascript"> 
 var tab = null;
 $(function ()
 { 
 	$("#layout1").ligerLayout({ leftWidth: 230,height: '100%',heightDiff:0,space:4, onHeightChanged: f_heightChanged }); 
-	$("#tttop").ligerPanel({width:"100%",url:"topframe.action"});
+	//$("#top").ligerPanel({width:"100%", url:"topframe.action"});
 	//$("#ttleft").ligerPanel({height:"100%",url:"queryLeft.action"});
-	var tt = $("#tt").ligerTab({changeHeightOnResize:true,height:500});
+	var tt = $("#tt").ligerTab({changeHeightOnResize:true,height:'100%'});
 	tt.addTabItem({ tabid: "首页", text: "首页", url: "queryIndex.action" });
 	tab = liger.get("framecenter");
 	var height = $(".l-layout-center").height();
@@ -79,12 +80,11 @@ function f_heightChanged(options)
 <title><s:text name="sundyn.title" /></title>
 </head>
 <body>
+<div id="top" style="width: 100%;height:60px; overflow: hidden; border: 0;">
+<iframe src="topframe.action" width="100%" height="60" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe>
+</div>
 	<div id="layout1">
-		<div position="top">
-			<div id="tttop" style="width: 100%; overflow: hidden; border: 0;top:-30px;">
-		     	<!-- <iframe src="topframe.jsp"></iframe> -->
-			</div>
-		</div>
+		
 		<div position="left" id="layoutleft">
 			<div id="ttleft" class="easyui-accordion" data-options="fit:true,border:false,nimate:true,lines:true">
 			</div>
@@ -154,18 +154,10 @@ function f_heightChanged(options)
 	                	
 	                    $("ul[name='" + title + "']").tree(menuData);  
 	                }  
-	            });  
-	            /* hoverMenuItem();
-				
-	    		$('#RightAccordion li').live('click', function() {
-	    	        var tabTitle = $(this).children('.nav').text();
-	    	        var url = $(this).attr("rel");
-	    	        var menuid = $(this).attr("ref");
-	    	        $('#RightAccordion li').removeClass("selected");
-	    	        $(this).addClass("selected");
-	    	    }); */
+	            }); 
 	    	}
-	    });// end ajax
+	    }); 
+	    // end ajax
 	}
 </script>
 </html>
