@@ -17,7 +17,12 @@ public class UserCheck extends HttpServlet implements Filter
         final HttpSession session = req.getSession();
         try {
             final String uri = req.getRequestURI();
-            if (uri.indexOf("/js/") == 0 || uri.endsWith("login.jsp") || uri.endsWith("404.jsp") || uri.endsWith("login2.jsp") || uri.indexOf("/update/") == 0 || uri.indexOf("/upload/") == 0 || uri.endsWith("managerLogin.action") || uri.endsWith("image.jsp") || uri.indexOf("image") > 0 || uri.indexOf("css") > 0 || uri.endsWith("error.jsp")) {
+            if (uri.indexOf("/js/") == 0 || uri.endsWith("login.jsp") || uri.endsWith("404.jsp") 
+            		|| uri.endsWith("login2.jsp") || uri.indexOf("/update/") == 0 || uri.indexOf("/upload/") == 0 
+            		|| uri.endsWith("managerLogin.action") || uri.endsWith("image.jsp") || uri.indexOf("image") > 0 
+            		|| uri.indexOf("css") > 0 || uri.endsWith("error.jsp")
+            		|| uri.endsWith("js/ueditor/jsp/controller.jsp")) {
+            	
                 filterchain.doFilter(request, response);
             }
             else if (uri.endsWith("/employeeUpdate.actionM7Update.bin")) {

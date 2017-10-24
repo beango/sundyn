@@ -21,6 +21,7 @@ function dialog()
         bgObj.style.opacity="0.7"; 
         bgObj.style.left="0"; 
         bgObj.style.width=sWidth + "px"; 
+        alert(sWidth);
         bgObj.style.height=sHeight+"px"; 
         bgObj.style.zIndex = "100"; 
         document.body.appendChild(bgObj);

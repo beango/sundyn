@@ -32,7 +32,7 @@ public class WeburlService extends SuperDao
     }
     
     public List findWeburl(final int startrow, final int pageSize) {
-        final String sql = "select * from appries_weburl order by id limit ?,? ";
+        final String sql = "select * from appries_weburl order by id desc limit ?,? ";
         try {
             return this.getJdbcTemplate().queryForList(sql, new Object[] { startrow, pageSize });
         }

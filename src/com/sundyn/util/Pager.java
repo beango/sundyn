@@ -268,6 +268,7 @@ public class Pager extends ActionSupport
     }
     
     public Pager(final String currentpage, final int pageSize, final int rowsCount, final HttpServletRequest request, final String ajaxF) {
+    	this.rowsCount = rowsCount;
         try {
             this.currentPage = Integer.parseInt(request.getParameter(currentpage).toString());
         }

@@ -140,6 +140,11 @@ function closeDialog() {
 	var dia = new dialog();
 	dia.close("dialog");
 }
+
+function closeWindows() {
+	$('#dialog-window').window('close');
+}
+
 // 从查询结果里选择人
 function selectPeople(id, name) {
 	document.getElementById("id").value = id;
@@ -2486,10 +2491,10 @@ function sundynSetSave(){
 	}else{
 		est9="false";
 	}
-// alert(coun);
-	if(coun>4){
+	alert(coun);
+	if(coun>5){
 		alert('员工信息配置最多可以选择四个选项');
-		return ;
+		return;
 	}
 	if(document.getElementById("k7").checked){
 	  k7="true";
@@ -3481,77 +3486,96 @@ function autoDeal2() {
 // ================================================================
 // weburl 信息查询添加框
 function weburToAdd(data) {
-// var name = document.getElementById("keyword").value;
-	dojo.xhrPost({url:"weburlToAdd.action", content:{name:'123'}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-		dojo.byId("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+	$('#dialog-window').load("weburlToAdd.action",function(html){
+		
+		$('#dialog-window').html(html);
+		UE.getEditor('weburl');
+		var $win;
+		$win = $('#dialog-window').window({
+		    title: '添加信息查询',
+		    width: 920,
+		    height: 450,
+		    shadow: true,
+		    modal: true,
+		    iconCls: 'icon-add',
+		    closed: true,
+		    minimizable: false,
+		    maximizable: false,
+		    collapsible: false,
+		    onBeforeClose: function () { //当面板关闭之前触发的事件
+		    	UE.getEditor('weburl').destroy();
+            }
+		    //content: '<iframe name="first" scrolling="auto" frameborder="0" src="weburlToAdd.action" style="width:100%;height:100%;"></iframe>'
+		});
+		$win.window('open');
+	});
+	//
+	
 }
 
 // 添加信息查询
 function weburlAdd(){
-// alert('error');
+	var ue = UE.getEditor('weburl');
 	var webname = document.getElementById("webname").value;
-	var weburl = document.getElementById("weburl").value;
+	var weburl = ue.getContent();//document.getElementById("weburl").value;
 	dojo.xhrPost({url:"weburlAdd.action", content:{name:webname,url:weburl}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-// var dia = new dialog();
-// alert('close');
-		closeDialog();
+		closeWindows();
 		weburlPageAjax('1');
-
 	}});
 }
 // weburl 信息查询更新框
 function weburlToUpate(data) {
-	dojo.xhrPost({url:"weburlToUpdate.action", content:{id:data}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-		dojo.byId("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+	$('#dialog-window').load("weburlToUpdate.action",
+		{id: data},
+		function(html){
+			UE.getEditor('weburl');
+			//$('#dialog-window').html(html);
+			var $win;
+			$win = $('#dialog-window').window({
+			    title: '修改信息查询',
+			    width: 920,
+			    height: 450,
+			    shadow: true,
+			    modal: true,
+			    iconCls: 'icon-edit',
+			    closed: true,
+			    minimizable: false,
+			    maximizable: false,
+			    collapsible: false,
+			    onBeforeClose: function () { //当面板关闭之前触发的事件
+			    	UE.getEditor('weburl').destroy();
+	            }
+			});
+			$win.window('open');
+	});
 }
 // 更新信息查询
 function weburlUpate(){
+	var ue = UE.getEditor('weburl');
 	var webname = document.getElementById("webname").value;
-	var weburl = document.getElementById("weburl").value;
+	var weburl = ue.getContent();
 	var id = document.getElementById("uid").value;
 	dojo.xhrPost({url:"weburlUpdate.action", content:{name:webname,url:weburl,id:id}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-		closeDialog();
+		closeWindows();
 		weburlPageAjax('1');
-
 	}});
 }
 // 删除 信息查询
 function weburlDelete(data){
 // alert(data);
 	dojo.xhrPost({url:"weburlDelete.action", content:{id:data}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-// closeDialog();
 		weburlPageAjax('1');
-
 	}});
 }
 // weburl 信息查询 分页
 function weburlPageAjax(data) {
-// var name = document.getElementById("keyword").value;
-	dojo.xhrPost({url:"weburlListAjax.action", content:{currentPage:data}, load:function (resp, ioArgs) {
-		document.getElementById("man_zone").innerHTML = resp;
-	}});
-}
-// weburl 信息查询 分页
-function weburlPage(data) {
-// var name = document.getElementById("keyword").value;
-// dojo.xhrPost({url:"weburlList.action", content:{currentPage:data},
-// load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-// }});
-	weburlPageAjax(data);
+	$('#pp').pagination('select');
 }
 
+// weburl 信息查询 分页
+function weburlPage(data) {
+	weburlPageAjax(data);
+}
 
 
 // ================================================================
@@ -3742,7 +3766,6 @@ function deptWeburlAdd(){
 		if(alert('修改成功')){
 			closeDialog();
 		}
-
 	}});
 }
 //图片或者视频预览

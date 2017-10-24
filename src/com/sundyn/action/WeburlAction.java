@@ -23,7 +23,7 @@ public class WeburlAction extends ActionSupport
     private Pager pager;
     
     static {
-        pageSize = 6;
+        pageSize = 20;
     }
     
     public String weburlToAdd() {
@@ -50,7 +50,10 @@ public class WeburlAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String uri = request.getRequestURL().toString();
         final int rowsCount = this.weburlService.getCount();
-        this.pager = new Pager("currentPage", WeburlAction.pageSize, rowsCount, request, "weburlPage");
+        Integer pageSize = WeburlAction.pageSize; 
+        if(request.getParameter("pageSize")!=null)
+        	pageSize = Integer.parseInt(request.getParameter("pageSize"));
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "weburlPage");
         this.weburls = this.weburlService.findWeburl((this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.weburls);
         return "weburlListOk";

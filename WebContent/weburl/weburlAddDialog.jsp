@@ -1,17 +1,10 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
-<div class="dialog">
-	<div class="title">
-		<div class="text" style="width:150px;">
-			<s:text name='sundyn.add.weburl' />
-		</div>
-		<div class="close">
-			<img border="0" src="images/dialog_close.gif" class="hand" onclick="closeDialog()" />
-		</div>
-	</div>
+
+<div>
 	<div class="content">
-		<div class="content_main">
+		<div class="content_main"><%-- <s:text name='sundyn.add.weburl' /> --%>
 			<div  style="margin-top: 10px;width: 100%">
 <%--				<table width="100%" height="173" border="0" cellpadding="0"--%>
 <%--					cellspacing="0" style="border-color: #e9f5fd;">--%>
@@ -33,7 +26,7 @@
 <%--					</tr>--%>
 <%--				</table>--%>
 				
-				 <table width="100%" height="101" border="0" cellpadding="0" cellspacing="0" style="border-color: #e9f5fd;">
+				 <table width="100%" height="121" border="0" cellpadding="0" cellspacing="0">
 					  <tr>
 						    <td width="32%" align="right" style="border-color: #e9f5fd;">
 						    <s:text name="sundyn.weburl.name"/><s:text name='sundyn.colon' />
@@ -49,24 +42,18 @@
 					  </tr>
 					   <tr >
 					    <td align="right"  style="border-color: #e9f5fd;"><s:text name="sundyn.weburl.url"/><s:text name='sundyn.colon' /></td>
-					    <td align="left"  style="border-color: #e9f5fd;"> 
-<%--					    	<input type="text" name="notice" id="notice"  value="${dept.notice}"  />--%>
-					    	<textarea name="weburl.url"  id="weburl" rows="8"  cols="30"></textarea>
+					    <td align="left"  style="border-color: #e9f5fd;width:90%;">
+					    	<textarea name="weburl.url"  id="weburl"></textarea>
 					    </td>
 					  </tr>
-					 
+					 <tr><td colspan="2" style="text-align:center;padding-top:10px;">
+					 	<img src="<s:text name='sundyn.pic.ok' />" onclick="weburlAdd();"
+									 class="hand" />
+						<img src="<s:text name='sundyn.pic.close' />" onclick="closeWindows();"
+									 class="hand">
+					 </td></tr>
  				 </table>
 			</div>
-		</div>
-	</div>
-	<div class="bottom">
-		<div class="close">
-			<img src="<s:text name='sundyn.pic.ok' />" onclick="weburlAdd();"
-				 class="hand" />
-		</div>
-		<div class="nofind">
-			<img src="<s:text name='sundyn.pic.close' />"   onclick="closeDialog();"
-				 class="hand">
 		</div>
 	</div>
 </div>
