@@ -233,6 +233,8 @@ div {
 	line-height: 24px;
 }
 
+
+
 .bg_image {
 	background: url(../images/manage_r2_c14.gif) no-repeat;
 	cursor: pointer;
@@ -298,7 +300,7 @@ cursor: pointer;
 }
 .ff{
 color:#333333;
-font-family:"宋体";
+font-family:"瀹嬩綋";
 font-size:12px;
 }
 .button{
@@ -331,7 +333,7 @@ font-size:12px;
 .left{
 float: left;
 }
-/*定义标题开始*/
+/*瀹氫箟鏍囬寮�濮�*/
 .title360{
 	background-image: url('../images/02_01_03_title_bg.gif');
 	background-repeat:no-repeat;
@@ -411,7 +413,7 @@ float: left;
 
 
 
-/*定义标题结束*/
+/*瀹氫箟鏍囬缁撴潫*/
 .list{
 	margin-top: 0 auto;
 	width: 90%;
@@ -429,7 +431,7 @@ float: left;
  	 margin: 0 auto;
 }
 
-/*定义表格*/
+/*瀹氫箟琛ㄦ牸*/
 .t{
   border:1px solid #bad6ec;
   border-right-width: 0px;
@@ -452,7 +454,7 @@ float: left;
   font-size: 14px;
   text-align: center;
 }
-/*定义表格*/
+/*瀹氫箟琛ㄦ牸*/
 .nouse{
 float: right;
 background-color: #b3b3b3;
@@ -476,7 +478,7 @@ width: 100%;
  text-align: center;
  cursor: pointer;
 }
-/*分页*/
+/*鍒嗛〉*/
 .pagerlist{width: 100%;height: 30px;text-align: center;}
 .pagerlist div{
  height: 30px;
@@ -528,14 +530,14 @@ width: 100%;
 }
 .ftitle{
 	 color:#333333;
-     font-family:Arial,Helvetica,sans-serif,"宋体";
+     font-family:Arial,Helvetica,sans-serif,"瀹嬩綋";
      font-size:13px;
      font-weight:bold;
      text-align:right;
 }
 .ftext{
 	 color:#333333;
-     font-family:Arial,Helvetica,sans-serif,"宋体";
+     font-family:Arial,Helvetica,sans-serif,"瀹嬩綋";
      font-size:13px;
      text-align:left;
 }
@@ -625,13 +627,13 @@ width: 100%;
 #content1 div b{
 	 color:#064481;
 	 font-size: 12px;
-	 font-family: 宋体;
+	 font-family: 瀹嬩綋;
 	 font-weight: normal;
 }
 #content1 div c{
 	 color:#666666;
 	 font-size: 12px;
-	 font-family: 宋体;
+	 font-family: 瀹嬩綋;
 }
 #content2 div{
 	width: 300px;
@@ -642,7 +644,7 @@ width: 100%;
 #content2 div b{
 	 color:#064481;
 	 font-size: 12px;
-	 font-family: 宋体;
+	 font-family: 瀹嬩綋;
 	 font-weight: normal;
 }
 #content2 .left{
@@ -656,13 +658,13 @@ width: 100%;
 #content3 div b{
 	 color:#064481;
 	 font-size: 12px;
-	 font-family: 宋体;
+	 font-family: 瀹嬩綋;
 	 font-weight: normal;
 }
 #content4 div b{
 	 color:#064481;
 	 font-size: 12px;
-	 font-family: 宋体;
+	 font-family: 瀹嬩綋;
 	 font-weight: normal;
 }
 #content4 ul{
@@ -711,7 +713,7 @@ width: 100%;
 	*padding-top: 7px!important;
 	color:#0e407d;
 	font-size: 13px;
-	font-family:宋体;
+	font-family:瀹嬩綋;
 	cursor: pointer;
 }
 .top718 div b.current{
@@ -724,13 +726,13 @@ width: 100%;
 	*padding-top: 7px!important;
 	color:#0097ff;
 	font-size: 13px;
-	font-family:宋体;
+	font-family:瀹嬩綋;
 	cursor: text;
 }
 .top718 div img{
 float: left;
 }
-/*投票*/
+/*鎶曠エ*/
 .a718{
 	width:718px;
 	height:33px;
@@ -881,8 +883,8 @@ float: left;
 .textDisable{
 	background-color:#b7bcbe;
 }
-/*投票结束*/
-/*软件使用导航开始*/
+/*鎶曠エ缁撴潫*/
+/*杞欢浣跨敤瀵艰埅寮�濮�*/
 .guide{
   width: 734px;
   height: 406px;
@@ -900,7 +902,7 @@ float: left;
   color:#000000;
 }
 .guide .tip h3{
-  font-family:宋体;
+  font-family:瀹嬩綋;
   font-weight: normal;
 }
 .guide .tip img{
@@ -921,7 +923,7 @@ float: left;
    display:inline;
    text-align: right;
 }
-/*软件使用导航结束*/
+/*杞欢浣跨敤瀵艰埅缁撴潫*/
 .guide_start2{
    width: 100%;
    height: 12px;
@@ -945,7 +947,7 @@ float: left;
 	width:50px;
     color:#0067b3;
 	font-size: 13px;
-	font-family: 宋体;
+	font-family: 瀹嬩綋;
 	font-weight: bold;
  	margin-top:10px;
 }
@@ -984,7 +986,7 @@ float: left;
 .guide_simpleOne div{
 	color:#0067b3;
 	font-size: 13px;
-	font-family: 宋体;
+	font-family: 瀹嬩綋;
 	font-weight: bold;
  	margin-top:10px;
 }
@@ -1031,7 +1033,7 @@ float: left;
  	background:url("../images/guide_simpleThree_bg.gif")   repeat-x;
  	color:#0067b3;
 	font-size: 13px;
-	font-family: 宋体;
+	font-family: 瀹嬩綋;
 	font-weight: bold;
 	padding-top:3px;
 	overflow:hidden;
@@ -1080,7 +1082,7 @@ float: left;
 	text-align: left;
 	color:#0067b3;
 	font-size: 13px;
-	font-family: 宋体;
+	font-family: 瀹嬩綋;
 	font-weight: bold;
 }
 .guide_simpleThree_l_m_r img{
@@ -1091,7 +1093,7 @@ float: left;
 .guide_title{
 	color:#0067b3;
 	font-size: 13px;
-	font-family: 宋体;
+	font-family: 瀹嬩綋;
 	font-weight: bold;
     background-color: red;
     display:block; 
@@ -1121,13 +1123,13 @@ float: left;
 	background: url("../images/guideFour_bg.gif") repeat-x;
 	color:#09437d;
 	font-size: 13px;
-	font-family: 宋体;
+	font-family: 瀹嬩綋;
 	font-weight: bold;
 }
 .guideFont{
 	color:#09437d;
 	font-size: 13px;
-	font-family: 宋体;
+	font-family: 瀹嬩綋;
 	font-weight: bold;
 }
 .guide_simpleFour table tr td.text{
@@ -1215,7 +1217,7 @@ float: left;
 	font-size: 12px;
 }
 
-/*美工做的东西*/
+/*缇庡伐鍋氱殑涓滆タ*/
 table {
 	border-top-color: #bad6ec;
 	border-top-style: solid;
@@ -1240,42 +1242,42 @@ td {
 }
 
 .px14 {
-	font-family: Arial, Helvetica, sans-serif, "黑体";
+	font-family: Arial, Helvetica, sans-serif, "榛戜綋";
 	font-size: 14px;
 	color: #333333;
 	font-weight: bold;
 }
 
 .px13 {
-	font-family: Arial, Helvetica, sans-serif, "黑体";
+	font-family: Arial, Helvetica, sans-serif, "榛戜綋";
 	font-size: 13px;
 	color: #333333;
 	font-weight: bold;
 }
 
 .px13_1 {
-	font-family: Arial, Helvetica, sans-serif, "黑体";
+	font-family: Arial, Helvetica, sans-serif, "榛戜綋";
 	font-size: 13px;
 	color: #09437d;
 	font-weight: bold;
 }
 
 .px13_2 {
-	font-family: Arial, Helvetica, sans-serif, "黑体";
+	font-family: Arial, Helvetica, sans-serif, "榛戜綋";
 	font-size: 13px;
 	color: #FF0000;
 	font-weight: bold;
 }
 
 .px13_3 {
-	font-family: Arial, Helvetica, sans-serif, "黑体";
+	font-family: Arial, Helvetica, sans-serif, "榛戜綋";
 	font-size: 13px;
 	color: #336600;
 	font-weight: bold;
 }
 
 .px12 {
-	font-family: "宋体";
+	font-family: "瀹嬩綋";
 	font-size: 12px;
 	color: #09437d;
 }
@@ -1287,7 +1289,7 @@ td {
 	clear: both;
 }
 
-/* 主页css */
+/* 涓婚〉css */
 .neirong {
 	width: 732px;
 	height: 419px;
@@ -1385,4 +1387,4 @@ td {
 .center_11_center{width:730px;padding-top:5px;
 }
 
-/*美工做的东西*/
+/*缇庡伐鍋氱殑涓滆タ*/

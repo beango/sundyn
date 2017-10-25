@@ -12,82 +12,151 @@
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <link rel="shortcut icon" href="/logo.ico" type="image/x-icon" />
 <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="css/wu.css" />
 <script type="text/javascript" src="js/dojo.js"></script>
 <script type="text/javascript"
 	src="js/my_<s:text name='sundyn.language' />.js"></script>
-<script type="text/javascript" src="js/easyui/jquery.min.js"></script>
-<link rel="stylesheet" href="style/cotide/css/bootstrap.min.css"
-	type="text/css" />
-<link rel="stylesheet"
-	href="style/lib/ligerUI/skins/Aqua/css/ligerui-all.css" type="text/css" />
-<script src="style/lib/ligerUI/js/core/base.js" type="text/javascript"></script>
-<script type="text/javascript"
-	src="style/lib/ligerUI/js/plugins/ligerLayout.js"></script>
-<script type="text/javascript"
-	src="style/lib/ligerUI/js/plugins/ligerPanel.js"></script>
-<script type="text/javascript"
-	src="style/lib/ligerUI/js/plugins/ligerTab.js"></script>
-<script type="text/javascript"
-	src="style/lib/ligerUI/js/plugins/ligerDrag.js"></script>
-<script type="text/javascript"
-	src="style/lib/ligerUI/js/plugins/ligerGrid.js"></script>
-<script type="text/javascript"
-	src="style/lib/ligerUI/js/plugins/ligerAccordion.js"></script>
-	<link rel="stylesheet" type="text/css" href="js/easyui/themes/default/easyui.css" />
-<link rel="stylesheet" type="text/css" href="js/easyui/themes/icon.css" />
-<script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="js/easyui-1.5.3/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="js/easyui-1.5.3/themes/bootstrap/easyui.css" />
+<link rel="stylesheet" type="text/css" href="js/easyui-1.5.3/themes/icon.css" />
+<script type="text/javascript" src="js/easyui-1.5.3/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-<script type="text/javascript" src="js/top.js"></script>
 <script type="text/javascript"> 
 var tab = null;
 $(function ()
 { 
-	$("#layout1").ligerLayout({ leftWidth: 230,height: '100%',heightDiff:0,space:4, onHeightChanged: f_heightChanged }); 
-	//$("#top").ligerPanel({width:"100%", url:"topframe.action"});
-	//$("#ttleft").ligerPanel({height:"100%",url:"queryLeft.action"});
-	var tt = $("#tt").ligerTab({changeHeightOnResize:true,height:'100%'});
-	tt.addTabItem({ tabid: "首页", text: "首页", url: "queryIndex.action" });
-	tab = liger.get("framecenter");
-	var height = $(".l-layout-center").height();
-	$("#layoutleft").height(height-27);
-	
-	jQuery("#ttleft").accordion({ //初始化accordion
-        fillSpace:true,
-        fit:true,
-        border:false,
-        animate:false  
-    });
-	
-	queryLeft(1);
+	$.ajax({
+		url: "topframejson.action",
+		dataType: 'json',
+		success:function(data){
+			$("#realname").html(data.realname)
+		}
+	});
+	loadMenu();
 });
 
-function f_heightChanged(options)
-{  
-    /* if (tab)
-        tab.addHeight(options.diff);
-    if (accordion && options.middleHeight - 24 > 0)
-        accordion.setHeight(options.middleHeight - 24); */
+function loadMenu(){
+	$.ajax({
+    	url :"/sundyn/getMenu.action",
+    	dataType:"json",
+    	success:function(data){
+    		$.each(data, function (i, menu) {
+        		if(menu.parentId==0){
+        			var cls = "btn";
+        			if(i == 0)
+        				cls = "btn active";
+        			$('#leftmenu').accordion('add',{
+                        title: menu.menuName,
+                        selected: i===0,
+                        content: getSubMenu(data, menu.id),
+                    });
+        		}
+    		});
+    		$('.wu-side-tree a').bind("click",function(){
+    			var title = $(this).text();
+    			var url = $(this).attr('data-link');
+    			console.log(url)
+    			var iconCls = $(this).attr('data-icon');
+    			var iframe = $(this).attr('iframe')==1?true:false;
+    			addTabMenu(title,url,iconCls,iframe);
+    		});	
+    	}
+    });
+}
+
+function getSubMenu(data, parentid){
+	var h = "<ul class=\"easyui-tree wu-side-tree\">";
+	for(var i=0; i<data.length; i++){
+		if(parentid == data[i].parentId){
+			h += "<li><a href=\"javascript:void(0)\" data-link=\""
+			+data[i].nav+"\" iframe=\"0\">"+data[i].menuName+"</a></li>"
+		}
+	}
+	h += "</ul>";
+	return h;
+}
+/**
+* Name 添加菜单选项
+* Param title 名称
+* Param href 链接
+* Param iconCls 图标样式
+* Param iframe 链接跳转方式（true为iframe，false为href）
+*/	
+function addTabMenu(title, href, iconCls, iframe){
+	var tabPanel = $('#wu-tabs');
+	if(!tabPanel.tabs('exists',title)){
+		var content = '<iframe scrolling="auto" frameborder="0"  src="'+ href +'" style="width:100%;height:100%;"></iframe>';
+		if(iframe){
+			tabPanel.tabs('add',{
+				title:title,
+				content:content,
+				iconCls:iconCls,
+				fit:true,
+				cls:'pd3',
+				closable:true
+			});
+		}
+		else{
+			tabPanel.tabs('add',{
+				title:title,
+				href:href,
+				iconCls:iconCls,
+				fit:true,
+				cls:'pd3',
+				closable:true
+			});
+		}
+	}
+	else
+	{
+		tabPanel.tabs('select',title);
+	}
 }
 
 </script>
 <style type="text/css">
-#layout1 {
-	margin: 0;
-	padding: 0;
-}
+
 </style>
 
 <title><s:text name="sundyn.title" /></title>
 </head>
-<body>
-<div id="top" style="width: 100%;height:60px; overflow: hidden; border: 0;">
-<iframe src="topframe.action" width="100%" height="60" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe>
-</div>
-	<div id="layout1">
-		
-		<div position="left" id="layoutleft">
-			<div id="ttleft" class="easyui-accordion" data-options="fit:true,border:false,nimate:true,lines:true">
+<body class="easyui-layout">
+	<!-- begin of header -->
+	<div class="wu-header" data-options="region:'north',border:false,split:true" style="height:60px;">
+			<div class="wu-header-left">
+				<h1><s:text name='sundyn.title'/></h1>
 			</div>
+			<div class="wu-header-right" style="padding-right:150px;">
+				<ul id="topnav"></ul>
+			</div>
+			<div class="wu-header-right">
+				<p><strong class="easyui-tooltip" title="2条未读消息" id="realname">${name}</strong>，欢迎您！</p>
+				<p><!-- <a href="#">网站首页</a>|<a href="#">支持论坛</a>|<a href="#">帮助中心</a>| --><a href="managerLogout.action"><s:text name="left.logout"/></a></p>
+			</div>
+	</div>
+	<!-- end of header -->
+	<!-- begin of sidebar -->
+	<div class="wu-sidebar" data-options="region:'west',split:true,border:true"> 
+    	<div id="leftmenu" class="easyui-accordion" data-options="border:false,fit:true">
+        </div>
+    </div>	
+    <!-- end of sidebar -->  
+	<!-- begin of main -->
+    <div class="wu-main" data-options="region:'center'">
+        <div id="wu-tabs" class="easyui-tabs" data-options="border:false,fit:true">  
+            <div title="首页" data-options="href:'queryIndex.action',closable:false,iconCls:'icon-tip',cls:'pd3'"></div>
+        </div>
+    </div>
+    <!-- end of main --> 
+    
+	<div id="layout1">
+		<div position="top">
+			<div id="tttop" style="width: 100%; overflow: hidden; border: 0;top:-30px;">
+		     	<!-- <iframe src="topframe.jsp"></iframe> -->
+			</div>
+		</div>
+		<div position="left" id="layoutleft">
+			
 			<!-- <div id="ttleft" style="width: 100%; overflow: hidden; border: 0;top:-30px;">
 				<iframe id="leftFrame" src="queryLeft.action?a=1" border="0" onload="this.style.height =(document.documentElement.clientHeight-80)+'px'; "></iframe>
 	     	</div> -->
@@ -100,64 +169,4 @@ function f_heightChanged(options)
 		<!-- <div position="bottom"></div> -->
 	</div>
 </body>
-<script type="text/javascript">
-	/** 动态添加tab     **/
-	function addTab(title, href, icon) {
-		var tt = liger.get("tt");
-		var ttlist = tt.getTabidList();
-		tt.addTabItem({ tabid: title, text: title, url: href });
-	}
-	function queryLeft(parentId){
-		$('#ttleft').accordion({onSelect:function(){}});
-		var pnls = $('#ttleft').accordion('panels'); // 得到选中panel
-		while(pnls.length>0){
-			$('#ttleft').accordion("remove", 0);
-			pnls = $('#ttleft').accordion('panels');
-		}
-		$.ajax({
-	    	url :"/sundyn/getMenu.action",
-	    	dataType:"json",
-	    	success:function(data){
-	    		$.each(data, function (i, menu) {//循环创建手风琴的项
-	        		if(menu.parentId==parentId){
-	        	        $('#ttleft').accordion('add', {
-	                        title: menu.menuName,
-	                        content: '<div style="padding:6px 0 6px;"><ul name="'+menu.menuName+'"></ul></div>',
-	                        selected: i == 0
-	                    });
-	        		}
-	    		});//end each
-	    		//异步加载子节点，即二级菜单  
-	            $('#ttleft').accordion({  
-	                onSelect : function(title, index) {
-	                	var menuData = {
-	                			animate : true,
-	                			data:[],
-	                			onClick: function(node){// 在用户点击一个子节点即二级菜单时触发addTab()方法,用于添加tabs  
-	                                if(node.url){
-	                                    addTab(node.text, node.url);
-	                                    return false;
-	                                }  
-	                            }  
-	                	};
-	                	var id=0;
-	                	$.each(data, function(j, o) {
-	        	        	if(o.menuName == title){
-	        	        		id = o.id;
-	        	        	}
-	        	        });
-	                	$.each(data, function(j, o) {
-	        	        	if(o.parentId == id){
-	        	        		menuData.data.push({"id":j,"text":o.menuName,"state" :"open", url: o.nav});
-	        	        	}
-	        	        });
-	                	
-	                    $("ul[name='" + title + "']").tree(menuData);  
-	                }  
-	            }); 
-	    	}
-	    }); 
-	    // end ajax
-	}
-</script>
 </html>
