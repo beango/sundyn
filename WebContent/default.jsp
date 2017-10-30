@@ -69,7 +69,7 @@ function getSubMenu(data, parentid){
 	for(var i=0; i<data.length; i++){
 		if(parentid == data[i].parentId){
 			h += "<li><a href=\"javascript:void(0)\" data-link=\""
-			+data[i].nav+"\" iframe=\"0\">"+data[i].menuName+"</a></li>"
+			+data[i].nav+"\" iframe=\"1\">"+data[i].menuName+"</a></li>"
 		}
 	}
 	h += "</ul>";
