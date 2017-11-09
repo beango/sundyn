@@ -52,12 +52,13 @@ function loadMenu(){
                     });
         		}
     		});
-    		$('.wu-side-tree a').bind("click",function(){
-    			var title = $(this).text();
-    			var url = $(this).attr('data-link');
+    		$('.wu-side-tree li').bind("click",function(){
+    			var link = $(this).find("a");
+    			var title = $(link).text();
+    			var url = $(link).attr('data-link');
     			console.log(url)
-    			var iconCls = $(this).attr('data-icon');
-    			var iframe = $(this).attr('iframe')==1?true:false;
+    			var iconCls = $(link).attr('data-icon');
+    			var iframe = $(link).attr('iframe')==1?true:false;
     			addTabMenu(title,url,iconCls,iframe);
     		});	
     	}

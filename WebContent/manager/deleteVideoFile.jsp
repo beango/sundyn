@@ -136,18 +136,18 @@ td {
 		return document.getElementById(objID);
 	}
 </script>
-<script type="text/javascript" src="js/dojo.js"></script>
-<script type="text/javascript"
-	src="js/my_<s:text name='sundyn.language' />.js"></script>
-<script type="text/javascript" src="js/jquery-1.4.3.js"></script>
-<script type="text/javascript" src="js/WebCalendar.js"></script>
+    <script type="text/javascript" src="js/dojo.js"></script>
+    <script type="text/javascript"
+	    src="js/my_<s:text name='sundyn.language' />.js"></script>
+    <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
+	<script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
 </head>
 <body>
-	
+
 	<div id="man_zone">
 		<div class="fengge">&nbsp;</div>
 		<div class="title360">
-			<h3 style="width: 120px">请选择删除范围：</h3>
+			<h3 style="width: 100%;">请选择删除范围：</h3>
 		</div>
 		<div class="content360 kuang">
 			<table width="100%" height="151" border="0" cellpadding="0"
@@ -161,7 +161,7 @@ td {
 								<c:forEach items="${deptList}" var="dept" varStatus="index">
 									<option value="${dept.id}"
 										<c:if test="${index.index ==0 }">
-											    selected="selected"   
+											    selected="selected"
 										</c:if>>
 										${dept.name}</option>
 								</c:forEach>
@@ -187,14 +187,14 @@ td {
 					<td align="right" style="border-color: #FFFFFF;"><s:text
 							name='sundyn.total.startDate' /></td>
 					<td align="left" style="border-color: #FFFFFF;"><input
-						type="text" id="startDate" onclick="SelectDate(this,'yyyy-MM-dd hh:mm:ss')"/></td>
+						type="text" id="startDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></td>
 				</tr>
 				<tr>
 					<td align="right" style="border-color: #FFFFFF;"><s:text
 							name='sundyn.total.endDate' /></td>
 					<td align="left" style="border-color: #FFFFFF;"><input
 						type="text" class="input_comm" id="endDate"
-						onfocus="SelectDate(this,'yyyy-MM-dd hh:mm:ss');" /></td>
+						onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'});" /></td>
 				</tr>
 				<tr>
 					<td align="right" style="border-color: #FFFFFF;">&nbsp;</td>

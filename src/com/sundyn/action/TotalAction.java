@@ -1,15 +1,24 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
+import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.*;
-import java.util.*;
-import org.apache.struts2.*;
-import javax.servlet.http.*;
-import com.sundyn.util.*;
-import org.jdom.*;
-import java.io.*;
-import com.sundyn.vo.*;
-import org.junit.*;
+import com.sundyn.util.JfreeChart;
+import com.sundyn.util.Pager;
+import com.sundyn.util.Poi;
+import com.sundyn.util.SundynSet;
+import com.sundyn.vo.WeburlVo;
+import org.apache.struts2.ServletActionContext;
+import org.jdom.JDOMException;
+import org.junit.Test;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TotalAction extends ActionSupport
 {
@@ -21,6 +30,16 @@ public class TotalAction extends ActionSupport
     private boolean k7;
     private KeyTypeService keyTypeService;
     private List list;
+
+    public List getList2() {
+        return list2;
+    }
+
+    public void setList2(List list2) {
+        this.list2 = list2;
+    }
+
+    private List list2;
     private List mls;
     private Pager pager;
     private PowerService powerService;
@@ -28,15 +47,15 @@ public class TotalAction extends ActionSupport
     private TotalService totalService;
     private BusinessService businessService;
     private String str;
-    
+
     public TotalAction() {
         this.str = "";
     }
-    
+
     public List getBmls() {
         return this.bmls;
     }
-    
+
     private Map getDemo() throws Exception {
         final List ls = this.keyTypeService.findByApprieserId(1, 1);
         final Map m = new HashMap();
@@ -46,39 +65,39 @@ public class TotalAction extends ActionSupport
         }
         return m;
     }
-    
+
     public DeptService getDeptService() {
         return this.deptService;
     }
-    
+
     public String getEndDate() {
         return this.endDate;
     }
-    
+
     public InputStream getExcel() {
         return this.excel;
     }
-    
+
     public String getIds() {
         return this.ids;
     }
-    
+
     public KeyTypeService getKeyTypeService() {
         return this.keyTypeService;
     }
-    
+
     public List getList() {
         return this.list;
     }
-    
+
     public List getMls() {
         return this.mls;
     }
-    
+
     public Pager getPager() {
         return this.pager;
     }
-    
+
     public List getPandM(final List list) throws Exception {
         this.k7 = this.isK7();
         this.mls = this.keyTypeService.findByApprieserId(1, 1, "on");
@@ -173,11 +192,11 @@ public class TotalAction extends ActionSupport
         }
         return null;
     }
-    
+
     public PowerService getPowerService() {
         return this.powerService;
     }
-    
+
     public Map getRate(final Map totalMap) throws Exception {
         if (totalMap != null) {
             this.k7 = this.isK7();
@@ -303,7 +322,7 @@ public class TotalAction extends ActionSupport
         }
         return null;
     }
-    
+
     private List getDOld(final List ls) {
         if (this.list != null) {
             final List temp = new ArrayList();
@@ -328,7 +347,7 @@ public class TotalAction extends ActionSupport
         }
         return null;
     }
-    
+
     private List getD(final List ls) throws Exception {
         final int[] keyWeight = this.getDegreeWeight();
         if (this.list != null) {
@@ -354,7 +373,7 @@ public class TotalAction extends ActionSupport
         }
         return null;
     }
-    
+
     private int[] getDegreeWeight() throws Exception {
         final int[] keyWeight = { 5, 4, 3, 1, 1, 1, 1 };
         final Map[] keyMap = new Map[7];
@@ -367,7 +386,7 @@ public class TotalAction extends ActionSupport
         }
         return keyWeight;
     }
-    
+
     private List getStar(final List ls) {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         if (ls != null) {
@@ -402,15 +421,15 @@ public class TotalAction extends ActionSupport
         }
         return null;
     }
-    
+
     public String getStartDate() {
         return this.startDate;
     }
-    
+
     public TotalService getTotalService() {
         return this.totalService;
     }
-    
+
     public boolean isK7() {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         try {
@@ -422,67 +441,67 @@ public class TotalAction extends ActionSupport
         }
         return this.k7;
     }
-    
+
     public void setBmls(final List bmls) {
         this.bmls = bmls;
     }
-    
+
     public void setDeptService(final DeptService deptService) {
         this.deptService = deptService;
     }
-    
+
     public void setEndDate(final String endDate) {
         this.endDate = endDate;
     }
-    
+
     public void setExcel(final InputStream excel) {
         this.excel = excel;
     }
-    
+
     public void setIds(final String ids) {
         this.ids = ids;
     }
-    
+
     public void setK7(final boolean k7) {
         this.k7 = k7;
     }
-    
+
     public void setKeyTypeService(final KeyTypeService keyTypeService) {
         this.keyTypeService = keyTypeService;
     }
-    
+
     public void setList(final List list) {
         this.list = list;
     }
-    
+
     public void setMls(final List mls) {
         this.mls = mls;
     }
-    
+
     public void setPager(final Pager pager) {
         this.pager = pager;
     }
-    
+
     public void setPowerService(final PowerService powerService) {
         this.powerService = powerService;
     }
-    
+
     public void setStartDate(final String startDate) {
         this.startDate = startDate;
     }
-    
+
     public void setTotalService(final TotalService totalService) {
         this.totalService = totalService;
     }
-    
+
     public BusinessService getBusinessService() {
         return this.businessService;
     }
-    
+
     public void setBusinessService(final BusinessService businessService) {
         this.businessService = businessService;
     }
-    
+
     public String totalBusiness() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -493,7 +512,7 @@ public class TotalAction extends ActionSupport
         request.setAttribute("deptList", (Object)deptList);
         return "success";
     }
-    
+
     public String totalBusinessDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -514,7 +533,7 @@ public class TotalAction extends ActionSupport
         request.setAttribute("deptId", (Object)deptId);
         return "success";
     }
-    
+
     public String totalBusinessExcel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
@@ -666,7 +685,7 @@ public class TotalAction extends ActionSupport
         poi.createFile(path);
         return "success";
     }
-    
+
     public String totalBusinessPrint() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String deptId = request.getParameter("deptId");
@@ -683,11 +702,11 @@ public class TotalAction extends ActionSupport
         request.setAttribute("deptId", (Object)deptId);
         return "success";
     }
-    
+
     public String totalDating() throws Exception {
         return "success";
     }
-    
+
     public String totalDatingDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -726,7 +745,7 @@ public class TotalAction extends ActionSupport
         request.setAttribute("totalMap", (Object)totalMap);
         return "success";
     }
-    
+
     public String totalDatingExcel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -887,7 +906,7 @@ public class TotalAction extends ActionSupport
         poi.createFile(path);
         return "success";
     }
-    
+
     public String totalDatingPrint() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -903,11 +922,11 @@ public class TotalAction extends ActionSupport
         request.setAttribute("totalMap", (Object)totalMap);
         return "success";
     }
-    
+
     public String totalDept() throws Exception {
         return "success";
     }
-    
+
     public String totalDeptDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -1064,9 +1083,11 @@ public class TotalAction extends ActionSupport
         Map totalMap = this.totalService.totalDept(ids2, this.startDate, this.endDate);
         totalMap = this.getRate(totalMap);
         request.setAttribute("totalMap", (Object)totalMap);
+        request.setAttribute("startDate", (Object)startDate);
+        request.setAttribute("endDate", (Object)endDate);
         return "success";
     }
-    
+
     public String totalDeptExcel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         this.k7 = this.isK7();
@@ -1318,7 +1339,7 @@ public class TotalAction extends ActionSupport
         poi.createFile(path);
         return "success";
     }
-    
+
     public String deptDuiBi() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final StringBuilder strXML1 = new StringBuilder("");
@@ -1349,7 +1370,7 @@ public class TotalAction extends ActionSupport
         request.setAttribute("strXML1", (Object)strXML1.toString());
         return "duibitongjibiao";
     }
-    
+
     public String totalPerson() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -1362,17 +1383,27 @@ public class TotalAction extends ActionSupport
         request.setAttribute("deptList", (Object)deptList);
         return "success";
     }
-    
+
     public String totalPersonAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String id = request.getParameter("id");
         this.list = this.deptService.findchild(Integer.valueOf(id));
         return "success";
     }
-    
+
     public String totalPersonDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
+
+        final Map manager2 = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
+        final Map power2 = this.powerService.getUserGroup(groupid2);
+        final String deptIdGroup2 = power2.get("deptIdGroup").toString();
+        final List deptList2 = new ArrayList();
+        final Map dept2 = this.deptService.findDeptById(Integer.valueOf(deptIdGroup2));
+        deptList2.add(dept2);
+        request.setAttribute("deptList", (Object)deptList2);
+
         String deptId = request.getParameter("deptId");
         deptId = this.deptService.findChildALLStr123(deptId);
         final int rowsCount = this.totalService.countTotalPerson(deptId, this.startDate, this.endDate);
@@ -1407,7 +1438,7 @@ public class TotalAction extends ActionSupport
         request.setAttribute("deptId", (Object)deptId);
         return "success";
     }
-    
+
     public String totalPersonDeal2() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -1446,7 +1477,7 @@ public class TotalAction extends ActionSupport
         request.setAttribute("deptId", (Object)deptId);
         return "success";
     }
-    
+
     public String totalPersonExcel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
@@ -1606,7 +1637,7 @@ public class TotalAction extends ActionSupport
         poi.createFile(path);
         return "success";
     }
-    
+
     public String totalPersonPrint() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
@@ -1623,7 +1654,7 @@ public class TotalAction extends ActionSupport
         request.setAttribute("deptId", (Object)deptId);
         return "success";
     }
-    
+
     public String totalWindow() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -1634,11 +1665,19 @@ public class TotalAction extends ActionSupport
         this.list = this.deptService.findDeptByType(ids, 1);
         return "success";
     }
-    
+
     public String totalWindowDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final String deptId = request.getParameter("deptId");
+        System.out.println(deptId);
+        final Map manager2 = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
+        final Map power2 = this.powerService.getUserGroup(groupid2);
+        final String deptIdGroup2 = power2.get("deptIdGroup").toString();
+        final String ids22 = this.deptService.findChildALLStr123(deptIdGroup2);
+        this.list2 = this.deptService.findDeptByType(ids22, 1);
+
         final int rowsCount = this.totalService.counttotalWindow(deptId, this.startDate, this.endDate);
         this.pager = new Pager("currentPage", 10, rowsCount, request);
         this.list = this.totalService.totalWindow(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
@@ -1664,14 +1703,14 @@ public class TotalAction extends ActionSupport
         final JfreeChart jfreeChart = new JfreeChart();
         jfreeChart.createBar("\u603b\u7684\u6ee1\u610f\u5ea6\u6307\u6570", "\u611f\u77e5\u9879", "\u6ee1\u610f\u5ea6", ls, String.valueOf(path) + "pubpic.jpg");
         this.pager.setPageList(this.list);
-        final String ids = this.deptService.findChildALLStr123(deptId);
-        Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
+        final String ids2 = this.deptService.findChildALLStr123(deptId);
+        Map totalMap = this.totalService.totalDept(ids2, this.startDate, this.endDate);
         totalMap = this.getRate(totalMap);
         request.setAttribute("totalMap", (Object)totalMap);
         request.setAttribute("deptId", (Object)deptId);
         return "success";
     }
-    
+
     public String totalJobNum() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -1684,7 +1723,7 @@ public class TotalAction extends ActionSupport
         request.setAttribute("deptList", (Object)deptList);
         return "success";
     }
-    
+
     public String totalWindowExcel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
@@ -1840,7 +1879,7 @@ public class TotalAction extends ActionSupport
         poi.createFile(path);
         return "success";
     }
-    
+
     public String totalWindowPrint() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
@@ -1854,12 +1893,12 @@ public class TotalAction extends ActionSupport
         request.setAttribute("deptId", (Object)deptId);
         return "success";
     }
-    
+
     public String totalD() {
         this.list = this.businessService.findByFatherId(1);
         return "success";
     }
-    
+
     public String totalDDeal() throws JDOMException, IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -1886,7 +1925,7 @@ public class TotalAction extends ActionSupport
         jfreeChart.createBar("\u603b\u7684\u6ee1\u610f\u5ea6\u6307\u6570", "\u611f\u77e5\u9879", "\u6ee1\u610f\u5ea6", ls, String.valueOf(path) + "pubpic.jpg");
         return "success";
     }
-    
+
     public String totalDExcel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -1911,7 +1950,7 @@ public class TotalAction extends ActionSupport
         poi.createFile(String.valueOf(path) + "standard.xls");
         return "success";
     }
-    
+
     @Test
     public void test() throws Exception {
         final Poi poi = new Poi();
@@ -1931,22 +1970,22 @@ public class TotalAction extends ActionSupport
         poi.addList(this.list);
         poi.createFile("c:/member.xls");
     }
-    
+
     public String totalDPrint() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         this.list = this.totalService.totalD(this.startDate, this.endDate, this.ids);
         return "success";
     }
-    
+
     public String totalShop() throws Exception {
         return "success";
     }
-    
+
     public String totalSection() {
         return "success";
     }
-    
+
     public String totalSectionDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -1985,7 +2024,7 @@ public class TotalAction extends ActionSupport
         request.setAttribute("totalMap", (Object)totalMap);
         return "success";
     }
-    
+
     public String totalSectionExcel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -2142,7 +2181,7 @@ public class TotalAction extends ActionSupport
         poi.createFile(path);
         return "success";
     }
-    
+
     public String totalSectionPrint() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -2158,7 +2197,7 @@ public class TotalAction extends ActionSupport
         request.setAttribute("totalMap", (Object)totalMap);
         return "success";
     }
-    
+
     public String videoList() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -2169,11 +2208,11 @@ public class TotalAction extends ActionSupport
         ServletActionContext.getRequest().setAttribute("videolist", (Object)videolist);
         return "success";
     }
-    
+
     public String getStr() {
         return this.str;
     }
-    
+
     public void setStr(final String str) {
         this.str = str;
     }

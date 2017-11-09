@@ -1,0 +1,82 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="sundyn:Web exploded">
+    <output-path>$PROJECT_DIR$/classes/artifacts/sundyn_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="sundyn/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="sundyn" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="module" name="ueditor-1.1.2.jar" module-name="sundyn" />
+          <element id="library" level="module" name="json.jar" module-name="sundyn" />
+          <element id="library" level="module" name="xwork-core-2.3.16.jar" module-name="sundyn" />
+          <element id="library" level="module" name="xmlbeans-2.6.0.jar" module-name="sundyn" />
+          <element id="library" level="module" name="struts2-spring-plugin-2.3.16.jar" module-name="sundyn" />
+          <element id="library" level="module" name="struts2-json-plugin-2.3.16.jar" module-name="sundyn" />
+          <element id="library" level="module" name="struts2-dojo-plugin-2.3.16.jar" module-name="sundyn" />
+          <element id="library" level="module" name="struts2-core-2.3.16.jar" module-name="sundyn" />
+          <element id="library" level="module" name="stax-api-1.0.1.jar" module-name="sundyn" />
+          <element id="library" level="module" name="ant.jar" module-name="sundyn" />
+          <element id="library" level="module" name="commons-beanutils-1.8.0.jar" module-name="sundyn" />
+          <element id="library" level="module" name="commons-codec-1.6.jar" module-name="sundyn" />
+          <element id="library" level="module" name="commons-codec-1.9.jar" module-name="sundyn" />
+          <element id="library" level="module" name="commons-collections-3.2.1.jar" module-name="sundyn" />
+          <element id="library" level="module" name="commons-fileupload-1.3.jar" module-name="sundyn" />
+          <element id="library" level="module" name="commons-io-2.2.jar" module-name="sundyn" />
+          <element id="library" level="module" name="commons-io-2.4.jar" module-name="sundyn" />
+          <element id="library" level="module" name="commons-lang-2.4.jar" module-name="sundyn" />
+          <element id="library" level="module" name="commons-lang3-3.1.jar" module-name="sundyn" />
+          <element id="library" level="module" name="commons-logging-1.1.3.jar" module-name="sundyn" />
+          <element id="library" level="module" name="commons-logging-api-1.1.jar" module-name="sundyn" />
+          <element id="library" level="module" name="dom4j-1.6.1.jar" module-name="sundyn" />
+          <element id="library" level="module" name="ezmorph-1.0.6.jar" module-name="sundyn" />
+          <element id="library" level="module" name="fckeditor-java-core-2.4.1-javadoc.jar" module-name="sundyn" />
+          <element id="library" level="module" name="fluent-hc-4.2.5.jar" module-name="sundyn" />
+          <element id="library" level="module" name="freemarker-2.3.19.jar" module-name="sundyn" />
+          <element id="library" level="module" name="hibernate3.jar" module-name="sundyn" />
+          <element id="library" level="module" name="httpclient-4.2.5.jar" module-name="sundyn" />
+          <element id="library" level="module" name="httpclient-cache-4.2.5.jar" module-name="sundyn" />
+          <element id="library" level="module" name="httpcore-4.2.4.jar" module-name="sundyn" />
+          <element id="library" level="module" name="httpmime-4.2.5.jar" module-name="sundyn" />
+          <element id="library" level="module" name="imageinfo-1.9.jar" module-name="sundyn" />
+          <element id="library" level="module" name="java-core-2.4.1.jar" module-name="sundyn" />
+          <element id="library" level="module" name="java-core-2.6.jar" module-name="sundyn" />
+          <element id="library" level="module" name="javassist-3.11.0.GA.jar" module-name="sundyn" />
+          <element id="library" level="module" name="jcommon-1.0.0.jar" module-name="sundyn" />
+          <element id="library" level="module" name="jdom.jar" module-name="sundyn" />
+          <element id="library" level="module" name="jfreechart-1.0.0.jar" module-name="sundyn" />
+          <element id="library" level="module" name="JNative.jar" module-name="sundyn" />
+          <element id="library" level="module" name="json-lib-2.3-jdk15.jar" module-name="sundyn" />
+          <element id="library" level="module" name="jsoup-1.5.2.jar" module-name="sundyn" />
+          <element id="library" level="module" name="jstl-1.2.jar" module-name="sundyn" />
+          <element id="library" level="module" name="junit-3.8.1.jar" module-name="sundyn" />
+          <element id="library" level="module" name="junit.jar" module-name="sundyn" />
+          <element id="library" level="module" name="log4j-1.2.15.jar" module-name="sundyn" />
+          <element id="library" level="module" name="msbase.jar" module-name="sundyn" />
+          <element id="library" level="module" name="mssqlserver.jar" module-name="sundyn" />
+          <element id="library" level="module" name="msutil.jar" module-name="sundyn" />
+          <element id="library" level="module" name="mysql-connector-java-5.1.7-bin.jar" module-name="sundyn" />
+          <element id="library" level="module" name="ognl-3.0.6.jar" module-name="sundyn" />
+          <element id="library" level="module" name="ooxml-schemas-1.1.jar" module-name="sundyn" />
+          <element id="library" level="module" name="org.apache.poi.xwpf.converter.core-1.0.5.jar" module-name="sundyn" />
+          <element id="library" level="module" name="org.apache.poi.xwpf.converter.xhtml-1.0.5.jar" module-name="sundyn" />
+          <element id="library" level="module" name="org.hamcrest.core_1.1.0.v20090501071000.jar" module-name="sundyn" />
+          <element id="library" level="module" name="org.hamcrest.core_1.3.0.v201303031735.jar" module-name="sundyn" />
+          <element id="library" level="module" name="poi-3.13-beta1.jar" module-name="sundyn" />
+          <element id="library" level="module" name="poi-3.6-20091214.jar" module-name="sundyn" />
+          <element id="library" level="module" name="poi-ooxml-3.13-beta1.jar" module-name="sundyn" />
+          <element id="library" level="module" name="poi-ooxml-schemas-3.13-beta1.jar" module-name="sundyn" />
+          <element id="library" level="module" name="poi-scratchpad-3.13-beta1.jar" module-name="sundyn" />
+          <element id="library" level="module" name="proxool-0.8.3.jar" module-name="sundyn" />
+          <element id="library" level="module" name="slf4j-api-1.5.8.jar" module-name="sundyn" />
+          <element id="library" level="module" name="slf4j-simple-1.5.8.jar" module-name="sundyn" />
+          <element id="library" level="module" name="spring-test-3.0.5.RELEASE.jar" module-name="sundyn" />
+          <element id="library" level="module" name="spring.jar" module-name="sundyn" />
+          <element id="library" level="module" name="sqlitejdbc-v033-nested.jar" module-name="sundyn" />
+        </element>
+        <element id="dir-copy" path="$PROJECT_DIR$" />
+      </element>
+    </root>
+  </artifact>
+</component>

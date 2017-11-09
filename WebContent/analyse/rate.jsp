@@ -140,12 +140,7 @@ td {
 	</head>
 	<body>
 <%--		<script type="text/javascript" src="js/calendar_<s:text name='sundyn.language.calendar' />.js"></script>--%>
-		 <s:if test='getText("sundyn.language") eq "en"'>
-		<script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
-		</s:if>
-		<s:else>
-		    <script type="text/javascript" src="js/calendar_<s:text name='sundyn.language.calendar' />.js"></script>
-		 </s:else>
+<script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
 		<div id="man_zone">
            <div class="fengge" style="height:15px;">&nbsp;</div>
            <div class="center_05">
@@ -189,7 +184,7 @@ td {
 				   <div id="msg" style="height:18px; background-color:#dff4ff; padding-top:6px;">·您当前查询的是<s:text name='sundyn.analyse.month' />数据库分析</div>
 				   <div style="height:220px;"> 
 				      <object id="columnChat" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="100%">
-						   <param name="movie" value="images/columnChat.swf" />
+						   <param name="movie" value="../images/columnChat.swf" />
 						   <param name="quality" value="high" />
 						   <param name="wmode" value="opaque" />
 						   <param name="swfversion" value="9.0.45.0" />

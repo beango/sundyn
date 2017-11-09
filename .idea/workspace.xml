@@ -1,0 +1,1316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="sundyn:Web exploded" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="eba58721-adeb-4560-a88f-2e2700ea2ca1" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/sundyn_Web_exploded.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/web/WEB-INF/web.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/My97DatePicker/WdatePicker.js" afterPath="$PROJECT_DIR$/WebContent/My97DatePicker/WdatePicker.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/analyse/content.jsp" afterPath="$PROJECT_DIR$/WebContent/analyse/content.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/analyse/rate.jsp" afterPath="$PROJECT_DIR$/WebContent/analyse/rate.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/default.jsp" afterPath="$PROJECT_DIR$/WebContent/default.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/js/my_zh.js" afterPath="$PROJECT_DIR$/WebContent/js/my_zh.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/manager/deleteVideoFile.jsp" afterPath="$PROJECT_DIR$/WebContent/manager/deleteVideoFile.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/query/deptAjax.jsp" afterPath="$PROJECT_DIR$/WebContent/query/deptAjax.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/query/duibitu.jsp" afterPath="$PROJECT_DIR$/WebContent/query/duibitu.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/query/index.jsp" afterPath="$PROJECT_DIR$/WebContent/query/index.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/total/datingDeal.jsp" afterPath="$PROJECT_DIR$/WebContent/total/datingDeal.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/total/deptDeal.jsp" afterPath="$PROJECT_DIR$/WebContent/total/deptDeal.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/total/personDeal.jsp" afterPath="$PROJECT_DIR$/WebContent/total/personDeal.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/total/windowDeal.jsp" afterPath="$PROJECT_DIR$/WebContent/total/windowDeal.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sundyn/action/TotalAction.java" afterPath="$PROJECT_DIR$/src/com/sundyn/action/TotalAction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sundyn/service/DeptService.java" afterPath="$PROJECT_DIR$/src/com/sundyn/service/DeptService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sundyn/service/TotalService.java" afterPath="$PROJECT_DIR$/src/com/sundyn/service/TotalService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sundyn_zh.properties" afterPath="$PROJECT_DIR$/src/sundyn_zh.properties" />
+    </list>
+    <ignored path="$PROJECT_DIR$/build/classes/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+    <option name="PARALLEL_COMPILATION" value="true" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+      <file leaf-file-name="TotalAction.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/TotalAction.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="1404" column="58" lean-forward="false" selection-start-line="1404" selection-start-column="58" selection-end-line="1404" selection-end-column="58" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DeptService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/DeptService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="209">
+              <caret line="379" column="5" lean-forward="true" selection-start-line="379" selection-start-column="5" selection-end-line="379" selection-end-column="5" />
+              <folding>
+                <marker date="1510132664084" expanded="true" signature="622:694" ph="update appri... " />
+                <marker date="1510132664084" expanded="true" signature="925:962" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="1274:1311" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="1624:1663" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="1976:2137" ph="select id,na... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="2469:2714" ph="Insert into appries_dept... " />
+                <marker date="1510132664084" expanded="true" signature="3172:3224" ph="update appri... " />
+                <marker date="1510132664084" expanded="true" signature="3623:3800" ph="Update appri... " />
+                <marker date="1510132664084" expanded="true" signature="4449:4528" ph="UPDATE `appr... " />
+                <marker date="1510132664084" expanded="true" signature="4869:4960" ph="Update appri... " />
+                <marker date="1510132664084" expanded="true" signature="5605:5663" ph="delete from " />
+                <marker date="1510132664084" expanded="true" signature="5699:5756" ph="delete from " />
+                <marker date="1510132664084" expanded="true" signature="5792:5863" ph="update appri... " />
+                <marker date="1510132664084" expanded="true" signature="5899:5949" ph="delete from " />
+                <marker date="1510132664084" expanded="true" signature="6361:6413" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="6710:6771" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="7063:7103" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="7436:7528" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="7801:7846" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="8142:8204" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="9486:9538" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="10946:11030" ph="select id,ch... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="11917:11983" ph="select count... appries_employee" />
+                <marker date="1510132664084" expanded="true" signature="12232:12280" ph="select max(l... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="12944:12996" ph="select count... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="13336:13401" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="13708:13755" ph="select name appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="14061:14116" ph="select dept_... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="14461:14502" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="14828:14885" ph="select count... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="15184:15216" ph="select max(i... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="15488:15540" ph="Update appri... " />
+                <marker date="1510132664084" expanded="true" signature="16222:16319" ph="select dept_... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="16590:16631" ph="update appri... " />
+                <marker date="1510132664084" expanded="true" signature="17010:17060" ph="update appri... " />
+                <marker date="1510132664084" expanded="true" signature="17472:17537" ph="update appri... " />
+                <marker date="1510132664084" expanded="true" signature="17865:17908" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="18178:18244" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="18499:18542" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="18813:18893" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="19193:19532" ph="select * fro... name" />
+                <marker date="1510132664084" expanded="true" signature="19212:19343" ph="select name,... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="19355:19502" ph="select name,... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="20242:20767" ph="select * fro... name" />
+                <marker date="1510132664084" expanded="true" signature="20261:20408" ph="select name,... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="20425:20567" ph="select name,... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="20580:20731" ph="select name,... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="21815:22634" ph="select * fro... name" />
+                <marker date="1510132664084" expanded="true" signature="21834:22080" ph="select t1.na... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="22097:22335" ph="select t1.na... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="22348:22598" ph="select t1.na... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="22920:23717" ph="select * fro... name" />
+                <marker date="1510132664084" expanded="true" signature="22939:23185" ph="select t1.na... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="23202:23440" ph="select t1.na... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="23453:23703" ph="select t1.na... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="24208:24351" ph="update appri... " />
+                <marker date="1510132664084" expanded="true" signature="24398:24487" ph="update appri... " />
+                <marker date="1510132664084" expanded="true" signature="24858:24903" ph="select * fro... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="25570:25664" ph="UPDATE appri... " />
+                <marker date="1510132664084" expanded="true" signature="25711:25780" ph="UPDATE appri... " />
+                <marker date="1510132664084" expanded="true" signature="26245:26290" ph="insert into appries_onlinemac... " />
+                <marker date="1510132664084" expanded="true" signature="26659:27486" ph="select * fro... id" />
+                <marker date="1510132664084" expanded="true" signature="26678:26925" ph="select t1.id... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="26937:27187" ph="select t1.id... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="27195:27445" ph="select t1.id... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="27819:29052" ph="select * fro... name" />
+                <marker date="1510132664084" expanded="true" signature="27836:28208" ph="select b.nam... id" />
+                <marker date="1510132664084" expanded="true" signature="27878:28152" ph="select t1.id... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="28224:28598" ph="select b.nam... id" />
+                <marker date="1510132664084" expanded="true" signature="28265:28543" ph="select t1.id... appries_dept" />
+                <marker date="1510132664084" expanded="true" signature="28611:28984" ph="select b.nam... id" />
+                <marker date="1510132664084" expanded="true" signature="28652:28928" ph="select t1.id... appries_dept" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="rate.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WebContent/analyse/rate.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="160" column="212" lean-forward="false" selection-start-line="160" selection-start-column="168" selection-end-line="160" selection-end-column="212" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="my_zh.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WebContent/js/my_zh.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="418">
+              <caret line="28" column="77" lean-forward="false" selection-start-line="28" selection-start-column="77" selection-end-line="28" selection-end-column="77" />
+              <folding>
+                <marker date="1510199908475" expanded="true" signature="1368:1379" ph="..." />
+                <marker date="1510199908475" expanded="true" signature="79695:79721" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="deptDeal.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WebContent/total/deptDeal.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="datingDeal.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WebContent/total/datingDeal.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="personDeal.jsp" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/WebContent/total/personDeal.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="42" column="57" lean-forward="false" selection-start-line="42" selection-start-column="57" selection-end-line="42" selection-end-column="57" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#td#0;n#tr#0;n#table#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#td#0;n#tr#0;n#table#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="windowDeal.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WebContent/total/windowDeal.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="47" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>totalDatingDeal</find>
+      <find>indexCake</find>
+      <find>indexDetail</find>
+      <find>calendar</find>
+      <find>setday</find>
+      <find>analyseContentRate</find>
+      <find>onfocus</find>
+      <find>getCandidat</find>
+      <find>images/06_04_11.jpg</find>
+      <find>setDay</find>
+      <find>==</find>
+      <find>analyseContentRateAjax</find>
+      <find>columnChat</find>
+      <find>deleteVideoFile</find>
+      <find>total</find>
+      <find>totaldept</find>
+      <find>.js</find>
+      <find>totalWindowDeal</find>
+      <find>totalw</find>
+      <find>deptopen</find>
+      <find>totalperson</find>
+      <find>sundyn_content</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/WebContent/query/index.jsp" />
+        <option value="$PROJECT_DIR$/WebContent/analyse/content.jsp" />
+        <option value="$PROJECT_DIR$/src/sundyn_zh.properties" />
+        <option value="$PROJECT_DIR$/WebContent/analyse/rate.jsp" />
+        <option value="$PROJECT_DIR$/WebContent/manager/deleteVideoFile.jsp" />
+        <option value="$PROJECT_DIR$/WebContent/total/deptDeal.jsp" />
+        <option value="$PROJECT_DIR$/WebContent/total/datingDeal.jsp" />
+        <option value="$PROJECT_DIR$/src/com/sundyn/service/TotalService.java" />
+        <option value="$PROJECT_DIR$/src/com/sundyn/service/DeptService.java" />
+        <option value="$PROJECT_DIR$/WebContent/query/peopleDeal.jsp" />
+        <option value="$PROJECT_DIR$/src/com/sundyn/action/TotalAction.java" />
+        <option value="$PROJECT_DIR$/WebContent/query/deptAjax.jsp" />
+        <option value="$PROJECT_DIR$/WebContent/js/my_zh.js" />
+        <option value="$PROJECT_DIR$/WebContent/total/windowDeal.jsp" />
+        <option value="$PROJECT_DIR$/WebContent/total/personDeal.jsp" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="false" />
+    <option name="FILTER_DEBUG" value="false" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="260" />
+    <option name="y" value="20" />
+    <option name="width" value="1400" />
+    <option name="height" value="990" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Plugin DevKit</id>
+          </State>
+          <State>
+            <id>Spelling</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>SpellCheckingInspection</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="sundyn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sundyn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sundyn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sundyn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
+              <item name="action" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sundyn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
+              <item name="WebContent" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sundyn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
+              <item name="WebContent" type="462c0819:PsiDirectoryNode" />
+              <item name="analyse" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sundyn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
+              <item name="WebContent" type="462c0819:PsiDirectoryNode" />
+              <item name="query" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sundyn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
+              <item name="WebContent" type="462c0819:PsiDirectoryNode" />
+              <item name="total" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="AndroidView" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/WebContent" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.HTML" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Tomcat Server.Tomcat7">
+    <configuration name="Tomcat7" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 7.0.75" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="1.8">
+      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <deployment>
+        <artifact name="sundyn:Web exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/sundyn" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="Unnamed_sundyn" />
+      </server-settings>
+      <predefined_log_file id="Tomcat" enabled="true" />
+      <predefined_log_file id="Tomcat Catalina" enabled="true" />
+      <predefined_log_file id="Tomcat Manager" enabled="false" />
+      <predefined_log_file id="Tomcat Host Manager" enabled="false" />
+      <predefined_log_file id="Tomcat Localhost Access" enabled="false" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="49964" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method>
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="sundyn:Web exploded" />
+        </option>
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <module />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+    </configuration>
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 7.0.75" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="C:\Program Files\Java\jdk1.8.0_112\jre">
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment />
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="_sundyn" />
+      </server-settings>
+      <predefined_log_file id="Tomcat" enabled="true" />
+      <predefined_log_file id="Tomcat Catalina" enabled="true" />
+      <predefined_log_file id="Tomcat Manager" enabled="false" />
+      <predefined_log_file id="Tomcat Host Manager" enabled="false" />
+      <predefined_log_file id="Tomcat Localhost Access" enabled="false" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="49964" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+    </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file id="idea.log" enabled="true" />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+    </configuration>
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Remote" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="LOCAL" value="false" />
+      <deployment />
+      <server-settings>
+        <data>
+          <option name="targets">
+            <list>
+              <WatchedTargetModelImpl>
+                <option name="name" value="CONTEXT_XML" />
+                <option name="transportStagingTarget">
+                  <TransportTarget>
+                    <option name="id" value="4f30c395-4d3b-4044-a495-bed16f4a8254" />
+                    <id>4f30c395-4d3b-4044-a495-bed16f4a8254</id>
+                  </TransportTarget>
+                </option>
+                <option name="watchedLocalPath" value="" />
+                <watched-path />
+                <name>CONTEXT_XML</name>
+                <transport-target>
+                  <TransportTarget>
+                    <option name="id" value="4f30c395-4d3b-4044-a495-bed16f4a8254" />
+                    <id>4f30c395-4d3b-4044-a495-bed16f4a8254</id>
+                  </TransportTarget>
+                </transport-target>
+              </WatchedTargetModelImpl>
+              <StagingTargetModelImpl>
+                <option name="name" value="STAGING" />
+                <option name="stagingRemotePath" value="" />
+                <option name="transportStagingTarget">
+                  <TransportTarget>
+                    <option name="id" value="fd8d110f-691b-4e55-a5c1-0ac370ef5f49" />
+                    <id>fd8d110f-691b-4e55-a5c1-0ac370ef5f49</id>
+                  </TransportTarget>
+                </option>
+                <staging-path />
+                <name>STAGING</name>
+                <transport-target>
+                  <TransportTarget>
+                    <option name="id" value="fd8d110f-691b-4e55-a5c1-0ac370ef5f49" />
+                    <id>fd8d110f-691b-4e55-a5c1-0ac370ef5f49</id>
+                  </TransportTarget>
+                </transport-target>
+              </StagingTargetModelImpl>
+            </list>
+          </option>
+          <option name="transportHostId" />
+          <host-id />
+        </data>
+      </server-settings>
+      <predefined_log_file id="Tomcat" enabled="true" />
+      <predefined_log_file id="TOMCAT_LOCALHOST_LOG_ID" enabled="true" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="50085" />
+        <option name="LOCAL" value="false" />
+      </RunnerSettings>
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="eba58721-adeb-4560-a88f-2e2700ea2ca1" name="Default" comment="" />
+      <created>1510042902202</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1510042902202</updated>
+      <workItem from="1510042910837" duration="6657000" />
+      <workItem from="1510106194216" duration="917000" />
+      <workItem from="1510107145180" duration="8666000" />
+      <workItem from="1510198141932" duration="65000" />
+      <workItem from="1510198395524" duration="2202000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="All_in_sundyn - 2017.11.07 at 16h 29m 35s.xml">
+      <configuration name="All in sundyn" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="All_in_sundyn - 2017.11.07 at 16h 32m 39s.xml">
+      <configuration name="All in sundyn" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="All_in_sundyn - 2017.11.07 at 16h 36m 16s.xml">
+      <configuration name="All in sundyn" configurationId="AndroidJUnit" />
+    </history-entry>
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="18507000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1552" height="840" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.50208336" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32887402" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.398017" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32887402" sideWeight="0.49791667" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1883378" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/WebContent/total/person.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4212">
+          <caret line="162" column="66" lean-forward="false" selection-start-line="162" selection-start-column="52" selection-end-line="162" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/default.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1560">
+          <caret line="60" column="53" lean-forward="false" selection-start-line="60" selection-start-column="16" selection-end-line="60" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/query/index.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4602">
+          <caret line="177" column="54" lean-forward="false" selection-start-line="177" selection-start-column="45" selection-end-line="177" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/content.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3692">
+          <caret line="142" column="23" lean-forward="false" selection-start-line="142" selection-start-column="22" selection-end-line="142" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/analyse.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1326">
+          <caret line="51" column="40" lean-forward="false" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/js/my_zh.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8554">
+          <caret line="329" column="18" lean-forward="false" selection-start-line="329" selection-start-column="8" selection-end-line="329" selection-end-column="18" />
+          <folding>
+            <marker date="1510199908475" expanded="true" signature="1368:1379" ph="..." />
+            <marker date="1510199908475" expanded="true" signature="79695:79721" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/TotalAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="13" column="24" lean-forward="false" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/total.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1040">
+          <caret line="40" column="37" lean-forward="false" selection-start-line="40" selection-start-column="22" selection-end-line="40" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/total/datingDeal.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5876">
+          <caret line="226" column="41" lean-forward="false" selection-start-line="226" selection-start-column="41" selection-end-line="226" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/rate.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4836">
+          <caret line="186" column="56" lean-forward="false" selection-start-line="186" selection-start-column="56" selection-end-line="186" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/default.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1560">
+          <caret line="60" column="53" lean-forward="false" selection-start-line="60" selection-start-column="16" selection-end-line="60" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/query/index.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4602">
+          <caret line="177" column="54" lean-forward="false" selection-start-line="177" selection-start-column="45" selection-end-line="177" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/content.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3692">
+          <caret line="142" column="23" lean-forward="false" selection-start-line="142" selection-start-column="22" selection-end-line="142" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/analyse.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1326">
+          <caret line="51" column="40" lean-forward="false" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/js/my_zh.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8554">
+          <caret line="329" column="18" lean-forward="false" selection-start-line="329" selection-start-column="8" selection-end-line="329" selection-end-column="18" />
+          <folding>
+            <marker date="1510199908475" expanded="true" signature="1368:1379" ph="..." />
+            <marker date="1510199908475" expanded="true" signature="79695:79721" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/total.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1040">
+          <caret line="40" column="37" lean-forward="false" selection-start-line="40" selection-start-column="22" selection-end-line="40" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/total/datingDeal.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5876">
+          <caret line="226" column="41" lean-forward="false" selection-start-line="226" selection-start-column="41" selection-end-line="226" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/rate.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4836">
+          <caret line="186" column="56" lean-forward="false" selection-start-line="186" selection-start-column="56" selection-end-line="186" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sundyn.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-414">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/default.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1560">
+          <caret line="60" column="53" lean-forward="false" selection-start-line="60" selection-start-column="16" selection-end-line="60" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/query/index.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4602">
+          <caret line="177" column="54" lean-forward="false" selection-start-line="177" selection-start-column="45" selection-end-line="177" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/content.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3692">
+          <caret line="142" column="23" lean-forward="false" selection-start-line="142" selection-start-column="22" selection-end-line="142" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sundyn_zh.properties">
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="514" column="32" lean-forward="false" selection-start-line="514" selection-start-column="32" selection-end-line="514" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/playList.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/business.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-28">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/download.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-28">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/lyb.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-28">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/m7Info.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-28">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/manager.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="99" column="37" lean-forward="false" selection-start-line="99" selection-start-column="22" selection-end-line="99" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/base.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-28">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/query/resultDeal.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-468">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/weburl.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="6" column="19" lean-forward="false" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dept.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="6" column="18" lean-forward="false" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/query.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="6" column="19" lean-forward="false" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/analyse.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="25" column="34" lean-forward="false" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/manager/deleteVideoFile.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4158">
+          <caret line="189" column="104" lean-forward="false" selection-start-line="189" selection-start-column="60" selection-end-line="189" selection-end-column="104" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/TotalService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="93" column="63" lean-forward="true" selection-start-line="93" selection-start-column="63" selection-end-line="93" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/total.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="45" column="31" lean-forward="false" selection-start-line="45" selection-start-column="20" selection-end-line="45" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/total/window.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="167" column="35" lean-forward="true" selection-start-line="161" selection-start-column="26" selection-end-line="167" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/total/deptDeal.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/query/peopleDeal.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="45" column="10" lean-forward="true" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/total/datingDeal.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/TotalAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="1404" column="58" lean-forward="false" selection-start-line="1404" selection-start-column="58" selection-end-line="1404" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/js/jquery-1.4.3.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/query/deptAjax.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/rate.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="160" column="212" lean-forward="false" selection-start-line="160" selection-start-column="168" selection-end-line="160" selection-end-column="212" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/DeptService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="379" column="5" lean-forward="true" selection-start-line="379" selection-start-column="5" selection-end-line="379" selection-end-column="5" />
+          <folding>
+            <marker date="1510132664084" expanded="true" signature="622:694" ph="update appri... " />
+            <marker date="1510132664084" expanded="true" signature="925:962" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="1274:1311" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="1624:1663" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="1976:2137" ph="select id,na... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="2469:2714" ph="Insert into appries_dept... " />
+            <marker date="1510132664084" expanded="true" signature="3172:3224" ph="update appri... " />
+            <marker date="1510132664084" expanded="true" signature="3623:3800" ph="Update appri... " />
+            <marker date="1510132664084" expanded="true" signature="4449:4528" ph="UPDATE `appr... " />
+            <marker date="1510132664084" expanded="true" signature="4869:4960" ph="Update appri... " />
+            <marker date="1510132664084" expanded="true" signature="5605:5663" ph="delete from " />
+            <marker date="1510132664084" expanded="true" signature="5699:5756" ph="delete from " />
+            <marker date="1510132664084" expanded="true" signature="5792:5863" ph="update appri... " />
+            <marker date="1510132664084" expanded="true" signature="5899:5949" ph="delete from " />
+            <marker date="1510132664084" expanded="true" signature="6361:6413" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="6710:6771" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="7063:7103" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="7436:7528" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="7801:7846" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="8142:8204" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="9486:9538" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="10946:11030" ph="select id,ch... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="11917:11983" ph="select count... appries_employee" />
+            <marker date="1510132664084" expanded="true" signature="12232:12280" ph="select max(l... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="12944:12996" ph="select count... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="13336:13401" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="13708:13755" ph="select name appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="14061:14116" ph="select dept_... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="14461:14502" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="14828:14885" ph="select count... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="15184:15216" ph="select max(i... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="15488:15540" ph="Update appri... " />
+            <marker date="1510132664084" expanded="true" signature="16222:16319" ph="select dept_... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="16590:16631" ph="update appri... " />
+            <marker date="1510132664084" expanded="true" signature="17010:17060" ph="update appri... " />
+            <marker date="1510132664084" expanded="true" signature="17472:17537" ph="update appri... " />
+            <marker date="1510132664084" expanded="true" signature="17865:17908" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="18178:18244" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="18499:18542" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="18813:18893" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="19193:19532" ph="select * fro... name" />
+            <marker date="1510132664084" expanded="true" signature="19212:19343" ph="select name,... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="19355:19502" ph="select name,... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="20242:20767" ph="select * fro... name" />
+            <marker date="1510132664084" expanded="true" signature="20261:20408" ph="select name,... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="20425:20567" ph="select name,... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="20580:20731" ph="select name,... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="21815:22634" ph="select * fro... name" />
+            <marker date="1510132664084" expanded="true" signature="21834:22080" ph="select t1.na... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="22097:22335" ph="select t1.na... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="22348:22598" ph="select t1.na... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="22920:23717" ph="select * fro... name" />
+            <marker date="1510132664084" expanded="true" signature="22939:23185" ph="select t1.na... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="23202:23440" ph="select t1.na... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="23453:23703" ph="select t1.na... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="24208:24351" ph="update appri... " />
+            <marker date="1510132664084" expanded="true" signature="24398:24487" ph="update appri... " />
+            <marker date="1510132664084" expanded="true" signature="24858:24903" ph="select * fro... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="25570:25664" ph="UPDATE appri... " />
+            <marker date="1510132664084" expanded="true" signature="25711:25780" ph="UPDATE appri... " />
+            <marker date="1510132664084" expanded="true" signature="26245:26290" ph="insert into appries_onlinemac... " />
+            <marker date="1510132664084" expanded="true" signature="26659:27486" ph="select * fro... id" />
+            <marker date="1510132664084" expanded="true" signature="26678:26925" ph="select t1.id... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="26937:27187" ph="select t1.id... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="27195:27445" ph="select t1.id... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="27819:29052" ph="select * fro... name" />
+            <marker date="1510132664084" expanded="true" signature="27836:28208" ph="select b.nam... id" />
+            <marker date="1510132664084" expanded="true" signature="27878:28152" ph="select t1.id... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="28224:28598" ph="select b.nam... id" />
+            <marker date="1510132664084" expanded="true" signature="28265:28543" ph="select t1.id... appries_dept" />
+            <marker date="1510132664084" expanded="true" signature="28611:28984" ph="select b.nam... id" />
+            <marker date="1510132664084" expanded="true" signature="28652:28928" ph="select t1.id... appries_dept" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/total/person.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2166">
+          <caret line="12" column="19" lean-forward="true" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/js/my_zh.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="28" column="77" lean-forward="false" selection-start-line="28" selection-start-column="77" selection-end-line="28" selection-end-column="77" />
+          <folding>
+            <marker date="1510199908475" expanded="true" signature="1368:1379" ph="..." />
+            <marker date="1510199908475" expanded="true" signature="79695:79721" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/total/windowDeal.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="47" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/total/personDeal.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="42" column="57" lean-forward="false" selection-start-line="42" selection-start-column="57" selection-end-line="42" selection-end-column="57" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#td#0;n#tr#0;n#table#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#td#0;n#tr#0;n#table#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>sundyn:Web exploded</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Web (sundyn)|Web</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>Web|sundyn</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

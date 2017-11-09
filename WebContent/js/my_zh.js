@@ -5,10 +5,10 @@ dojo.require("dojo.io.iframe");
 var djConfig = {parseOnLoad:true};
 // 快速查询
 // 删除快速查询
-String.prototype.trim= function(){  
+String.prototype.trim= function(){
     // 用正则表达式将前后空格
     // 用空字符串替代。
-    return this.replace(/(^\s*)|(\s*$)/g, "");  
+    return this.replace(/(^\s*)|(\s*$)/g, "");
 }
 function quicklyDel(data) {
 	dojo.xhrGet({url:"quicklyDel.action", content:{id:data}, load:function (resp, ioArgs) {
@@ -16,17 +16,22 @@ function quicklyDel(data) {
 	}});
 }
 // 调用查询
-function quicklyQuery(data) { 
+function quicklyQuery(data) {
 	window.location.href =data;
 }
 // 得到当前机构的下一个机构
-function dept(data) {
+function dept(data, selectedval) {
 	dojo.xhrGet({url:"queryDeptAjax.action", content:{id:data}, load:function (resp, ioArgs) {
 		dojo.byId("dept").innerHTML = resp;
+		if(selectedval){
+			var selectedarr = selectedval.split(",");
+			for (var i=0; i< selectedarr.length; i++)
+            	$("select[name=deptId]").find("option[value='"+selectedarr[i]+"']").attr("selected",true);
+		}
 	}});
 }
 // 机构查询机构展开
-function deptopen(){
+function deptopen(selectedval){
 	var deptlist= document.getElementsByName("deptId");
 	var deptId=0;
 	for(var index=0; index<deptlist.length; index++) {
@@ -34,7 +39,7 @@ function deptopen(){
 			deptId=deptlist[index].value ;
 		}
 	}
-	dept(deptId);
+	dept(deptId, selectedval);
 }
 
 //增加星级
@@ -64,7 +69,7 @@ function querydept() {
 			deptId = deptids[i].value;
 		}
 	}
- 	var startDate = getStartDate();  
+ 	var startDate = getStartDate();
 	var endDate =  getEndDate();
   	window.location.href = "queryDeptDeal.action?deptId=" + deptId + "&startDate=" + startDate + "&endDate=" + endDate;
 }
@@ -78,7 +83,7 @@ function deleteVideoFileDeal() {
 			deptId = deptids[i].value;
 		}
 	}
-	var startDate = getStartDate();  
+	var startDate = getStartDate();
 	var endDate =  getEndDate();
 	window.location.href = "deleteVideoFileDeal.action?keyNo="+keyNo+"&deptId=" + deptId + "&startDate=" + startDate + "&endDate=" + endDate;
 }
@@ -94,7 +99,7 @@ function deptExistMac(data){
 // 查询备注信息
 /**
  * queryDemo
- * 
+ *
  * @param {int}
  *            data
  */
@@ -105,8 +110,8 @@ function deptExistMac(data){
 		dia.show("dialog");
 	}});
  }
- 
- 
+
+
 function queryEmployee() {
 	var keyword = document.getElementById("keyword").value;
 	dojo.xhrPost({url:"queryPeopleyAjax.action", content:{keyword:keyword}, load:function (resp, ioArgs) {
@@ -307,7 +312,7 @@ function analyseContentRateAjaxDay(data) {
  	 	columnChat.columnChart(charStr);
 	}});
 }
-           
+
 // 决策分析，首页画图
  function analyseContentRateIndexAjaxDay(data) {
 	dojo.xhrPost({url:"analyseContentRateAjaxDay.action", content:{num:data}, load:function (resp, ioArgs) {
@@ -577,12 +582,12 @@ function regId(data) {
 }
 // 添加机构节点
 function addChildItem() {
-	
+
 	if(document.getElementById("tip").innerHTML == "mac 已经被占用"){
 		alert("mac 已经被占用!");
 		return false;
 	}
-	
+
 	if (document.getElementById("deptId").value == "") {
 		alert("\u8bf7\u9009\u62e9\u90e8\u95e8");
 		return false;
@@ -616,14 +621,14 @@ function addChildItem() {
 	if (document.getElementById("deptLogoPic")!=null){
 	deptLogoPic = document.getElementById("deptLogoPic").value;
 	}
-	
+
 	if (document.getElementById("deptPause")!=null){
 	deptPause = document.getElementById("deptPause").value;
 	}
-	
+
 	if (document.getElementById("deptPausePic")!=null){
 	deptPic = document.getElementById("deptPausePic").value;
-	}	
+	}
 
 	if(document.getElementById("dept_camera_url")!=null){
 		dept_camera_url=document.getElementById("dept_camera_url").value;
@@ -688,7 +693,7 @@ function deptEditDialog() {
 	var deptId = document.getElementById("deptId").value;
 	dojo.xhrPost({url:"deptEditDialog.action", content:{deptId:deptId}, load:function (resp, ioArgs) {
 		dojo.byId("dialog").innerHTML = resp;
-		
+
 		var dia = new dialog();
 		dia.show("dialog");
 	}});
@@ -706,12 +711,12 @@ function deptEditItem() {
 // var client_type = document.getElementById("client_type").value;
 	var client_type = 0;
 	var useVideo = document.getElementById("useVideo").value;
-	
+
 	var notice = document.getElementById("notice").value;
 // alert( notice.firstChild.nodeValue);
 // alert("notice");
 // alert("notice.value="+notice);
-	
+
 	var dept_camera_url="";
 	var dept_businessId="";
 	var dept_playListId="";
@@ -721,14 +726,14 @@ function deptEditItem() {
 	var product_type ="";
 	var provinceid = "";
 	var cityid = "";
-	
+
 	if (document.getElementById("deptLogoPic")!=null){
 	deptLogoPic = document.getElementById("deptLogoPic").value;
 	}
 	if (document.getElementById("deptPause")!=null){
 	dept_Pause = document.getElementById("deptPause").value;
 	}
-	
+
 	if (document.getElementById("deptPausePic")!=null){
 	deptPic = document.getElementById("deptPausePic").value;
 	}
@@ -999,7 +1004,7 @@ function keyTypeEdit(data) {
 		yes = 0;
 	}
 	dojo.xhrPost({url:"keyTypeEdit.action", content:{id:data, name:name, isJoy:isJoy,yes:yes,ext1:ext1}, load:function (resp, ioArgs) {
-		 
+
 	}});
 }
 
@@ -1012,7 +1017,7 @@ function keyTypeEditAll() {
 	var ext5=document.getElementById("ext15").value;
 	var ext6=document.getElementById("ext16").value;
 	var ext7=document.getElementById("ext17").value;
-	
+
 	if(r.test(ext1)&&r.test(ext2)&&r.test(ext3)&&r.test(ext4)&&r.test(ext5)&&r.test(ext6)&&r.test(ext7)){
 		 keyTypeEdit(1);
 		 keyTypeEdit(2);
@@ -1025,7 +1030,7 @@ function keyTypeEditAll() {
 	}else{
 		alert("权值非法，只能为整数");
 	}
-	 
+
 }
 
 
@@ -1065,7 +1070,7 @@ function managerExist(){
 	dojo.xhrPost({url:"managerExist.action",content:{name:name},load:function (resp, ioArgs) {
  		document.getElementById("tip").innerHTML = resp;
 	}});
-	
+
 }
 // 添加用户
 function managerAdd() {
@@ -1220,7 +1225,7 @@ function powerAdd() {
 	if (document.getElementById("tip").innerHTML=="该角色名存在") {
 		alert("该角色名存在");
 		return false;
-	}  
+	}
 	var baseSet = document.getElementById("baseSet");
 	if (baseSet.checked) {
 		baseSet = 1;
@@ -1293,7 +1298,14 @@ function totalDatingDeal() {
 function totalWindowDeal() {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-	var deptId = document.getElementById("deptId").value;
+	//var deptId = document.getElementById("deptId").value;
+	var deptids = document.getElementsByName("deptId");
+	var deptId = -1;
+	for (i = 0; i < deptids.length; i++) {
+		if (eval(deptId) < eval(deptids[i].value)) {
+			deptId = deptids[i].value;
+		}
+	}
 	window.location.href = "totalWindowDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId;
 }
 // 个人汇总
@@ -1401,9 +1413,9 @@ function basePicAjaxCheck() {
 	}else{
 	    document.getElementById("pic123").submit();
 	}
-	
+
 }
- 
+
 // 基本设置上传图片
 function basePicUpload() {
 	dojo.io.iframe.send({url:"basePicUpload.action", method:"post", handleAs:"text", form:dojo.byId("pic123"), handle:function (data, ioArgs) {
@@ -1433,7 +1445,7 @@ function tipChange(data) {
 		document.getElementById("ext2").disabled = true;
 		document.getElementById("ext1").className="textDisable";
 		document.getElementById("ext2").className="textDisable";
-		
+
  	} else {
 		if (data == 1) {
 			document.getElementById("ext1").disabled = false;
@@ -1505,7 +1517,7 @@ function playAdd() {
 	var playTimes=document.getElementById("playTimes").value;
 	var playIndex=document.getElementById("playIndex").value;
 	var playTitle=document.getElementById("playTitle").value;
-	
+
 //    var playContent=FCKeditorAPI.GetInstance("playContent").GetXHTML(true);
 	var playContent = document.getElementById("playContent").value;
 	var patrn=/^[0-9]{1,20}$/;
@@ -1656,12 +1668,12 @@ function playListCreateUpdateZipFile(data){
 		document.getElementById("pbar").src="images/update_processend.gif";
 		alert("生成Bin、Zip成功");
 		closeDialog();
-		
+
 // alert("Zip生成成功");
 	}, error:function(){
 		alert("系统错误");
 	}});
-	
+
 }
 
 
@@ -1709,7 +1721,7 @@ function playListDelAndroid(data) {
 		alert("默认列表不可删除！");
 		return false;
 	}
-	
+
 	dojo.xhrPost({url:"playListDelAndroid.action", content:{playListId:data}, load:function (resp, ioArgs) {
 		alert(resp);
 		playListQueryAjaxAndroid();
@@ -1869,9 +1881,9 @@ function  playListUpdateDeal(){
  		 alert(data);
 		closeDialog();
 	}});
-    
-    
-     
+
+
+
 }
 // 更新M7，生成升级包，Andriod版本
 function  playListUpdateDeal2(){
@@ -1889,9 +1901,9 @@ function  playListUpdateDeal2(){
 		alert(data);
 		closeDialog();
 	}});
-	
-	
-	
+
+
+
 }
 // 更新M7，生成升级包，Andriod版本和WinCE版本一块生成
 function  playListUpdateDeal3(){
@@ -1911,11 +1923,11 @@ function  playListUpdateDeal3(){
  		 alert("Zip、Bin更新成功");
 		closeDialog();
 	}});
-	
-	
+
+
 }
- 
- 
+
+
 // 得到月初时间
 function getdate() {
 	var dt = new Date();
@@ -1931,13 +1943,13 @@ function getdate() {
 	var startDate = document.getElementById("startDate");
 	if (startDate != null) {
 	  if(startDate.value ==""){
-	     startDate.value = "".concat(year).concat("-").concat(mm).concat("-").concat("01").concat(" ").concat("00:00:00");		 	
+	     startDate.value = "".concat(year).concat("-").concat(mm).concat("-").concat("01").concat(" ").concat("00:00:00");
 	  }
 	}
 	var endDate = document.getElementById("endDate");
 	if (endDate != null) {
 		if(endDate.value ==""){
-         endDate.value = "".concat(year).concat("-").concat(mm).concat("-").concat(dd).concat(" ").concat("23:59:59");;			
+         endDate.value = "".concat(year).concat("-").concat(mm).concat("-").concat(dd).concat(" ").concat("23:59:59");;
 		}
 	}
 }
@@ -1981,7 +1993,7 @@ function quicklyAdd(){
 	}});
 }
 function fullScreen(){
-  var   wsh   =   new   ActiveXObject("WScript.Shell");  
+  var   wsh   =   new   ActiveXObject("WScript.Shell");
   wsh.sendKeys("{F11}") ;
   var f=document.getElementById("man_nav_6");
   if(f.className=='bg_image_onclick'){
@@ -2006,14 +2018,14 @@ function getStartDate(){
 function getEndDate(){
 	return   document.getElementById("endDate").value;
 }
-function trim(str)   { return str.replace(/(^\s*)|(\s*$)/g, ""); } 
+function trim(str)   { return str.replace(/(^\s*)|(\s*$)/g, ""); }
 
 function  managerQx(){
 	dojo.xhrPost({url:"managerQx.action",load:function (resp, ioArgs){
  		 if(trim(resp)=="noqx"){
 		 	alert("你没有权限访问此功能");
 		 }else{
-		 	window.top.frames['manFrame'].location = 'deptView.action'; 
+		 	window.top.frames['manFrame'].location = 'deptView.action';
 		 }
 	}});
 }
@@ -2021,10 +2033,10 @@ function attendanceQueryAjax(){
 	var startDate="";
 	var endDate="";
 	if(document.getElementById("startDate")!=null){
-	 startDate=document.getElementById("startDate").value;	
+	 startDate=document.getElementById("startDate").value;
 	}
 	if(document.getElementById("endDate")!=null){
-	 endDate=document.getElementById("endDate").value;	
+	 endDate=document.getElementById("endDate").value;
 	}
 	dojo.xhrPost({url:"attendanceQueryAjax.action",content:{startDate:startDate,endDate:endDate},load:function (resp, ioArgs){
 		document.getElementById("man_zone").innerHTML=resp;
@@ -2035,10 +2047,10 @@ function attendancePage(data){
 	var startDate="";
 	var endDate="";
 	if(document.getElementById("startDate")!=null){
-	 startDate=document.getElementById("startDate").value;	
+	 startDate=document.getElementById("startDate").value;
 	}
 	if(document.getElementById("endDate")!=null){
-	 endDate=document.getElementById("endDate").value;	
+	 endDate=document.getElementById("endDate").value;
 	}
 	dojo.xhrPost({url:"attendanceQueryAjax.action",content:{startDate:startDate,endDate:endDate,currentPage:data},load:function (resp, ioArgs){
 		document.getElementById("man_zone").innerHTML=resp;
@@ -2048,10 +2060,10 @@ function attendanceNO(){
 	var startDate="";
 	var endDate="";
 	if(document.getElementById("startDate")!=null){
-	 startDate=document.getElementById("startDate").value;	
+	 startDate=document.getElementById("startDate").value;
 	}
 	if(document.getElementById("endDate")!=null){
-	 endDate=document.getElementById("endDate").value;	
+	 endDate=document.getElementById("endDate").value;
 	}
 	dojo.xhrPost({url:"attendanceNO.action",content:{startDate:startDate,endDate:endDate},load:function (resp, ioArgs){
 		document.getElementById("man_zone").innerHTML=resp;
@@ -2061,37 +2073,37 @@ function htmltoexcel(tableid) {// 整个表格拷贝到EXCEL中
      var curTbl = document.getElementById(tableid);
      var d=document.createElement("DIV");
      d=document.getElementById(tableid);
-      
+
       try {
-        var oXL = new ActiveXObject("Excel.Application"); 	
+        var oXL = new ActiveXObject("Excel.Application");
       } catch (e) {
       	alert("导出失败,请确认你安装了excel，并设置ie安全级别为底");
       	return false;
       }
       // 创建AX对象excel
-     var oWB = oXL.Workbooks.Add(); 
+     var oWB = oXL.Workbooks.Add();
      // 获取workbook对象
-         var oSheet = oWB.ActiveSheet; 
+         var oSheet = oWB.ActiveSheet;
      // 激活当前sheet
-     var sel = document.body.createTextRange(); 
-     sel.moveToElementText(d); 
+     var sel = document.body.createTextRange();
+     sel.moveToElementText(d);
      // 把表格中的内容移到TextRange中
-     sel.select(); 
+     sel.select();
      // 全选TextRange中内容
-     sel.execCommand("Copy"); 
+     sel.execCommand("Copy");
      // 复制TextRange中内容
-     oSheet.Paste(); 
+     oSheet.Paste();
      // 粘贴到活动的EXCEL中
-     oXL.Visible = true; 
+     oXL.Visible = true;
      // 设置excel可见属性
  }
- function  printHTML(path,Data)   
-  {   
-      var   fso,   f,   r   
-      var   ForReading   =   1,   ForWriting   =   2;   
-      fso   =   new   ActiveXObject("Scripting.FileSystemObject")   
-      var   objShell   =   new   ActiveXObject("wscript.shell");   
-       f   =   fso.OpenTextFile("c:\\print.htm",   ForWriting,   true)   
+ function  printHTML(path,Data)
+  {
+      var   fso,   f,   r
+      var   ForReading   =   1,   ForWriting   =   2;
+      fso   =   new   ActiveXObject("Scripting.FileSystemObject")
+      var   objShell   =   new   ActiveXObject("wscript.shell");
+       f   =   fso.OpenTextFile("c:\\print.htm",   ForWriting,   true)
       var html= "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd\"\>\r\n";
       html=html+"<!-- saved from url=(0043)http://www.zxbc.cn/html/20080418/33444.html --\>\r\n";
       html=html+"<HTML xmlns=\"http://www.w3.org/1999/xhtml\"\>\r\n"
@@ -2100,10 +2112,10 @@ function htmltoexcel(tableid) {// 整个表格拷贝到EXCEL中
       html=html+"</BODY\>\r\n"
       html=html+"</HTML\>\r\n"
       html=html+"";
-      f.Write(html);   
+      f.Write(html);
       f.Close();
       window.showModalDialog('c:\\print.htm','打印',"resizable=no;help=no;center:yes;scroll=no;status=yes;dialogHeight=768px;dialogWidth=1024px");
-     
+
    }
 // 首页调用js
 // 评价信息详细
@@ -2118,7 +2130,9 @@ function indexDetail(deptIds,keys){
 	 // endDate=y+"-"+m+"-"+d+" "+"12:59:59"
 	 var startDate="";
 	 var endDate="";
-     document.location.href="queryZhDeal.action?id=0&startDate="+startDate+"&endDate="+endDate+"&deptIds="+deptIds+"&keys="+keys+"&currentPage=1";
+
+     var url="queryZhDeal.action?id=0&startDate="+startDate+"&endDate="+endDate+"&deptIds="+deptIds+"&keys="+keys+"&currentPage=1";
+    addTabMenu("评价信息",url,null,true);
 }
 // 首页饼图详细
 
@@ -2133,12 +2147,13 @@ function indexCake(deptIds){
 	 // endDate=y+"-"+m+"-"+d+" "+"12:59:59"
 	 startDate="";
 	 endDate="";
-     document.location.href="queryZhDeal.action?id=0&startDate="+startDate+"&endDate="+endDate+"&deptIds="+deptIds+"&keys=";
+    var url = "queryZhDeal.action?id=0&startDate="+startDate+"&endDate="+endDate+"&deptIds="+deptIds+"&keys=";
+    addTabMenu("满意饼图",url,null,true);
 }
 // 鼠标经过时选择当前
 function selectCurrent(data){
 	var d=document.getElementById("findreslut");
-	var child=d.getElementsByTagName("div") 
+	var child=d.getElementsByTagName("div")
 	for(var index=0; index<child.length; index++){
 		child[index].className="";
 	}
@@ -2168,14 +2183,14 @@ function employeeFindByCardnumOrName(){
 		if (event.keyCode==40){
 	 		var d=document.getElementById("findreslut");
 	 		d.focus();
-	 		var child=d.getElementsByTagName("div") 
+	 		var child=d.getElementsByTagName("div")
 	 		child[0].className="hover" ;
 	 	}
 	 	// 按向下方向键
 		if (event.keyCode==38){
 	 		var d=document.getElementById("findreslut");
 	 		d.focus();
-	 		var child=d.getElementsByTagName("div") 
+	 		var child=d.getElementsByTagName("div")
 	 		child[4].className="hover" ;
 	 	}
  	}
@@ -2244,13 +2259,13 @@ function  employeeresultdown(){
 		dia.show("dialog");
 	}});
  }
- 
+
   function lybQueryAjax(){
 	dojo.xhrPost({url:"lybQueryAjax.action", load:function (resp, ioArgs) {
 	    document.getElementById("man_zone").innerHTML = resp;
 	}});
  }
- 
+
  function lybAddDeal(){
  	var lybTitle=document.getElementById("lybTitle").value;
  	var lybAsk=document.getElementById("lybAsk").value;
@@ -2258,7 +2273,7 @@ function  employeeresultdown(){
 			closeDialog();
 			lybQueryAjax();
 	}});
-	
+
  }
  function lybDel(data){
  	 	dojo.xhrPost({url:"lybDel.action",content:{id:data},load:function (resp, ioArgs){
@@ -2538,7 +2553,7 @@ function sundynSetSave(){
 	var pstarN = document.getElementsByName("pstar")
 	for(var i=0;i<prateN.length;i++){
 //	    alert(prateN[i].value);
-	    	
+
 	    if( eval(prateN[i].value)<=eval(prate)){
 	     	prate=prateN[i].value;
 	     	prates=prates+prate+",";
@@ -2583,7 +2598,7 @@ function sundynSetSave(){
   	 dojo.xhrPost({url:"baseSetSave.action",content:{camera:camera,k7:k7,star:star,bind:bind,guide:guide,tipLanguage:tipLanguage,title:title,logo:logo,sam:sam,eam:eam,spm:spm,epm:epm,prates:prates,pgrades:pgrades,pstars:pstars,buttom:buttom,requestAddress:requestAddress,standard:standard,est1:est1,est2:est2,est3:est3,est4:est4,est5:est5,est6:est6,est7:est7,est8:est8,est9:est9},load:function (resp, ioArgs){
 			  alert(resp);
 	 }});
-	 
+
 }
 // 查看投票
 function voteResult(data){
@@ -2615,7 +2630,7 @@ function voteAdd(){
   for(var i=0;i<voteSelect.childNodes.length;i++){
      if(voteSelect.childNodes[i].childNodes[1].value== ''){
        voteSelect.childNodes[i].childNodes[1].focus();
-       alert("投票选项不能为空");   
+       alert("投票选项不能为空");
        return 0;
      }
      voteSelects=voteSelects+voteSelect.childNodes[i].childNodes[1].value+","
@@ -2672,7 +2687,7 @@ function voteSelectAdd(){
 	  return 0;
 	 }
  	 var select=document.createElement("li");
-	 select.innerHTML =" 	选项：<input type='text' name='voteSelect'   /><img src='images/tp_add.gif' onclick='voteSelectAdd()' /><img src='images/tp_del.gif' onclick='voteSelectDel(this)' />"  
+	 select.innerHTML =" 	选项：<input type='text' name='voteSelect'   /><img src='images/tp_add.gif' onclick='voteSelectAdd()' /><img src='images/tp_del.gif' onclick='voteSelectDel(this)' />"
  	 voteSelect.appendChild(select);
 }
 // 保存业务类型
@@ -2840,7 +2855,7 @@ function businessWjDeal(){
  	     }else{
  	       alert(resp);
  	     }
-		 
+
 	}});
 }
 // 重写数据
@@ -2897,7 +2912,7 @@ function delAppraise(){
 	}
 	if (tempIds.indexOf(",")>0){
 	  tempIds = tempIds.substring(0,tempIds.length-1);
-	}	    
+	}
 	    dojo.xhrPost({url:"appriesDelDealDel.action",content:{ids:tempIds},load:function (resp, ioArgs){
 	    alert(resp);
 	   window.location.reload();
@@ -2958,19 +2973,19 @@ function baseDelRestore(data){
 }
 // js验证开始
 function isNumber(oNum){
-  var strP=/^\d+(\.\d+)?$/; 
-  if(!strP.test(oNum))alert("不是数字，请从新输入"); 
+  var strP=/^\d+(\.\d+)?$/;
+  if(!strP.test(oNum))alert("不是数字，请从新输入");
 }
 function keyIsNumber(data){
-  var strP=/^\d+(\.\d+)?$/; 
-  if(!strP.test(data.value)){alert("不是数字，请从新输入");data.value="";} 
+  var strP=/^\d+(\.\d+)?$/;
+  if(!strP.test(data.value)){alert("不是数字，请从新输入");data.value="";}
 }
 
- function   isIP(str){   
-  var   ip   =   /^([1-9]|[1-9]\d|1\d{2}|2[0-1]\d|22[0-3])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}$/;   
-  if(!ip.test(str))alert("不是合法IP，请从新输入"); 
-  } 
-function isUrl(str_url){ 
+ function   isIP(str){
+  var   ip   =   /^([1-9]|[1-9]\d|1\d{2}|2[0-1]\d|22[0-3])(\.(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])){3}$/;
+  if(!ip.test(str))alert("不是合法IP，请从新输入");
+  }
+function isUrl(str_url){
    var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
                 + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
                 + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
@@ -2984,7 +2999,7 @@ function isUrl(str_url){
         var re = new RegExp(strRegex);
         if(! re.test(str_url)){alert("不是合法升级地址，请从新输入")}
 }
- 
+
 
 // js验证结束
 function getMac(){
@@ -2995,14 +3010,14 @@ alert("创建Active对象失败,请设置IE  ");
 return false;
 }
 
- 
+
  var service = locator.ConnectServer("."); // 连接本机服务器
- var properties = service.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration"); 
+ var properties = service.ExecQuery("SELECT * FROM Win32_NetworkAdapterConfiguration");
 // 查询使用SQL标准
  var e = new Enumerator (properties);
  var p = e.item ();
  var mac=p.MACAddress ;
- mac=mac.replace(new RegExp(":","gm"),"");    
+ mac=mac.replace(new RegExp(":","gm"),"");
  document.getElementById("reMark").value=mac;
 }
 // 改变客户端类型，如果为1不显示产品类型，如果为2显示产品类型
@@ -3049,7 +3064,7 @@ function deptGuide(){
   if(tip.checked){
      dojo.xhrPost({url:"baseGuide.action",content:{operate:"false"},load:function (resp, ioArgs){
      }});
-  } 
+  }
   window.location.href="deptView.action"
 }
 
@@ -3130,7 +3145,7 @@ function quideSaveOrUpdate(){
   	 return  false;
   }
   if((document.getElementById("remark").value>=0 && document.getElementById("remark").value<=255) || document.getElementById("remark").value.length== 12   ){
-  
+
   }else{
      alert("设备信息不合法，请输入从新输入");
      document.getElementById("remark").focus;
@@ -3245,7 +3260,7 @@ function guideSimpleEmployeeReset(){
  			     document.getElementById("cardnum").value=employee.CardNum;
 			     document.getElementById("img123").src=employee.picture;
 			     document.getElementById("ext2").value=employee.ext2;
-			     document.getElementById("job_desc").value=employee.job_desc;			    
+			     document.getElementById("job_desc").value=employee.job_desc;
 			     if(employee.Sex=='1') {
 			       document.getElementById("sex1").checked=true;
 			       document.getElementById("sex2").checked=false;
@@ -3255,8 +3270,8 @@ function guideSimpleEmployeeReset(){
 			     }
 		    }});
 	}
-	
-	
+
+
 }
 function guideSimpleEmployeeAjax(){
      var deptId=document.getElementById("deptId").value;
@@ -3288,7 +3303,7 @@ function guideMultiDept(){
 	}else{
 		window.location.href="guideMultiDept.action?id="+id+"&deptType="+deptType;
 	}
- 	
+
 }
 function guideMultiDeptAdd(){
  if(document.getElementById("name").value==""){
@@ -3303,7 +3318,7 @@ function guideMultiDeptAdd(){
 	  	 return  false;
 	  }
 	  if((document.getElementById("remark").value>=0 && document.getElementById("remark").value<=255) || document.getElementById("remark").value.length== 12   ){
-  
+
 	  	}else{
 	     alert("设备信息不合法，请输入从新输入");
 	     document.getElementById("remark").focus;
@@ -3319,9 +3334,9 @@ function guideMultiDeptAdd(){
 
 	if(document.getElementById("remark") != null){
 		  remark=document.getElementById("remark").value;
-		 
+
 	}
- 
+
 // if(document.getElementById("client_type") != null){
 // client_type=document.getElementById("client_type").value;
 // }
@@ -3355,7 +3370,7 @@ function guideMultiSelect(){
 	var li=ul[0].getElementsByTagName("li");
 	if(li.length==0){
 	  if(deptType==0){
-	    alert("请添加窗口");  
+	    alert("请添加窗口");
 	  }else if(deptType==1){
 	    alert("请添加大厅");
 	  }else if(deptType==2){
@@ -3376,7 +3391,7 @@ function guideDeptTypeAjax(data){
 	   document.getElementById("type").innerHTML=resp;
     }});
     }
-	
+
 }
  function topImg(){
  	      var deptType=document.getElementById("deptType").value;
@@ -3398,10 +3413,10 @@ function threeSwap(data){
       var img_temp=document.getElementById("img"+i);
       var three=document.getElementById("three"+i);
           if(i==data){
-             img_temp.src=img[i]; 
+             img_temp.src=img[i];
              three.style.display="block";
           }else{
-          	 img_temp.src=img_[i]; 
+          	 img_temp.src=img_[i];
              three.style.display="none";
           }
     }
@@ -3428,7 +3443,7 @@ function threeSuit(){
   var small=document.getElementById("small").value;
   var step =document.getElementById("step").value;
 
- 
+
   document.getElementById("msg2").innerHTML="<img src='images/jindutiao_comm.gif'  />";
   dojo.xhrPost({url:"threeSuit.action",content:{big:big,small:small,step:step},load:function (resp, ioArgs){
  	  document.getElementById("msg2").innerHTML=resp;
@@ -3487,7 +3502,7 @@ function autoDeal2() {
 // weburl 信息查询添加框
 function weburToAdd(data) {
 	$('#dialog-window').load("weburlToAdd.action",function(html){
-		
+
 		$('#dialog-window').html(html);
 		UE.getEditor('weburl');
 		var $win;
@@ -3510,7 +3525,7 @@ function weburToAdd(data) {
 		$win.window('open');
 	});
 	//
-	
+
 }
 
 // 添加信息查询
@@ -3784,7 +3799,7 @@ function toshow(videofile,path1,id){
 	  }
 
 function showRemark(content){
-	
+
 	  layer.alert(content, {
 	    skin: 'layui-layer-lan'
 	    ,closeBtn: 0

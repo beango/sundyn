@@ -24,8 +24,14 @@ public class TotalService extends SuperDao
         sql = String.valueOf(sql) + "(case keyno WHEN 6  THEN   1 else 0    end ) as  key6,";
         sql = String.valueOf(sql) + " 1 as g";
         sql = String.valueOf(sql) + " from appries_appries  ";
-        sql = String.valueOf(sql) + " where DeptId in (" + ids + ") and serviceDate>='" + startDate + "' and serviceDate <='" + endDate + "'";
+        sql = String.valueOf(sql) + " where DeptId in (" + ids + ")";
+        if(null!=startDate && !"".equals(startDate)) {
+        	sql = String.valueOf(sql) + "  and serviceDate>='" + startDate + "'";
+        }
+        if(null!=endDate && !"".equals(endDate))
+        	sql = String.valueOf(sql) + " and serviceDate <='" + endDate + "'";
         sql = String.valueOf(sql) + ") as temp  group by g";
+
         System.out.println("totalDept-sql=" + sql);
         try {
             return this.getJdbcTemplate().queryForMap(sql);
@@ -34,9 +40,12 @@ public class TotalService extends SuperDao
             return null;
         }
     }
-    
+
     public List totalDating(final String ids, final String startDate, final String endDate, final Integer start, final Integer num) {
-        String sql = "select id,serviceDate,DeptId,employeeId, sum(key0)   as key0 , sum(key1)   as key1, sum(key2)   as key2, sum(key3)  as key3, sum(key4)  as key4, sum(key5)   as key5, sum(key6)   as key6 ,datingid, datingname from ( select   temp. id,serviceDate,DeptId,employeeId,   key0,key1 ,key2  ,key3  ,key4 ,key5,key6 ,t1.id as windowid ,t1.name as windowname,t2.id as datingid ,t2.name as datingname        from ( select id,serviceDate,DeptId,employeeId, (case keyno WHEN 0  THEN   1 else 0  end ) as key0, (case keyno WHEN 1  THEN   1 else 0    end ) as key1 , (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  , (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  , (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 , (case keyno WHEN 5  THEN   1 else 0    end ) as  key5, (case keyno WHEN 6  THEN   1 else 0    end ) as  key6 from appries_appries  where serviceDate>='" + startDate + "'  and serviceDate<='" + endDate + "'  " + " ) as temp,appries_dept t1,appries_dept t2" + " where   temp.DeptId=t1.id and  t1.fatherId=t2.id and t2.fatherId in( " + ids + ")" + " ) " + " as A group by datingid ";
+        String sql = "select id,serviceDate,DeptId,employeeId, sum(key0)   as key0 , sum(key1)   as key1, sum(key2)   as key2, sum(key3)  as key3, sum(key4)  as key4, sum(key5)   as key5, sum(key6)   as key6 ,datingid, datingname from ( select   temp. id,serviceDate,DeptId,employeeId,   key0,key1 ,key2  ,key3  ,key4 ,key5,key6 ,t1.id as windowid ,t1.name as windowname,t2.id as datingid ,t2.name as datingname        from ( select id,serviceDate,DeptId,employeeId, (case keyno WHEN 0  THEN   1 else 0  end ) as key0, (case keyno WHEN 1  THEN   1 else 0    end ) as key1 , (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  , (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  , (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 , (case keyno WHEN 5  THEN   1 else 0    end ) as  key5, (case keyno WHEN 6  THEN   1 else 0    end ) as  key6 from appries_appries ";
+        sql += " where serviceDate>='" + startDate + "'  ";
+        sql += " and serviceDate<='" + endDate + "'  " ;
+        sql += " ) as temp,appries_dept t1,appries_dept t2" + " where   temp.DeptId=t1.id and  t1.fatherId=t2.id and t2.fatherId in( " + ids + ")" + " ) " + " as A group by datingid ";
         if (start != null && num != null) {
             sql = String.valueOf(sql) + " limit " + start + "," + num + " ";
         }
@@ -48,7 +57,7 @@ public class TotalService extends SuperDao
             return null;
         }
     }
-    
+
     public int counttotalDating(final String ids, final String startDate, final String endDate) {
         String sql = "select   sum(key0)   as key0 , sum(key1)   as key1, sum(key2)   as key2, sum(key3)  as key3, sum(key4)  as key4, sum(key5)   as key5, sum(key6)   as key6 ,datingid, datingname from ( select   temp. id,serviceDate,DeptId,employeeId,   key0,key1 ,key2  ,key3  ,key4 ,key5,key6 ,t1.id as windowid ,t1.name as windowname,t2.id as datingid ,t2.name as datingname        from ( select id,serviceDate,DeptId,employeeId, (case keyno WHEN 0  THEN   1 else 0  end ) as key0, (case keyno WHEN 1  THEN   1 else 0    end ) as key1 , (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  , (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  , (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 , (case keyno WHEN 5  THEN   1 else 0    end ) as  key5, (case keyno WHEN 6  THEN   1 else 0    end ) as  key6 from appries_appries  where serviceDate>='" + startDate + "'  and serviceDate<='" + endDate + "'  " + " ) as temp,appries_dept t1,appries_dept t2" + " where   temp.DeptId=t1.id and  t1.fatherId=t2.id and t2.fatherId in( " + ids + ")" + " ) " + " as A group by datingid, datingname  ";
         sql = "select count(*) from (" + sql + " ) as tempcount";
@@ -60,7 +69,7 @@ public class TotalService extends SuperDao
             return 0;
         }
     }
-    
+
     public List totalWindow(final String datingId, final String startDate, final String endDate, final Integer start, final Integer num) {
         String sql = "select id,serviceDate,DeptId,employeeId, sum(key0)   as key0 , sum(key1)   as key1, sum(key2)   as key2, sum(key3)  as key3, sum(key4)  as key4, sum(key5)   as key5, sum(key6)   as key6 ,windowid,windowname from ( select   temp. id,serviceDate,DeptId,employeeId,   key0,key1 ,key2  ,key3  ,key4 ,key5,key6 ,t1.id as windowid ,t1.name as windowname   from ( select id,serviceDate,DeptId,employeeId, (case keyno WHEN 0  THEN   1 else 0  end ) as key0, (case keyno WHEN 1  THEN   1 else 0    end ) as key1 , (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  , (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  , (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 , (case keyno WHEN 5  THEN   1 else 0    end ) as  key5, (case keyno WHEN 6  THEN   1 else 0    end ) as  key6 from appries_appries  where serviceDate>='" + startDate + "'  and serviceDate<='" + endDate + "'  " + " ) as temp" + ",appries_dept t1  where temp.DeptId=t1.id  and  t1.fatherId in( " + datingId + ") " + " )as A group by windowname";
         if (start != null && num != null) {
@@ -75,9 +84,12 @@ public class TotalService extends SuperDao
             return null;
         }
     }
-    
+
     public int counttotalWindow(final String datingId, final String startDate, final String endDate) {
-        String sql = "select   sum(key0)   as key0 , sum(key1)   as key1, sum(key2)   as key2, sum(key3)  as key3, sum(key4)  as key4, sum(key5)   as key5, sum(key6)   as key6 ,windowid from ( select   temp. id,serviceDate,DeptId,employeeId,   key0,key1 ,key2  ,key3  ,key4 ,key5,key6 ,t1.id as windowid ,t1.name as windowname   from ( select id,serviceDate,DeptId,employeeId, (case keyno WHEN 0  THEN   1 else 0  end ) as key0, (case keyno WHEN 1  THEN   1 else 0    end ) as key1 , (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  , (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  , (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 , (case keyno WHEN 5  THEN   1 else 0    end ) as  key5, (case keyno WHEN 6  THEN   1 else 0    end ) as  key6 from appries_appries  where serviceDate>='" + startDate + "'  and serviceDate<='" + endDate + "'  " + " ) as temp" + ",appries_dept t1  where temp.DeptId=t1.id  and  t1.fatherId in( " + datingId + ") " + " )as A group by windowname ";
+        String sql = "select   sum(key0)   as key0 , sum(key1)   as key1, sum(key2)   as key2, sum(key3)  as key3, sum(key4)  as key4, sum(key5)   as key5, sum(key6)   as key6 ,windowid from ( select   temp. id,serviceDate,DeptId,employeeId,   key0,key1 ,key2  ,key3  ,key4 ,key5,key6 ,t1.id as windowid ,t1.name as windowname   from ( select id,serviceDate,DeptId,employeeId, (case keyno WHEN 0  THEN   1 else 0  end ) as key0, (case keyno WHEN 1  THEN   1 else 0    end ) as key1 , (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  , (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  , (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 , (case keyno WHEN 5  THEN   1 else 0    end ) as  key5, (case keyno WHEN 6  THEN   1 else 0    end ) as  key6 from appries_appries  where serviceDate>='" + startDate + "'  and serviceDate<='" + endDate + "'  " + " ) as temp" + ",appries_dept t1  where temp.DeptId=t1.id  ";
+        if(datingId!=null && !"".equals(datingId))
+            sql += " and  t1.fatherId in( " + datingId + ") ";
+        sql += " )as A group by windowname ";
         sql = "select count(*) from (" + sql + " ) as tempcount";
         System.out.println("\u6211\u81ea\u5df1\u6539\u7684\u65b9\u6cd5");
         try {
@@ -88,7 +100,7 @@ public class TotalService extends SuperDao
             return 0;
         }
     }
-    
+
     public List totalPerson3(final String windowId, final String startDate, final String endDate, final Integer start, final Integer num) {
         String sql = "select t.id,t.serviceDate,t.DeptId, appries_employee.Id as employeeId,IFNULL(t.key0,0) as key0,IFNULL(t.key1,0) as key1,IFNULL(t.key2,0) as key2,IFNULL(t.key3,0) as key3,IFNULL(t.key4,0) as key4,IFNULL(t.key5,0) as key5,IFNULL(t.key6,0) as key6,concat(appries_employee.Name,'')  as employeeName from (select    id,serviceDate,DeptId,employeeId, sum(key0)   as key0, sum(key1)   as key1, sum(key2)   as key2, sum(key3)  as  key3, sum(key4)  as  key4 , sum(key5)   as key5, sum(key6)   as key6 from ( select id,serviceDate,DeptId,employeeId,(case keyno WHEN 0  THEN   1 else 0  end ) as key0, (case keyno WHEN 1  THEN   1 else 0    end ) as key1 ,  (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  , (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  ,  (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 ,  (case keyno WHEN 5  THEN   1 else 0    end ) as  key5,(case keyno WHEN 6  THEN   1 else 0    end ) as  key6  from appries_appries   where DeptId in (" + windowId + ") and serviceDate>='" + startDate + "' " + " and serviceDate <='" + endDate + "') as temp  group by employeeId )" + " as t right JOIN appries_employee ON t.employeeId=appries_employee.Id  ";
         if (start != null && num != null) {
@@ -103,7 +115,7 @@ public class TotalService extends SuperDao
             return null;
         }
     }
-    
+
     public List totalPerson(final String windowId, final String startDate, final String endDate, final Integer start, final Integer num) {
         String sql = "select    id,serviceDate,DeptId,employeeId";
         sql = String.valueOf(sql) + ", sum(key0)   as key0";
@@ -137,7 +149,7 @@ public class TotalService extends SuperDao
             return null;
         }
     }
-    
+
     public List totalPerson(final String employeeId, final String startDate, final String endDate) {
         String sql = "select    id,serviceDate,DeptId,employeeId";
         sql = String.valueOf(sql) + ", sum(key0)   as key0";
@@ -173,7 +185,7 @@ public class TotalService extends SuperDao
             return null;
         }
     }
-    
+
     public int countTotalPerson(final String windowId, final String startDate, final String endDate) {
         String sql = "select   employeeId";
         sql = String.valueOf(sql) + ", sum(key0)   as key0";
@@ -203,7 +215,7 @@ public class TotalService extends SuperDao
             return 0;
         }
     }
-    
+
     public int countTotalBusiness(final String deptIds, final String startDate, final String endDate) {
         String sql = "select   businessType";
         sql = String.valueOf(sql) + ", sum(key0)   as key0";
@@ -233,7 +245,7 @@ public class TotalService extends SuperDao
             return 0;
         }
     }
-    
+
     public List totalBusiness(final String deptIds, final String startDate, final String endDate, final Integer start, final Integer num) {
         String sql = "select    id,serviceDate,DeptId,employeeId,businessType";
         sql = String.valueOf(sql) + ", sum(key0)   as key0";
@@ -266,7 +278,7 @@ public class TotalService extends SuperDao
             return null;
         }
     }
-    
+
     public List totalD(final String startDate, final String endDate, final String ids) {
         String sql = "select    id,serviceDate,DeptId,employeeId,businessType";
         sql = String.valueOf(sql) + ", sum(key0)   as key0";
@@ -297,7 +309,7 @@ public class TotalService extends SuperDao
             return null;
         }
     }
-    
+
     public List totalSection(final String deptIds, final String startDate, final String endDate, final Integer start, final Integer num) {
         String sql = "select id,serviceDate,DeptId,employeeId, sum(key0)   as key0 , sum(key1)   as key1, sum(key2)   as key2, sum(key3)  as key3, sum(key4)  as key4, sum(key5)   as key5, sum(key6)   as key6  , windowid, windowname from ( select   temp. id,serviceDate,DeptId,employeeId,   key0,key1 ,key2  ,key3  ,key4 ,key5,key6 ,t1.id as windowid ,t1.name as windowname       from ( select id,serviceDate,DeptId,employeeId, (case keyno WHEN 0  THEN   1 else 0  end ) as key0, (case keyno WHEN 1  THEN   1 else 0    end ) as key1 , (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  , (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  , (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 , (case keyno WHEN 5  THEN   1 else 0    end ) as  key5, (case keyno WHEN 6  THEN   1 else 0    end ) as  key6 from appries_appries  where serviceDate>='" + startDate + "'  and serviceDate<='" + endDate + "'   ) as temp,appries_dept t1 where   temp.DeptId=t1.id   and t1.id in( " + deptIds + ") )  as A group by trim( windowname   )";
         if (start != null && num != null) {
@@ -311,7 +323,7 @@ public class TotalService extends SuperDao
             return null;
         }
     }
-    
+
     public int countTotalSection(final String deptIds, final String startDate, final String endDate) {
         String sql = "select id,serviceDate,DeptId,employeeId, sum(key0)   as key0 , sum(key1)   as key1, sum(key2)   as key2, sum(key3)  as key3, sum(key4)  as key4, sum(key5)   as key5, sum(key6)   as key6  , windowid, windowname from ( select   temp. id,serviceDate,DeptId,employeeId,   key0,key1 ,key2  ,key3  ,key4 ,key5,key6 ,t1.id as windowid ,t1.name as windowname       from ( select id,serviceDate,DeptId,employeeId, (case keyno WHEN 0  THEN   1 else 0  end ) as key0, (case keyno WHEN 1  THEN   1 else 0    end ) as key1 , (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  , (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  , (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 , (case keyno WHEN 5  THEN   1 else 0    end ) as  key5, (case keyno WHEN 6  THEN   1 else 0    end ) as  key6 from appries_appries  where serviceDate>='" + startDate + "'  and serviceDate<='" + endDate + "'   ) as temp,appries_dept t1 where   temp.DeptId=t1.id   and t1.id in( " + deptIds + ") )  as A group by trim( windowname   )";
         sql = "select count(*) from (" + sql + " ) as tempcount";
@@ -323,7 +335,7 @@ public class TotalService extends SuperDao
             return 0;
         }
     }
-    
+
     public Map totalPersonM7(final String cardNum, final String startDate, final String endDate) {
         final String sql = "select t.key0,t.key1,t.key2,t.key3,t.key4,t.key5,t.key6 from (select  employeeId, sum(key0)   as key0, sum(key1)   as key1, sum(key2)   as key2, sum(key3)  as  key3, sum(key4)  as  key4 , sum(key5)   as key5, sum(key6)   as key6 from ( select employeeId,(case keyno WHEN 0  THEN   1 else 0  end ) as key0,  (case keyno WHEN 1  THEN   1 else 0    end ) as key1 ,  (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  ,  (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  ,  (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 ,  (case keyno WHEN 5  THEN   1 else 0    end ) as  key5,(case keyno WHEN 6  THEN   1 else 0    end ) as  key6  from appries_appries   where serviceDate>='" + startDate + "' and serviceDate <='" + endDate + "') as temp  group by employeeId ) as t,appries_employee where t.employeeId=appries_employee.Id  and appries_employee.cardNum='" + cardNum + "'";
         try {
@@ -334,7 +346,7 @@ public class TotalService extends SuperDao
             return null;
         }
     }
-    
+
     public List totalWindowVideo(final String datingId, final String startDate, final String endDate, final Integer start, final Integer num) {
         final String sql = "select id,serviceDate,DeptId,employeeId,videofile,windowid,windowname from ( select   temp. id,serviceDate,DeptId,employeeId,videofile, t1.id as windowid ,t1.name as windowname   from ( select id,serviceDate,DeptId,employeeId,videofile from appries_appries  where serviceDate>='" + startDate + "'  and serviceDate<='" + endDate + "'  " + " ) as temp" + ",appries_dept t1  where temp.DeptId=t1.id  and  t1.fatherId in( " + datingId + ") " + " )as A";
         System.out.println("videosql=" + sql);
@@ -347,7 +359,7 @@ public class TotalService extends SuperDao
             return null;
         }
     }
-    
+
     public int countEmployeeAll() {
         final String sql = "select count(*) from appries_employee";
         try {

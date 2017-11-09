@@ -63,7 +63,7 @@ td {
 						style="width: 50%; height: 50%; min-height: 50%;border:0px;padding:5px;">
 						<div class="" style="height: 96%;">
 							<div class="neirong_lanmu_top">
-								<span class="px13 left"><s:text name="sundyn.main.title1" />11</span>
+								<span class="px13 left"><s:text name="sundyn.main.title1" /></span>
 								<span class="right"><a href="#"
 									onclick="indexDetail('${deptIds}','${mk}')">&nbsp;&nbsp;<s:text
 											name="sundyn.main.more" /></a></span>
@@ -155,7 +155,7 @@ td {
 						<div style="height: 96%;">
 							<div class="neirong_lanmu_top">
 								<span class="px13 left"><s:text name="sundyn.main.title5" /></span>
-								<span class="right"><a href="analyseContentRate.action"><s:text
+								<span class="right"><a href="#" onclick="addTabMenu('<s:text name="sundyn.main.title5" />','analyseContentRate.action','',true)"><s:text
 											name="sundyn.main.more" /></a></span>
 							</div>
 							<div style="height: 100%;" class="kuang">

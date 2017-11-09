@@ -1,6 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/JSClass/FusionCharts.jsp"%>
+<%@taglib prefix="s" uri="/struts-tags"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -43,7 +44,7 @@ o\:* {
 		<script type="text/javascript"
 			src="js/my_<s:text name='sundyn.language' />.js"></script>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link rel="stylesheet" href="/css/vip.css" type="text/css">
+		<link rel="stylesheet" href="../css/vip.css" type="text/css">
 		<script language="JavaScript"
 			src="<%=basePath%>/JSClass/FusionCharts.js"></script>
 		<base href="<%=basePath%>">
@@ -58,7 +59,7 @@ o\:* {
 			String strXML1 = (String) request.getAttribute("strXML1");
 			if (strXML1 != null && !"".equals(strXML1)) {
 				String chartHTML1 = createChartHTML(
-						"/pingjia2/Charts/FCF_Column3D.swf", "", strXML1, "",
+						"Charts/FCF_Column3D.swf", "", strXML1, "",
 						750, 420, false);
 		%>
 		<span> <%=chartHTML1%> </span>
@@ -74,7 +75,7 @@ o\:* {
 			String strXML = (String) request.getAttribute("strXML");
 			if (strXML != null && !"".equals(strXML)) {
 				String chartHTML = createChartHTML(
-						"/pingjia2/Charts/FCF_Column2D.swf", "", strXML, "",
+						"Charts/FCF_Column2D.swf", "", strXML, "",
 						750, 420, false);
 		%>
 		<span> <%=chartHTML%> </span>
@@ -83,7 +84,7 @@ o\:* {
 		%>
 		<div align="center">
 			<a href="javascript:void(0)" onclick=
-	javascript: window.print();;
+			javascript: window.print();;
 ></a>
 		</div>
 	</body>

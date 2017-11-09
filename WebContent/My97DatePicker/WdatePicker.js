@@ -3,7 +3,7 @@
  * License: http://www.my97.net/dp/license.asp
  */
 var $dp,WdatePicker;(function(){var $={
-$langList:[{name:"en",charset:"UTF-8"}],
+$langList:[{name:"zh-cn",charset:"UTF-8"}],
 $skinList:[
 	{name:"default",charset:"gb2312"},
 	{name:"whyGreen",charset:"gb2312"},
