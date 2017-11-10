@@ -1,4 +1,4 @@
-<%@ page pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
@@ -46,12 +46,25 @@ o\:* {
 	<body>
 		<iframe src="piedata.xml" style="display: none;"></iframe>
 		<input type="hidden" name="deptIds" id="deptIds" value="${deptIds}" />
-		<input type="hidden" name="startDate" id="startDate"
-			value="${startDate}" />
-		<input type="hidden" name="endDate" id="endDate" value="${endDate}" />
 		<input type="hidden" name="keys" id="keys" value="${keys}" />
 		<input type="hidden" name="id" id="id" value="${id}" />
 		<div id="man_zone">
+			<table width="100%" height="51" border="0" cellpadding="0" cellspacing="0" style="border-color:#FFFFFF;">
+				<tr>
+					<td align="left" style="border-color:#FFFFFF;">
+						<s:text name='sundyn.query.selectEmployee'/>
+						<input type="text" class="input_comm" name="keyword" id="keyword" value="${employeeinfo.name}" style="vertical-align: middle;width:130px;"/>
+						<img  src="<s:text name='sundyn.pic.query'/>" onclick="queryEmployee()" class="hand"  style="vertical-align: middle;"/>
+						<img  src="<s:text name='sundyn.pic.clear'/>" onclick="clearEmployee()" class="hand"  style="vertical-align: middle;"/>
+						<s:text name='sundyn.total.startDate'/>
+						<input type="text" class="input_comm" id="startDate" <s:text name="sundyn.language.calendar.setDay"/> onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+						<s:text name='sundyn.total.endDate'/>
+						<input type="text" class="input_comm" id="endDate" <s:text name="sundyn.language.calendar.setDay"/> onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+						<img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" onclick="queryEmployeeDeal()" class="hand" style="vertical-align: middle;"/>
+						<img src="<s:text name='sundyn.query.pic.exportExcel'/>" width="100" height="25" onclick="queryExcel()" class="hand" style="vertical-align: middle;"/>
+					</td>
+				</tr>
+			</table>
 			<div class="sundyn_main">
 				<div class="fengge">
 					&nbsp;
@@ -172,9 +185,7 @@ o\:* {
 					<div class="sundyn_rows">
 						${pager.pageTextCn}
 					</div>
-					<div class="quicklyButton"
-						style="background-image: url('<s:text name="sundyn.query.pic.exportExcel"/>')"
-						onclick="queryExcel()"></div>
+
 					<%--					<div class="quicklyButton" onclick="quicklyAddDialog()"></div>--%>
 				</c:if>
 			</div>
@@ -183,7 +194,7 @@ o\:* {
 				String strXML1 = (String) request.getAttribute("strXML1");
 				if (strXML1 != null && !"".equals(strXML1)) {
 					String chartHTML1 = createChartHTML(
-							"/pingjia2/Charts/Pie3D.swf", "", strXML1, "", 600,
+							"Charts/Pie3D.swf", "", strXML1, "", 600,
 							350, false);
 			%>
 			<span> <%=chartHTML1%> </span>

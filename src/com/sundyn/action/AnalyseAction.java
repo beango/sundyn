@@ -1,15 +1,20 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.service.*;
-import org.apache.struts2.*;
-import net.sf.json.*;
-import javax.servlet.http.*;
+import com.opensymphony.xwork2.ActionSupport;
+import com.sundyn.service.AnalyseService;
+import com.sundyn.service.DeptService;
+import com.sundyn.service.KeyTypeService;
+import com.sundyn.service.PowerService;
+import com.sundyn.util.ColorHelper;
+import com.sundyn.util.SundynSet;
+import net.sf.json.JSONObject;
+import org.apache.struts2.ServletActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
-import java.text.*;
-import com.sundyn.util.*;
-import java.sql.*;
 
 public class AnalyseAction extends ActionSupport
 {
@@ -25,11 +30,11 @@ public class AnalyseAction extends ActionSupport
     private PowerService powerService;
     private String startDate;
     private String type;
-    
+
     public String analyseContent() {
         return "success";
     }
-    
+
     public String analyseContentAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String type = request.getParameter("type");
@@ -44,14 +49,17 @@ public class AnalyseAction extends ActionSupport
         }
         final String contentId = this.getContentId();
         this.chartList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, type, this.getDeptIds());
-        final List tempList = new ArrayList();
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<graph caption='满意量走势分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(8);
-                chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                tempList.add(chartM);
+                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
+                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else if (type.equals("month")) {
@@ -60,7 +68,7 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(5, 7);
                 chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else if (type.equals("JiDu")) {
@@ -68,8 +76,7 @@ public class AnalyseAction extends ActionSupport
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(5, 7);
-                chartM.put("serviceDate", String.valueOf(day) + "\u5b63\u5ea6");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u5b63\u5ea6" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else {
@@ -77,19 +84,14 @@ public class AnalyseAction extends ActionSupport
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(0, 4);
-                chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
-        this.msg = this.getText("sundyn.analyse.info2", new String[] { this.startDate, this.endDate });
-        final Map<String, Object> m = new HashMap<String, Object>();
-        m.put("list", tempList);
-        m.put("msg", this.msg);
-        final JSONObject json = JSONObject.fromObject((Object)m);
-        request.setAttribute("json", (Object)json);
+        strXML1.append("</graph>");
+        request.setAttribute("strXML1", strXML1.toString());
         return "success";
     }
-    
+
     public String analyseContentAjaxDay() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String num = request.getParameter("num");
@@ -117,11 +119,11 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String analyseContentRate() {
         return "success";
     }
-    
+
     public String analyseContentRateAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String type = request.getParameter("type");
@@ -175,7 +177,7 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String analyseContentRateAjaxDay() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String num = request.getParameter("num");
@@ -206,7 +208,7 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String analyseDept() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -218,7 +220,7 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("deptList", (Object)deptList);
         return "success";
     }
-    
+
     public String analyseDeptAjax123() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
@@ -271,7 +273,7 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String analyseDeptContentAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
@@ -324,7 +326,7 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String analyseDeptContentRateAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
@@ -380,11 +382,11 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String analyseEmployee() throws Exception {
         return "success";
     }
-    
+
     public String analyseEmployeeAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String employeeId = request.getParameter("employeeId");
@@ -436,7 +438,7 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String analyseEmployeeContentAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String employeeId = request.getParameter("employeeId");
@@ -488,7 +490,7 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String analyseEmployeeContentRateAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String employeeId = request.getParameter("employeeId");
@@ -543,11 +545,11 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String analyseTotal() {
         return "success";
     }
-    
+
     public String analyseTotalAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String type = request.getParameter("type");
@@ -598,7 +600,61 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
+    public String analyseTotalAjax2() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        String type = request.getParameter("type");
+        if (this.startDate == null) {
+            this.startDate = "";
+        }
+        if (this.endDate == null) {
+            this.endDate = "";
+        }
+        if (type == null) {
+            type = "day";
+        }
+        final String allId = this.getAllId();
+        this.chartList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, type, this.getDeptIds());
+
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<graph caption='业务总量走势分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+
+        if (type.equals("day")) {
+
+            for (int i = 0; i < chartList.size(); ++i) {
+                final Map chartM = (Map) this.chartList.get(i);
+                String day = chartM.get("serviceDate").toString();
+                System.out.println(day);
+                day = day.substring(8);
+                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
+                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+            }
+        }
+        else if (type.equals("month")) {
+            for (int i = 0; i < this.chartList.size(); ++i) {
+                final Map chartM = (Map) this.chartList.get(i);
+                String day = chartM.get("serviceDate").toString();
+                day = day.substring(5, 7);
+                //chartM.put("serviceDate", String.valueOf(day) + "\u6708");
+                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+            }
+        }
+        else {
+            for (int i = 0; i < this.chartList.size(); ++i) {
+                final Map chartM = (Map) this.chartList.get(i);
+                String day = chartM.get("serviceDate").toString();
+                day = day.substring(0, 4);
+                chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
+                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+            }
+        }
+        strXML1.append("</graph>");
+        request.setAttribute("strXML1", strXML1.toString());
+
+        return "success";
+    }
+
     public String analyseTotalAjaxDay() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String num = request.getParameter("num");
@@ -626,7 +682,7 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     private String getAllId() throws Exception {
         this.k7 = this.isK7();
         this.mls = this.keyTypeService.findByApprieserId(1, 1, "on");
@@ -664,19 +720,19 @@ public class AnalyseAction extends ActionSupport
         }
         return result;
     }
-    
+
     public AnalyseService getAnalyseService() {
         return this.analyseService;
     }
-    
+
     public List getBmls() {
         return this.bmls;
     }
-    
+
     public List getChartList() {
         return this.chartList;
     }
-    
+
     private String getContentId() throws Exception {
         this.k7 = this.isK7();
         this.mls = this.keyTypeService.findByApprieserId(1, 1, "on");
@@ -700,27 +756,27 @@ public class AnalyseAction extends ActionSupport
         }
         return result;
     }
-    
+
     public DeptService getDeptService() {
         return this.deptService;
     }
-    
+
     public String getEndDate() {
         return this.endDate;
     }
-    
+
     public KeyTypeService getKeyTypeService() {
         return this.keyTypeService;
     }
-    
+
     public List getMls() {
         return this.mls;
     }
-    
+
     public String getMsg() {
         return this.msg;
     }
-    
+
     private String getNoContentId() throws Exception {
         this.k7 = this.isK7();
         this.bmls = this.keyTypeService.findByApprieserId(1, 1, "");
@@ -744,19 +800,19 @@ public class AnalyseAction extends ActionSupport
         }
         return result;
     }
-    
+
     public PowerService getPowerService() {
         return this.powerService;
     }
-    
+
     public String getStartDate() {
         return this.startDate;
     }
-    
+
     public String getType() {
         return this.type;
     }
-    
+
     public boolean isK7() {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         try {
@@ -768,7 +824,7 @@ public class AnalyseAction extends ActionSupport
         }
         return this.k7;
     }
-    
+
     public List rate(final List contentList, final List totalList) {
         final List rsList = new ArrayList();
         boolean flag = true;
@@ -799,55 +855,55 @@ public class AnalyseAction extends ActionSupport
         }
         return rsList;
     }
-    
+
     public void setAnalyseService(final AnalyseService analyseService) {
         this.analyseService = analyseService;
     }
-    
+
     public void setBmls(final List bmls) {
         this.bmls = bmls;
     }
-    
+
     public void setChartList(final List chartList) {
         this.chartList = chartList;
     }
-    
+
     public void setDeptService(final DeptService deptService) {
         this.deptService = deptService;
     }
-    
+
     public void setEndDate(final String endDate) {
         this.endDate = endDate;
     }
-    
+
     public void setK7(final boolean k7) {
         this.k7 = k7;
     }
-    
+
     public void setKeyTypeService(final KeyTypeService keyTypeService) {
         this.keyTypeService = keyTypeService;
     }
-    
+
     public void setMls(final List mls) {
         this.mls = mls;
     }
-    
+
     public void setMsg(final String msg) {
         this.msg = msg;
     }
-    
+
     public void setPowerService(final PowerService powerService) {
         this.powerService = powerService;
     }
-    
+
     public void setStartDate(final String startDate) {
         this.startDate = startDate;
     }
-    
+
     public void setType(final String type) {
         this.type = type;
     }
-    
+
     public String getDeptIds() throws SQLException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -857,11 +913,11 @@ public class AnalyseAction extends ActionSupport
         final String ids = this.deptService.findChildALLStr123(deptIdGroup);
         return ids;
     }
-    
+
     public String analyseContentD() {
         return "success";
     }
-    
+
     public String analyseContentDAjaxDay() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String num = request.getParameter("num");
@@ -891,7 +947,7 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String analyseContentDAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String type = request.getParameter("type");
@@ -939,11 +995,11 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String aa() {
         return "success";
     }
-    
+
     public String analyseSection() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -955,7 +1011,7 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("deptList", (Object)deptList);
         return "success";
     }
-    
+
     public String analyseSectionAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String sectionName = request.getParameter("sectionName");
@@ -1007,7 +1063,7 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String analyseSectionContentAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String sectionName = request.getParameter("sectionName");
@@ -1059,7 +1115,7 @@ public class AnalyseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String analyseSectionContentRateAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String sectionName = request.getParameter("sectionName");

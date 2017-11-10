@@ -35,6 +35,10 @@
 			method="analyseTotalAjax">
 			<result name="success">/analyse/json.jsp</result>
 		</action>
+		<action name="analyseTotalAjax2" class="analyseAction"
+				method="analyseTotalAjax2">
+			<result name="success">/analyse/json2.jsp</result>
+		</action>
 		<!-- 满意量分析-->
 		<action name="analyseContent" class="analyseAction"
 			method="analyseContent">
@@ -46,7 +50,7 @@
 		</action>
 		<action name="analyseContentAjax" class="analyseAction"
 			method="analyseContentAjax">
-			<result name="success">/analyse/json.jsp</result>
+			<result name="success">/analyse/json2.jsp</result>
 		</action>
 		<!-- 满意率 -->
 		<action name="analyseContentRate" class="analyseAction"
@@ -66,7 +70,7 @@
 			method="analyseDept">
 			<result name="success">/analyse/dept.jsp</result>
 		</action>
-		
+
 		<action name="analyseDeptAjax123" class="analyseAction"
 			method="analyseDeptAjax123">
 			<result name="success">/analyse/json.jsp</result>

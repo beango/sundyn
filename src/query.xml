@@ -33,9 +33,9 @@
 			<result name="camera">/query/deptDeal_camera.jsp</result>
 			<result name="success">/query/deptDeal.jsp</result>
 		</action>
-		
+
 		<!-- 生成对比表 -->
-		<!--  
+		<!--
 		<action name="duibiAction" class="queryAction" method="jiGouGongZuoiLiang">
 		   <result name="success">/query/duibitu.jsp</result>
 		</action>
@@ -49,7 +49,7 @@
 			method="queryPeopleyAjax">
 			<result name="success">/query/peopleAjax.jsp</result>
 		</action>
-	
+
 		<action name="queryPeopleyAjax2" class="queryAction"
 			method="queryPeopleyAjax2">
 			<result name="success">/query/peopleAjax2.jsp</result>
@@ -106,7 +106,16 @@
 			<result name="success">/query/zhDeal.jsp</result>
 			<result name="camera">/query/zhDeal_camera.jsp</result>
 			<!-- 2012-01-11 -->
-			<!--  
+			<!--
+			<result name="detailzonghe">/query/detailzonghe.jsp</result>
+			-->
+		</action>
+		<action name="queryZhDealAjax" class="queryAction"
+				method="queryZhDealAjax">
+			<result name="success">/query/zhDealAjax.jsp</result>
+			<result name="camera">/query/zhDeal_camera.jsp</result>
+			<!-- 2012-01-11 -->
+			<!--
 			<result name="detailzonghe">/query/detailzonghe.jsp</result>
 			-->
 		</action>
@@ -150,17 +159,17 @@
 			<result name="camera">/query/jobNumDeal_camera.jsp</result>
 			<result name="success">/query/jobNumDeal.jsp</result>
 		</action>
-		
+
 		<action name="queryExcel" class="queryAction"
 			method="queryExcel">
-			<result name="success" type="stream">   
-		        <param name="contentType">application/vnd.ms-excel</param>   
-		        <param name="inputName">excel</param>   
-		        <param name="contentDisposition">attachment;filename="${fileName}"</param>   
-		        <param name="bufferSize">4096</param>   
-		    </result>   
+			<result name="success" type="stream">
+		        <param name="contentType">application/vnd.ms-excel</param>
+		        <param name="inputName">excel</param>
+		        <param name="contentDisposition">attachment;filename="${fileName}"</param>
+		        <param name="bufferSize">4096</param>
+		    </result>
 		</action>
-	
+
 	</package>
 	<package name="queryOther" extends="struts-default">
 		<action name="queryEmployee" class="queryAction"

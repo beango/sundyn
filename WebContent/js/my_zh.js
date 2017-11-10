@@ -10,6 +10,24 @@ String.prototype.trim= function(){
     // 用空字符串替代。
     return this.replace(/(^\s*)|(\s*$)/g, "");
 }
+Date.prototype.format = function (format) {
+    var o = {
+        "M+": this.getMonth() + 1, //month
+        "d+": this.getDate(), //day
+        "h+": this.getHours(), //hour
+        "m+": this.getMinutes(), //minute
+        "s+": this.getSeconds(), //second
+        "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+        "S": this.getMilliseconds() //millisecond
+    }
+    if (/(y+)/.test(format)) format = format.replace(RegExp.$1,
+        (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o) if (new RegExp("(" + k + ")").test(format))
+        format = format.replace(RegExp.$1,
+            RegExp.$1.length == 1 ? o[k] :
+                ("00" + o[k]).substr(("" + o[k]).length));
+    return format;
+}
 function quicklyDel(data) {
 	dojo.xhrGet({url:"quicklyDel.action", content:{id:data}, load:function (resp, ioArgs) {
 		dojo.byId("man_zone").innerHTML = resp;
@@ -111,7 +129,6 @@ function deptExistMac(data){
 	}});
  }
 
-
 function queryEmployee() {
 	var keyword = document.getElementById("keyword").value;
 	dojo.xhrPost({url:"queryPeopleyAjax.action", content:{keyword:keyword}, load:function (resp, ioArgs) {
@@ -165,8 +182,9 @@ function queryEmployeeDeal() {
 	}
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
+	var keyword = encodeURI(encodeURI(document.getElementById("keyword").value));
 	document.getElementById("keyword").value="";
-	window.location.href = "queryPeopleyDeal.action?id=" + id + "&startDate=" + startDate + "&endDate=" + endDate;
+	window.location.href = "queryPeopleyDeal.action?id=" + id + "&keyword=" + keyword + "&startDate=" + startDate + "&endDate=" + endDate;
 }
 // 显示按工号查询结果
 function queryEmployeeByCardNumDeal() {
@@ -257,49 +275,58 @@ function queryZhDeal() {
 	var keys = getAllKey();
 	document.location.href = "queryZhDeal.action?id=" + employeeId + "&startDate=" + startDate + "&endDate=" + endDate + "&deptIds=" + deptIds + "&keys=" + keys;
 }
+
+function queryZhDeal1() {
+    var employeeId = document.getElementById("id").value;
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    var deptIds = getAllDept();
+    var keys = getAllKey();
+    //document.location.href = "queryZhDeal.action?id=" + employeeId + "&startDate=" + startDate + "&endDate=" + endDate + "&deptIds=" + deptIds + "&keys=" + keys;
+    dojo.xhrPost({url:"queryZhDealAjax.action?id=" + employeeId + "&startDate=" + startDate + "&endDate=" + endDate + "&deptIds=" + deptIds + "&keys=" + keys, content:{num:0}, load:function (resp, ioArgs) {
+        $("#queryZhDealAjaxContent").html(resp);
+    }});
+}
+
 // 决策分析
 // 业务量
 function analyseTotalAjaxDay(data) {
-	dojo.xhrPost({url:"analyseTotalAjaxDay.action", content:{num:data}, load:function (resp, ioArgs) {
-		var json =  resp.parseJSON();
-		document.getElementById("msg").innerHTML=json.msg;
-		var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);
- 	}});
+    var now = new Date();
+    var nowStr = now.format("yyyy-MM-dd");
+    $("#endDate").val(nowStr + " 23:59:59");
+    now.setDate(now.getDate()-data);
+    $("#startDate").val(now.format("yyyy-MM-dd") + " 00:00:00");
+    analyseTotalAjax();
 }
 
 function analyseTotalAjax() {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var type = document.getElementById("type").value;
-	dojo.xhrPost({url:"analyseTotalAjax.action", content:{startDate:startDate, endDate:endDate, type:type}, load:function (resp, ioArgs) {
-		var json =  resp.parseJSON();
-		var chart =json.list;
-	 	document.getElementById("msg").innerHTML=json.msg;
-	 	var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);
-	}});
+	dojo.xhrPost({url:"analyseTotalAjax2.action", content:{startDate:startDate, endDate:endDate, type:type}, load:function (resp, ioArgs) {
+		$("#chartcontainer").html(resp);
+    }});
 }
 // 满意量
 function analyseContentAjaxDay(data) {
-	dojo.xhrPost({url:"analyseContentAjaxDay.action", content:{num:data}, load:function (resp, ioArgs) {
-		var json =  resp.parseJSON();
-		document.getElementById("msg").innerHTML=json.msg;
-		var chart =json.list;
- 		var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);
-	}});
+    var now = new Date();
+    var nowStr = now.format("yyyy-MM-dd");
+    $("#endDate").val(nowStr + " 23:59:59");
+    now.setDate(now.getDate()-data);
+    $("#startDate").val(now.format("yyyy-MM-dd") + " 00:00:00");
+    analyseContentAjax();
 }
 function analyseContentAjax() {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var type = document.getElementById("type").value;
 	dojo.xhrPost({url:"analyseContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type}, load:function (resp, ioArgs) {
-		var json =  resp.parseJSON();
+		/*var json =  resp.parseJSON();
 		var chart =json.list;
 	 	document.getElementById("msg").innerHTML=json.msg;
 	 	var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);
+ 	 	columnChat.columnChart(charStr);*/
+        $("#chartcontainer").html(resp);
 	}});
 }
 // 满意率

@@ -17,6 +17,7 @@ public class AnalyseService extends SuperDao
             sql = String.valueOf(sql) + " group by left(JieshouTime,4)";
         }
         try {
+            System.out.println("AnalyseTotal-SQL:" + sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
@@ -24,7 +25,7 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
-    
+
     public List AnalyseContent(final String startDate, final String endDate, final String contentId, final String analyseType, final String deptIds) {
         String sql = "select count(*) as num, left(JieshouTime,10) as serviceDate from appries_appries where keyno in (" + contentId + ") and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' and deptId in(" + deptIds + ") ";
         if (analyseType.equals("day")) {
@@ -44,7 +45,7 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
-    
+
     public List AnalyseNotContent(final String startDate, final String endDate, final String analyseType) {
         String sql = "select count(*) as num, left(JieshouTime,10) as serviceDate from appries_appries where keyno in (2,3,4,5,6) JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' ";
         if (analyseType.equals("day")) {
@@ -64,7 +65,7 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
-    
+
     public List AnalyseDeptTotal(final String deptId, final String startDate, final String endDate, final String allId, final String analyseType) {
         String sql = "select count(*) as num, left(JieshouTime,10) as serviceDate from appries_appries where DeptId in (" + deptId + ") and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' and keyno in (" + allId + ")  ";
         if (analyseType.equals("day")) {
@@ -84,7 +85,7 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
-    
+
     public List AnalyseDeptContent(final String deptId, final String startDate, final String endDate, final String contentId, final String analyseType) {
         String sql = "select count(*) as num, left(JieshouTime,10) as serviceDate from appries_appries where DeptId in (" + deptId + ") and keyno in (0,1) and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' and  keyno in (" + contentId + ")  ";
         if (analyseType.equals("day")) {
@@ -104,7 +105,7 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
-    
+
     public List AnalyseDeptNotContent(final String deptId, final String startDate, final String endDate, final String analyseType) {
         String sql = "select count(*) as num, left(JieshouTime,10) as serviceDate from appries_appries where DeptId in (" + deptId + ") and keyno in (2,3,4,5,6) JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' ";
         if (analyseType.equals("day")) {
@@ -124,7 +125,7 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
-    
+
     public List AnalyseSectionTotal(final String sectionName, final String startDate, final String endDate, final String allId, final String analyseType) {
         String sql = "select count(*) as num, left(JieshouTime,10) as serviceDate from appries_appries where deptId in(select id from appries_dept where name ='" + sectionName + "') and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' and keyno in (" + allId + ")  ";
         if (analyseType.equals("day")) {
@@ -144,7 +145,7 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
-    
+
     public List AnalyseSectionContent(final String sectionName, final String startDate, final String endDate, final String contentId, final String analyseType) {
         String sql = "select count(*) as num, left(JieshouTime,10) as serviceDate from appries_appries where deptId in(select id from appries_dept where name ='" + sectionName + "')  and keyno in (0,1) and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' and  keyno in (" + contentId + ")  ";
         if (analyseType.equals("day")) {
@@ -164,7 +165,7 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
-    
+
     public List AnalyseSectionNotContent(final String sectionName, final String startDate, final String endDate, final String analyseType) {
         String sql = "select count(*) as num, left(JieshouTime,10) as serviceDate from appries_appries where deptId in(select id from appries_dept where name ='" + sectionName + "')  and keyno in (2,3,4,5,6) JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' ";
         if (analyseType.equals("day")) {
@@ -184,7 +185,7 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
-    
+
     public List AnalyseEmployeeTotal(final String employeeId, final String startDate, final String endDate, final String allId, final String analyseType) {
         String sql = "select count(*) as num, left(JieshouTime,10) as serviceDate from appries_appries where EmployeeId in (" + employeeId + ") and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' and  keyno in (" + allId + ")   ";
         if (analyseType.equals("day")) {
@@ -204,7 +205,7 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
-    
+
     public List AnalyseEmployeeContent(final String employeeId, final String startDate, final String endDate, final String contentId, final String analyseType) {
         String sql = "select count(*) as num, left(JieshouTime,10) as serviceDate from appries_appries where EmployeeId in (" + employeeId + ") and keyno in (0,1) and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "'  and  keyno in (" + contentId + ")  ";
         if (analyseType.equals("day")) {
@@ -224,7 +225,7 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
-    
+
     public List AnalyseEmployeeNotContent(final String employeeId, final String startDate, final String endDate, final String analyseType) {
         String sql = "select count(*) as num, left(JieshouTime,10) as serviceDate from appries_appries where EmployeeId in (" + employeeId + ") and keyno in (2,3,4,5,6) JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' ";
         if (analyseType.equals("day")) {
@@ -244,7 +245,7 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
-    
+
     public List AnalyseContentD(final String startDate, final String endDate, final String allId, final String analyseType, final String ids) {
         String sql = "select    serviceDate ";
         sql = String.valueOf(sql) + ", sum(key0)   as key0";

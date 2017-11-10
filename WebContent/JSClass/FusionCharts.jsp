@@ -33,7 +33,7 @@
 			strDataURL = strDataURL + "?FCCurrTime=" + strNow;
 		    }
 		    encodedURL = response.encodeURL(strDataURL);
-	
+
 		}
 		return encodedURL;
     }
@@ -61,23 +61,23 @@
 		strBuf.append("<!--START Script Block for Chart -->\n");
 		strBuf.append("\t\t<div id='" + chartId + "Div' align='center'>\n");
 		strBuf.append("\t\t\t\tChart.\n");
-	
+
 		/*The above text "Chart" is shown to users before the chart has started loading
 		 (if there is a lag in relaying SWF from server). This text is also shown to users
 		 who do not have Flash Player installed. You can configure it as per your needs.*/
-	
+
 		strBuf.append("\t\t</div>\n");
-	
+
 		/*Now, we render the chart using FusionCharts Class. Each chart's instance (JavaScript) Id
 		 is named as chart_"chartId".*/
-	
+
 		strBuf.append("\t\t<script type='text/javascript'>\n");
 		//Instantiate the Chart
 		Boolean registerWithJSBool = new Boolean(registerWithJS);
 		Boolean debugModeBool = new Boolean(debugMode);
 		int regWithJSInt = boolToNum(registerWithJSBool);
 		int debugModeInt = boolToNum(debugModeBool);
-	
+
 		strBuf.append("\t\t\t\tvar chart_" + chartId + " = new FusionCharts('"
 			+ chartSWF + "', '" + chartId + "', '" + chartWidth + "', '"
 			+ chartHeight + "', '" + debugModeInt + "', '" + regWithJSInt
@@ -109,15 +109,20 @@
      * @param chartHeight - Intended height for the chart (in pixels)
      * @param debugMode - Whether to start the chart in debug mode
      */
+	public String createChartHTML(String chartSWF, String strURL,
+								  String strXML, String chartId, int chartWidth, int chartHeight,
+								  boolean debugMode){
+		return createChartHTML(chartSWF, strURL, strXML, chartId, chartWidth+"", chartHeight, debugMode);
+	}
 
     public String createChartHTML(String chartSWF, String strURL,
-	    String strXML, String chartId, int chartWidth, int chartHeight,
-	    boolean debugMode) { 
+	    String strXML, String chartId, String chartWidth, int chartHeight,
+	    boolean debugMode) {
 		/*Generate the FlashVars string based on whether dataURL has been provided
 	     or dataXML.*/
 		String strFlashVars = "";
 		Boolean debugModeBool = new Boolean(debugMode);
-	
+
 		if (strXML.equals("")) {
 		    //DataURL Mode
 		    strFlashVars = "chartWidth=" + chartWidth + "&chartHeight="
@@ -130,8 +135,8 @@
 			    + "&dataXML=" + strXML + "";
 		}
 		StringBuffer strBuf = new StringBuffer();
-	
-		// START Code Block for Chart  
+
+		// START Code Block for Chart
 		strBuf.append("\t\t<!--START Code Block for Chart-->\n");
 		strBuf
 			.append("\t\t\t\t<object classid='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000' codebase='http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0' width='"

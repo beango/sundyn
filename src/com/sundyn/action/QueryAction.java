@@ -1,21 +1,37 @@
 package com.sundyn.action;
 
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.*;
-import org.apache.struts2.*;
-import java.text.*;
-import java.sql.*;
-import com.opensymphony.xwork2.*;
 import com.sundyn.util.*;
-import java.io.*;
-import javax.servlet.http.*;
+import org.apache.struts2.ServletActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
 
 public class QueryAction extends ActionSupport
 {
     private static final Integer pageSize;
     private Integer deptId;
     private List deptList;
+
+    public List getDeptList2() {
+        return deptList2;
+    }
+
+    public void setDeptList2(List deptList2) {
+        this.deptList2 = deptList2;
+    }
+
+    private List deptList2;
     private DeptService deptService;
     private EmployeeService employeeService;
     private String endDate;
@@ -36,67 +52,67 @@ public class QueryAction extends ActionSupport
     private boolean k7;
     private List mls;
     private List bmls;
-    
+
     static {
-        pageSize = 6;
+        pageSize = 15;
     }
-    
+
     public List getBmls() {
         return this.bmls;
     }
-    
+
     public void setBmls(final List bmls) {
         this.bmls = bmls;
     }
-    
+
     public List getMls() {
         return this.mls;
     }
-    
+
     public void setMls(final List mls) {
         this.mls = mls;
     }
-    
+
     public boolean isK7() {
         return this.k7;
     }
-    
+
     public void setK7(final boolean k7) {
         this.k7 = k7;
     }
-    
+
     public static Integer getPagesize() {
         return QueryAction.pageSize;
     }
-    
+
     public String getFileName() {
         return this.fileName;
     }
-    
+
     public void setFileName(final String fileName) {
         this.fileName = fileName;
     }
-    
+
     public String getDeptIds() {
         return this.deptIds;
     }
-    
+
     public void setDeptIds(final String deptIds) {
         this.deptIds = deptIds;
     }
-    
+
     public String getKeys() {
         return this.keys;
     }
-    
+
     public void setKeys(final String keys) {
         this.keys = keys;
     }
-    
+
     public static Integer getPageSize() {
         return QueryAction.pageSize;
     }
-    
+
     private String getCamera() {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         String camera = "true";
@@ -109,67 +125,67 @@ public class QueryAction extends ActionSupport
         }
         return camera;
     }
-    
+
     public Integer getDeptId() {
         return this.deptId;
     }
-    
+
     public List getDeptList() {
         return this.deptList;
     }
-    
+
     public DeptService getDeptService() {
         return this.deptService;
     }
-    
+
     public EmployeeService getEmployeeService() {
         return this.employeeService;
     }
-    
+
     public String getEndDate() {
         return this.endDate;
     }
-    
+
     public InputStream getExcel() {
         return this.excel;
     }
-    
+
     public Integer getId() {
         return this.id;
     }
-    
+
     public KeyTypeService getKeyTypeService() {
         return this.keyTypeService;
     }
-    
+
     public String getKeyword() {
         return this.keyword;
     }
-    
+
     public String getMsg() {
         return this.msg;
     }
-    
+
     public Pager getPager() {
         return this.pager;
     }
-    
+
     public PowerService getPowerService() {
         return this.powerService;
     }
-    
+
     public QueryService getQueryService() {
         return this.queryService;
     }
-    
+
     public String getSelect() {
         return this.select;
     }
-    
+
     public String getStartDate() {
         return this.startDate;
     }
-    
+
     private List getTotalList(final Map totalMap) {
         if (totalMap != null) {
             try {
@@ -192,11 +208,11 @@ public class QueryAction extends ActionSupport
         }
         return null;
     }
-    
+
     public TotalService getTotalService() {
         return this.totalService;
     }
-    
+
     public String queryDemo() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map appries = this.queryService.queryById(this.id);
@@ -221,7 +237,7 @@ public class QueryAction extends ActionSupport
         request.setAttribute("ls", (Object)list);
         return "success";
     }
-    
+
     public String queryDept() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -233,7 +249,7 @@ public class QueryAction extends ActionSupport
         this.deptList.add(dept);
         return "success";
     }
-    
+
     public String queryDeptAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -329,11 +345,22 @@ public class QueryAction extends ActionSupport
         this.select = String.valueOf(gtemp) + this.select;
         return "success";
     }
-    
+
     public String queryDeptDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
-        final String deptIds = this.deptService.findChildALLStr123(new StringBuilder().append(this.deptId).toString());
+
+        final Map manager2 = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
+        final Map power2 = this.powerService.getUserGroup(groupid2);
+        final String deptIdGroup2 = power2.get("deptIdGroup").toString();
+        this.deptList2 = new ArrayList();
+        final Map dept2 = this.deptService.findDeptById(Integer.valueOf(deptIdGroup2));
+        this.deptList2.add(dept2);
+
+        if(request.getParameter("deptId")!=null)
+            this.deptId = Integer.valueOf(request.getParameter("deptId"));
+        final String deptIds = this.deptService.findChildALLStr123(request.getParameter("deptId"));
         final String allKeyInUse = this.keyTypeService.findAllKeyInUse(1);
         final int rowsCount = this.queryService.countQueryDept2(deptIds, this.startDate, this.endDate, allKeyInUse);
         this.pager = new Pager("currentPage", QueryAction.pageSize, rowsCount, request);
@@ -358,7 +385,7 @@ public class QueryAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String jiGouGongZuoiLiang() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         this.k7 = this.isK7();
@@ -463,7 +490,7 @@ public class QueryAction extends ActionSupport
         request.setAttribute("strXML1", (Object)strXML1.toString());
         return "success";
     }
-    
+
     public String queryIndex() throws SQLException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -561,7 +588,7 @@ public class QueryAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String queryLeft() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -584,11 +611,11 @@ public class QueryAction extends ActionSupport
         request.setAttribute("name", power.get("name"));
         return "success";
     }
-    
+
     public String queryPeopley() throws Exception {
         return "success";
     }
-    
+
     public String queryPeopleyAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -607,7 +634,7 @@ public class QueryAction extends ActionSupport
         request.setAttribute("temp", (Object)temp);
         return "success";
     }
-    
+
     public String queryPeopleyAjax2() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String deptId = request.getParameter("deptId");
@@ -620,7 +647,7 @@ public class QueryAction extends ActionSupport
         this.deptList = this.employeeService.findEmployeeByKeyowrd(this.keyword, deptId);
         return "success";
     }
-    
+
     public String queryDealPeopleyForDel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.queryService.countQueryEmployee(this.id, this.startDate, this.endDate);
@@ -629,7 +656,7 @@ public class QueryAction extends ActionSupport
         this.pager.setPageList(querylist);
         return "success";
     }
-    
+
     public String queryPeopleyDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -657,9 +684,10 @@ public class QueryAction extends ActionSupport
         if (this.getCamera().equals("true")) {
             return "camera";
         }
+        request.setAttribute("employeeinfo", employeeService.findEmployeeById(this.id));
         return "success";
     }
-    
+
     public String queryJobNumDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -681,11 +709,11 @@ public class QueryAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String queryEmployee() {
         return "success";
     }
-    
+
     public String queryEmployeeDeal() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map emp = (Map)request.getSession().getAttribute("emp");
@@ -701,12 +729,12 @@ public class QueryAction extends ActionSupport
         this.pager.setPageList(querylist);
         return "success";
     }
-    
+
     public String queryResult() throws Exception {
         this.deptList = this.keyTypeService.findByApprieserId(1, 1);
         return "success";
     }
-    
+
     public String queryResultDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -717,7 +745,9 @@ public class QueryAction extends ActionSupport
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
-        final int keys = Integer.parseInt(request.getParameter("keys"));
+        int keys = 0;
+        if(request.getParameter("keys")!=null)
+            keys =Integer.parseInt(request.getParameter("keys"));
         final int rowsCount = this.queryService.countQueryResult(deptIds, keys, this.startDate, this.endDate);
         this.pager = new Pager("currentPage", 10, rowsCount, request);
         List querylist = this.queryService.queryResult(deptIds, keys, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
@@ -734,12 +764,14 @@ public class QueryAction extends ActionSupport
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", (Object)strXML1.toString());
+        this.deptList = this.keyTypeService.findByApprieserId(1, 1);
+
         if (this.getCamera().equals("true")) {
             return "camera";
         }
         return "success";
     }
-    
+
     public String queryResultDealTel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -774,7 +806,7 @@ public class QueryAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String queryResultDealIdCard() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -809,7 +841,7 @@ public class QueryAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String querySaveAsExcel() {
         final StringBuffer excelBuf = new StringBuffer();
         excelBuf.append("\u4e66\u540d").append("\t").append("\u65e5\u671f").append("\t").append("\u4f5c\u8005").append("\n");
@@ -819,7 +851,7 @@ public class QueryAction extends ActionSupport
         this.excel = new ByteArrayInputStream(excelString.getBytes(), 0, excelString.length());
         return "success";
     }
-    
+
     public String queryZh() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -835,19 +867,28 @@ public class QueryAction extends ActionSupport
         request.setAttribute("keyList", (Object)keyList);
         return "success";
     }
-    
+
     public String queryZhDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
+
+        final Map manager = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
+        final Map power = this.powerService.getUserGroup(groupid);
+        final String deptIdGroup = power.get("deptIdGroup").toString();
+        this.deptList2 = this.deptService.findChildALL(deptIdGroup);
+        if (this.deptList2 != null && this.deptList2.size() > 0) {
+            final Map dept = (Map) this.deptList2.get(0);
+            dept.put("fatherId", -1);
+        }
+        final List keyList2 = this.keyTypeService.findByApprieserId(1, 1);
+        request.setAttribute("keyList", (Object)keyList2);
+
         String deptIds = request.getParameter("deptIds");
         String keys = request.getParameter("keys");
         if (keys == null || keys.equals("")) {
             keys = this.keyTypeService.findAllKeyInUse(1);
         }
-        final Map manager = (Map)request.getSession().getAttribute("manager");
-        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
-        final Map power = this.powerService.getUserGroup(groupid);
-        final String deptIdGroup = power.get("deptIdGroup").toString();
         if (deptIds.equals("")) {
             deptIds = this.deptService.findChildALLStr123(deptIdGroup);
         }
@@ -889,7 +930,63 @@ public class QueryAction extends ActionSupport
         }
         return "success";
     }
-    
+
+    public String queryZhDealAjax() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String path = ServletActionContext.getServletContext().getRealPath("/");
+
+        final Map manager = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
+        final Map power = this.powerService.getUserGroup(groupid);
+        final String deptIdGroup = power.get("deptIdGroup").toString();
+
+        String deptIds = request.getParameter("deptIds");
+        String keys = request.getParameter("keys");
+        if (keys == null || keys.equals("")) {
+            keys = this.keyTypeService.findAllKeyInUse(1);
+        }
+        if (deptIds.equals("")) {
+            deptIds = this.deptService.findChildALLStr123(deptIdGroup);
+        }
+        if (this.startDate == null) {
+            this.startDate = "";
+        }
+        if (this.endDate == null) {
+            this.startDate = "";
+        }
+        if (deptIds.endsWith(",")) {
+            deptIds = deptIds.substring(0, deptIds.length() - 1);
+        }
+        if (keys.endsWith(",")) {
+            keys = keys.substring(0, keys.length() - 1);
+        }
+        final int rowsCount = this.queryService.countQueryZh2(this.id, keys, deptIds, this.startDate, this.endDate);
+        this.pager = new Pager("currentPage", QueryAction.pageSize, rowsCount, request);
+        List tempList = this.queryService.queryZh2(this.id, keys, deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        if (tempList != null) {
+            tempList = this.handleEmptyFile(tempList);
+        }
+        this.pager.setPageList(tempList);
+        final List chatList = this.queryService.QueryZhChat2(this.id, keys, deptIds, this.startDate, this.endDate);
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        for (int i = 0; i < chatList.size(); ++i) {
+            final Map temp = (Map) chatList.get(i);
+            final Map m = new HashMap();
+            m.put("keytypename", temp.get("name"));
+            m.put("num", temp.get("num"));
+            strXML1.append("<set name='" + temp.get("name") + "' value='" + temp.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+        }
+        strXML1.append("</graph>");
+        request.setAttribute("strXML1", (Object)strXML1.toString());
+        request.setAttribute("chatList", (Object)chatList);
+        if (this.getCamera().equals("true")) {
+            return "camera";
+        }
+        return "success";
+    }
+
     public String queryExcel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -938,71 +1035,71 @@ public class QueryAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public void setDeptId(final Integer deptId) {
         this.deptId = deptId;
     }
-    
+
     public void setDeptList(final List deptList) {
         this.deptList = deptList;
     }
-    
+
     public void setDeptService(final DeptService deptService) {
         this.deptService = deptService;
     }
-    
+
     public void setEmployeeService(final EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-    
+
     public void setEndDate(final String endDate) {
         this.endDate = endDate;
     }
-    
+
     public void setExcel(final InputStream excel) {
         this.excel = excel;
     }
-    
+
     public void setId(final Integer id) {
         this.id = id;
     }
-    
+
     public void setKeyTypeService(final KeyTypeService keyTypeService) {
         this.keyTypeService = keyTypeService;
     }
-    
+
     public void setKeyword(final String keyword) {
         this.keyword = keyword;
     }
-    
+
     public void setMsg(final String msg) {
         this.msg = msg;
     }
-    
+
     public void setPager(final Pager pager) {
         this.pager = pager;
     }
-    
+
     public void setPowerService(final PowerService powerService) {
         this.powerService = powerService;
     }
-    
+
     public void setQueryService(final QueryService queryService) {
         this.queryService = queryService;
     }
-    
+
     public void setSelect(final String select) {
         this.select = select;
     }
-    
+
     public void setStartDate(final String startDate) {
         this.startDate = startDate;
     }
-    
+
     public void setTotalService(final TotalService totalService) {
         this.totalService = totalService;
     }
-    
+
     public String deleteVideoFile() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -1016,7 +1113,7 @@ public class QueryAction extends ActionSupport
         request.setAttribute("keyList", (Object)keyList);
         return "success";
     }
-    
+
     public String deleteVideoFileDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String keyNo = request.getParameter("keyNo");
@@ -1049,7 +1146,7 @@ public class QueryAction extends ActionSupport
         request.setAttribute("msg", (Object)("\u64cd\u4f5c\u5b8c\u6210\u5171\u5220\u9664\u6587\u4ef6" + num + "\u4e2a"));
         return "success";
     }
-    
+
     public String deleteVideoFileDeal2() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String spath = ServletActionContext.getServletContext().getRealPath("/");
@@ -1080,7 +1177,7 @@ public class QueryAction extends ActionSupport
         request.setAttribute("msg", (Object)("\u64cd\u4f5c\u5b8c\u6210\u5171\u5220\u9664\u6587\u4ef6" + num + "\u4e2a"));
         return "success";
     }
-    
+
     public List handleEmptyFile(final List temp) {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String spath = ServletActionContext.getServletContext().getRealPath("/");
