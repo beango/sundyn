@@ -59,11 +59,15 @@
 		</action>
 		<action name="analyseContentRateAjaxDay" class="analyseAction"
 			method="analyseContentRateAjaxDay">
-			<result name="success">/analyse/json.jsp</result>
+			<result name="success">/analyse/json2.jsp</result>
+		</action>
+		<action name="analyseResultRateAjaxDay" class="analyseAction"
+				method="analyseResultRateAjaxDay">
+			<result name="success">/analyse/json2.jsp</result>
 		</action>
 		<action name="analyseContentRateAjax" class="analyseAction"
 			method="analyseContentRateAjax">
-			<result name="success">/analyse/json.jsp</result>
+			<result name="success">/analyse/json2.jsp</result>
 		</action>
 		<!-- 部门 -->
 		<action name="analyseDept" class="analyseAction"
@@ -73,15 +77,15 @@
 
 		<action name="analyseDeptAjax123" class="analyseAction"
 			method="analyseDeptAjax123">
-			<result name="success">/analyse/json.jsp</result>
+			<result name="success">/analyse/json2.jsp</result>
 		</action>
 		<action name="analyseDeptContentAjax" class="analyseAction"
 			method="analyseDeptContentAjax">
-			<result name="success">/analyse/json.jsp</result>
+			<result name="success">/analyse/json2.jsp</result>
 		</action>
 		<action name="analyseDeptContentRateAjax" class="analyseAction"
 			method="analyseDeptContentRateAjax">
-			<result name="success">/analyse/json.jsp</result>
+			<result name="success">/analyse/json2.jsp</result>
 		</action>
 		<!-- 员工 -->
 		<action name="analyseEmployee" class="analyseAction"
@@ -90,15 +94,15 @@
 		</action>
 		<action name="analyseEmployeeAjax" class="analyseAction"
 			method="analyseEmployeeAjax">
-			<result name="success">/analyse/json.jsp</result>
+			<result name="success">/analyse/json2.jsp</result>
 		</action>
 		<action name="analyseEmployeeContentAjax" class="analyseAction"
 			method="analyseEmployeeContentAjax">
-			<result name="success">/analyse/json.jsp</result>
+			<result name="success">/analyse/json2.jsp</result>
 		</action>
 		<action name="analyseEmployeeContentRateAjax"
 			class="analyseAction" method="analyseEmployeeContentRateAjax">
-			<result name="success">/analyse/json.jsp</result>
+			<result name="success">/analyse/json2.jsp</result>
 		</action>
 		<!-- 满意度 -->
 		<action name="analyseContentD"

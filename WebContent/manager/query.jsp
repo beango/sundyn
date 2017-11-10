@@ -14,9 +14,8 @@
 	</head>
 	<body>
 		<div id="man_zone">
-			<div class="fengge">&nbsp;<input type="hidden" name="managerId" id="managerId" value="${managerId}" /></div>
+			<input type="hidden" name="managerId" id="managerId" value="${managerId}" />
 			<div style="width:99%; height:100%;" class="">
-			    <div class="fengge" style="height:25px;">&nbsp;</div>
 			    <div>
 				    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-color:#FFFFFF;" align="">
 				       <tr>
@@ -26,7 +25,6 @@
 				      </tr>
 				     </table>
 			    </div>
-			    <div class="fengge" style="height:25px;">&nbsp;</div>
 				<table width="100%"   cellpadding="0" cellspacing="0" style="border-top: 1px solid #bad6ec;border-right: 1px solid #bad6ec;">
 				  <tr>
 				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.userName' /></td>
@@ -36,11 +34,11 @@
 				    </tr>
 				   	<c:forEach items="${pager.pageList}" var="manager">
 						<tr>
-						    
+
 							<td style="text-align: center;">
 								${manager.name}
 							</td>
-							
+
 							<td style="text-align: center;">
 								${manager.realname}
 							</td>
@@ -62,7 +60,7 @@
 				</table>
 			    <div class="fengge" style="height:15px;">&nbsp;</div>
 				<div> ${pager.pageTextAjax} </div>
-		    </div> 
+		    </div>
 		</div>
 		<div id="dialog" style="width: 600px; display: none;">
 	</body>

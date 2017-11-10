@@ -321,43 +321,36 @@ function analyseContentAjax() {
 	var endDate = document.getElementById("endDate").value;
 	var type = document.getElementById("type").value;
 	dojo.xhrPost({url:"analyseContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type}, load:function (resp, ioArgs) {
-		/*var json =  resp.parseJSON();
-		var chart =json.list;
-	 	document.getElementById("msg").innerHTML=json.msg;
-	 	var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);*/
         $("#chartcontainer").html(resp);
 	}});
 }
 // 满意率
 function analyseContentRateAjaxDay(data) {
+    var now = new Date();
+    var nowStr = now.format("yyyy-MM-dd");
+    $("#endDate").val(nowStr + " 23:59:59");
+    now.setDate(now.getDate()-data);
+    $("#startDate").val(now.format("yyyy-MM-dd") + " 00:00:00");
 	dojo.xhrPost({url:"analyseContentRateAjaxDay.action", content:{num:data}, load:function (resp, ioArgs) {
-		var json =  resp.parseJSON();
-		var chart =json.list;
-	 	document.getElementById("msg").innerHTML=json.msg;
-	 	var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);
+        $("#chartcontainer").html(resp);
 	}});
 }
 
 // 决策分析，首页画图
  function analyseContentRateIndexAjaxDay(data) {
 	dojo.xhrPost({url:"analyseContentRateAjaxDay.action", content:{num:data}, load:function (resp, ioArgs) {
- 	 	var json =  resp.parseJSON();
- 	 	var charStr=json.list.toJSONString();
- 	 	columnChat2.columnChart(charStr);
+        $("#chartcontainer1").html(resp);
 	}});
+     dojo.xhrPost({url:"analyseResultRateAjaxDay.action", content:{num:data}, load:function (resp, ioArgs) {
+         $("#chartcontainer2").html(resp);
+     }});
 }
 function analyseContentRateAjax() {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var type = document.getElementById("type").value;
 	dojo.xhrPost({url:"analyseContentRateAjax.action", content:{startDate:startDate, endDate:endDate, type:type}, load:function (resp, ioArgs) {
-		var json =  resp.parseJSON();
-		var chart =json.list;
-	 	document.getElementById("msg").innerHTML=json.msg;
-		var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);
+        $("#chartcontainer").html(resp);
 	}});
 }
 
@@ -404,11 +397,7 @@ function analyseDeptAjax() {
 		}
 	}
 	dojo.xhrPost({url:"analyseDeptAjax123.action", content:{startDate:startDate, endDate:endDate, type:type, deptId:deptId}, load:function (resp, ioArgs) {
-	 	var json =  resp.parseJSON();
-		var chart =json.list;
-	 	document.getElementById("msg").innerHTML=json.msg;
-	 	var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);
+        $("#chartcontainer").html(resp);
 	}});
 }
 // 机构满意量
@@ -430,11 +419,7 @@ function analyseDeptContentAjax() {
 		}
 	}
 	dojo.xhrPost({url:"analyseDeptContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type, deptId:deptId}, load:function (resp, ioArgs) {
-	 	var json =  resp.parseJSON();
-		var chart =json.list;
-	 	document.getElementById("msg").innerHTML=json.msg;
-	 	var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);
+        $("#chartcontainer").html(resp);
 	}});
 }
 // 机构满意度
@@ -456,11 +441,7 @@ function analyseDeptContentRateAjax() {
 		}
 	}
 	dojo.xhrPost({url:"analyseDeptContentRateAjax.action", content:{startDate:startDate, endDate:endDate, type:type, deptId:deptId}, load:function (resp, ioArgs) {
-	 	var json =  resp.parseJSON();
-		var chart =json.list;
-	 	document.getElementById("msg").innerHTML=json.msg;
-	 	var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);
+        $("#chartcontainer").html(resp);
 	}});
 }
 
@@ -544,11 +525,7 @@ function analyseEmployeeAjax() {
 	 return false;
 	}
 	dojo.xhrPost({url:"analyseEmployeeAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId}, load:function (resp, ioArgs) {
-	 	var json =  resp.parseJSON();
-		var chart =json.list;
-	 	document.getElementById("msg").innerHTML=json.msg;
-	 	var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);
+        $("#chartcontainer").html(resp);
 	}});
 }
 // 员工满意量
@@ -568,11 +545,7 @@ function analyseEmployeeContentAjax() {
 	 return false;
 	}
 	dojo.xhrPost({url:"analyseEmployeeContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId}, load:function (resp, ioArgs) {
-		var json =  resp.parseJSON();
-		var chart =json.list;
-	 	document.getElementById("msg").innerHTML=json.msg;
-	 	var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);
+        $("#chartcontainer").html(resp);
 	}});
 }
 // 员工满意度
@@ -592,11 +565,7 @@ function analyseEmployeeContentRateAjax() {
 	 return false;
 	}
 	dojo.xhrPost({url:"analyseEmployeeContentRateAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId}, load:function (resp, ioArgs) {
-		var json =  resp.parseJSON();
-		var chart =json.list;
-	 	document.getElementById("msg").innerHTML=json.msg;
-	 	var charStr=json.list.toJSONString();
- 	 	columnChat.columnChart(charStr);
+        $("#chartcontainer").html(resp);
 	}});
 }
 

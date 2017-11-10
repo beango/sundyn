@@ -32,7 +32,7 @@
 		<property name="keyTypeService" ref="keyTypeService"></property>
 		<property name="totalService" ref="totalService"></property>
 	</bean>
-	
+
 	<bean id="duiBiAction" class="com.sundyn.action.DuiBiAction"
 		scope="prototype">
 		<property name="powerService" ref="powerService"></property>
@@ -42,7 +42,7 @@
 		<property name="keyTypeService" ref="keyTypeService"></property>
 		<property name="totalService" ref="totalService"></property>
 	</bean>
-	
+
 	<bean id="errorInfoAction" class="com.sundyn.action.ErrorInfoAction"
 		scope="prototype">
 		<property name="errorInfoService" ref="errorInfoService"></property>
@@ -53,6 +53,7 @@
 		<property name="deptService" ref="deptService"></property>
 		<property name="powerService" ref="powerService"></property>
 		<property name="keyTypeService" ref="keyTypeService"></property>
+		<property name="queryService" ref="queryService"></property>
 	</bean>
 	<bean id="deptAction" class="com.sundyn.action.DeptAction"
 		scope="prototype">
@@ -62,7 +63,7 @@
 		<property name="playListService" ref="playListService"></property>
 		<property name="weburlService" ref="weburlService"></property>
 		<property name="cityutils" ref="citysUtils"></property>
-		
+
 	</bean>
 	<bean id="employeeAction" class="com.sundyn.action.EmployeeAction"
 		scope="prototype">
@@ -200,7 +201,7 @@
 	<bean id="updateDbAction" class="com.sundyn.action.UpdateDbAction"   scope="prototype" >
 		<property name="updateDbService" ref="updateDbService"></property>
 	</bean>
-	
+
     <!--	信息查询Action-->
 	<bean id="weburlAction" class="com.sundyn.action.WeburlAction"   scope="prototype" >
 		<property name="weburlService" ref="weburlService"></property>

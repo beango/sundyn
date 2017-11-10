@@ -1,10 +1,7 @@
 package com.sundyn.action;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.sundyn.service.AnalyseService;
-import com.sundyn.service.DeptService;
-import com.sundyn.service.KeyTypeService;
-import com.sundyn.service.PowerService;
+import com.sundyn.service.*;
 import com.sundyn.util.ColorHelper;
 import com.sundyn.util.SundynSet;
 import net.sf.json.JSONObject;
@@ -28,6 +25,16 @@ public class AnalyseAction extends ActionSupport
     private List mls;
     private String msg;
     private PowerService powerService;
+
+    public QueryService getQueryService() {
+        return queryService;
+    }
+
+    public void setQueryService(QueryService queryService) {
+        this.queryService = queryService;
+    }
+
+    private QueryService queryService;
     private String startDate;
     private String type;
 
@@ -141,14 +148,17 @@ public class AnalyseAction extends ActionSupport
         final String contentId = this.getContentId();
         final List contentList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, type, this.getDeptIds());
         this.chartList = this.rate(contentList, totalList);
-        final List tempList = new ArrayList();
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<graph caption='满意率走势分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(8);
-                chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                tempList.add(chartM);
+                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
+                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else if (type.equals("month")) {
@@ -157,7 +167,7 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(5, 7);
                 chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else {
@@ -165,16 +175,11 @@ public class AnalyseAction extends ActionSupport
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(0, 4);
-                chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
-        this.msg = this.getText("sundyn.analyse.info2", new String[] { this.startDate, this.endDate });
-        final Map<String, Object> m = new HashMap<String, Object>();
-        m.put("list", tempList);
-        m.put("msg", this.msg);
-        final JSONObject json = JSONObject.fromObject((Object)m);
-        request.setAttribute("json", (Object)json);
+        strXML1.append("</graph>");
+        request.setAttribute("strXML1", strXML1.toString());
         return "success";
     }
 
@@ -192,20 +197,51 @@ public class AnalyseAction extends ActionSupport
         final String contentId = this.getContentId();
         final List contentList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, "day", this.getDeptIds());
         this.chartList = this.rate(contentList, totalList);
-        final List tempList = new ArrayList();
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<graph caption='满意率柱状图' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+
         for (int i = 0; i < this.chartList.size(); ++i) {
             final Map chartM = (Map) this.chartList.get(i);
             String day = chartM.get("serviceDate").toString();
             day = day.substring(8);
-            chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-            tempList.add(chartM);
+            String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
+            strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
         }
-        this.msg = this.getText("sundyn.analyse.info", new String[] { num });
-        final Map<String, Object> m = new HashMap<String, Object>();
-        m.put("list", tempList);
-        m.put("msg", this.msg);
-        final JSONObject json = JSONObject.fromObject((Object)m);
-        request.setAttribute("json", (Object)json);
+        strXML1.append("</graph>");
+        request.setAttribute("strXML1", strXML1.toString());
+        return "success";
+    }
+
+    public String analyseResultRateAjaxDay() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String num = request.getParameter("num");
+        final Integer numI = Integer.valueOf(num);
+        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        this.endDate = df.format(new Date());
+        final Calendar cal = Calendar.getInstance();
+        cal.set(6, cal.get(6) - numI);
+        this.startDate = df.format(cal.getTime());
+        final String allId = this.getAllId();
+        final List totalList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, "day", this.getDeptIds());
+        final String contentId = this.getContentId();
+        final List contentList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, "day", this.getDeptIds());
+        this.chartList = this.rate(contentList, totalList);
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        String keys = request.getParameter("keys");
+        final List chatList = this.queryService.QueryResultChat(keys, this.startDate, this.endDate);
+        for (int i = 0; i < chatList.size(); ++i) {
+            final Map temp = (Map) chatList.get(i);
+            final Map m = new HashMap();
+            m.put("name", temp.get("name"));
+            m.put("num", temp.get("num"));
+            strXML1.append("<set name='" + temp.get("name") + "' value='" + temp.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+        }
+        strXML1.append("</graph>");
+        request.setAttribute("strXML1", (Object)strXML1.toString());
+        request.setAttribute("strXMLType", "FCF_Pie3D.swf");
         return "success";
     }
 
@@ -237,14 +273,17 @@ public class AnalyseAction extends ActionSupport
         }
         final String allId = this.getAllId();
         this.chartList = this.analyseService.AnalyseDeptTotal(deptIds, this.startDate, this.endDate, allId, type);
-        final List tempList = new ArrayList();
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<graph caption='业务量分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(8);
-                chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                tempList.add(chartM);
+                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
+                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else if (type.equals("month")) {
@@ -253,7 +292,7 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(5, 7);
                 chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else {
@@ -262,15 +301,11 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(0, 4);
                 chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
-        this.msg = this.getText("sundyn.analyse.info2", new String[] { this.startDate, this.endDate });
-        final Map<String, Object> m = new HashMap<String, Object>();
-        m.put("list", tempList);
-        m.put("msg", this.msg);
-        final JSONObject json = JSONObject.fromObject((Object)m);
-        request.setAttribute("json", (Object)json);
+        strXML1.append("</graph>");
+        request.setAttribute("strXML1", strXML1.toString());
         return "success";
     }
 
@@ -290,14 +325,18 @@ public class AnalyseAction extends ActionSupport
         }
         final String contentId = this.getContentId();
         this.chartList = this.analyseService.AnalyseDeptContent(deptIds, this.startDate, this.endDate, contentId, type);
-        final List tempList = new ArrayList();
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<graph caption='满意额分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(8);
                 chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                tempList.add(chartM);
+                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
+                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else if (type.equals("month")) {
@@ -306,7 +345,7 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(5, 7);
                 chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else {
@@ -315,15 +354,11 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(0, 4);
                 chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
-        this.msg = this.getText("sundyn.analyse.info2", new String[] { this.startDate, this.endDate });
-        final Map<String, Object> m = new HashMap<String, Object>();
-        m.put("list", tempList);
-        m.put("msg", this.msg);
-        final JSONObject json = JSONObject.fromObject((Object)m);
-        request.setAttribute("json", (Object)json);
+        strXML1.append("</graph>");
+        request.setAttribute("strXML1", strXML1.toString());
         return "success";
     }
 
@@ -346,14 +381,18 @@ public class AnalyseAction extends ActionSupport
         final String contentId = this.getContentId();
         final List contentList = this.analyseService.AnalyseDeptContent(deptIds, this.startDate, this.endDate, contentId, type);
         this.chartList = this.rate(contentList, totalList);
-        final List tempList = new ArrayList();
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<graph caption='满意度分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(8);
                 chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                tempList.add(chartM);
+                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
+                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else if (type.equals("month")) {
@@ -362,7 +401,7 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(5, 7);
                 chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else {
@@ -371,15 +410,12 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(0, 4);
                 chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
-        this.msg = this.getText("sundyn.analyse.info2", new String[] { this.startDate, this.endDate });
-        final Map<String, Object> m = new HashMap<String, Object>();
-        m.put("list", tempList);
-        m.put("msg", this.msg);
-        final JSONObject json = JSONObject.fromObject((Object)m);
-        request.setAttribute("json", (Object)json);
+        strXML1.append("</graph>");
+        request.setAttribute("strXML1", strXML1.toString());
+
         return "success";
     }
 
@@ -402,14 +438,18 @@ public class AnalyseAction extends ActionSupport
         }
         final String allId = this.getAllId();
         this.chartList = this.analyseService.AnalyseEmployeeTotal(employeeId, this.startDate, this.endDate, allId, type);
-        final List tempList = new ArrayList();
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<graph caption='业务量分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(8);
                 chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                tempList.add(chartM);
+                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
+                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else if (type.equals("month")) {
@@ -418,7 +458,7 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(5, 7);
                 chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else {
@@ -427,15 +467,11 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(0, 4);
                 chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
-        this.msg = this.getText("sundyn.analyse.info2", new String[] { this.startDate, this.endDate });
-        final Map<String, Object> m = new HashMap<String, Object>();
-        m.put("list", tempList);
-        m.put("msg", this.msg);
-        final JSONObject json = JSONObject.fromObject((Object)m);
-        request.setAttribute("json", (Object)json);
+        strXML1.append("</graph>");
+        request.setAttribute("strXML1", strXML1.toString());
         return "success";
     }
 
@@ -454,14 +490,18 @@ public class AnalyseAction extends ActionSupport
         }
         final String contentId = this.getContentId();
         this.chartList = this.analyseService.AnalyseEmployeeContent(employeeId, this.startDate, this.endDate, contentId, type);
-        final List tempList = new ArrayList();
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<graph caption='满意额分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(8);
                 chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                tempList.add(chartM);
+                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
+                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else if (type.equals("month")) {
@@ -470,7 +510,7 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(5, 7);
                 chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else {
@@ -479,15 +519,11 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(0, 4);
                 chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
-        this.msg = this.getText("sundyn.analyse.info2", new String[] { this.startDate, this.endDate });
-        final Map<String, Object> m = new HashMap<String, Object>();
-        m.put("list", tempList);
-        m.put("msg", this.msg);
-        final JSONObject json = JSONObject.fromObject((Object)m);
-        request.setAttribute("json", (Object)json);
+        strXML1.append("</graph>");
+        request.setAttribute("strXML1", strXML1.toString());
         return "success";
     }
 
@@ -509,14 +545,17 @@ public class AnalyseAction extends ActionSupport
         final String contentId = this.getContentId();
         final List contentList = this.analyseService.AnalyseEmployeeContent(employeeId, this.startDate, this.endDate, contentId, type);
         this.chartList = this.rate(contentList, totalList);
-        final List tempList = new ArrayList();
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<graph caption='满意度分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(8);
-                chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                tempList.add(chartM);
+                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
+                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else if (type.equals("month")) {
@@ -525,7 +564,7 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(5, 7);
                 chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else {
@@ -534,15 +573,11 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(0, 4);
                 chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                tempList.add(chartM);
+                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
-        this.msg = this.getText("sundyn.analyse.info2", new String[] { this.startDate, this.endDate });
-        final Map<String, Object> m = new HashMap<String, Object>();
-        m.put("list", tempList);
-        m.put("msg", this.msg);
-        final JSONObject json = JSONObject.fromObject((Object)m);
-        request.setAttribute("json", (Object)json);
+        strXML1.append("</graph>");
+        request.setAttribute("strXML1", strXML1.toString());
         return "success";
     }
 
