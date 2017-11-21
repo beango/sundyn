@@ -42,15 +42,9 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-
-
-
-
-
-
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 	<servlet>
 		<servlet-name>proxoolServletConfigurator</servlet-name>
 		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>
@@ -94,14 +88,14 @@
 	<welcome-file-list>
 		<welcome-file>login.jsp</welcome-file>
 	</welcome-file-list>
-	<!--<error-page> <error-code>404</error-code> <location>/404.jsp</location> 
-		</error-page> <error-page> <error-code>500</error-code> <location>/error.jsp</location> 
-		</error-page> <error-page> <error-code>501</error-code> <location>/error.jsp</location> 
-		</error-page> <error-page> <error-code>502</error-code> <location>/error.jsp</location> 
-		</error-page> <error-page> <error-code>503</error-code> <location>/error.jsp</location> 
-		</error-page> <error-page> <error-code>504</error-code> <location>/error.jsp</location> 
-		</error-page> <error-page> <error-code>505</error-code> <location>/error.jsp</location> 
-		</error-page> <error-page> <exception-type>java.lang.Exception</exception-type> 
+	<!--<error-page> <error-code>404</error-code> <location>/404.jsp</location>
+		</error-page> <error-page> <error-code>500</error-code> <location>/error.jsp</location>
+		</error-page> <error-page> <error-code>501</error-code> <location>/error.jsp</location>
+		</error-page> <error-page> <error-code>502</error-code> <location>/error.jsp</location>
+		</error-page> <error-page> <error-code>503</error-code> <location>/error.jsp</location>
+		</error-page> <error-page> <error-code>504</error-code> <location>/error.jsp</location>
+		</error-page> <error-page> <error-code>505</error-code> <location>/error.jsp</location>
+		</error-page> <error-page> <exception-type>java.lang.Exception</exception-type>
 		<location>/error.jsp</location> </error-page> -->
 
 
@@ -114,6 +108,23 @@
 	<!-- <mime-type>application/3gp</mime-type> -->
 	<!-- </mime-mapping> -->
 
-
+    <jsp-config>
+        <taglib>
+            <taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
+            <taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>http://java.sun.com/jsp/jstl/functions</taglib-uri>
+            <taglib-location>/WEB-INF/tld/fn.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>http://shiro.apache.org/tags</taglib-uri>
+            <taglib-location>/WEB-INF/tld/shiro.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>http://java.sun.com/jsp/jstl/fmt</taglib-uri>
+            <taglib-location>/WEB-INF/tld/fmt.tld</taglib-location>
+        </taglib>
+    </jsp-config>
 
 </web-app>

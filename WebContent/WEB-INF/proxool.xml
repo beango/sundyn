@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- the proxool configuration can be embedded within your own application's.      
+<!-- the proxool configuration can be embedded within your own application's.
 	Anything outside the "proxool" tag is ignored. -->
 <something-else-entirely>
 	<proxool>
 		<alias>DbPool</alias>
-<!--		<driver-url>jdbc:mysql://192.168.100.39:3306/appries</driver-url>-->
-<!--		<driver-url>jdbc:mysql://192.168.100.35:3306/android</driver-url>-->
 		<driver-url>jdbc:mysql://127.0.0.1:3306/appries</driver-url>
 		<driver-class>com.mysql.jdbc.Driver</driver-class>
 		<driver-properties>

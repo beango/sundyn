@@ -2,26 +2,89 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="sundyn:Web exploded" />
+      <artifact name="sundyn:war exploded" />
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eba58721-adeb-4560-a88f-2e2700ea2ca1" name="Default" comment="report">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/WebContent/WEB-INF/tld/struts-tags.tld" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/sundyn_Web_exploded.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/WebContent/struts.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/web/WEB-INF/web.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/applicationContext-action.xml" afterPath="$PROJECT_DIR$/WebContent/WEB-INF/applicationContext-action.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/analyse/dept.jsp" afterPath="$PROJECT_DIR$/WebContent/analyse/dept.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/analyse/employee.jsp" afterPath="$PROJECT_DIR$/WebContent/analyse/employee.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/analyse/json2.jsp" afterPath="$PROJECT_DIR$/WebContent/analyse/json2.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/analyse/rate.jsp" afterPath="$PROJECT_DIR$/WebContent/analyse/rate.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/default.jsp" afterPath="$PROJECT_DIR$/WebContent/default.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/js/my_zh.js" afterPath="$PROJECT_DIR$/WebContent/js/my_zh.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/manager/query.jsp" afterPath="$PROJECT_DIR$/WebContent/manager/query.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/query/index.jsp" afterPath="$PROJECT_DIR$/WebContent/query/index.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/update/piedata.xml" afterPath="$PROJECT_DIR$/WebContent/update/piedata.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/analyse.xml" afterPath="$PROJECT_DIR$/src/analyse.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sundyn/action/AnalyseAction.java" afterPath="$PROJECT_DIR$/src/com/sundyn/action/AnalyseAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sundyn/service/QueryService.java" afterPath="$PROJECT_DIR$/src/com/sundyn/service/QueryService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml" afterPath="$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/web.xml" afterPath="$PROJECT_DIR$/WebContent/WEB-INF/web.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/login.jsp" afterPath="$PROJECT_DIR$/WebContent/login.jsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sundyn.iml" afterPath="$PROJECT_DIR$/sundyn.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/JNative.jar" afterPath="$PROJECT_DIR$/lib/JNative.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/ant.jar" afterPath="$PROJECT_DIR$/lib/ant.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-beanutils-1.8.0.jar" afterPath="$PROJECT_DIR$/lib/commons-beanutils-1.8.0.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-codec-1.6.jar" afterPath="$PROJECT_DIR$/lib/commons-codec-1.6.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-codec-1.9.jar" afterPath="$PROJECT_DIR$/lib/commons-codec-1.9.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-collections-3.2.1.jar" afterPath="$PROJECT_DIR$/lib/commons-collections-3.2.1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-fileupload-1.3.jar" afterPath="$PROJECT_DIR$/lib/commons-fileupload-1.3.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-io-2.2.jar" afterPath="$PROJECT_DIR$/lib/commons-io-2.2.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-io-2.4.jar" afterPath="$PROJECT_DIR$/lib/commons-io-2.4.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-lang-2.4.jar" afterPath="$PROJECT_DIR$/lib/commons-lang-2.4.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-lang3-3.1.jar" afterPath="$PROJECT_DIR$/lib/commons-lang3-3.1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-logging-1.1.3.jar" afterPath="$PROJECT_DIR$/lib/commons-logging-1.1.3.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-logging-api-1.1.jar" afterPath="$PROJECT_DIR$/lib/commons-logging-api-1.1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/dom4j-1.6.1.jar" afterPath="$PROJECT_DIR$/lib/dom4j-1.6.1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/ezmorph-1.0.6.jar" afterPath="$PROJECT_DIR$/lib/ezmorph-1.0.6.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/fckeditor-java-core-2.4.1-javadoc.jar" afterPath="$PROJECT_DIR$/lib/fckeditor-java-core-2.4.1-javadoc.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/fluent-hc-4.2.5.jar" afterPath="$PROJECT_DIR$/lib/fluent-hc-4.2.5.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/freemarker-2.3.19.jar" afterPath="$PROJECT_DIR$/lib/freemarker-2.3.19.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/hibernate3.jar" afterPath="$PROJECT_DIR$/lib/hibernate3.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/httpclient-4.2.5.jar" afterPath="$PROJECT_DIR$/lib/httpclient-4.2.5.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/httpclient-cache-4.2.5.jar" afterPath="$PROJECT_DIR$/lib/httpclient-cache-4.2.5.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/httpcore-4.2.4.jar" afterPath="$PROJECT_DIR$/lib/httpcore-4.2.4.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/httpmime-4.2.5.jar" afterPath="$PROJECT_DIR$/lib/httpmime-4.2.5.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/imageinfo-1.9.jar" afterPath="$PROJECT_DIR$/lib/imageinfo-1.9.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/java-core-2.4.1.jar" afterPath="$PROJECT_DIR$/lib/java-core-2.4.1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/java-core-2.6.jar" afterPath="$PROJECT_DIR$/lib/java-core-2.6.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/javassist-3.11.0.GA.jar" afterPath="$PROJECT_DIR$/lib/javassist-3.11.0.GA.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/jcommon-1.0.0.jar" afterPath="$PROJECT_DIR$/lib/jcommon-1.0.0.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/jdom.jar" afterPath="$PROJECT_DIR$/lib/jdom.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/jfreechart-1.0.0.jar" afterPath="$PROJECT_DIR$/lib/jfreechart-1.0.0.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/json-lib-2.3-jdk15.jar" afterPath="$PROJECT_DIR$/lib/json-lib-2.3-jdk15.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/json.jar" afterPath="$PROJECT_DIR$/lib/json.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/jsoup-1.5.2.jar" afterPath="$PROJECT_DIR$/lib/jsoup-1.5.2.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/jstl-1.2.jar" afterPath="$PROJECT_DIR$/lib/jstl-1.2.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/junit-3.8.1.jar" afterPath="$PROJECT_DIR$/lib/junit-3.8.1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/junit.jar" afterPath="$PROJECT_DIR$/lib/junit.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/log4j-1.2.15.jar" afterPath="$PROJECT_DIR$/lib/log4j-1.2.15.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/msbase.jar" afterPath="$PROJECT_DIR$/lib/msbase.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/mssqlserver.jar" afterPath="$PROJECT_DIR$/lib/mssqlserver.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/msutil.jar" afterPath="$PROJECT_DIR$/lib/msutil.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/mysql-connector-java-5.1.7-bin.jar" afterPath="$PROJECT_DIR$/lib/mysql-connector-java-5.1.7-bin.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/ognl-3.0.6.jar" afterPath="$PROJECT_DIR$/lib/ognl-3.0.6.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/ooxml-schemas-1.1.jar" afterPath="$PROJECT_DIR$/lib/ooxml-schemas-1.1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/org.apache.poi.xwpf.converter.core-1.0.5.jar" afterPath="$PROJECT_DIR$/lib/org.apache.poi.xwpf.converter.core-1.0.5.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/org.apache.poi.xwpf.converter.xhtml-1.0.5.jar" afterPath="$PROJECT_DIR$/lib/org.apache.poi.xwpf.converter.xhtml-1.0.5.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/org.hamcrest.core_1.1.0.v20090501071000.jar" afterPath="$PROJECT_DIR$/lib/org.hamcrest.core_1.1.0.v20090501071000.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/org.hamcrest.core_1.3.0.v201303031735.jar" afterPath="$PROJECT_DIR$/lib/org.hamcrest.core_1.3.0.v201303031735.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/org.json.jar" afterPath="$PROJECT_DIR$/lib/org.json.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/poi-3.13-beta1.jar" afterPath="$PROJECT_DIR$/lib/poi-3.13-beta1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/poi-3.6-20091214.jar" afterPath="$PROJECT_DIR$/lib/poi-3.6-20091214.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/poi-ooxml-3.13-beta1.jar" afterPath="$PROJECT_DIR$/lib/poi-ooxml-3.13-beta1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/poi-ooxml-schemas-3.13-beta1.jar" afterPath="$PROJECT_DIR$/lib/poi-ooxml-schemas-3.13-beta1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/poi-scratchpad-3.13-beta1.jar" afterPath="$PROJECT_DIR$/lib/poi-scratchpad-3.13-beta1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/proxool-0.8.3.jar" afterPath="$PROJECT_DIR$/lib/proxool-0.8.3.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/servlet-api.jar" afterPath="$PROJECT_DIR$/lib/servlet-api.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/slf4j-api-1.5.8.jar" afterPath="$PROJECT_DIR$/lib/slf4j-api-1.5.8.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/slf4j-simple-1.5.8.jar" afterPath="$PROJECT_DIR$/lib/slf4j-simple-1.5.8.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/spring-test-3.0.5.RELEASE.jar" afterPath="$PROJECT_DIR$/lib/spring-test-3.0.5.RELEASE.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/spring.jar" afterPath="$PROJECT_DIR$/lib/spring.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/sqlitejdbc-v033-nested.jar" afterPath="$PROJECT_DIR$/lib/sqlitejdbc-v033-nested.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/stax-api-1.0.1.jar" afterPath="$PROJECT_DIR$/lib/stax-api-1.0.1.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/struts2-core-2.3.16.jar" afterPath="$PROJECT_DIR$/lib/struts2-core-2.3.16.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/struts2-dojo-plugin-2.3.16.jar" afterPath="$PROJECT_DIR$/lib/struts2-dojo-plugin-2.3.16.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/struts2-json-plugin-2.3.16.jar" afterPath="$PROJECT_DIR$/lib/struts2-json-plugin-2.3.16.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/struts2-spring-plugin-2.3.16.jar" afterPath="$PROJECT_DIR$/lib/struts2-spring-plugin-2.3.16.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/ueditor-1.1.2.jar" afterPath="$PROJECT_DIR$/lib/ueditor-1.1.2.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/xmlbeans-2.6.0.jar" afterPath="$PROJECT_DIR$/lib/xmlbeans-2.6.0.jar" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/xwork-core-2.3.16.jar" afterPath="$PROJECT_DIR$/lib/xwork-core-2.3.16.jar" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <ignored path=".idea/encodings.xml" />
@@ -45,64 +108,113 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="AnalyseAction.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AnalyseAction.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/AnalyseAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="566">
-              <caret line="543" column="112" lean-forward="false" selection-start-line="543" selection-start-column="112" selection-end-line="543" selection-end-column="112" />
+            <state relative-caret-position="23">
+              <caret line="549" column="103" lean-forward="false" selection-start-line="549" selection-start-column="103" selection-end-line="549" selection-end-column="103" />
               <folding>
+                <element signature="e#5345#5361#0" expanded="true" />
+                <element signature="e#32218#32234#0" expanded="true" />
                 <element signature="e#36285#36301#0" expanded="true" />
+                <element signature="e#45459#45475#0" expanded="true" />
+                <element signature="e#47881#47897#0" expanded="true" />
+                <element signature="e#50933#50949#0" expanded="true" />
+                <element signature="e#53275#53291#0" expanded="true" />
+                <element signature="e#55863#55879#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="employee.jsp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WebContent/analyse/employee.jsp">
+      <file leaf-file-name="web.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/web.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="483">
-              <caret line="31" column="132" lean-forward="false" selection-start-line="31" selection-start-column="132" selection-end-line="31" selection-end-column="132" />
-              <folding>
-                <element signature="n#style#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#img#0;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#img#1;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#img#2;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#img#3;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="175">
+              <caret line="48" column="48" lean-forward="false" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="struts-tags.tld" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/tld/struts-tags.tld">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="23">
+              <caret line="1" column="110" lean-forward="false" selection-start-line="1" selection-start-column="110" selection-end-line="1" selection-end-column="110" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="login.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WebContent/login.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="23">
+              <caret line="1" column="26" lean-forward="false" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="proxool.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="138">
+              <caret line="6" column="63" lean-forward="false" selection-start-line="6" selection-start-column="63" selection-end-line="6" selection-end-column="63" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DBConnHelper.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sundyn/utils/DBConnHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="164">
+              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EmployeeList.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sundyn/util/EmployeeList.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="172">
+              <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClearServlet.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sundyn/util/ClearServlet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="161">
+              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="analyse.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/analyse.xml">
+          <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider">
+            <state />
+          </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
+            <state relative-caret-position="2392">
               <caret line="104" column="49" lean-forward="false" selection-start-line="104" selection-start-column="49" selection-end-line="104" selection-end-column="49" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="my_zh.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WebContent/js/my_zh.js">
+      <file leaf-file-name="UserCheck.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sundyn/util/UserCheck.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="620">
-              <caret line="566" column="53" lean-forward="false" selection-start-line="566" selection-start-column="23" selection-end-line="566" selection-end-column="53" />
-              <folding>
-                <marker date="1510301211252" expanded="true" signature="2106:2117" ph="..." />
-                <marker date="1510301211252" expanded="true" signature="79985:80011" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="json2.jsp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WebContent/analyse/json2.jsp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="8" column="82" lean-forward="false" selection-start-line="8" selection-start-column="82" selection-end-line="8" selection-end-column="82" />
+            <state relative-caret-position="164">
+              <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -112,12 +224,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>total</find>
-      <find>totalAaj</find>
-      <find>analyseTotalAjax</find>
-      <find>analyseTotalAjax2</find>
-      <find>23:5</find>
-      <find>chartWidth</find>
       <find>analyseContentAjax</find>
       <find>analyseContentAjaxDay</find>
       <find>analyseTotalAjaxDay</find>
@@ -142,9 +248,20 @@
       <find>analyseEmployeeAjax</find>
       <find>analyseEmployeeContentAjax</find>
       <find>analyseEmployeeContentRateAjax</find>
+      <find>.xml</find>
+      <find>usercheck</find>
+      <find>ContextLoaderListener</find>
+      <find>DBPoo</find>
+      <find>CharacterEncodingFilter</find>
+      <find>load-on-startup</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="hd" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
@@ -192,6 +309,10 @@
         <option value="$PROJECT_DIR$/WebContent/analyse/employee.jsp" />
         <option value="$PROJECT_DIR$/src/com/sundyn/action/AnalyseAction.java" />
         <option value="$PROJECT_DIR$/WebContent/manager/query.jsp" />
+        <option value="$PROJECT_DIR$/WebContent/login.jsp" />
+        <option value="$PROJECT_DIR$/web/WEB-INF/web.xml" />
+        <option value="$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml" />
+        <option value="$PROJECT_DIR$/WebContent/WEB-INF/web.xml" />
       </list>
     </option>
   </component>
@@ -251,7 +372,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -261,42 +385,31 @@
             </path>
             <path>
               <item name="sundyn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
-              <item name="WebContent" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sundyn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
-              <item name="WebContent" type="462c0819:PsiDirectoryNode" />
-              <item name="analyse" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sundyn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
-              <item name="WebContent" type="462c0819:PsiDirectoryNode" />
-              <item name="manager" type="462c0819:PsiDirectoryNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/WebContent" />
-    <property name="settings.editor.selected.configurable" value="preferences.editor" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/xwork-core-2.3.16.jar!/" />
+    <property name="settings.editor.selected.configurable" value="preferences.externalResources" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\workspace\sundyn\WebContent\WEB-INF\tld" />
+      <recent name="D:\workspace\sundyn\web\WEB-INF" />
       <recent name="D:\workspace\sundyn\WebContent\analyse" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\workspace\sundyn" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -313,11 +426,9 @@
   </component>
   <component name="RunManager" selected="Tomcat Server.Tomcat7">
     <configuration name="Tomcat7" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 7.0.75" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="1.8">
-      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8081/sundyn/" />
-      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
-      <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
-        <artifact name="sundyn:Web exploded">
+        <artifact name="sundyn:war exploded">
           <settings>
             <option name="CONTEXT_PATH" value="/sundyn" />
           </settings>
@@ -325,7 +436,6 @@
       </deployment>
       <server-settings>
         <option name="BASE_DIRECTORY_NAME" value="Unnamed_sundyn" />
-        <option name="HTTP_PORT" value="8081" />
       </server-settings>
       <predefined_log_file id="Tomcat" enabled="true" />
       <predefined_log_file id="Tomcat Catalina" enabled="true" />
@@ -388,7 +498,7 @@
       </ConfigurationWrapper>
       <method>
         <option name="BuildArtifacts" enabled="true">
-          <artifact name="sundyn:Web exploded" />
+          <artifact name="sundyn:war exploded" />
         </option>
       </method>
     </configuration>
@@ -587,6 +697,9 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="eba58721-adeb-4560-a88f-2e2700ea2ca1" name="Default" comment="" />
@@ -604,6 +717,9 @@
       <workItem from="1510212182008" duration="1612000" />
       <workItem from="1510213831470" duration="10788000" />
       <workItem from="1510277508832" duration="20974000" />
+      <workItem from="1511229780334" duration="3544000" />
+      <workItem from="1511234379822" duration="2073000" />
+      <workItem from="1511236501518" duration="4645000" />
     </task>
     <task id="LOCAL-00001" summary="report">
       <created>1510288908047</created>
@@ -627,7 +743,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57721000" />
+    <option name="totallyTimeSpent" value="67983000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -642,8 +758,8 @@
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.397351" sideWeight="0.19349681" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32887402" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3289183" sideWeight="0.5063966" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32781458" sideWeight="0.4978678" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -651,21 +767,20 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.397351" sideWeight="0.8065032" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.397351" sideWeight="0.77771854" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289183" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289183" sideWeight="0.49573562" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289183" sideWeight="0.48081023" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32781458" sideWeight="0.7734541" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32781458" sideWeight="0.77025586" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3289183" sideWeight="0.4936034" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19722815" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20149253" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289183" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -674,6 +789,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -691,156 +807,21 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/m7Info.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-28">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/manager.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="99" column="37" lean-forward="false" selection-start-line="99" selection-start-column="22" selection-end-line="99" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/base.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-28">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/weburl.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="6" column="19" lean-forward="false" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dept.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="6" column="18" lean-forward="false" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/manager/deleteVideoFile.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4158">
-          <caret line="189" column="104" lean-forward="false" selection-start-line="189" selection-start-column="60" selection-end-line="189" selection-end-column="104" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/TotalService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="93" column="63" lean-forward="true" selection-start-line="93" selection-start-column="63" selection-end-line="93" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/total.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="45" column="31" lean-forward="false" selection-start-line="45" selection-start-column="20" selection-end-line="45" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/total/window.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="167" column="35" lean-forward="true" selection-start-line="161" selection-start-column="26" selection-end-line="167" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/total/deptDeal.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/total/datingDeal.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/TotalAction.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="31878">
           <caret line="1404" column="58" lean-forward="false" selection-start-line="1404" selection-start-column="58" selection-end-line="1404" selection-end-column="58" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/js/jquery-1.4.3.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/query/deptAjax.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/total/person.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2166">
-          <caret line="12" column="19" lean-forward="true" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/total/personDeal.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="71" column="35" lean-forward="true" selection-start-line="71" selection-start-column="35" selection-end-line="71" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/query/dept.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="51" column="106" lean-forward="true" selection-start-line="51" selection-start-column="8" selection-end-line="51" selection-end-column="106" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/total/windowDeal.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="51" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/js/dialog.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="22" column="40" lean-forward="false" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/query/people.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="174" column="24" lean-forward="true" selection-start-line="152" selection-start-column="21" selection-end-line="174" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/js/jquery-1.4.3.js" />
+    <entry file="file://$PROJECT_DIR$/WebContent/query/deptAjax.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/total/person.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/total/personDeal.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/query/dept.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/total/windowDeal.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/js/dialog.js" />
+    <entry file="file://$PROJECT_DIR$/WebContent/query/people.jsp" />
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/DeptService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6095">
@@ -848,22 +829,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/query/peopleDeal.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="55" column="116" lean-forward="false" selection-start-line="55" selection-start-column="116" selection-end-line="55" selection-end-column="116" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/query/result.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="140" column="106" lean-forward="true" selection-start-line="140" selection-start-column="8" selection-end-line="140" selection-end-column="106" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/query/peopleDeal.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/query/result.jsp" />
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/KeyTypeService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -871,137 +838,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/xwork-core-2.3.16.jar!/com/opensymphony/xwork2/ActionSupport.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/css/common_zh.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="1328" column="1" lean-forward="true" selection-start-line="1328" selection-start-column="1" selection-end-line="1328" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/query/zhDealAjax.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="4" column="47" lean-forward="false" selection-start-line="4" selection-start-column="47" selection-end-line="4" selection-end-column="47" />
-          <folding>
-            <element signature="e#316#4726#0#HTML" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/query/zhDeal.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-621">
-          <caret line="25" column="102" lean-forward="false" selection-start-line="25" selection-start-column="102" selection-end-line="25" selection-end-column="102" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/query/zh.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="143" column="106" lean-forward="true" selection-start-line="143" selection-start-column="8" selection-end-line="143" selection-end-column="106" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/query/resultDeal.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="189" column="25" lean-forward="false" selection-start-line="189" selection-start-column="25" selection-end-line="189" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/analyse/json.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="36" lean-forward="false" selection-start-line="0" selection-start-column="32" selection-end-line="0" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/query/deptDeal.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="56">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/xwork-core-2.3.16.jar!/com/opensymphony/xwork2/ActionSupport.class" />
+    <entry file="file://$PROJECT_DIR$/WebContent/css/common_zh.css" />
+    <entry file="file://$PROJECT_DIR$/WebContent/query/zhDealAjax.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/query/zhDeal.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/query/zh.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/query/resultDeal.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/json.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/query/deptDeal.jsp" />
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/AnalyseService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="276">
           <caret line="19" column="56" lean-forward="false" selection-start-line="19" selection-start-column="56" selection-end-line="19" selection-end-column="56" />
-          <folding>
-            <marker date="1510280390240" expanded="true" signature="285:499" ph="select count... " />
-            <marker date="1510280390240" expanded="true" signature="1312:1531" ph="select count... " />
-            <marker date="1510280390240" expanded="true" signature="2242:2418" ph="select count... " />
-            <marker date="1510280390240" expanded="true" signature="3168:3383" ph="select count... " />
-            <marker date="1510280390240" expanded="true" signature="4141:4380" ph="select count... " />
-            <marker date="1510280390240" expanded="true" signature="5117:5324" ph="select count... " />
-            <marker date="1510280390240" expanded="true" signature="6083:6344" ph="select count... " />
-            <marker date="1510280390240" expanded="true" signature="7111:7397" ph="select count... " />
-            <marker date="1510280390240" expanded="true" signature="8143:8397" ph="select count... " />
-            <marker date="1510280390240" expanded="true" signature="9156:9380" ph="select count... " />
-            <marker date="1510280390240" expanded="true" signature="10147:10395" ph="select count... " />
-            <marker date="1510280390240" expanded="true" signature="11140:11355" ph="select count... " />
-            <marker date="1510280390240" expanded="true" signature="12102:12123" ph="select servi... " />
-            <marker date="1510280390240" expanded="true" signature="12640:12769" ph="select id,le... " />
-            <marker date="1510280390240" expanded="true" signature="14061:14224" ph="select ((t1.... serviceDate" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/analyse/total.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="64" column="7" lean-forward="true" selection-start-line="62" selection-start-column="4" selection-end-line="64" selection-end-column="7" />
-          <folding>
-            <element signature="n#style#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#img#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#img#1;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#img#2;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#img#3;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/analyse/content.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="43" column="79" lean-forward="true" selection-start-line="43" selection-start-column="79" selection-end-line="43" selection-end-column="79" />
-          <folding>
-            <element signature="n#style#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#img#0;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#img#1;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#img#2;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#img#3;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/default.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="143" column="58" lean-forward="false" selection-start-line="143" selection-start-column="48" selection-end-line="143" selection-end-column="58" />
-          <folding>
-            <marker date="1510292682149" expanded="true" signature="3061:3084" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/total.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/content.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/default.jsp" />
     <entry file="file://$PROJECT_DIR$/src/query.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="201">
@@ -1010,14 +864,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/piedata.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="7" column="12" lean-forward="false" selection-start-line="7" selection-start-column="5" selection-end-line="7" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/piedata.xml" />
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/QueryAction.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="155">
@@ -1026,186 +873,138 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/applicationContext-action.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="206" column="70" lean-forward="true" selection-start-line="206" selection-start-column="70" selection-end-line="206" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/applicationContext-action.xml" />
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/QueryService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="172">
           <caret line="188" column="62" lean-forward="true" selection-start-line="188" selection-start-column="62" selection-end-line="188" selection-end-column="62" />
-          <folding>
-            <marker date="1510296920295" expanded="true" signature="302:1606" ph="select temp_... id" />
-            <marker date="1510296920295" expanded="true" signature="810:1379" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="1626:1771" ph="select a.*,C... missingValue" />
-            <marker date="1510296920295" expanded="true" signature="2126:2328" ph="select count... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="2613:2978" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="3296:4176" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="4201:4348" ph="select a.*,C... missingValue" />
-            <marker date="1510296920295" expanded="true" signature="4743:5737" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="5762:5910" ph="select a.*,C... missingValue" />
-            <marker date="1510296920295" expanded="true" signature="6262:6660" ph="select count... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="7033:7476" ph="select count... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="7829:8197" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="8554:9038" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="9432:10500" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="10525:10671" ph="select a.*,C... missingValue" />
-            <marker date="1510296920295" expanded="true" signature="11027:12072" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="11027:12073" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="12091:12237" ph="select a.*,C... missingValue" />
-            <marker date="1510296920295" expanded="true" signature="12602:13045" ph="select count... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="13432:14496" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="14521:14667" ph="select a.*,C... missingValue" />
-            <marker date="1510296920295" expanded="true" signature="15057:16121" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="16146:16293" ph="select a.*,C... missingValue" />
-            <marker date="1510296920295" expanded="true" signature="16657:17096" ph="select count... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="17464:17903" ph="select count... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="18409:18492" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="18409:18837" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="19184:19512" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="19865:20193" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="20615:21348" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="22289:22434" ph="select a.*,C... id" />
-            <marker date="1510296920295" expanded="true" signature="22796:23594" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="24535:24679" ph="select a.*,C... id" />
-            <marker date="1510296920295" expanded="true" signature="25005:25234" ph="select count... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="26273:26502" ph="select count... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="27640:27775" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="28916:29051" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="30138:30844" ph="select appri... id" />
-            <marker date="1510296920295" expanded="true" signature="30372:30617" ph="select id,Em... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="31155:31827" ph="select CONCA... id" />
-            <marker date="1510296920295" expanded="true" signature="31401:31646" ph="select id,Em... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="32093:32133" ph="select * fro... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="32463:32596" ph="SELECT * FRO... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="32942:33099" ph="SELECT * FRO... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="33437:33488" ph="update appri... " />
-            <marker date="1510296920295" expanded="true" signature="33847:34077" ph="select count... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="34461:35795" ph="select temp_... id" />
-            <marker date="1510296920295" expanded="true" signature="34940:35568" ph="select appri... appries_appries" />
-            <marker date="1510296920295" expanded="true" signature="35815:35962" ph="select a.*,C... missingValue" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/JSClass/FusionCharts.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-702">
-          <caret line="127" column="53" lean-forward="false" selection-start-line="127" selection-start-column="43" selection-end-line="127" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/analyse/json2.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="8" column="82" lean-forward="false" selection-start-line="8" selection-start-column="82" selection-end-line="8" selection-end-column="82" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/query/index.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="115" column="0" lean-forward="false" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#1;n#table#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#1;n#tr#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#td#1;n#tr#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#div#0;n#td#1;n#tr#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#1;n#table#0;n#div#0;n#td#1;n#tr#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#1;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#1;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#td#0;n#tr#1;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#1;n#tr#1;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#td#1;n#tr#1;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/analyse/rate.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="62" column="45" lean-forward="false" selection-start-line="62" selection-start-column="25" selection-end-line="62" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/analyse/dept.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="59" column="6" lean-forward="true" selection-start-line="59" selection-start-column="6" selection-end-line="59" selection-end-column="6" />
-          <folding>
-            <element signature="n#style#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#div#1;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#1;n#div#1;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#2;n#div#1;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/JSClass/FusionCharts.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/json2.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/query/index.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/rate.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/dept.jsp" />
     <entry file="file://$PROJECT_DIR$/src/analyse.xml">
+      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
+        <state relative-caret-position="2392">
           <caret line="104" column="49" lean-forward="false" selection-start-line="104" selection-start-column="49" selection-end-line="104" selection-end-column="49" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/js/my_zh.js">
+    <entry file="file://$PROJECT_DIR$/WebContent/analyse/employee.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/manager/query.jsp" />
+    <entry file="file://$PROJECT_DIR$/WebContent/js/my_zh.js" />
+    <entry file="file://$PROJECT_DIR$/src/struts.xml">
+      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="620">
-          <caret line="566" column="53" lean-forward="false" selection-start-line="566" selection-start-column="23" selection-end-line="566" selection-end-column="53" />
-          <folding>
-            <marker date="1510301211252" expanded="true" signature="2106:2117" ph="..." />
-            <marker date="1510301211252" expanded="true" signature="79985:80011" ph="..." />
-          </folding>
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/analyse/employee.jsp">
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/web.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="31" column="132" lean-forward="false" selection-start-line="31" selection-start-column="132" selection-end-line="31" selection-end-column="132" />
-          <folding>
-            <element signature="n#style#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#1;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#2;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#3;n#td#0;n#tr#0;n#table#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/manager/query.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="26" column="22" lean-forward="false" selection-start-line="26" selection-start-column="22" selection-end-line="26" selection-end-column="22" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="3059">
+          <caret line="133" column="17" lean-forward="false" selection-start-line="133" selection-start-column="17" selection-end-line="133" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/AnalyseAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="566">
-          <caret line="543" column="112" lean-forward="false" selection-start-line="543" selection-start-column="112" selection-end-line="543" selection-end-column="112" />
+        <state relative-caret-position="23">
+          <caret line="549" column="103" lean-forward="false" selection-start-line="549" selection-start-column="103" selection-end-line="549" selection-end-column="103" />
           <folding>
+            <element signature="e#5345#5361#0" expanded="true" />
+            <element signature="e#32218#32234#0" expanded="true" />
             <element signature="e#36285#36301#0" expanded="true" />
+            <element signature="e#45459#45475#0" expanded="true" />
+            <element signature="e#47881#47897#0" expanded="true" />
+            <element signature="e#50933#50949#0" expanded="true" />
+            <element signature="e#53275#53291#0" expanded="true" />
+            <element signature="e#55863#55879#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sundyn/util/UserCheck.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/spring.jar!/org/springframework/web/filter/CharacterEncodingFilter.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sundyn/util/EmployeeList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sundyn/util/ClearServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="6" column="63" lean-forward="false" selection-start-line="6" selection-start-column="63" selection-end-line="6" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sundyn/utils/DBConnHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/login.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="1" column="26" lean-forward="false" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/tld/struts-tags.tld">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="1" column="110" lean-forward="false" selection-start-line="1" selection-start-column="110" selection-end-line="1" selection-end-column="110" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/web.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="48" column="48" lean-forward="false" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1215,7 +1014,7 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
-          <last-edited>sundyn:Web exploded</last-edited>
+          <last-edited>sundyn:war exploded</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1228,7 +1027,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>Web (sundyn)|Web</last-edited>
+          <last-edited>Web</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1240,6 +1039,7 @@
       </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
+          <last-edited>JAVAEE</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1263,7 +1063,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>Web|sundyn</last-edited>
+          <last-edited>sundyn</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1286,6 +1086,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
+          <last-edited>ant</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
