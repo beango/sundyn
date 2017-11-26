@@ -13,11 +13,11 @@
 <head>
     <title><s:text name="sundyn.title"/></title>
     <link rel="shortcut icon" href="/logo.ico" type="image/x-icon"/>
-    <link rel="stylesheet" href="css/login.css" type="text/css"></link>
+    <link rel="stylesheet" href="css/login.css" type="text/css" />
     <script type="text/javascript">
         function submitlogin() {
             var name = document.getElementById("name").value;
-            if (name == "") {
+            if (name === "") {
                 alert("<s:text name='sundyn.notNullUserName'  /> ");
                 document.getElementById("name").focus();
                 return false;
@@ -161,7 +161,7 @@
         </div>
         <div class="msg" style="height:20px;">${msg}</div>
     </div>
-    <div class="msg" style="height:20px;font:14px;line-height:25px">
+    <div class="msg" style="height:20px;font-size:14pt;line-height:25px">
 
         <s:text name="login.info"></s:text><br/>
         <a href="update/MClientSetup.exe"><s:text name="login.m8Client.android"/></a>

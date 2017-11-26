@@ -6,85 +6,9 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eba58721-adeb-4560-a88f-2e2700ea2ca1" name="Default" comment="report">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/WebContent/WEB-INF/tld/struts-tags.tld" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/sundyn_Web_exploded.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/WebContent/struts.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/web/WEB-INF/web.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="eba58721-adeb-4560-a88f-2e2700ea2ca1" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml" afterPath="$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/web.xml" afterPath="$PROJECT_DIR$/WebContent/WEB-INF/web.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/login.jsp" afterPath="$PROJECT_DIR$/WebContent/login.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sundyn.iml" afterPath="$PROJECT_DIR$/sundyn.iml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/JNative.jar" afterPath="$PROJECT_DIR$/lib/JNative.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/ant.jar" afterPath="$PROJECT_DIR$/lib/ant.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-beanutils-1.8.0.jar" afterPath="$PROJECT_DIR$/lib/commons-beanutils-1.8.0.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-codec-1.6.jar" afterPath="$PROJECT_DIR$/lib/commons-codec-1.6.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-codec-1.9.jar" afterPath="$PROJECT_DIR$/lib/commons-codec-1.9.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-collections-3.2.1.jar" afterPath="$PROJECT_DIR$/lib/commons-collections-3.2.1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-fileupload-1.3.jar" afterPath="$PROJECT_DIR$/lib/commons-fileupload-1.3.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-io-2.2.jar" afterPath="$PROJECT_DIR$/lib/commons-io-2.2.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-io-2.4.jar" afterPath="$PROJECT_DIR$/lib/commons-io-2.4.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-lang-2.4.jar" afterPath="$PROJECT_DIR$/lib/commons-lang-2.4.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-lang3-3.1.jar" afterPath="$PROJECT_DIR$/lib/commons-lang3-3.1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-logging-1.1.3.jar" afterPath="$PROJECT_DIR$/lib/commons-logging-1.1.3.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-logging-api-1.1.jar" afterPath="$PROJECT_DIR$/lib/commons-logging-api-1.1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/dom4j-1.6.1.jar" afterPath="$PROJECT_DIR$/lib/dom4j-1.6.1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/ezmorph-1.0.6.jar" afterPath="$PROJECT_DIR$/lib/ezmorph-1.0.6.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/fckeditor-java-core-2.4.1-javadoc.jar" afterPath="$PROJECT_DIR$/lib/fckeditor-java-core-2.4.1-javadoc.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/fluent-hc-4.2.5.jar" afterPath="$PROJECT_DIR$/lib/fluent-hc-4.2.5.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/freemarker-2.3.19.jar" afterPath="$PROJECT_DIR$/lib/freemarker-2.3.19.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/hibernate3.jar" afterPath="$PROJECT_DIR$/lib/hibernate3.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/httpclient-4.2.5.jar" afterPath="$PROJECT_DIR$/lib/httpclient-4.2.5.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/httpclient-cache-4.2.5.jar" afterPath="$PROJECT_DIR$/lib/httpclient-cache-4.2.5.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/httpcore-4.2.4.jar" afterPath="$PROJECT_DIR$/lib/httpcore-4.2.4.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/httpmime-4.2.5.jar" afterPath="$PROJECT_DIR$/lib/httpmime-4.2.5.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/imageinfo-1.9.jar" afterPath="$PROJECT_DIR$/lib/imageinfo-1.9.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/java-core-2.4.1.jar" afterPath="$PROJECT_DIR$/lib/java-core-2.4.1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/java-core-2.6.jar" afterPath="$PROJECT_DIR$/lib/java-core-2.6.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/javassist-3.11.0.GA.jar" afterPath="$PROJECT_DIR$/lib/javassist-3.11.0.GA.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/jcommon-1.0.0.jar" afterPath="$PROJECT_DIR$/lib/jcommon-1.0.0.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/jdom.jar" afterPath="$PROJECT_DIR$/lib/jdom.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/jfreechart-1.0.0.jar" afterPath="$PROJECT_DIR$/lib/jfreechart-1.0.0.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/json-lib-2.3-jdk15.jar" afterPath="$PROJECT_DIR$/lib/json-lib-2.3-jdk15.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/json.jar" afterPath="$PROJECT_DIR$/lib/json.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/jsoup-1.5.2.jar" afterPath="$PROJECT_DIR$/lib/jsoup-1.5.2.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/jstl-1.2.jar" afterPath="$PROJECT_DIR$/lib/jstl-1.2.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/junit-3.8.1.jar" afterPath="$PROJECT_DIR$/lib/junit-3.8.1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/junit.jar" afterPath="$PROJECT_DIR$/lib/junit.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/log4j-1.2.15.jar" afterPath="$PROJECT_DIR$/lib/log4j-1.2.15.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/msbase.jar" afterPath="$PROJECT_DIR$/lib/msbase.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/mssqlserver.jar" afterPath="$PROJECT_DIR$/lib/mssqlserver.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/msutil.jar" afterPath="$PROJECT_DIR$/lib/msutil.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/mysql-connector-java-5.1.7-bin.jar" afterPath="$PROJECT_DIR$/lib/mysql-connector-java-5.1.7-bin.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/ognl-3.0.6.jar" afterPath="$PROJECT_DIR$/lib/ognl-3.0.6.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/ooxml-schemas-1.1.jar" afterPath="$PROJECT_DIR$/lib/ooxml-schemas-1.1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/org.apache.poi.xwpf.converter.core-1.0.5.jar" afterPath="$PROJECT_DIR$/lib/org.apache.poi.xwpf.converter.core-1.0.5.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/org.apache.poi.xwpf.converter.xhtml-1.0.5.jar" afterPath="$PROJECT_DIR$/lib/org.apache.poi.xwpf.converter.xhtml-1.0.5.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/org.hamcrest.core_1.1.0.v20090501071000.jar" afterPath="$PROJECT_DIR$/lib/org.hamcrest.core_1.1.0.v20090501071000.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/org.hamcrest.core_1.3.0.v201303031735.jar" afterPath="$PROJECT_DIR$/lib/org.hamcrest.core_1.3.0.v201303031735.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/org.json.jar" afterPath="$PROJECT_DIR$/lib/org.json.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/poi-3.13-beta1.jar" afterPath="$PROJECT_DIR$/lib/poi-3.13-beta1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/poi-3.6-20091214.jar" afterPath="$PROJECT_DIR$/lib/poi-3.6-20091214.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/poi-ooxml-3.13-beta1.jar" afterPath="$PROJECT_DIR$/lib/poi-ooxml-3.13-beta1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/poi-ooxml-schemas-3.13-beta1.jar" afterPath="$PROJECT_DIR$/lib/poi-ooxml-schemas-3.13-beta1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/poi-scratchpad-3.13-beta1.jar" afterPath="$PROJECT_DIR$/lib/poi-scratchpad-3.13-beta1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/proxool-0.8.3.jar" afterPath="$PROJECT_DIR$/lib/proxool-0.8.3.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/servlet-api.jar" afterPath="$PROJECT_DIR$/lib/servlet-api.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/slf4j-api-1.5.8.jar" afterPath="$PROJECT_DIR$/lib/slf4j-api-1.5.8.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/slf4j-simple-1.5.8.jar" afterPath="$PROJECT_DIR$/lib/slf4j-simple-1.5.8.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/spring-test-3.0.5.RELEASE.jar" afterPath="$PROJECT_DIR$/lib/spring-test-3.0.5.RELEASE.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/spring.jar" afterPath="$PROJECT_DIR$/lib/spring.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/sqlitejdbc-v033-nested.jar" afterPath="$PROJECT_DIR$/lib/sqlitejdbc-v033-nested.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/stax-api-1.0.1.jar" afterPath="$PROJECT_DIR$/lib/stax-api-1.0.1.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/struts2-core-2.3.16.jar" afterPath="$PROJECT_DIR$/lib/struts2-core-2.3.16.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/struts2-dojo-plugin-2.3.16.jar" afterPath="$PROJECT_DIR$/lib/struts2-dojo-plugin-2.3.16.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/struts2-json-plugin-2.3.16.jar" afterPath="$PROJECT_DIR$/lib/struts2-json-plugin-2.3.16.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/struts2-spring-plugin-2.3.16.jar" afterPath="$PROJECT_DIR$/lib/struts2-spring-plugin-2.3.16.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/ueditor-1.1.2.jar" afterPath="$PROJECT_DIR$/lib/ueditor-1.1.2.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/xmlbeans-2.6.0.jar" afterPath="$PROJECT_DIR$/lib/xmlbeans-2.6.0.jar" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/WebContent/WEB-INF/lib/xwork-core-2.3.16.jar" afterPath="$PROJECT_DIR$/lib/xwork-core-2.3.16.jar" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <ignored path=".idea/encodings.xml" />
@@ -111,18 +35,9 @@
       <file leaf-file-name="AnalyseAction.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/AnalyseAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
+            <state relative-caret-position="12374">
               <caret line="549" column="103" lean-forward="false" selection-start-line="549" selection-start-column="103" selection-end-line="549" selection-end-column="103" />
-              <folding>
-                <element signature="e#5345#5361#0" expanded="true" />
-                <element signature="e#32218#32234#0" expanded="true" />
-                <element signature="e#36285#36301#0" expanded="true" />
-                <element signature="e#45459#45475#0" expanded="true" />
-                <element signature="e#47881#47897#0" expanded="true" />
-                <element signature="e#50933#50949#0" expanded="true" />
-                <element signature="e#53275#53291#0" expanded="true" />
-                <element signature="e#55863#55879#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -131,7 +46,7 @@
         <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/web.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="175">
-              <caret line="48" column="48" lean-forward="false" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="48" />
+              <caret line="48" column="16" lean-forward="false" selection-start-line="48" selection-start-column="16" selection-end-line="48" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -150,8 +65,18 @@
       <file leaf-file-name="login.jsp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebContent/login.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
-              <caret line="1" column="26" lean-forward="false" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="38" />
+            <state relative-caret-position="3749">
+              <caret line="163" column="50" lean-forward="false" selection-start-line="163" selection-start-column="50" selection-end-line="163" selection-end-column="50" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SundynSet.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sundyn/util/SundynSet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="575">
+              <caret line="30" column="41" lean-forward="false" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -170,7 +95,7 @@
       <file leaf-file-name="DBConnHelper.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/sundyn/utils/DBConnHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
+            <state relative-caret-position="230">
               <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding />
             </state>
@@ -180,7 +105,7 @@
       <file leaf-file-name="EmployeeList.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/sundyn/util/EmployeeList.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
+            <state relative-caret-position="575">
               <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
               <folding />
             </state>
@@ -197,23 +122,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="analyse.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/analyse.xml">
-          <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2392">
-              <caret line="104" column="49" lean-forward="false" selection-start-line="104" selection-start-column="49" selection-end-line="104" selection-end-column="49" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="UserCheck.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/sundyn/util/UserCheck.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
+            <state relative-caret-position="529">
               <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
               <folding />
             </state>
@@ -224,7 +136,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>analyseContentAjax</find>
       <find>analyseContentAjaxDay</find>
       <find>analyseTotalAjaxDay</find>
       <find>queryIndex</find>
@@ -254,6 +165,7 @@
       <find>DBPoo</find>
       <find>CharacterEncodingFilter</find>
       <find>load-on-startup</find>
+      <find>proxoolServletConfigurator</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -309,10 +221,10 @@
         <option value="$PROJECT_DIR$/WebContent/analyse/employee.jsp" />
         <option value="$PROJECT_DIR$/src/com/sundyn/action/AnalyseAction.java" />
         <option value="$PROJECT_DIR$/WebContent/manager/query.jsp" />
-        <option value="$PROJECT_DIR$/WebContent/login.jsp" />
         <option value="$PROJECT_DIR$/web/WEB-INF/web.xml" />
         <option value="$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml" />
         <option value="$PROJECT_DIR$/WebContent/WEB-INF/web.xml" />
+        <option value="$PROJECT_DIR$/WebContent/login.jsp" />
       </list>
     </option>
   </component>
@@ -372,10 +284,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="AndroidView" />
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -391,14 +300,17 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/xwork-core-2.3.16.jar!/" />
-    <property name="settings.editor.selected.configurable" value="preferences.externalResources" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="settings.editor.selected.configurable" value="http.proxy" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
@@ -719,7 +631,8 @@
       <workItem from="1510277508832" duration="20974000" />
       <workItem from="1511229780334" duration="3544000" />
       <workItem from="1511234379822" duration="2073000" />
-      <workItem from="1511236501518" duration="4645000" />
+      <workItem from="1511236501518" duration="5743000" />
+      <workItem from="1511669251060" duration="157000" />
     </task>
     <task id="LOCAL-00001" summary="report">
       <created>1510288908047</created>
@@ -728,7 +641,21 @@
       <option name="project" value="LOCAL" />
       <updated>1510288908048</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="report">
+      <created>1511245874996</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1511245874996</updated>
+    </task>
+    <task id="LOCAL-00003" summary="report">
+      <created>1511245904029</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1511245904029</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -743,7 +670,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67983000" />
+    <option name="totallyTimeSpent" value="69238000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -758,7 +685,7 @@
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3289183" sideWeight="0.5063966" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3289183" sideWeight="0.50852877" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32781458" sideWeight="0.4978678" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -767,19 +694,19 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.397351" sideWeight="0.77771854" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.397351" sideWeight="0.7745203" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289183" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289183" sideWeight="0.48081023" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289183" sideWeight="0.47867805" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3289183" sideWeight="0.4914712" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32781458" sideWeight="0.77025586" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3289183" sideWeight="0.4936034" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20149253" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289183" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289183" sideWeight="0.4978678" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20362474" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -807,13 +734,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/TotalAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="31878">
-          <caret line="1404" column="58" lean-forward="false" selection-start-line="1404" selection-start-column="58" selection-end-line="1404" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebContent/js/jquery-1.4.3.js" />
     <entry file="file://$PROJECT_DIR$/WebContent/query/deptAjax.jsp" />
     <entry file="file://$PROJECT_DIR$/WebContent/total/person.jsp" />
@@ -869,7 +789,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="155">
           <caret line="44" column="38" lean-forward="true" selection-start-line="44" selection-start-column="4" selection-end-line="44" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -887,74 +806,51 @@
     <entry file="file://$PROJECT_DIR$/WebContent/analyse/rate.jsp" />
     <entry file="file://$PROJECT_DIR$/WebContent/analyse/dept.jsp" />
     <entry file="file://$PROJECT_DIR$/src/analyse.xml">
-      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2392">
           <caret line="104" column="49" lean-forward="false" selection-start-line="104" selection-start-column="49" selection-end-line="104" selection-end-column="49" />
           <folding />
         </state>
       </provider>
+      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider">
+        <state />
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/WebContent/analyse/employee.jsp" />
     <entry file="file://$PROJECT_DIR$/WebContent/manager/query.jsp" />
     <entry file="file://$PROJECT_DIR$/WebContent/js/my_zh.js" />
     <entry file="file://$PROJECT_DIR$/src/struts.xml">
-      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/WEB-INF/web.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3059">
-          <caret line="133" column="17" lean-forward="false" selection-start-line="133" selection-start-column="17" selection-end-line="133" selection-end-column="17" />
-          <folding />
-        </state>
+      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider">
+        <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/web/WEB-INF/web.xml" />
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/AnalyseAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
+        <state relative-caret-position="12374">
           <caret line="549" column="103" lean-forward="false" selection-start-line="549" selection-start-column="103" selection-end-line="549" selection-end-column="103" />
-          <folding>
-            <element signature="e#5345#5361#0" expanded="true" />
-            <element signature="e#32218#32234#0" expanded="true" />
-            <element signature="e#36285#36301#0" expanded="true" />
-            <element signature="e#45459#45475#0" expanded="true" />
-            <element signature="e#47881#47897#0" expanded="true" />
-            <element signature="e#50933#50949#0" expanded="true" />
-            <element signature="e#53275#53291#0" expanded="true" />
-            <element signature="e#55863#55879#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/util/UserCheck.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
+        <state relative-caret-position="529">
           <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/spring.jar!/org/springframework/web/filter/CharacterEncodingFilter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/spring.jar!/org/springframework/web/filter/CharacterEncodingFilter.class" />
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/util/EmployeeList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
+        <state relative-caret-position="575">
           <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
           <folding />
         </state>
@@ -978,16 +874,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/utils/DBConnHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
+        <state relative-caret-position="230">
           <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/login.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="1" column="26" lean-forward="false" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="38" />
           <folding />
         </state>
       </provider>
@@ -1000,10 +888,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sundyn/util/SundynSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="30" column="41" lean-forward="false" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/login.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3749">
+          <caret line="163" column="50" lean-forward="false" selection-start-line="163" selection-start-column="50" selection-end-line="163" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/web.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
-          <caret line="48" column="48" lean-forward="false" selection-start-line="48" selection-start-column="22" selection-end-line="48" selection-end-column="48" />
+          <caret line="48" column="16" lean-forward="false" selection-start-line="48" selection-start-column="16" selection-end-line="48" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -1027,7 +931,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>Web</last-edited>
+          <last-edited>Struts 2 (sundyn)|Struts 2</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1063,7 +967,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>sundyn</last-edited>
+          <last-edited>Web|sundyn</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
