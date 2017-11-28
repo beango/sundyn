@@ -8,7 +8,7 @@
   <component name="ChangeListManager">
     <list default="true" id="eba58721-adeb-4560-a88f-2e2700ea2ca1" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sundyn/service/QueryService.java" afterPath="$PROJECT_DIR$/src/com/sundyn/service/QueryService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WebContent/query/zhDeal.jsp" afterPath="$PROJECT_DIR$/WebContent/query/zhDeal.jsp" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <ignored path=".idea/encodings.xml" />
@@ -78,8 +78,8 @@
       <file leaf-file-name="zhDeal.jsp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebContent/query/zhDeal.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="94" column="59" lean-forward="false" selection-start-line="94" selection-start-column="52" selection-end-line="94" selection-end-column="59" />
+            <state relative-caret-position="483">
+              <caret line="105" column="37" lean-forward="true" selection-start-line="105" selection-start-column="37" selection-end-line="105" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -245,7 +245,6 @@
         <option value="$PROJECT_DIR$/WebContent/WEB-INF/lib/xwork-core-2.3.16.jar!/com/opensymphony/xwork2/ActionSupport.class" />
         <option value="$PROJECT_DIR$/src/query.xml" />
         <option value="$PROJECT_DIR$/WebContent/query/zhDealAjax.jsp" />
-        <option value="$PROJECT_DIR$/WebContent/query/zhDeal.jsp" />
         <option value="$PROJECT_DIR$/WebContent/css/common_zh.css" />
         <option value="$PROJECT_DIR$/src/com/sundyn/service/AnalyseService.java" />
         <option value="$PROJECT_DIR$/WebContent/JSClass/FusionCharts.jsp" />
@@ -273,6 +272,7 @@
         <option value="$PROJECT_DIR$/WebContent/js/ueditor/jsp/config.json" />
         <option value="$PROJECT_DIR$/src/com/sundyn/service/QueryService.java" />
         <option value="$PROJECT_DIR$/src/com/sundyn/action/QueryAction.java" />
+        <option value="$PROJECT_DIR$/WebContent/query/zhDeal.jsp" />
       </list>
     </option>
   </component>
@@ -718,7 +718,7 @@
       <workItem from="1511236501518" duration="5743000" />
       <workItem from="1511669251060" duration="238000" />
       <workItem from="1511851703203" duration="3327000" />
-      <workItem from="1511860466592" duration="1458000" />
+      <workItem from="1511860466592" duration="1663000" />
     </task>
     <task id="LOCAL-00001" summary="report">
       <created>1510288908047</created>
@@ -755,7 +755,14 @@
       <option name="project" value="LOCAL" />
       <updated>1511855026698</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="1">
+      <created>1511861956790</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1511861956790</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -770,7 +777,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74104000" />
+    <option name="totallyTimeSpent" value="74309000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -801,7 +808,7 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3289183" sideWeight="0.48294243" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3289183" sideWeight="0.48294243" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32781458" sideWeight="0.77025586" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -827,9 +834,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="report" />
-    <MESSAGE value="1" />
     <MESSAGE value="修复ueditor不能上传图片的" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复ueditor不能上传图片的" />
+    <MESSAGE value="1" />
+    <option name="LAST_COMMIT_MESSAGE" value="1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1138,8 +1145,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WebContent/query/zhDeal.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="94" column="59" lean-forward="false" selection-start-line="94" selection-start-column="52" selection-end-line="94" selection-end-column="59" />
+        <state relative-caret-position="483">
+          <caret line="105" column="37" lean-forward="true" selection-start-line="105" selection-start-column="37" selection-end-line="105" selection-end-column="37" />
           <folding />
         </state>
       </provider>

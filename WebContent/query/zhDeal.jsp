@@ -93,9 +93,7 @@
                         <div class="center_04_right_02 kuang">
                             <ul class="list">
                                 <c:forEach items="${keyList}" var="key">
-                                    <li>
-                                            ${key.name}:
-                                        <input type="checkbox" value="${key.keyNo}"
+                                    <li>${key.name}:<input type="checkbox" value="${key.keyNo}"
                                                name="key${key.keyNo}" id="key${key.keyNo}" />
                                     </li>
                                 </c:forEach>
