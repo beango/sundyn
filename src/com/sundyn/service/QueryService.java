@@ -278,6 +278,7 @@ public class QueryService extends SuperDao
         }
         sql = " select a.*,CONCAT(b.name,'') as fatherName  from  (" + sql + ")   as a left join appries_dept b  on  a.fatherId=b.id ORDER BY a.JieshouTime DESC ";
         try {
+            System.out.println("queryZh2: " + sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
