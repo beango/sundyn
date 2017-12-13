@@ -1,5 +1,4 @@
 <%@ page pageEncoding="UTF-8"%>
-<%@taglib prefix="FCK" uri="http://java.fckeditor.net" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -38,7 +37,7 @@
 						     <option value="video" <c:if test="${p.playType=='video'}">selected="selected"</c:if> ><s:text name='sundyn.play.vio' /></option>
 						     <option value="doc" <c:if test="${p.playType=='doc'}">selected="selected"</c:if> ><s:text name='sundyn.play.doc' /></option>
 						  </select>
-							  
+
 						</td>
 					</tr>
 					<tr id="other"  <c:if test="${p.playType == 'text'}">  style="display:none;" </c:if> >
@@ -46,6 +45,8 @@
 							<s:text name='sundyn.play.playSource' />
 						</td>
 						<td align="left" style="border-color: #e9f5fd;">
+                            <a href="playSource/${p.playSource}" target="_blank">${p.playSource}</a>
+
 							 <input type="text" name="playSource" id="playSource" readonly="readonly" style="background-color: #c3c3c3;" value="${p.playSource}"    />
  							 <form id="pic" enctype="multipart/form-data" name="pic"
 								action="employeeAdd.action" method="post">
@@ -79,7 +80,7 @@
 							<s:text name='sundyn.play.index' />
 						</td>
 						<td align="left" style="border-color: #e9f5fd;">
-						   <input name="playIndex" id="playIndex" value="${p.playIndex}" /> 
+						   <input name="playIndex" id="playIndex" value="${p.playIndex}" />
 						</td>
 					</tr>
   				</table>
