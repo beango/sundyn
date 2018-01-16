@@ -21,7 +21,7 @@
 <form id="form1" name="form1" method="post" action="">
     <table width="100%" height="50" border="0" cellpadding="0" cellspacing="0" style="border-color:#FFFFFF;">
         <tr>
-            <td align="left" style="border-color:#FFFFFF;">
+            <td align="left" style="border-color:#FFFFFF;"><div style="float:left;padding-top:5px;">选择大厅：</div>
                 <div id="dept" style="float:left;margin-top:5px;">
                     <select name="deptId">
                         <c:forEach items="${deptList}" var="dept" varStatus="index">

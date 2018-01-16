@@ -1,3 +1,4 @@
+<%@ page import="java.util.Date" %>
 <%@page pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -13,7 +14,7 @@
 		<script type="text/javascript" src="js/ddtree.js"></script>
 		<script type="text/javascript" src="js/dojo.js"></script>
 		<script type="text/javascript" src="js/dialog.js"></script>
-		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?<%=new Date().getTime()%>"></script>
  		<style type="text/css">
 			a:link { font-family:12px; color:#000; text-decoration:none}
 			a:visited { font-family:12px; color: #000; text-decoration:none}
@@ -60,7 +61,7 @@
 					</div>
 					<div style="height: 380px;overflow: hidden;" class="kuang">
 						<s:text name='sundyn.employee.info' /><br/>
-						<div   class="employeeHr"> </div> 
+						<div   class="employeeHr"> </div>
 						<img src="<s:text name='sundyn.employee.pic.employeeExcel' />" class="hand" onclick="employeeExcel()" />
 					</div>
 				</div>

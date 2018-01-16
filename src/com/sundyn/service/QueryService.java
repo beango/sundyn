@@ -257,19 +257,19 @@ public class QueryService extends SuperDao
 
     public List queryZh2(final Integer employeeId, final String keys, final String deptIds, final String startDate, final String endDate, final Integer start, final Integer num) {
         String sql = "select appries_appries.id , appries_appries.videofile videofile,appries_appries.businessTime businessTime,appries_appries.businessMin businessMin,appries_appries.businessSec businessSec, appries_employee.CardNum ,CONCAT(appries_employee.Name,'') as 'employeeName',CONCAT(appries_keytype.name,'') as 'keyName', appries_appries.ext1,appries_appries.ext2,appries_appries.remark,appries_appries.JieshouTime ,CONCAT(appries_dept.name,'') as 'deptName'  , appries_appries.serviceDate,appries_appries.appriesTime,appries_appries.CustorTime ,appries_dept.dept_camera_url ,appries_dept.fatherId from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id and appries_appries.keyno=appries_keytype.keyNo ";
-        if (!employeeId.equals(new Integer(0))) {
+        if (employeeId!=null && !employeeId.equals(new Integer(0))) {
             sql = String.valueOf(sql) + " and appries_appries.EmployeeId=" + employeeId + " ";
         }
         if (!keys.equals("")) {
             sql = String.valueOf(sql) + " and appries_appries.keyno in (" + keys + ")  ";
         }
-        if (!deptIds.equals("")) {
+        if (deptIds!=null && !deptIds.equals("")) {
             sql = String.valueOf(sql) + " and appries_appries.DeptId in (" + deptIds + ")  ";
         }
-        if (!startDate.equals("")) {
+        if (startDate!=null && !startDate.equals("")) {
             sql = String.valueOf(sql) + " and appries_appries.JieshouTime  >='" + startDate + "' ";
         }
-        if (!endDate.equals("")) {
+        if (endDate!=null && !endDate.equals("")) {
             sql = String.valueOf(sql) + " and appries_appries.JieshouTime  <='" + endDate + "' ";
         }
         sql = String.valueOf(sql) + " order by    appries_appries.id  desc  ";
@@ -313,20 +313,20 @@ public class QueryService extends SuperDao
 
     public int countQueryZh2(final Integer employeeId, final String keys, final String deptIds, final String startDate, final String endDate) {
         String sql = "select   count(*)from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id and appries_appries.keyno=appries_keytype.keyNo ";
-        if (!employeeId.equals(new Integer(0))) {
+        if (employeeId!= null && !employeeId.equals(new Integer(0))) {
             sql = String.valueOf(sql) + " and appries_appries.EmployeeId=" + employeeId + " ";
         }
         if (!keys.equals("")) {
             sql = String.valueOf(sql) + " and appries_appries.keyno in (" + keys + ")  ";
         }
-        if (!deptIds.equals("")) {
+        if (deptIds!=null && !deptIds.equals("")) {
             sql = String.valueOf(sql) + " and appries_appries.DeptId in (" + deptIds + ")  ";
         }
         if (!startDate.equals("")) {
             sql = String.valueOf(sql) + " and appries_appries.JieshouTime  >='" + startDate + "' ";
             sql = String.valueOf(sql) + " and appries_appries.JieshouTime  >='" + startDate + "' ";
         }
-        if (!endDate.equals("")) {
+        if (endDate!=null && !endDate.equals("")) {
             sql = String.valueOf(sql) + " and appries_appries.JieshouTime  <='" + endDate + "' ";
         }
         try {

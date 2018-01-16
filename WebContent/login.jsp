@@ -14,6 +14,7 @@
     <title><s:text name="sundyn.title"/></title>
     <link rel="shortcut icon" href="/logo.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="css/login.css" type="text/css" />
+    <link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>
     <script type="text/javascript">
         function submitlogin() {
             var name = document.getElementById("name").value;
@@ -101,22 +102,45 @@
     <script type="text/javascript" src="js/my_zh.js"></script>
 </head>
 <body>
+<form action="managerLogin.action" method="post" id="login"
+      onsubmit="check();" method="post">
+    <div class="mycenter">
+        <div class="mysign">
+            <div class="col-lg-12 text-center text-info">
+                <h2><s:text name="sundyn.title"/></h2>
+            </div>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" name="managerVo.name"
+                       id="name" placeholder="账 号" required autofocus/>
+            </div>
+            <div class="col-lg-10"></div>
+            <div class="col-lg-10">
+                <input type="password" class="form-control" name="managerVo.password" id="password" placeholder="密 码" required autofocus/>
+            </div>
+            <div class="col-lg-10"></div>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" name="rand" id="rand" onkeydown="KeyDown()" style="width:130px;float:left;"/>
+                <img src="image.jsp" width="67" height="20" align="absmiddle" style="margin-top:10px;"/>
+            </div>
+            <div class="col-lg-10"></div>
+            <div class="col-lg-10">
+                <input type="button" class="btn btn-success col-lg-12" style="padding-left:30px;" onclick="submitlogin()" value="登录"></input>
+            </div>
+            <div class="col-lg-10"></div>
+            <div class="col-lg-10">
+                <div class="msg" style="height:20px;">${msg}</div>
+            </div>
 
-<div class="login">
-    <div class="main"
-         style="background-image: url('${pageContext.request.contextPath }/images/<s:text name="login.pic.loginBg"/>')">
-        <div style="width: 100%;height: 20px;"></div>
-        <div class="logo">
-            <%if (!logo.equals("")) { %>
-            <img src="<%=logo%>"/>
-            <%}%>
         </div>
+    </div>
+</form>
+
+
+<%--<div class="login">
+    <div class="main">
+        <div style="width: 100%;height: 20px;"></div>
         <div class="text">
-            <s:if test='getText("sundyn.language") eq "en"'>Zhengzhou Sundyn</s:if>
-            <s:else><%
-                if (!title.equals("")) {
-                }
-            %></s:else></div>
+            111</div>
         <div class="content">
             <form action="managerLogin.action" method="post" id="login"
                   onsubmit="check();">
@@ -167,13 +191,13 @@
         <a href="update/MClientSetup.exe"><s:text name="login.m8Client.android"/></a>
         <td><s:text name="login.m8Clinet.android.description"/></td>
         <br/>
-        <a href="update/I系列USB驱动.exe"><s:text name="login.usbDriver.android"/></a>
+        <a href="update/USB-Driver.exe"><s:text name="login.usbDriver.android"/></a>
         <td><s:text name="login.usbDriver.android.descriptionForM8"/></td>
         <br/>
         <td><s:text name="login.version"/>2.1.1</td>
 
     </div>
-</div>
+</div>--%>
 </body>
 <script language="javascript">
     document.getElementById("name").focus();

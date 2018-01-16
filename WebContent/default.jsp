@@ -37,7 +37,7 @@ $(function ()
 
 function loadMenu(){
 	$.ajax({
-    	url :"/sundyn/getMenu.action",
+    	url :"getMenu.action",
     	dataType:"json",
     	success:function(data){
     		$.each(data, function (i, menu) {
@@ -114,6 +114,9 @@ function addTabMenu(title, href, iconCls, iframe){
 	}
 }
 
+function closeTabMenu(title){
+    $('#wu-tabs').tabs('close',title);
+}
 </script>
 <title><s:text name="sundyn.title" /></title>
 </head>
@@ -134,7 +137,7 @@ function addTabMenu(title, href, iconCls, iframe){
 	<!-- end of header -->
 	<!-- begin of sidebar -->
 	<div class="wu-sidebar" data-options="region:'west',split:true,border:true">
-    	<div id="leftmenu" class="easyui-accordion" data-options="border:false,fit:true">
+    	<div id="leftmenu" class="easyui-accordion" data-options="border:false">
         </div>
     </div>
     <!-- end of sidebar -->

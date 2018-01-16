@@ -267,9 +267,13 @@ public class DeptService extends SuperDao
         if(ids == null)
             return null;
         final List temp = new ArrayList();
-        temp.addAll(this.findAll(ids));
+        List idAll = findAll(ids);
+        if(null!=idAll)
+            temp.addAll(idAll);
         final String[] idarray = ids.split(",");
         for (int i = 0; i < idarray.length; ++i) {
+            if(idarray[i].equals(""))
+                continue;
             temp.addAll(this.findChildALL(Integer.valueOf(idarray[i])));
             this.setTemp(new ArrayList());
         }

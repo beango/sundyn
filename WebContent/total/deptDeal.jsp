@@ -41,10 +41,12 @@ table {
 <link rel="stylesheet"
 	href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
 <title><s:text name='sundyn.title' /></title>
+    <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
 <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
 <script type="text/javascript" src="js/pie.js"></script>
 <script type="text/javascript" src="js/Pie3D.js"></script>
 <script type="text/javascript" src="js/dojo.js"></script>
+    <script type="text/javascript" src="lib/lhgdialog/lhgdialog.js"></script>
 <script type="text/javascript"
 	src="js/my_<s:text name='sundyn.language' />.js"></script>
 <script language="javascript" type="text/javascript"
@@ -68,11 +70,8 @@ table {
 								class="input_comm"
 								onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
 						</div>
-						<div style="float: left; height: 25px; background: url("
-							<s:text name='sundyn.total.pic.query'/>") center
-							no-repeat" onclick="totalDeptDeal()">
-							<img src="<s:text name='sundyn.total.pic.query'/>" width="80"
-								height="25" />
+						<div style="float: left; height: 25px; background: url("<s:text name='sundyn.total.pic.query'/>") center no-repeat" onclick="totalDeptDeal()">
+							<img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" />
 						</div>
 						<div style="padding-left: 20px; float: left;">
 							<s:if test="list.size==0">
@@ -102,8 +101,8 @@ table {
 							</select>
 				-->
 							<a
-								href="duibiAction.action?startDate=${startDate}&endDate=${endDate}"
-								target="_self"> <img
+								href="#"
+                                onclick="$.dialog({title:'数据分析',content:'url:duibiAction.action?startDate=${startDate}&endDate=${endDate}'});"> <img
 								src="<s:text name='sundyn.total.jigou.duibi'/>" /></a></br>
 						</div>
 					</td>

@@ -16,7 +16,7 @@
 				<img src="images/employee_head_photo.gif" id="img123"  style="width: 140px;height: 147px;"  border="0" />
 				<form id="pic" enctype="multipart/form-data" name="pic"	action="employeeAdd.action" method="post" style="margin: 0px;padding: 0px;background-color:#e9f5fd;">
 					<input type="hidden" name="imgName" id="imgName" />
-					<input type="file" name="img" id="img" onblur="getFileName()" style="width: 140px;" /> 
+					<input type="file" name="img" id="img" onblur="getFileName()" style="width: 140px;" />
 					<img src="<s:text name='sundyn.pic.upload' />" width="60" height="25" onclick="employeeUpload()" class="hand" />
 				</form>
 			</div>
@@ -60,21 +60,21 @@
 						<td style="border-color: #e9f5fd;" align="right" class="ff">
 							<s:text name="sundyn.column.employeeCardNum" /><s:text name="sundyn.colon" />						</td>
 						<td style="border-color: #e9f5fd;" align="left">
-							<input type="text" name="CardNum" id="CardNum"  class="input_comm"  /><font color="#FF0000">*</font>						</td>
+							<input type="text" name="CardNum" id="CardNum"  onblur="employeeCardNumExsits()" class="input_comm"  /><font color="#FF0000">*</font><span style="color: red; font-size: 12px;" id="tipcardnum"></span>						</td>
 					</tr>
-				
+
 					<tr>
 						<td style="border-color: #e9f5fd;" align="right" class="ff">
 						    <c:if test="${star == 'true'}">
 						    	<s:text name="sundyn.employee.contact" />
 						    </c:if>
 						    <c:if test="${star != 'true'}">
-						      	 <s:text name="sundyn.column.star" /><s:text name="sundyn.colon" /> 
+						      	 <s:text name="sundyn.column.star" /><s:text name="sundyn.colon" />
 						    </c:if>						</td>
 						<td style="border-color: #e9f5fd;" align="left">
 							<input type="text" name="Phone" id="Phone"  class="input_comm" />						</td>
 					</tr>
-					
+
 					<tr >
 						<td style="border-color: #e9f5fd;" align="right" class="ff">
 						  <s:text name="sundyn.column.windowName" /><s:text name="sundyn.colon" />							</td>
@@ -103,7 +103,7 @@
 					</tr>
  				--%></table>
 				<div style="color:red; text-align:left;"><s:text name="sundyn.employee.alertCardNum"></s:text> </div>
-				
+
  			</div>
 		</div>
 	</div>

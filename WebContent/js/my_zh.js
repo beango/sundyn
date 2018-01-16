@@ -138,6 +138,15 @@ function queryEmployee() {
 	}});
 }
 
+function queryEmployeeNoKey() {
+    var keyword = document.getElementById("keyword").value;
+    dojo.xhrPost({url:"queryPeopleyAjax.action", content:{}, load:function (resp, ioArgs) {
+        dojo.byId("dialog").innerHTML = resp;
+        var dia = new dialog();
+        dia.show("dialog");
+    }});
+}
+
 function queryEmployee2() {
 	var keyword = document.getElementById("keyword").value;
 	var deptId=0;
@@ -682,6 +691,18 @@ function deptAddDialog(data) {
 		dojo.byId("dialog").innerHTML = resp;
 		var dia = new dialog();
 		dia.show("dialog");
+            //页面加载完后执行js代码
+            var fh_group= document.getElementById('provinces').options;
+            var fh_group_value=document.getElementById('provinces').getAttribute('rel');
+            var temp='';
+            console.log(fh_group.length);
+            for(var i=0;i<fh_group.length;i++){
+                temp=fh_group[i].innerHTML;
+                if(temp=='广东'){
+                    document.getElementById("provinces")[i].selected=true;
+                }
+            }
+        showCitys();
 	}});
 }
 // 修改机构对话框
@@ -794,12 +815,23 @@ function employeeAddDialog() {
  		document.getElementById("tip").innerHTML = trim(resp);
 	}});
 }
+
+function employeeCardNumExsits(){
+    var CardNum = document.getElementById("CardNum").value;
+    dojo.xhrPost({url:"employeeCardNumExsits.action",content:{CardNum:CardNum},load:function (resp, ioArgs) {
+        document.getElementById("tipcardnum").innerHTML = trim(resp);
+    }});
+}
 // 添加员工
 function employeeAdd() {
-	if(document.getElementById("tip").innerHTML=='该用户已存在'){
+	if(document.getElementById("tip").innerHTML=='已经存在'){
 		alert("该用户已存在");
 		return false;
 	}
+    if(document.getElementById("tipcardnum").innerHTML=='已经存在'){
+        alert("卡号已经存在！");
+        return false;
+    }
 	var Name = document.getElementById("Name").value;
 	var job_desc = document.getElementById("job_desc").value;
 	var CardNum = document.getElementById("CardNum").value;
@@ -823,7 +855,11 @@ function employeeAdd() {
 		Sex = "1";
 	}
 	dojo.xhrPost({url:"employeeAdd.action", content:{Name:Name, job_desc:job_desc, CardNum:CardNum, imgName:imgName, Sex:Sex, Phone:Phone, dept:dept,ext2:ext2,remark:remark,showDeptName:showDeptName,showWindowName:showWindowName,unitName:unitName}, load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
+		if(""!=trim(resp)){
+		    alert(trim(resp));
+		    return;
+        }
+	    document.getElementById("dialog").innerHTML = resp;
 		closeDialog();
 		employeeManage(document.getElementById("deptId").value);
 	}});
@@ -2502,7 +2538,6 @@ function sundynSetSave(){
 	}else{
 		est9="false";
 	}
-	alert(coun);
 	if(coun>5){
 		alert('员工信息配置最多可以选择四个选项');
 		return;
@@ -3280,7 +3315,7 @@ function guideBack(){
 }
 function guideComplete(){
 	dojo.xhrPost({url:"guideComplete.action", load:function (resp, ioArgs){
-		window.location.href="queryIndex.action";
+        parent.closeTabMenu('配置向导')
     }});
 }
 function registerReg(){

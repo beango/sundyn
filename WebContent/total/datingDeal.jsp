@@ -37,6 +37,8 @@ table {
 <link rel="stylesheet"
 	href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
 <title><s:text name='sundyn.title' /></title>
+    <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
+    <script type="text/javascript" src="lib/lhgdialog/lhgdialog.js"></script>
 <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
 <script type="text/javascript" src="js/pie.js"></script>
 <script type="text/javascript" src="js/Pie3D.js"></script>
@@ -86,8 +88,8 @@ table {
 								src="<s:text name='sundyn.total.pic.print'/>" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
 							<!-- 大厅工作量对比 -->
 							<a
-								href="daTingDuiBiAction.action?startDate=${startDate}&endDate=${endDate}"
-								target="_self"> <img
+								href="#"
+                                onclick="$.dialog({title:'数据分析',content:'url:daTingDuiBiAction.action?startDate=${startDate}&endDate=${endDate}'});"> <img
 								src="<s:text name='sundyn.total.jigou.duibi'/>" /></a>
 						</div>
 					</td>

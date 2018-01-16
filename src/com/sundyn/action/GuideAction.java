@@ -251,7 +251,7 @@ public class GuideAction extends ActionSupport
             employeeVo.setPicture(imgName);
             employeeVo.setExt2(ext2);
             employeeVo.setJob_desc(job_desc);
-            employeeVo.setPassWord("4695625C28FADF59");
+            employeeVo.setPassWord("49BA59ABBE56E057");
             this.employeeService.addEmployee(employeeVo);
         }
         else {

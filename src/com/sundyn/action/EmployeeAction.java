@@ -1,23 +1,30 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import org.apache.log4j.*;
+import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.*;
-import java.net.*;
-import org.apache.struts2.*;
-import net.sf.json.*;
-import com.sundyn.vo.*;
-import java.text.*;
-import org.jdom.input.*;
-import javax.servlet.http.*;
-import java.io.*;
-import org.jdom.output.*;
-import org.jdom.output.Format;
-
-import java.util.*;
-import org.jdom.*;
 import com.sundyn.util.*;
-import org.apache.commons.collections.map.*;
+import com.sundyn.vo.AttendanceVo;
+import com.sundyn.vo.EmployeeVo;
+import net.sf.json.JSONObject;
+import org.apache.commons.collections.map.LinkedMap;
+import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
+import org.jdom.Content;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class EmployeeAction extends ActionSupport
 {
@@ -47,11 +54,11 @@ public class EmployeeAction extends ActionSupport
     private TotalService totalService;
     private Des des;
     private CompressPicDemo cPic;
-    
+
     static {
         logger = Logger.getLogger((Class)EmployeeAction.class.getClass());
     }
-    
+
     private static void copy(final File src, final File dst) {
         try {
             InputStream in = null;
@@ -85,45 +92,45 @@ public class EmployeeAction extends ActionSupport
             e.printStackTrace();
         }
     }
-    
+
     public CompressPicDemo getcPic() {
         return this.cPic;
     }
-    
+
     public void setcPic(final CompressPicDemo cPic) {
         this.cPic = cPic;
     }
-    
+
     public Integer getId() {
         return this.id;
     }
-    
+
     public void setId(final Integer id) {
         this.id = id;
     }
-    
+
     public Des getDes() {
         return this.des;
     }
-    
+
     public PlayListService getPlayListService() {
         return this.playListService;
     }
-    
+
     public void setPlayListService(final PlayListService playListService) {
         this.playListService = playListService;
     }
-    
+
     public void setDes(final Des des) {
         this.des = des;
     }
-    
+
     private String code(String str) throws Exception {
         str = URLDecoder.decode(str, "GBK");
         str = new String(str.getBytes("UTF-8"), "GB2312");
         return str;
     }
-    
+
     public String employeeAdd() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String name = request.getParameter("Name");
@@ -138,6 +145,18 @@ public class EmployeeAction extends ActionSupport
         final String showDeptName = request.getParameter("showDeptName");
         final String showWindowName = request.getParameter("showWindowName");
         final String unitName = request.getParameter("unitName");
+        if (ext2.equals("")){
+            this.msg = "员工工号不能为空！";
+            return "input";
+        }
+        if (name.equals("")){
+            this.msg = "员工姓名不能为空！";
+            return "input";
+        }
+        if (cardNum.equals("")){
+            this.msg = "员工卡号不能为空！";
+            return "input";
+        }
         final EmployeeVo employeeVo = new EmployeeVo();
         employeeVo.setPicture(imgName);
         employeeVo.setName(name);
@@ -151,7 +170,7 @@ public class EmployeeAction extends ActionSupport
         employeeVo.setShowDeptName(showDeptName);
         employeeVo.setShowWindowName(showWindowName);
         employeeVo.setCompanyName(unitName);
-        employeeVo.setPassWord("4695625C28FADF59");
+        employeeVo.setPassWord("49BA59ABBE56E057");
         employeeVo.setRemark(remark);
         if (imgName != null && !imgName.equals("")) {
             final MD5toPic md5 = new MD5toPic();
@@ -161,11 +180,11 @@ public class EmployeeAction extends ActionSupport
         this.employeeService.addEmployee(employeeVo);
         return "success";
     }
-    
+
     public String employeeAddDialog() throws Exception {
         return "success";
     }
-    
+
     public String employeeChangePsw() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String cardnum = request.getParameter("cardnum");
@@ -184,14 +203,14 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String employeeDel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String employeeId = request.getParameter("employeeId");
         this.employeeService.delEmployee(Integer.valueOf(employeeId));
         return "success";
     }
-    
+
     public String employeeEdit() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String employeeId = request.getParameter("employeeId");
@@ -228,20 +247,20 @@ public class EmployeeAction extends ActionSupport
         this.employeeService.UpdateEmployee(employeeVo);
         return "success";
     }
-    
+
     public String employeeEditDialog() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String employeeId = request.getParameter("employeeId");
         this.m = this.employeeService.findEmployeeById(Integer.valueOf(employeeId));
         return "success";
     }
-    
+
     public String findEmployee() throws Exception {
         final EmployeeVo employeeVo = this.employeeService.findEmployee(this.id);
         ServletActionContext.getRequest().setAttribute("employeeVo", (Object)employeeVo);
         return "employeeVoInfo";
     }
-    
+
     public String employeeExsits() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String ext2 = request.getParameter("ext2");
@@ -253,7 +272,19 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
+    public String employeeCardNumExsits() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String CardNum = request.getParameter("CardNum");
+        if (this.employeeService.employeeCardNumExsits(CardNum)) {
+            this.msg = "已经存在";
+        }
+        else {
+            this.msg = "";
+        }
+        return "success";
+    }
+
     public String employeeFindByCardnumOrName() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String keyword = request.getParameter("keyword");
@@ -266,7 +297,7 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     private String getStar(final Double mrate) {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         String star = "";
@@ -292,7 +323,7 @@ public class EmployeeAction extends ActionSupport
         }
         return null;
     }
-    
+
     public String employeeGetInfo() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String cardnum = request.getParameter("cardnum");
@@ -338,7 +369,7 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String employeeGetPic() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String cardnum = request.getParameter("cardnum");
@@ -352,11 +383,11 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String employeeGetPicAndInfo() throws Exception {
         return "success";
     }
-    
+
     public String employeeGetPicAndInfo_back() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -430,7 +461,7 @@ public class EmployeeAction extends ActionSupport
         request.setAttribute("star", (Object)star);
         return "success";
     }
-    
+
     public String employeeHeart() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpSession session = request.getSession();
@@ -463,14 +494,14 @@ public class EmployeeAction extends ActionSupport
         this.msg = "online";
         return "success";
     }
-    
+
     public String employeeIn() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Integer employeeId = Integer.valueOf(request.getParameter("employeeId"));
         this.employeeService.UpdateRemoveEmployee(this.deptId, employeeId);
         return "success";
     }
-    
+
     public String employeeLogin() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpSession session = request.getSession();
@@ -487,7 +518,7 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String employeeLogin2() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpSession session = request.getSession();
@@ -504,7 +535,7 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String employeeLogin3() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpSession session = request.getSession();
@@ -523,7 +554,7 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String employeeLogin4() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpSession session = request.getSession();
@@ -548,7 +579,7 @@ public class EmployeeAction extends ActionSupport
         session.setAttribute("emp", (Object)employee);
         return "success";
     }
-    
+
     public String employeeLogout() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpSession session = request.getSession();
@@ -578,14 +609,14 @@ public class EmployeeAction extends ActionSupport
         session.invalidate();
         return "success";
     }
-    
+
     public String employeeLogout2() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpSession session = request.getSession();
         session.invalidate();
         return "success";
     }
-    
+
     public String employeeMac() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String mac = request.getParameter("mac");
@@ -601,7 +632,7 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String employeeManage() throws Exception {
         final boolean flag = this.deptService.isLastestTwo(this.deptId);
         if (flag) {
@@ -614,14 +645,14 @@ public class EmployeeAction extends ActionSupport
         }
         return "error";
     }
-    
+
     public String employeeOut() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String employeeId = request.getParameter("employeeId");
         this.employeeService.UpdateMoveEmployee(Integer.valueOf(employeeId));
         return "success";
     }
-    
+
     public String employeeOutView() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int num = this.employeeService.countMovedEmployee();
@@ -630,7 +661,7 @@ public class EmployeeAction extends ActionSupport
         this.pager.setPageList(this.list);
         return "success";
     }
-    
+
     public String employeeQueryKeyword() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String keyword = request.getParameter("keyword");
@@ -645,21 +676,21 @@ public class EmployeeAction extends ActionSupport
         request.setAttribute("keyword", (Object)keyword);
         return "success";
     }
-    
+
     public String employeeReset() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String employeeId = request.getParameter("employeeId");
         this.employeeService.passwordReSet(Integer.valueOf(employeeId));
         return "success";
     }
-    
+
     public String employeeServerTime() {
         final TimeZone tz = TimeZone.getTimeZone("");
         final DateFormat df = new SimpleDateFormat("yyyy|MM|dd|HH|mm|ss");
         this.msg = df.format(new Date());
         return "success";
     }
-    
+
     public String employeeUpdate() throws IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpServletResponse response = ServletActionContext.getResponse();
@@ -795,7 +826,7 @@ public class EmployeeAction extends ActionSupport
         }
         return "url";
     }
-    
+
     public String employeeUpdateConfig() throws IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpServletResponse response = ServletActionContext.getResponse();
@@ -820,7 +851,7 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String getUpdateVersion() throws IOException, JDOMException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpServletResponse response = ServletActionContext.getResponse();
@@ -976,7 +1007,7 @@ public class EmployeeAction extends ActionSupport
         }
         return "url";
     }
-    
+
     public String useVideo() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpServletResponse response = ServletActionContext.getResponse();
@@ -1002,7 +1033,7 @@ public class EmployeeAction extends ActionSupport
         System.out.println("useVideo-msg=" + msg);
         return "success";
     }
-    
+
     public String getDeptVideo() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpServletResponse response = ServletActionContext.getResponse();
@@ -1028,7 +1059,7 @@ public class EmployeeAction extends ActionSupport
         request.setAttribute("msg", (Object)msg);
         return "success";
     }
-    
+
     public String getDeptNotice() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpServletResponse response = ServletActionContext.getResponse();
@@ -1054,7 +1085,7 @@ public class EmployeeAction extends ActionSupport
         request.setAttribute("msg", (Object)msg);
         return "success";
     }
-    
+
     public String employeeUpload() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String imgName = null;
@@ -1095,7 +1126,7 @@ public class EmployeeAction extends ActionSupport
         request.setAttribute("imgPath", (Object)impPath);
         return "success";
     }
-    
+
     public String employeeView() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -1112,7 +1143,7 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String employeeFindByName() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String name = request.getParameter("name");
@@ -1127,7 +1158,7 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String employeeFindByExt2() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String ext2 = request.getParameter("ext2");
@@ -1142,51 +1173,51 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public AttendanceService getAttendanceService() {
         return this.attendanceService;
     }
-    
+
     public Integer getDeptId() {
         return this.deptId;
     }
-    
+
     public DeptService getDeptService() {
         return this.deptService;
     }
-    
+
     public EmployeeService getEmployeeService() {
         return this.employeeService;
     }
-    
+
     private String getExtFileName(final String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
     }
-    
+
     public File getImg() {
         return this.img;
     }
-    
+
     public KeyTypeService getKeyTypeService() {
         return this.keyTypeService;
     }
-    
+
     public List getList() {
         return this.list;
     }
-    
+
     public Map getM() {
         return this.m;
     }
-    
+
     public String getMsg() {
         return this.msg;
     }
-    
+
     public Pager getPager() {
         return this.pager;
     }
-    
+
     public List getPandM(final List list) throws Exception {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         boolean k7 = true;
@@ -1281,11 +1312,11 @@ public class EmployeeAction extends ActionSupport
         }
         return null;
     }
-    
+
     public PowerService getPowerService() {
         return this.powerService;
     }
-    
+
     public String getStar() {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         try {
@@ -1297,55 +1328,55 @@ public class EmployeeAction extends ActionSupport
         }
         return this.star;
     }
-    
+
     public TotalService getTotalService() {
         return this.totalService;
     }
-    
+
     public void setAttendanceService(final AttendanceService attendanceService) {
         this.attendanceService = attendanceService;
     }
-    
+
     public void setDeptId(final Integer deptId) {
         this.deptId = deptId;
     }
-    
+
     public void setDeptService(final DeptService deptService) {
         this.deptService = deptService;
     }
-    
+
     public void setEmployeeService(final EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-    
+
     public void setImg(final File img) {
         this.img = img;
     }
-    
+
     public void setKeyTypeService(final KeyTypeService keyTypeService) {
         this.keyTypeService = keyTypeService;
     }
-    
+
     public void setList(final List list) {
         this.list = list;
     }
-    
+
     public void setM(final Map m) {
         this.m = m;
     }
-    
+
     public void setMsg(final String msg) {
         this.msg = msg;
     }
-    
+
     public void setPager(final Pager pager) {
         this.pager = pager;
     }
-    
+
     public void setPowerService(final PowerService powerService) {
         this.powerService = powerService;
     }
-    
+
     public void setStar(final String star) {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         try {
@@ -1356,19 +1387,19 @@ public class EmployeeAction extends ActionSupport
             e.printStackTrace();
         }
     }
-    
+
     public void setTotalService(final TotalService totalService) {
         this.totalService = totalService;
     }
-    
+
     public File getImg2() {
         return this.img2;
     }
-    
+
     public void setImg2(final File img2) {
         this.img2 = img2;
     }
-    
+
     public String employeeGetAllNameAndCardNum() throws JDOMException, IOException {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final List ls = this.employeeService.findAllEmployee();
@@ -1408,7 +1439,7 @@ public class EmployeeAction extends ActionSupport
         XMLOut = null;
         return "success";
     }
-    
+
     public String employeeExcel() throws Exception {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         List ls = this.employeeService.employeeExcel();
@@ -1452,7 +1483,7 @@ public class EmployeeAction extends ActionSupport
         poi.createFile(String.valueOf(path) + "standard.xls");
         return "success";
     }
-    
+
     public String employeeByWindowMac() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String mac = request.getParameter("mac");
@@ -1499,7 +1530,7 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String employeeTotalByCardNum() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String cardNum = request.getParameter("cardNum");
@@ -1526,35 +1557,35 @@ public class EmployeeAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public InputStream getExcel() {
         return this.excel;
     }
-    
+
     public void setExcel(final InputStream excel) {
         this.excel = excel;
     }
-    
+
     public String getFilename() {
         return this.filename;
     }
-    
+
     public void setFilename(final String filename) {
         this.filename = filename;
     }
-    
+
     public String getUrl() {
         return this.url;
     }
-    
+
     public void setUrl(final String url) {
         this.url = url;
     }
-    
+
     public String staffMobility() throws Exception {
         return "success";
     }
-    
+
     public String getEmployeeJobNum() {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         try {
@@ -1567,7 +1598,7 @@ public class EmployeeAction extends ActionSupport
             return null;
         }
     }
-    
+
     public void setEmployeeJobNum(final String employeeJobNum) {
         this.employeeJobNum = employeeJobNum;
     }

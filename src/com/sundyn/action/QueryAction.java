@@ -755,12 +755,14 @@ public class QueryAction extends ActionSupport
         this.pager.setPageList(querylist);
         this.keys = new StringBuilder(String.valueOf(keys)).toString();
         final List chatList = this.queryService.QueryResultChat(keys, this.startDate, this.endDate);
-        for (int i = 0; i < chatList.size(); ++i) {
-            final Map temp = (Map) chatList.get(i);
-            final Map m = new HashMap();
-            m.put("name", temp.get("name"));
-            m.put("num", temp.get("num"));
-            strXML1.append("<set name='" + temp.get("name") + "' value='" + temp.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+        if (chatList!=null){
+            for (int i = 0; i < chatList.size(); ++i) {
+                final Map temp = (Map) chatList.get(i);
+                final Map m = new HashMap();
+                m.put("name", temp.get("name"));
+                m.put("num", temp.get("num"));
+                strXML1.append("<set name='" + temp.get("name") + "' value='" + temp.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+            }
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", (Object)strXML1.toString());
@@ -886,19 +888,23 @@ public class QueryAction extends ActionSupport
 
         String deptIds = request.getParameter("deptIds");
         String keys = request.getParameter("keys");
+        if (this.id == null)
+            this.id = 0;
         if (keys == null || keys.equals("")) {
             keys = this.keyTypeService.findAllKeyInUse(1);
         }
-        if (deptIds.equals("")) {
+        if (deptIds!=null && deptIds.equals("")) {
             deptIds = this.deptService.findChildALLStr123(deptIdGroup);
         }
         if (this.startDate == null) {
             this.startDate = "";
         }
         if (this.endDate == null) {
-            this.startDate = "";
+            this.endDate = "";
         }
-        if (deptIds.endsWith(",")) {
+        if(deptIds==null)
+            deptIds = "";
+        if (deptIds!=null && deptIds.endsWith(",")) {
             deptIds = deptIds.substring(0, deptIds.length() - 1);
         }
         if (keys.endsWith(",")) {

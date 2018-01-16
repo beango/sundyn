@@ -67,7 +67,7 @@
 <%--					  </tr>--%>
 					  <tr <c:if test="${deptType==2 || deptType==1 }"> style="display: none;" </c:if>>
 					    <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.guide.deviceInfo" /></td>
-					    <td align="left" style="border-color:#FFFFFF;"> 
+					    <td align="left" style="border-color:#FFFFFF;">
 					    	<input type="text" name="reMark" id="reMark" value="${remark}" onblur="macCheck(this.value)" />
 							<span style="font-size: 9px; color: red;" id="tip">(<s:text name="sundyn.dept.demoOrMac" />)</span>
 					    </td>
@@ -108,7 +108,7 @@
   						    </td>
 						  </tr>
  					  </c:if>
- 					   <c:if test="${deptType==0  && '0' == '1'}"> 
+ 					   <c:if test="${deptType==0  && '0' == '1'}">
  						  <tr>
 						    <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.dept.pauseInfo" /></td>
 						    <td align="left" style="border-color:#FFFFFF;">
@@ -119,10 +119,10 @@
 						    <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.dept.pausePic" /></td>
 						    <td align="left" style="border-color:#FFFFFF;">
 						    	 <input type="text" name="deptPausePic" id="deptPausePic" class="input_comm" />
-						    	
+
 						    	<form id="pic" enctype="multipart/form-data" name="pic"	action="employeeAdd.action" method="post" style="margin: 0px;padding: 0px;background-color:#e9f5fd;">
 									<input type="hidden" name="imgName" id="imgName" />
-									<input type="file" name="img" id="img" onblur="getFileName()" style="width: 140px;" /> 
+									<input type="file" name="img" id="img" onblur="getFileName()" style="width: 140px;" />
 									<img src="<s:text name='sundyn.pic.upload'/>" width="60" height="25" onclick="pauseUpload()" class="hand" />
 								</form>
   						    </td>
@@ -131,20 +131,20 @@
 						    <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.dept.logo" /></td>
 						    <td align="left" style="border-color:#FFFFFF;">
 						    	 <input type="text" name="deptLogoPic" id="deptLogoPic" class="input_comm" />
-						    	
+
 						    	<form id="pic2" enctype="multipart/form-data" name="pic2"	action="employeeAdd.action" method="post" style="margin: 0px;padding: 0px;background-color:#e9f5fd;">
 									<input type="hidden" name="imgName2" id="imgName2" />
-									<input type="file" name="img2" id="img2" onblur="getFileName()" style="width: 140px;" /> 
+									<input type="file" name="img2" id="img2" onblur="getFileName()" style="width: 140px;" />
 									<img src="<s:text name='sundyn.pic.upload'/>" width="60" height="25" onclick="DeptLogoUpload()" class="hand" />
 								</form>
   						    </td>
 						  </tr>
-						 
+
  					  </c:if>
  					  <c:if test="${deptType==0}">
  					   <tr >
 					    <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.system.unit.AudioAndVideo"></s:text></td>
-					    <td align="left" style="border-color:#FFFFFF;"> 
+					    <td align="left" style="border-color:#FFFFFF;">
 					       <select name="useVideo" id="useVideo" >
 								<option value="0" <c:if test="${dept.useVideo=='0'}"> selected="selected" </c:if>>
 									<s:text name="sundyn.system.unit.bothNot"></s:text>
@@ -158,6 +158,7 @@
 							</select>
 					    </td>
 					  </tr>
+                      </c:if>
 					  <s:if test='getText("sundyn.language") eq "en"'>
 					   <tr  style="display:none;">
 					   </s:if>
@@ -165,10 +166,10 @@
 					    <tr>
 					   </s:else>
 					    <td align="right" style="border-color:#FFFFFF;">所属地区</td>
-					    <td align="left" style="border-color:#FFFFFF;"> 
+					    <td align="left" style="border-color:#FFFFFF;">
 					       <select name="provinceid" value="${province.id}" id="provinces" onchange="showCitys()">
 					           <s:iterator value="provinces">
-					            	<option value="${id}" <s:if test="province.id==id">selected</s:if>  >${name }</option>
+					            	<option value="${id}" <s:if test="province.id==id">selected</s:if>>${ name }</option>
 					           </s:iterator>
 						   </select>
 					       <select  value="${cityid}" name="cityid" id="citys" >
@@ -178,15 +179,13 @@
 						   </select>
 					    </td>
 					  </tr>
-					  
-					   <tr >
+					   <%--<tr >
 					    <td align="right"  style="border-color:#FFFFFF;"><s:text name="sundyn.system.screenInfo"></s:text></td>
-					    <td align="left"  style="border-color:#FFFFFF;"> 
-<%--					    	<input type="text" name="notice" id="notice"  value="${dept.notice}"  />--%>
+					    <td align="left"  style="border-color:#FFFFFF;">
 					    	<textarea name="notice" id="notice" rows="5"  cols="30">${dept.notice}</textarea>
 					    </td>
-					  </tr>
-					  </c:if>
+					  </tr>--%>
+
  				 </table>
 			   </div>
 			</div>
@@ -198,4 +197,4 @@
 					<img src="<s:text name="sundyn.pic.close" />"  onclick="closeDialog()"   style="cursor: pointer;" />
 				</div>
 			</div>
-		</div>  
+		</div>

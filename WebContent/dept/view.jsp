@@ -1,3 +1,4 @@
+<%@ page import="java.util.Date" %>
 <%@page pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -14,7 +15,7 @@
 		<script type="text/javascript" src="js/dojo.js"></script>
 		<script type="text/javascript" src="js/dialog.js"></script>
 		<script type="text/javascript" src="js/myAjax.js"></script>
-		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?<%=new Date().getTime()%>"></script>
 	</head>
 	<body>
 	<script>
@@ -23,34 +24,34 @@
 	  function chooseMenus(){
 		    var menus=document.getElementById("CmenuNames");
 		    var retVal=new Array();
-	
+
 		    for(var i=0;i<menus.options.length;i++){
 		       retVal[i]=menus.options[i].value;
 		   	}
 		   return retVal;
 		   }
 		  function checkForm(ac){
-		  
+
 		   var menus=chooseMenus();
 		  $.ajax({url: ac+"&menus="+menus,
 				type: 'GET',
 				dataType:'json',
 				timeout: 20000,
 				success: function(html){
-			      
+
 				    dialogAjaxDone(html);
 				}
 			});
-						   
+
 		 }
-		   
+
 		    function moveMenus(){
 		      var e1=document.getElementById("menuNames");
 		      var e2=document.getElementById("CmenuNames");
-			  
+
 		      for( var i=0;i<e1.options.length;i++){
-				
-				if(e1.options[i].selected){    
+
+				if(e1.options[i].selected){
 					var e=e1.options[i];
 					e2.options.add(new Option(e.text,e.value));
 					e1.remove(i);

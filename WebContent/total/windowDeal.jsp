@@ -37,7 +37,8 @@ table {
 <link rel="stylesheet"
 	href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
 <title><s:text name='sundyn.title' /></title>
-<script type="text/javascript" src="js/jquery-1.4.3.js"></script>
+    <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
+    <script type="text/javascript" src="lib/lhgdialog/lhgdialog.js"></script>
 <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
 <script type="text/javascript" src="js/pie.js"></script>
 <script type="text/javascript" src="js/Pie3D.js"></script>
@@ -70,8 +71,9 @@ $(function(){
 								onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
 
 						</div>
-						<div id="dept" style="float:left;padding-top:5px;margin-right:10px;">
-							窗口：<select id="deptId" name="deptId">
+                        <div style="float:left;">选择大厅：</div>
+						<div id="dept" style="float:left;padding-top:-9px;margin-right:10px;">
+							<select id="deptId" name="deptId">
 								<c:forEach items="${list2}" var="dept" varStatus="index">
 									<option
 										<c:if test="${index.index==0 || deptId==dept.id}">  selected="selected" </c:if>
@@ -101,8 +103,8 @@ $(function(){
 								target="_blank"> <img
 								src="<s:text name='sundyn.total.pic.print'/>" /></a>
 							<a
-								href="windowDuiBiAction.action?startDate=${startDate}&endDate=${endDate}&deptId=${deptId}"
-								target="_self"> <img
+								href="#"
+                                onclick="$.dialog({title:'数据分析',content:'url:windowDuiBiAction.action?startDate=${startDate}&endDate=${endDate}&deptId=${deptId}'});"> <img
 								src="<s:text name='sundyn.total.jigou.duibi'/>" /></a>
 						</div>
 					</td>

@@ -8,7 +8,7 @@
 	    <td width="32%" align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.column.windowName" /><s:text name="sundyn.colon" /> </td>
 	    <td width="40%" align="left" style="border-color:#FFFFFF;">${dept.name}</td>
 	  </tr>
-	  
+
 <%--	  <tr>--%>
 <%--	    <td width="32%" align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.dept.clientConnectType" /><s:text name="sundyn.colon" /> </td>--%>
 <%--	    <td width="40%" align="left" style="border-color:#FFFFFF;">--%>

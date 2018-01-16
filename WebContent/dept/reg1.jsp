@@ -10,14 +10,14 @@
 	  </tr>
 	  <tr>
 	    <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.column.deviceInfo" /><s:text name="sundyn.colon" /></td>
-	    <td align="left" style="border-color:#FFFFFF;"> 
+	    <td align="left" style="border-color:#FFFFFF;">
 		    ${dept.reMark}
 	    </td>
 	  </tr>
  	  <tr>
 	    <td align="center" style="border-color:#FFFFFF;" colspan="2" >
-	    <div style="margin: 0px auto;width: 260px;"><div class="button left" onclick="deptEditDialog(1)"  ><s:text name="sundyn.dept.modifyDating" /></div> 
-	    <div class="button left" onclick="deptAddDialog(0)" style="margin-left: 5px;" ><s:text name="sundyn.dept.addWindow" /></div> 
+	    <div style="margin: 0px auto;width: 260px;"><div class="button left" onclick="deptEditDialog(1)"  ><s:text name="sundyn.dept.modifyDating" /></div>
+	    <div class="button left" onclick="deptAddDialog(0)" style="margin-left: 5px;" ><s:text name="sundyn.dept.addWindow" /></div>
 	    <div class="button left" onclick="del()" style="margin-left: 5px;"><s:text name="sundyn.del" /></div></div>
 	    </td>
 	  </tr>

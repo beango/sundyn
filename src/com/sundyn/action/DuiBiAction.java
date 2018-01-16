@@ -1,13 +1,18 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import org.apache.struts2.interceptor.*;
-import javax.servlet.http.*;
-import java.io.*;
+import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.*;
-import org.apache.struts2.*;
-import com.sundyn.util.*;
-import java.util.*;
+import com.sundyn.util.Pager;
+import com.sundyn.util.SundynSet;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.ServletRequestAware;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DuiBiAction extends ActionSupport implements ServletRequestAware
 {
@@ -36,203 +41,203 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
     private List mls;
     private List bmls;
     private List list;
-    
+
     static {
         pageSize = 6;
     }
-    
+
     public List getList() {
         return this.list;
     }
-    
+
     public void setList(final List list) {
         this.list = list;
     }
-    
+
     public Integer getDeptId() {
         return this.deptId;
     }
-    
+
     public void setDeptId(final Integer deptId) {
         this.deptId = deptId;
     }
-    
+
     public List getDeptList() {
         return this.deptList;
     }
-    
+
     public void setDeptList(final List deptList) {
         this.deptList = deptList;
     }
-    
+
     public DeptService getDeptService() {
         return this.deptService;
     }
-    
+
     public void setDeptService(final DeptService deptService) {
         this.deptService = deptService;
     }
-    
+
     public EmployeeService getEmployeeService() {
         return this.employeeService;
     }
-    
+
     public void setEmployeeService(final EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-    
+
     public String getEndDate() {
         return this.endDate;
     }
-    
+
     public void setEndDate(final String endDate) {
         this.endDate = endDate;
     }
-    
+
     public InputStream getExcel() {
         return this.excel;
     }
-    
+
     public void setExcel(final InputStream excel) {
         this.excel = excel;
     }
-    
+
     public Integer getId() {
         return this.id;
     }
-    
+
     public void setId(final Integer id) {
         this.id = id;
     }
-    
+
     public KeyTypeService getKeyTypeService() {
         return this.keyTypeService;
     }
-    
+
     public void setKeyTypeService(final KeyTypeService keyTypeService) {
         this.keyTypeService = keyTypeService;
     }
-    
+
     public String getKeyword() {
         return this.keyword;
     }
-    
+
     public void setKeyword(final String keyword) {
         this.keyword = keyword;
     }
-    
+
     public String getMsg() {
         return this.msg;
     }
-    
+
     public void setMsg(final String msg) {
         this.msg = msg;
     }
-    
+
     public Pager getPager() {
         return this.pager;
     }
-    
+
     public void setPager(final Pager pager) {
         this.pager = pager;
     }
-    
+
     public PowerService getPowerService() {
         return this.powerService;
     }
-    
+
     public void setPowerService(final PowerService powerService) {
         this.powerService = powerService;
     }
-    
+
     public QueryService getQueryService() {
         return this.queryService;
     }
-    
+
     public void setQueryService(final QueryService queryService) {
         this.queryService = queryService;
     }
-    
+
     public String getSelect() {
         return this.select;
     }
-    
+
     public void setSelect(final String select) {
         this.select = select;
     }
-    
+
     public String getStartDate() {
         return this.startDate;
     }
-    
+
     public void setStartDate(final String startDate) {
         this.startDate = startDate;
     }
-    
+
     public TotalService getTotalService() {
         return this.totalService;
     }
-    
+
     public void setTotalService(final TotalService totalService) {
         this.totalService = totalService;
     }
-    
+
     public String getDeptIds() {
         return this.deptIds;
     }
-    
+
     public void setDeptIds(final String deptIds) {
         this.deptIds = deptIds;
     }
-    
+
     public String getKeys() {
         return this.keys;
     }
-    
+
     public void setKeys(final String keys) {
         this.keys = keys;
     }
-    
+
     public String getFileName() {
         return this.fileName;
     }
-    
+
     public void setFileName(final String fileName) {
         this.fileName = fileName;
     }
-    
+
     public boolean isK7() {
         return this.k7;
     }
-    
+
     public void setK7(final boolean k7) {
         this.k7 = k7;
     }
-    
+
     public List getMls() {
         return this.mls;
     }
-    
+
     public void setMls(final List mls) {
         this.mls = mls;
     }
-    
+
     public List getBmls() {
         return this.bmls;
     }
-    
+
     public void setBmls(final List bmls) {
         this.bmls = bmls;
     }
-    
+
     public static Integer getPagesize() {
         return DuiBiAction.pageSize;
     }
-    
+
     public void setServletRequest(final HttpServletRequest request) {
         this.request = request;
     }
-    
+
     public String gongZuoLiang() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         this.k7 = this.isK7();
@@ -338,7 +343,7 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
         request.setAttribute("strXML1", (Object)strXML1.toString());
         return "success";
     }
-    
+
     public String daTingGongZuoLaing() throws Exception {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final Map manager = (Map)this.request.getSession().getAttribute("manager");
@@ -376,7 +381,7 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
         this.request.setAttribute("strXML1", (Object)strXML1.toString());
         return "success";
     }
-    
+
     public String windowDuiBi() throws Exception {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final String deptId = this.request.getParameter("deptId");
@@ -397,22 +402,24 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
         m1.put("category", "\ufffd\ufffd\u05aa");
         m1.put("item", "\ufffd\ufffd\u05fc");
         ls.add(m1);
-        for (int i = 0; i < this.list.size(); ++i) {
-            final Map temp = (Map) this.list.get(i);
-            final Map j = new HashMap();
-            j.put("num", temp.get("num"));
-            System.out.println("\ufffd\ufffd\ufffd\ufffd\ufffd=" + temp.get("num"));
-            j.put("category", "\ufffd\ufffd\u05aa");
-            j.put("item", temp.get("windowname"));
-            System.out.println("\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd=" + temp.get("windowname"));
-            strXML1.append("<set name='" + temp.get("windowname") + "' value='" + temp.get("num") + "' color='FF9933' />");
-            System.out.println("name=" + temp.get("windowname") + "," + "value=" + temp.get("num"));
+        if(list!=null){
+            for (int i = 0; i < this.list.size(); ++i) {
+                final Map temp = (Map) this.list.get(i);
+                final Map j = new HashMap();
+                j.put("num", temp.get("num"));
+                System.out.println("\ufffd\ufffd\ufffd\ufffd\ufffd=" + temp.get("num"));
+                j.put("category", "\ufffd\ufffd\u05aa");
+                j.put("item", temp.get("windowname"));
+                System.out.println("\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd=" + temp.get("windowname"));
+                strXML1.append("<set name='" + temp.get("windowname") + "' value='" + temp.get("num") + "' color='FF9933' />");
+                System.out.println("name=" + temp.get("windowname") + "," + "value=" + temp.get("num"));
+            }
         }
         strXML1.append("</graph>");
         this.request.setAttribute("strXML1", (Object)strXML1.toString());
         return "success";
     }
-    
+
     public String personDuiBi() throws Exception {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         String deptId = this.request.getParameter("deptId");
@@ -434,20 +441,22 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
         m1.put("category", "\ufffd\ufffd\u05aa");
         m1.put("item", "\ufffd\ufffd\u05fc");
         ls.add(m1);
-        for (int i = 0; i < this.list.size(); ++i) {
-            final Map temp = (Map) this.list.get(i);
-            final Map j = new HashMap();
-            j.put("num", temp.get("num"));
-            j.put("category", "\ufffd\ufffd\u05aa");
-            j.put("item", temp.get("employeeName"));
-            strXML1.append("<set name='" + temp.get("employeeName") + "' value='" + temp.get("num") + "' color='FF9933' />");
-            System.out.println("name=" + temp.get("employeeName") + "," + "value=" + temp.get("num"));
+        if (list!=null){
+            for (int i = 0; i < this.list.size(); ++i) {
+                final Map temp = (Map) this.list.get(i);
+                final Map j = new HashMap();
+                j.put("num", temp.get("num"));
+                j.put("category", "\ufffd\ufffd\u05aa");
+                j.put("item", temp.get("employeeName"));
+                strXML1.append("<set name='" + temp.get("employeeName") + "' value='" + temp.get("num") + "' color='FF9933' />");
+                System.out.println("name=" + temp.get("employeeName") + "," + "value=" + temp.get("num"));
+            }
         }
         strXML1.append("</graph>");
         this.request.setAttribute("strXML1", (Object)strXML1.toString());
         return "success";
     }
-    
+
     public List getPandM(final List list) throws Exception {
         this.k7 = this.isK7();
         this.mls = this.keyTypeService.findByApprieserId(1, 1, "on");
@@ -542,7 +551,7 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
         }
         return null;
     }
-    
+
     private List getStar(final List ls) {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         if (ls != null) {
@@ -577,7 +586,7 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
         }
         return null;
     }
-    
+
     private List getD(final List ls) {
         if (this.list != null) {
             final List temp = new ArrayList();

@@ -139,13 +139,6 @@ td {
 		</script>
 	</head>
 	<body>
-<%--		<script type="text/javascript" src="js/calendar_<s:text name='sundyn.language.calendar' />.js"></script>--%>
-		 <s:if test='getText("sundyn.language") eq "en"'>
-		<script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
-		</s:if>
-		<s:else>
-		    <script type="text/javascript" src="js/calendar_<s:text name='sundyn.language.calendar' />.js"></script>
-		 </s:else>
 		<div id="man_zone">
 			<div class="fengge">&nbsp;</div>
 			<div class="center_04">

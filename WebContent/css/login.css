@@ -5,7 +5,6 @@ DIV {
 .login {
 	width: 99%;
 	height: 368px;
-	background-image: url("../images/login_bg.gif");
 	background-repeat: repeat-x;
 	position: absolute;
 	top: 50%;
@@ -86,5 +85,34 @@ DIV {
 	font-size: 12px;
 	width:600px;
 	text-align:left;
-	
+
+}
+
+
+
+
+
+.mycenter{
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 350px;
+    width:500px;
+    padding: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+.mycenter mysign{
+    width: 480px;
+}
+.mycenter input,checkbox,button{
+    margin-top:2%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.mycheckbox{
+    margin-top:10px;
+    margin-left: 40px;
+    margin-bottom: 10px;
+    height: 10px;
 }

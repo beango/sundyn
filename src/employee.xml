@@ -36,6 +36,7 @@
 		</action>
 		<action name="employeeAdd" class="employeeAction"
 			method="employeeAdd">
+            <result name="input">/employee/msg.jsp</result>
 			<result name="success">/employee/success.jsp</result>
 		</action>
 		<action name="employeeDel" class="employeeAction"
@@ -78,6 +79,10 @@
 			method="employeeExsits">
 			<result name="success">/employee/msg.jsp</result>
 		</action>
+        <action name="employeeCardNumExsits" class="employeeAction"
+                method="employeeCardNumExsits">
+            <result name="success">/employee/msg.jsp</result>
+        </action>
 		<action name="employeeFindByCardnumOrName"
 			class="employeeAction" method="employeeFindByCardnumOrName">
 			<result name="success">/employee/employeeAjax.jsp</result>
@@ -88,8 +93,8 @@
 		<action name="staffMobilityDetail" class="employeeAction" method="staffMobilityDetail">
 			<result name="success">/employee/staffMobilityDetail.jsp</result>
 		</action>
-		
-		
+
+
 	</package>
 	<package name="employeeM7" extends="struts-default">
 		<action name="employeeLogin" class="employeeAction"
@@ -169,7 +174,7 @@
 			method="employeeUpdate">
 			<result name="success" type="stream">
 				<param name="contentType">text/plain</param>
-				<param name="inputName">excel</param> 
+				<param name="inputName">excel</param>
 				<param name="contentDisposition">
 					attachment;filename="${filename}"
 				</param>
@@ -177,7 +182,7 @@
 			</result>
 			<result name="error">employee/msg.jsp</result>
 			<result name="url" type="redirect">${url}</result>
-			
+
 		</action>
 		<action name="employeeUpdateConfig" class="employeeAction"
 			method="employeeUpdateConfig">
@@ -195,7 +200,7 @@
 		<action name="getDeptNotice" class="employeeAction" method="getDeptNotice">
 			<result name="success">/employee/msg.jsp</result>
 		</action>
-		
+
 		<action name="employeeFindByName" class="employeeAction"
 			method="employeeFindByName">
 			<result name="success">/employee/msg.jsp</result>
@@ -226,7 +231,7 @@
 			method="employeeTotalByCardNum">
 			<result name="success">employee/json.jsp</result>
 		</action>
-		
+
 		<action name="queryDetailZongHe" class="employeeAction"
 			   method="findEmployee">
 			<result name="employeeVoInfo">/query/detailzonghe.jsp</result>

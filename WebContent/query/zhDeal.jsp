@@ -41,6 +41,7 @@
     </script>
 </head>
 <body>
+
 <iframe src="piedata.xml" style="display: none;"></iframe>
 <input type="hidden" name="deptIds" id="deptIds" value="${deptIds}"/>
 <input type="hidden" name="keys" id="keys" value="${keys}"/>
@@ -72,7 +73,7 @@
                                         <td width="100%" align="left" style="border-color:#FFFFFF;"><s:text name='sundyn.query.selectEmployee'/>
                                             <input type="hidden" id="id" name="id" value="0" />
                                             <input type="text" id="keyword" name="keyword" class="input_comm" />
-                                            <img src="<s:text name='sundyn.pic.query'/>" onclick="queryEmployee()" width="55" height="25" style="cursor: pointer; vertical-align: middle;" />
+                                            <img src="<s:text name='sundyn.pic.query'/>" onclick="queryEmployeeNoKey()" width="55" height="25" style="cursor: pointer; vertical-align: middle;" />
                                         </td>
                                     </tr>
                                     <tr>

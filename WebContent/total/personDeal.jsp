@@ -34,8 +34,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
     <title><s:text name='sundyn.title'/></title>
-    <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
+    <script type="text/javascript" src="lib/lhgdialog/lhgdialog.js"></script>
+    <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="js/pie.js"></script>
     <script type="text/javascript" src="js/Pie3D.js"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
@@ -62,15 +63,14 @@
                         <input type="text" id="endDate" class="input_comm" value="${endDate}" <s:text
                                 name="sundyn.language.calendar.setDay"/>
                                onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                        <span style="padding-top:5px;">选择大厅：</span>
                         <span id="dept">
 								<select name="deptId">
 								<c:forEach items="${deptList}" var="dept" varStatus="index">
 									<option value="${dept.id}"
                                             <c:if test="${index.index ==0 }">
                                                 selected="selected"
-                                            </c:if>
-                                    >
-                                            ${dept.name}
+                                            </c:if>>${dept.name}
                                     </option>
                                 </c:forEach>
 								</select>
@@ -87,7 +87,7 @@
                         <a href="totalPersonPrint.action?startDate=${startDate}&endDate=${endDate}&deptId=${deptId}" target="_blank">
                             <img src="<s:text name='sundyn.total.pic.print'/>" /></a>
                         <!-- 人员满意度对比 -->
-                        <a href="personDuiBiAction.action?startDate=${startDate}&endDate=${endDate}&deptId=${deptId}" target="_self">
+                        <a href="#" onclick="$.dialog({title:'数据分析',content:'url:personDuiBiAction.action?startDate=${startDate}&endDate=${endDate}&deptId=${deptId}'});">
                             <img src="<s:text name='sundyn.total.jigou.duibi'/>" /></a>
                     </div>
                 </td>
