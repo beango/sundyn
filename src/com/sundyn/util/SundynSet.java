@@ -1,11 +1,19 @@
 package com.sundyn.util;
 
-import org.jdom.input.*;
-import java.util.*;
-import org.apache.struts2.*;
-import org.jdom.*;
-import org.jdom.output.*;
+import org.apache.struts2.ServletActionContext;
+import org.jdom.Content;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SundynSet {
 	private static SundynSet sundynSet;
@@ -19,15 +27,15 @@ public class SundynSet {
     private List l_m7Temp;
     private List l_star;
     private static String setPath;
-    
+
     public Map<String, String> getM_work4() {
         return this.m_work4;
     }
-    
+
     public void setM_work4(final Map<String, String> m_work4) {
         this.m_work4 = m_work4;
     }
-    
+
     public static synchronized SundynSet getInstance(final String path) throws JDOMException, IOException {
         SundynSet.setPath = String.valueOf(path) + "update" + File.separator + "set.xml";
         if (SundynSet.sundynSet == null) {
@@ -35,7 +43,7 @@ public class SundynSet {
         }
         return SundynSet.sundynSet;
     }
-    
+
     private SundynSet(final String path) throws JDOMException, IOException {
     	System.out.println(path);
         final SAXBuilder sb = new SAXBuilder();
@@ -129,75 +137,75 @@ public class SundynSet {
             this.l_star.add(m_star);
         }
     }
-    
+
     public Map<String, String> getM_system() {
         return this.m_system;
     }
-    
+
     public void setM_system(final Map<String, String> m_system) {
         this.m_system = m_system;
     }
-    
+
     public Map<String, String> getM_content() {
         return this.m_content;
     }
-    
+
     public void setM_content(final Map<String, String> m_content) {
         this.m_content = m_content;
     }
-    
+
     public Map<String, Object> getM_worktime() {
         return this.m_worktime;
     }
-    
+
     public void setM_worktime(final Map<String, Object> m_worktime) {
         this.m_worktime = m_worktime;
     }
-    
+
     public Map<String, String> getM_work2() {
         return this.m_work2;
     }
-    
+
     public void setM_work2(final Map<String, String> m_work2) {
         this.m_work2 = m_work2;
     }
-    
+
     public Map<String, String> getM_work3() {
         return this.m_work3;
     }
-    
+
     public void setM_work3(final Map<String, String> m_work3) {
         this.m_work3 = m_work3;
     }
-    
+
     public List getL_m7Temp() {
         return this.l_m7Temp;
     }
-    
+
     public void setL_m7Temp(final List temp) {
         this.l_m7Temp = temp;
     }
-    
+
     public List getL_star() {
         return this.l_star;
     }
-    
+
     public void setL_star(final List l_star) {
         this.l_star = l_star;
     }
-    
+
     public Map<String, String> getM_employee() {
         return this.m_employee;
     }
-    
+
     public void setM_employee(final Map<String, String> mEmployee) {
         this.m_employee = mEmployee;
     }
-    
+
     public static void setSundynSet(final SundynSet sundynSet) {
         SundynSet.sundynSet = sundynSet;
     }
-    
+
     public void update(final Map m_system, final Map m_content, final Map m_work2, final List l_star) throws JDOMException, IOException {
         final String basepath = ServletActionContext.getServletContext().getRealPath("/");
         SAXBuilder sb = new SAXBuilder();
@@ -281,7 +289,7 @@ public class SundynSet {
         doc = null;
         sb = null;
     }
-    
+
     public void update(final Map m_system, final Map m_content, final Map m_work2, final Map m_work4, final List l_star, final Map employeeInfo) throws JDOMException, IOException {
         final String basepath = ServletActionContext.getServletContext().getRealPath("/");
         SAXBuilder sb = new SAXBuilder();
@@ -341,8 +349,8 @@ public class SundynSet {
             final Element worktime = root.getChild("worktime");
             worktime.removeChild("work4");
             final Element work3 = new Element("work4");
-            final Element start = new Element("start").setText(m_work4.get("start").toString());
-            final Element end = new Element("end").setText(m_work4.get("end").toString());
+            final Element start = new Element("start").setText(String.valueOf(m_work4.get("start")));
+            final Element end = new Element("end").setText(String.valueOf(m_work4.get("end")));
             work3.addContent((Content)start);
             work3.addContent((Content)end);
             worktime.addContent((Content)work3);
@@ -403,7 +411,7 @@ public class SundynSet {
         doc = null;
         sb = null;
     }
-    
+
     public void delete(final Integer index) throws JDOMException, IOException {
         final String basepath = ServletActionContext.getServletContext().getRealPath("/");
         final SAXBuilder sb = new SAXBuilder();
@@ -425,7 +433,7 @@ public class SundynSet {
         XMLOut = null;
         SundynSet.sundynSet = new SundynSet(SundynSet.setPath);
     }
-    
+
     public Map add(final File f) throws JDOMException, IOException {
         final String basepath = ServletActionContext.getServletContext().getRealPath("/");
         final SAXBuilder sb = new SAXBuilder();
@@ -485,7 +493,7 @@ public class SundynSet {
         SundynSet.sundynSet = new SundynSet(SundynSet.setPath);
         return res;
     }
-    
+
     public void select(final Integer i, final String k) throws JDOMException, IOException {
         final String basepath = ServletActionContext.getServletContext().getRealPath("/");
         final SAXBuilder sb = new SAXBuilder();

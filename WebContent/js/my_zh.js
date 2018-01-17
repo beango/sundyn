@@ -339,8 +339,11 @@ function analyseContentRateAjaxDay(data) {
     var nowStr = now.format("yyyy-MM-dd");
     $("#endDate").val(nowStr + " 23:59:59");
     now.setDate(now.getDate()-data);
-    $("#startDate").val(now.format("yyyy-MM-dd") + " 00:00:00");
-	dojo.xhrPost({url:"analyseContentRateAjaxDay.action", content:{num:data}, load:function (resp, ioArgs) {
+    var startDate = now.format("yyyy-MM-dd") + " 00:00:00";
+    var endDate = nowStr + " 23:59:59";
+    $("#startDate").val(startDate);
+    var type = $("#type").val();
+	dojo.xhrPost({url:"analyseContentRateAjax.action", content:{startDate:startDate,endDate:endDate,num:data,type:type}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
 	}});
 }
@@ -2151,7 +2154,7 @@ function htmltoexcel(tableid) {// 整个表格拷贝到EXCEL中
    }
 // 首页调用js
 // 评价信息详细
-function indexDetail(deptIds,keys){
+function indexDetail(deptIds,keys,name){
 //	 var now=new Date();
 //	 y=now.getFullYear();
 //	 m=now.getMonth()+1;
@@ -2164,7 +2167,7 @@ function indexDetail(deptIds,keys){
 	 var endDate="";
 
      var url="queryZhDeal.action?id=0&startDate="+startDate+"&endDate="+endDate+"&deptIds="+deptIds+"&keys="+keys+"&currentPage=1";
-    addTabMenu("评价信息",url,null,true);
+    addTabMenu("首页",name,url,null,true);
 }
 // 首页饼图详细
 
@@ -2180,7 +2183,7 @@ function indexCake(deptIds){
 	 startDate="";
 	 endDate="";
     var url = "queryZhDeal.action?id=0&startDate="+startDate+"&endDate="+endDate+"&deptIds="+deptIds+"&keys=";
-    addTabMenu("满意饼图",url,null,true);
+    addTabMenu('首页',"满意饼图",url,null,true);
 }
 // 鼠标经过时选择当前
 function selectCurrent(data){
@@ -2357,6 +2360,7 @@ function baseUploadPicDeal(){
 			document.getElementById("logo").value = "" + data;
 			var img123 = document.getElementById("picLogo");
 			img123.src = data;
+            $('#picLogo').parent().show();
 		}
 		closeDialog();
 	}});

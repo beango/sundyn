@@ -1,3 +1,4 @@
+<%@ page import="java.util.Date" %>
 <%@page pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -24,7 +25,7 @@
     <script type="text/javascript" src="js/line.js"></script>
     <script type="text/javascript" src="js/jscharts.js"></script>
     <script type="text/javascript" src="js/json.js"></script>
-    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?<%=new Date().getTime()%>"></script>
 </head>
 <body>
 <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>

@@ -370,6 +370,7 @@ public class EmployeeService extends SuperDao
         String sql = "select  concat(appries_employee.Name,'') as employeeName,  appries_employee.Sex ,appries_employee.CardNum , concat(appries_dept.name,'') as deptName   ,'\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id in(" + employeeIds + ")" + " union " + "select  concat(appries_employee.Name,'') as employeeName,  appries_employee.Sex ,appries_employee.CardNum , concat(appries_dept.name,'') as deptName  ,'\u4e0d\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id not  in(" + employeeIds + ")";
         sql = "select * from (" + sql + ") as temp limit " + start + "," + num;
         try {
+            System.out.println("employeeOnline:" + sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
@@ -382,6 +383,7 @@ public class EmployeeService extends SuperDao
         String sql = " select  concat(appries_employee.Name,'') as employeeName,  appries_employee.Sex ,appries_employee.CardNum , concat(appries_dept.name,'') as deptName   ,'\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id in(" + employeeIds + ")" + " union " + " select  concat(appries_employee.Name,'') as employeeName,  appries_employee.Sex ,appries_employee.CardNum , concat(appries_dept.name,'') as deptName  ,'\u4e0d\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id not  in(" + employeeIds + ")";
         sql = "select count(*) from (" + sql + ") as temp";
         try {
+            System.out.println("countEmployeeOnline:" + sql);
             return this.getJdbcTemplate().queryForInt(sql);
         }
         catch (Exception e) {
@@ -394,6 +396,7 @@ public class EmployeeService extends SuperDao
         String sql = " select  concat(appries_employee.Name,'') as employeeName,  appries_employee.Sex ,appries_employee.CardNum , concat(appries_dept.name,'') as deptName   ,'\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id in(" + employeeIds + ")";
         sql = "select count(*) from (" + sql + ") as temp";
         try {
+            System.out.println("countEmployeeOnline2:" + sql);
             return this.getJdbcTemplate().queryForInt(sql);
         }
         catch (Exception e) {
@@ -495,6 +498,25 @@ public class EmployeeService extends SuperDao
         }
         catch (Exception e) {
             System.err.println("\u5458\u5de5\u5361\u53f7" + cardnum + "\u7684\u5458\u5de5\u66f4\u65b0\u5931\u8d25\uff01");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateOnline(String cardNum, int isonline) {
+        final String sql = "update appries_employee set isonline='" + isonline + "' where cardnum ='" + cardNum + "'";
+        try {
+            final int num = this.getJdbcTemplate().update(sql);
+            if (num > 0) {
+                return true;
+            }
+            System.err.println("修改卡号" + cardNum + "为" + isonline+"在线成功");
+            System.out.println("修改卡号成功。");
+
+            return false;
+        }
+        catch (Exception e) {
+            System.err.println("修改卡号" + cardNum + "为" + isonline+"在线失败");
             e.printStackTrace();
             return false;
         }

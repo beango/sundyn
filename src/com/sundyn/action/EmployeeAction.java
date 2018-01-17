@@ -472,6 +472,7 @@ public class EmployeeAction extends ActionSupport
             if (employee != null) {
                 System.out.println("employeeHeart---\u6dfb\u52a0\u5458\u5de5---name=" + employee.get("name").toString());
                 session.setAttribute("employee", (Object)employee);
+                employeeService.updateOnline(cardNum,1);
             }
         }
         final String mac = request.getParameter("mac");

@@ -85,6 +85,11 @@
 							<input name="ext2" id="ext2" />
 						</td>
 					</tr>
+                    <tr>
+                        <td style="border-color: #e9f5fd;color:red;" align="center" colspan="2">
+                        默认密码：123456
+                        </td>
+                    </tr>
 				</table>
 			</div>
 		</div>

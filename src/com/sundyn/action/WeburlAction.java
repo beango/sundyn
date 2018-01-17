@@ -21,15 +21,15 @@ public class WeburlAction extends ActionSupport
     private InputStream xml;
     private String msg;
     private Pager pager;
-    
+
     static {
         pageSize = 20;
     }
-    
+
     public String weburlToAdd() {
         return "weburlToAdd";
     }
-    
+
     public String weburlAdd() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String name = request.getParameter("name");
@@ -45,12 +45,12 @@ public class WeburlAction extends ActionSupport
         this.isDeal = "\u6dfb\u52a0\u5931\u8d25\u8bf7\u91cd\u65b0\u6dfb\u52a0";
         return "inputs";
     }
-    
+
     public String weburlList() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String uri = request.getRequestURL().toString();
         final int rowsCount = this.weburlService.getCount();
-        Integer pageSize = WeburlAction.pageSize; 
+        Integer pageSize = WeburlAction.pageSize;
         if(request.getParameter("pageSize")!=null)
         	pageSize = Integer.parseInt(request.getParameter("pageSize"));
         this.pager = new Pager("currentPage", pageSize, rowsCount, request, "weburlPage");
@@ -58,7 +58,7 @@ public class WeburlAction extends ActionSupport
         this.pager.setPageList(this.weburls);
         return "weburlListOk";
     }
-    
+
     public String weburlToUpdate() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String id = request.getParameter("id");
@@ -71,7 +71,7 @@ public class WeburlAction extends ActionSupport
         this.weburl.setId(Integer.parseInt(id));
         return "weburlToUpdate";
     }
-    
+
     public String weburlUpdate() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String name = request.getParameter("name");
@@ -86,14 +86,14 @@ public class WeburlAction extends ActionSupport
         this.weburlService.weburlUpdate(this.weburl);
         return "weburlUpdateOk";
     }
-    
+
     public String weburlDelete() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String id = request.getParameter("id");
         this.weburlService.weburlDelete(Integer.parseInt(id));
         return "weburlDeleteOk";
     }
-    
+
     public String weburlDownload() throws FileNotFoundException, IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String mac = request.getParameter("mac");
@@ -104,6 +104,7 @@ public class WeburlAction extends ActionSupport
         final String filename = String.valueOf(mac) + ".xml";
         final String url = String.valueOf(file) + filename;
         final File f = new File(url);
+        System.out.println("weburlDownload:" + url);
         if (!f.exists()) {
             f.createNewFile();
         }
@@ -144,47 +145,47 @@ public class WeburlAction extends ActionSupport
         out2.close();
         return null;
     }
-    
+
     public WeburlVo getWeburl() {
         return this.weburl;
     }
-    
+
     public void setWeburl(final WeburlVo weburl) {
         this.weburl = weburl;
     }
-    
+
     public WeburlService getWeburlService() {
         return this.weburlService;
     }
-    
+
     public void setWeburlService(final WeburlService weburlService) {
         this.weburlService = weburlService;
     }
-    
+
     public String getIsDeal() {
         return this.isDeal;
     }
-    
+
     public void setIsDeal(final String isDeal) {
         this.isDeal = isDeal;
     }
-    
+
     public List<WeburlVo> getWeburls() {
         return (List<WeburlVo>)this.weburls;
     }
-    
+
     public void setWeburls(final List<WeburlVo> weburls) {
         this.weburls = weburls;
     }
-    
+
     public String getUrl() {
         return this.url;
     }
-    
+
     public void setUrl(final String url) {
         this.url = url;
     }
-    
+
     public String testAction() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String name = request.getParameter("name");
@@ -206,7 +207,7 @@ public class WeburlAction extends ActionSupport
         }
         return null;
     }
-    
+
     public InputStream getXml() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String mac = request.getParameter("mac");
@@ -217,27 +218,27 @@ public class WeburlAction extends ActionSupport
         final String url = String.valueOf(file) + filename;
         return ServletActionContext.getServletContext().getResourceAsStream("/WEB-INF/source/" + filename);
     }
-    
+
     public void setXml(final InputStream xml) {
         this.xml = xml;
     }
-    
+
     public String getMsg() {
         return this.msg;
     }
-    
+
     public void setMsg(final String msg) {
         this.msg = msg;
     }
-    
+
     public Pager getPager() {
         return this.pager;
     }
-    
+
     public void setPager(final Pager pager) {
         this.pager = pager;
     }
-    
+
     public static Integer getPagesize() {
         return WeburlAction.pageSize;
     }

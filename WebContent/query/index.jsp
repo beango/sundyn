@@ -19,7 +19,7 @@
     <script type="text/javascript" src="js/i_line.js"></script>
     <script type="text/javascript" src="js/pie.js"></script>
     <script type="text/javascript" src="js/Pie3D.js"></script>
-    <script type="text/javascript" src="js/my_<s:text name='sundyn.language'/>.js"></script>
+    <script type="text/javascript" src="js/my_<s:text name='sundyn.language'/>.js?1"></script>
     <script type="text/javascript" src="js/jscharts.js"></script>
 </head>
 <body>
@@ -29,7 +29,7 @@
             <div class="" style="height: 96%;">
                 <div class="neirong_lanmu_top">
                     <span class="px13 left"><s:text name="sundyn.main.title1"/></span>
-                    <span class="right"><a href="#" onclick="indexDetail('${deptIds}','${mk}')">&nbsp;&nbsp;<s:text name="sundyn.main.more"/></a></span>
+                    <span class="right"><a href="#" onclick="indexDetail('${deptIds}','${mk}','<s:text name="sundyn.main.title1"/>')">&nbsp;&nbsp;<s:text name="sundyn.main.more"/></a></span>
                 </div>
                 <table width="100%" cellpadding="0" cellspacing="0"
                        style="border-right: 1px solid #bad6ec;">
@@ -63,7 +63,7 @@
                 <div class="neirong_lanmu_top">
                     <span class="px13 left"><s:text name="sundyn.main.title2"/></span>
                     <span class="right"><a href="#"
-                                           onclick="indexDetail('${deptIds}','${bmk}')"><s:text
+                                           onclick="indexDetail('${deptIds}','${bmk}','<s:text name="sundyn.main.title2"/>')"><s:text
                             name="sundyn.main.more"/></a></span>
                 </div>
                 <table width="100%" cellpadding="0" cellspacing="0"
@@ -108,7 +108,7 @@
             <div style="height: 96%;">
                 <div class="neirong_lanmu_top">
                     <span class="px13 left"><s:text name="sundyn.main.title5"/></span>
-                    <span class="right"><a href="#" onclick="addTabMenu('<s:text
+                    <span class="right"><a href="#" onclick="addTabMenu('首页','<s:text
                             name="sundyn.main.title5"/>','analyseContentRate.action','',true)"><s:text
                             name="sundyn.main.more"/></a></span>
                 </div>

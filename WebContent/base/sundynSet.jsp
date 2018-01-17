@@ -7,10 +7,11 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<link rel="stylesheet" href="css/dialog.css" type="text/css" />
 		<link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+        <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
   		<script type="text/javascript" src="js/dojo.js"></script>
   		<script type="text/javascript" src="js/dialog.js"></script>
    	    <script type="text/javascript" src="js/json.js"></script>
-		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?1"></script>
  		<title><s:text name='sundyn.title'/></title>
 		<script language="javascript">
 		  function check() {
@@ -43,7 +44,7 @@
 					}
 				if(!document.getElementById('star').checked){
 					document.getElementById('est66').style.display='none';
-<%--					document.getElementById('est6').click();--%>
+                    //document.getElementById('est6').click();
 					document.getElementById('est6').checked='';
 				}
               }
@@ -54,25 +55,25 @@
 			<div style="width: 728px;margin: 0 auto;height: 380px;overflow: hidden;" class="kuang">
 				<div class="top718">
 				    <div>
-					   <b id="top1" onclick="showN(1)"><s:text name='sundyn.softSetup.systemSetup' /></b> 
-	 				   <img src="images/fgx.gif" /> 
-	 				   <b id="top2" onclick="showN(2)"><s:text name='sundyn.softSetup.infoSetup' /></b> 
-					   <img src="images/fgx.gif" /> 
+					   <b id="top1" onclick="showN(1)"><s:text name='sundyn.softSetup.systemSetup' /></b>
+	 				   <img src="images/fgx.gif" />
+	 				   <b id="top2" onclick="showN(2)"><s:text name='sundyn.softSetup.infoSetup' /></b>
+					   <img src="images/fgx.gif" />
 					   <b id="top3" onclick="showN(3)"><s:text name='sundyn.softSetup.timeSetup' /></b>
 <%--					   <img src="images/fgx.gif" /> --%>
 <%--					   <b id="top4" onclick="showN(4)"><s:text name='sundyn.softSetup.tempSetup' /></b>--%>
-	 				   <img src="images/fgx.gif" /> 
+	 				   <img src="images/fgx.gif" />
 					   <b id="top5" onclick="showN(5)"><s:text name='sundyn.softSetup.starSetup' /></b>
-					    <img src="images/fgx.gif" /> 
-	 				   <b id="top6" onclick="showN(6)"><s:text name='sundyn.softSetup.employeeInfoSetup' /></b> 
+					    <img src="images/fgx.gif" />
+	 				   <b id="top6" onclick="showN(6)"><s:text name='sundyn.softSetup.employeeInfoSetup' /></b>
 				   </div>
  				</div>
 				<div class="sundynSet" >
 					  <div id="content1">
 					      <div style="display:none"><input type="checkbox" name="camera" id="camera" <c:if test="${system.camera == 'true' }"> checked="checked"</c:if>      />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.camera' /></b>&nbsp;&nbsp;&nbsp;&nbsp; <c> <s:text name='sundyn.softSetup.cameraInfo' /></c></div>
-						  <div style="display:none"><input type="checkbox" name="k7" id="k7"     <c:if test="${system.k7 == 'true' }"> checked="checked"</c:if>  />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.k7' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.k7Info' /></c></div>	
-						  <div><input type="checkbox" name="star" onclick="checkStar()" id="star" <c:if test="${system.star == 'true' }"> checked="checked"</c:if>  />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.starGrade' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.starGradeInfo' /></c></div>	
-						  <div><input type="checkbox" name="bind" id="bind" <c:if test="${system.bind == 'true' }"> checked="checked"</c:if>  />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.bind' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.bindInfo' /></c></div>	
+						  <div style="display:none"><input type="checkbox" name="k7" id="k7"     <c:if test="${system.k7 == 'true' }"> checked="checked"</c:if>  />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.k7' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.k7Info' /></c></div>
+						  <div><input type="checkbox" name="star" onclick="checkStar()" id="star" <c:if test="${system.star == 'true' }"> checked="checked"</c:if>  />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.starGrade' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.starGradeInfo' /></c></div>
+						  <div><input type="checkbox" name="bind" id="bind" <c:if test="${system.bind == 'true' }"> checked="checked"</c:if>  />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.bind' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.bindInfo' /></c></div>
 						  <div><input type="checkbox" name="guide" id="guide" <c:if test="${system.guide == 'true' }"> checked="checked"</c:if>  />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.guide' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.guideInfo' /></c></div>
 						  <input type="hidden" name="tipLanguage" id="tipLanguage" value="${system.tipLanguage}"/>
  					  </div>
@@ -80,9 +81,9 @@
 					      <div><b><s:text name='sundyn.softSetup.danweiName'/></b><input type="text" name="title" id="title" class="input_comm" value="${content.title}" />  </div>
 					      <div style="display:none;"><b><s:text name='sundyn.softSetup.m7BottomInfo'/></b><input type="text" name="buttom" id="buttom" class="input_comm" value="${content.buttom}" />  </div>
 					      <div style="display: none;"><b><s:text name='sundyn.softSetup.tipServerUrl'/></b><input type="text" name="requestAddress" id="requestAddress" class="input_comm" value="${content.requestAddress}" />  </div>
-					      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.logo'/></b><input type="text" name="logo" id="logo" class="input_comm" value="${content.logo}" /><input value="<s:text name='sundyn.softSetup.upload'/>" type="button" onclick="baseUploadPic()"  />  </div>
+                          <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.logo'/></b><input type="text" name="logo" id="logo" class="input_comm" value="${content.logo}" /><input value="<s:text name='sundyn.softSetup.upload'/>" type="button" onclick="baseUploadPic()"  /><input type="button" value="清空" onclick="$('#logo').val('');$('#picLogo').attr('src','');$('#picLogo').parent().hide();" />  </div>
 					      <div class="left"><b><s:text name='sundyn.softSetup.require'/></b></div>
-					      <div class="left"><img src="${content.logo}" id="picLogo" style="width: 133px;height: 37px;" /></div>
+					      <div class="left" style="display:none;"><img src="${content.logo}" id="picLogo" style="width: 133px;height: 37px;" /></div>
 					      <div style="display: none;"><b><s:text name='sundyn.softSetup.contentDegreeStandard'/></b><input type="text" name="standard" id="standard" class="input_comm" value="${content.standard}" />  </div>
  					  </div>
  					  <div id="content3" style="display: none;">
@@ -116,15 +117,15 @@
    					       <ul id="stars">
 	   					       <c:forEach var="star" items="${stars}">
 		   					        <li>
-		   					        	<b><s:text name='sundyn.softSetup.contentRate'/></b><input type="text" value="${star.star100}" class="input_comm" name="prate" /><b><s:text name='sundyn.softSetup.up'/></b><input type="text" value="${star.star10}"  class="input_comm" name="pgrade"/><b><s:text name='sundyn.softSetup.mark'/></b><input type="text" value="${star.star}" class="input_comm" name="pstar" /><b><s:text name='sundyn.softSetup.star'/></b>  <img src="images/tp_add.gif"  onclick="starAdd()"/> <img src="images/tp_del.gif" onclick="starDel(this)" />  
+		   					        	<b><s:text name='sundyn.softSetup.contentRate'/></b><input type="text" value="${star.star100}" class="input_comm" name="prate" /><b><s:text name='sundyn.softSetup.up'/></b><input type="text" value="${star.star10}"  class="input_comm" name="pgrade"/><b><s:text name='sundyn.softSetup.mark'/></b><input type="text" value="${star.star}" class="input_comm" name="pstar" /><b><s:text name='sundyn.softSetup.star'/></b>  <img src="images/tp_add.gif"  onclick="starAdd()"/> <img src="images/tp_del.gif" onclick="starDel(this)" />
 		    					    </li>
-		    				   </c:forEach>	  
+		    				   </c:forEach>
       				      </ul>
    					  </div>
    					   <div id="content6" style="display: none;MARGIN-RIGHT: auto;MARGIN-LEFT: auto;" align="center">
    					     <span style="color:red;">*&nbsp;&nbsp;<s:text name="sundyn.can.write"/></span>
    					     <div align="left" style="width:200px;">
-						
+
 		         		 <input type="checkbox" name="employeeInfoSet1" value="1" id="est1" <c:if test="${employeeInfoSet.employeeName== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;<s:text name='sundyn.column.employeeName'/><br/>
 	          		 	 <input type="checkbox" name="employeeInfoSet2" value="2" id="est2" <c:if test="${employeeInfoSet.job_desc== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;<s:text name='sundyn.column.post'/><br/>
 		         		 <input type="checkbox" name="employeeInfoSet3" value="3" id="est3" <c:if test="${employeeInfoSet.employeeJobNum== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;<s:text name='sundyn.column.employeeJobNum'/><br/>

@@ -58,7 +58,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, type, this.getDeptIds());
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='æ»¡æ„é‡èµ°åŠ¿åˆ†æž' xAxisName='æ—¶é—´' yAxisName='æ•°é‡' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='ÂúÒâÁ¿×ßÊÆ·ÖÎö' xAxisName='Ê±¼ä' yAxisName='ÊýÁ¿' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -134,6 +134,8 @@ public class AnalyseAction extends ActionSupport
     public String analyseContentRateAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String type = request.getParameter("type");
+        startDate = request.getParameter("startDate");
+        endDate = request.getParameter("endDate");
         if (this.startDate == null) {
             this.startDate = "";
         }
@@ -150,7 +152,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='æ»¡æ„çŽ‡èµ°åŠ¿åˆ†æž' xAxisName='æ—¶é—´' yAxisName='æ•°é‡' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='ÂúÒâÂÊ×ßÊÆ·ÖÎö' xAxisName='Ê±¼ä' yAxisName='ÊýÁ¿' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -166,8 +168,8 @@ public class AnalyseAction extends ActionSupport
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(5, 7);
-                chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                chartM.put("serviceDate", String.valueOf(day) + "ÔÂ");
+                strXML1.append("<set name='" + String.valueOf(day) + "ÔÂ" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else {
@@ -175,11 +177,12 @@ public class AnalyseAction extends ActionSupport
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(0, 4);
-                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                strXML1.append("<set name='" + String.valueOf(day) + "Äê" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
+        request.setAttribute("strXMLType", "Column3D.swf");//Õ¼±È
         return "success";
     }
 
@@ -188,7 +191,10 @@ public class AnalyseAction extends ActionSupport
         final String num = request.getParameter("num");
         final Integer numI = Integer.valueOf(num);
         final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        this.endDate = df.format(new Date());
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.set(Calendar.DATE, c.get(Calendar.DATE) + 1);
+        this.endDate = df.format(c.getTime());
         final Calendar cal = Calendar.getInstance();
         cal.set(6, cal.get(6) - numI);
         this.startDate = df.format(cal.getTime());
@@ -199,7 +205,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='æ»¡æ„çŽ‡æŸ±çŠ¶å›¾' xAxisName='æ—¶é—´' yAxisName='æ•°é‡' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='ÂúÒâÂÊÖù×´Í¼' xAxisName='Ê±¼ä' yAxisName='Õ¼±È' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         for (int i = 0; i < this.chartList.size(); ++i) {
             final Map chartM = (Map) this.chartList.get(i);
@@ -210,6 +216,7 @@ public class AnalyseAction extends ActionSupport
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
+        request.setAttribute("strXMLType", "Column3D.swf");
         return "success";
     }
 
@@ -222,6 +229,11 @@ public class AnalyseAction extends ActionSupport
         final Calendar cal = Calendar.getInstance();
         cal.set(6, cal.get(6) - numI);
         this.startDate = df.format(cal.getTime());
+
+        cal.setTime(new Date());
+        cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
+        this.endDate = df.format(cal.getTime());
+
         final String allId = this.getAllId();
         final List totalList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, "day", this.getDeptIds());
         final String contentId = this.getContentId();
@@ -275,7 +287,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseDeptTotal(deptIds, this.startDate, this.endDate, allId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='ä¸šåŠ¡é‡åˆ†æž' xAxisName='æ—¶é—´' yAxisName='æ•°é‡' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='ÒµÎñÁ¿·ÖÎö' xAxisName='Ê±¼ä' yAxisName='ÊýÁ¿' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -327,7 +339,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseDeptContent(deptIds, this.startDate, this.endDate, contentId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='æ»¡æ„é¢åˆ†æž' xAxisName='æ—¶é—´' yAxisName='æ•°é‡' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='ÂúÒâ¶î·ÖÎö' xAxisName='Ê±¼ä' yAxisName='ÊýÁ¿' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -383,7 +395,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='æ»¡æ„åº¦åˆ†æž' xAxisName='æ—¶é—´' yAxisName='æ•°é‡' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='ÂúÒâ¶È·ÖÎö' xAxisName='Ê±¼ä' yAxisName='ÊýÁ¿' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -440,7 +452,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseEmployeeTotal(employeeId, this.startDate, this.endDate, allId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='ä¸šåŠ¡é‡åˆ†æž' xAxisName='æ—¶é—´' yAxisName='æ•°é‡' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='ÒµÎñÁ¿·ÖÎö' xAxisName='Ê±¼ä' yAxisName='ÊýÁ¿' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -492,7 +504,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseEmployeeContent(employeeId, this.startDate, this.endDate, contentId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='æ»¡æ„é¢åˆ†æž' xAxisName='æ—¶é—´' yAxisName='æ•°é‡' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='ÂúÒâ¶î·ÖÎö' xAxisName='Ê±¼ä' yAxisName='ÊýÁ¿' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -547,7 +559,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='æ»¡æ„åº¦åˆ†æž' xAxisName='æ—¶é—´' yAxisName='æ•°é‡' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='ÂúÒâ¶È·ÖÎö' xAxisName='Ê±¼ä' yAxisName='ÊýÁ¿' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -653,7 +665,7 @@ public class AnalyseAction extends ActionSupport
 
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='ä¸šåŠ¡æ€»é‡èµ°åŠ¿åˆ†æž' xAxisName='æ—¶é—´' yAxisName='æ•°é‡' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='ÒµÎñ×ÜÁ¿×ßÊÆ·ÖÎö' xAxisName='Ê±¼ä' yAxisName='ÊýÁ¿' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
 

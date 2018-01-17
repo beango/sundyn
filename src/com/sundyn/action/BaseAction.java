@@ -1,21 +1,25 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.service.*;
-import com.sundyn.vo.*;
-import org.apache.struts2.*;
-import javax.servlet.*;
-import java.text.*;
-import java.io.*;
-import org.jdom.*;
-import java.sql.*;
-import net.sf.json.*;
-import java.util.*;
-import java.util.Date;
-
-import com.sundyn.utils.*;
+import com.opensymphony.xwork2.ActionSupport;
+import com.sundyn.service.DeptService;
+import com.sundyn.service.EmployeeService;
+import com.sundyn.service.PlayListService;
+import com.sundyn.service.PowerService;
 import com.sundyn.util.*;
-import javax.servlet.http.*;
+import com.sundyn.utils.JavaXML;
+import com.sundyn.vo.SaveTextVo;
+import net.sf.json.JSONObject;
+import org.apache.struts2.ServletActionContext;
+import org.jdom.JDOMException;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class BaseAction extends ActionSupport
 {
@@ -30,7 +34,7 @@ public class BaseAction extends ActionSupport
     private Pager pager;
     private InputStream xml;
     private SaveTextVo saveTextVo;
-    
+
     private static void copy(final File src, final File dst) {
         try {
             InputStream in = null;
@@ -62,7 +66,7 @@ public class BaseAction extends ActionSupport
             e.printStackTrace();
         }
     }
-    
+
     public String baseRestore() throws Exception {
         final String basePath = ServletActionContext.getServletContext().getRealPath("/");
         final HttpServletRequest request = ServletActionContext.getRequest();
@@ -78,7 +82,7 @@ public class BaseAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String baseRestoreDialog() throws Exception {
         final String basePath = ServletActionContext.getServletContext().getRealPath("/");
         final HttpServletRequest request = ServletActionContext.getRequest();
@@ -90,7 +94,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("ls", (Object)ls);
         return "success";
     }
-    
+
     public String baseDelRestore() throws Exception {
         final ServletRequest request = (ServletRequest)ServletActionContext.getRequest();
         final String basePath = ServletActionContext.getServletContext().getRealPath("/");
@@ -107,7 +111,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("ls", (Object)ls);
         return "success";
     }
-    
+
     public String baseBackUP() throws Exception {
         final String basePath = ServletActionContext.getServletContext().getRealPath("/");
         final String d = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
@@ -142,7 +146,7 @@ public class BaseAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String baseDelTemp() throws JDOMException, IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -153,7 +157,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("msg", (Object)this.getText("sundyn.deleteSuccess"));
         return "success";
     }
-    
+
     public String baseOnLineEmployee() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final EmployeeList employeeList = EmployeeList.getInstance();
@@ -165,7 +169,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("list", (Object)list);
         return "success";
     }
-    
+
     public String baseOnLineEmployee2() throws SQLException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final EmployeeList employeeList = EmployeeList.getInstance();
@@ -200,9 +204,10 @@ public class BaseAction extends ActionSupport
         request.setAttribute("list", (Object)list);
         return "success";
     }
-    
+
     public String baseOnLineEmployee2Ajax() throws SQLException {
         final HttpServletRequest request = ServletActionContext.getRequest();
+        final HttpSession session = request.getSession();
         final EmployeeList employeeList = EmployeeList.getInstance();
         final Map m = EmployeeList.getList();
         final Iterator it = m.keySet().iterator();
@@ -223,18 +228,19 @@ public class BaseAction extends ActionSupport
         this.pager.setPageList(list);
         request.setAttribute("allNum", (Object)num);
         request.setAttribute("num", (Object)this.employeeService.countEmployeeOnline2(deptIds, employeeIds));
+        //request.setAttribute("num",session.getAttribute("employee").);
         request.setAttribute("isOnLine", (Object)"\u5728\u7ebf");
         return "success";
     }
-    
+
     public String basePic() {
         return "success";
     }
-    
+
     public String basePicAjax() {
         return "success";
     }
-    
+
     public String basePicUpload() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String imgName = request.getParameter("imgName");
@@ -257,7 +263,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String basePreviewTemp() throws JDOMException, IOException, SQLException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String index = request.getParameter("index");
@@ -279,7 +285,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("playListList", (Object)playListList);
         return "success";
     }
-    
+
     public String baseRead() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Properties p = new Properties();
@@ -341,7 +347,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("test", (Object)this.saveTextVo);
         return "success";
     }
-    
+
     public String baseSave() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         FileWriter fw = null;
@@ -402,7 +408,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("test", (Object)this.saveTextVo);
         return "success";
     }
-    
+
     public String baseSelectTemp() throws JDOMException, IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -438,7 +444,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String baseSetSave() throws JDOMException, IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -494,7 +500,7 @@ public class BaseAction extends ActionSupport
         Reg.reset();
         return "success";
     }
-    
+
     public String baseSundynSet() throws JDOMException, IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -509,7 +515,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("employeeInfoSet", (Object)sundynSet.getM_employee());
         return "success";
     }
-    
+
     public String baseTime() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String filepath = ServletActionContext.getServletContext().getRealPath("/update");
@@ -532,7 +538,7 @@ public class BaseAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String baseTimeSave() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String sam = request.getParameter("sam");
@@ -561,11 +567,11 @@ public class BaseAction extends ActionSupport
         request.setAttribute("epm", (Object)epm);
         return "success";
     }
-    
+
     public String baseUploadPic() {
         return "success";
     }
-    
+
     public String baseUploadPicDeal() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String imgName = request.getParameter("imgName");
@@ -584,11 +590,11 @@ public class BaseAction extends ActionSupport
         request.setAttribute("imgPath", (Object)impPath);
         return "success";
     }
-    
+
     public String baseUploadTemp() {
         return "success";
     }
-    
+
     public String baseUploadTempDeal() throws JDOMException, IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -606,7 +612,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("json", (Object)json);
         return "success";
     }
-    
+
     public String getRecorderTime() throws JDOMException, IOException {
         final HttpServletResponse response = ServletActionContext.getResponse();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -615,7 +621,7 @@ public class BaseAction extends ActionSupport
         response.getWriter().flush();
         return "none";
     }
-    
+
     public String baseGuide() throws JDOMException, IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -656,7 +662,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("msg", (Object)guide);
         return "success";
     }
-    
+
     public String baseHelp() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String help = request.getParameter("help");
@@ -669,7 +675,7 @@ public class BaseAction extends ActionSupport
         request.setAttribute("help", (Object)"help");
         return help;
     }
-    
+
     public String baseSession() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String sessionName = request.getParameter("sessionName");
@@ -677,79 +683,79 @@ public class BaseAction extends ActionSupport
         request.setAttribute("msg", (Object)value);
         return "success";
     }
-    
+
     public String employeeInfoSetDownload() {
         return "downloadOk";
     }
-    
+
     private String getExtFileName(final String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
     }
-    
+
     public String getFileName() {
         return this.fileName;
     }
-    
+
     public File getImg() {
         return this.img;
     }
-    
+
     public PlayListService getPlayListService() {
         return this.playListService;
     }
-    
+
     public SaveTextVo getSaveTextVo() {
         return this.saveTextVo;
     }
-    
+
     public void setFileName(final String fileName) {
         this.fileName = fileName;
     }
-    
+
     public void setImg(final File img) {
         this.img = img;
     }
-    
+
     public void setPlayListService(final PlayListService playListService) {
         this.playListService = playListService;
     }
-    
+
     public void setSaveTextVo(final SaveTextVo saveTextVo) {
         this.saveTextVo = saveTextVo;
     }
-    
+
     public PowerService getPowerService() {
         return this.powerService;
     }
-    
+
     public void setPowerService(final PowerService powerService) {
         this.powerService = powerService;
     }
-    
+
     public DeptService getDeptService() {
         return this.deptService;
     }
-    
+
     public void setDeptService(final DeptService deptService) {
         this.deptService = deptService;
     }
-    
+
     public EmployeeService getEmployeeService() {
         return this.employeeService;
     }
-    
+
     public void setEmployeeService(final EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-    
+
     public Pager getPager() {
         return this.pager;
     }
-    
+
     public void setPager(final Pager pager) {
         this.pager = pager;
     }
-    
+
     public InputStream getXml() {
         String file = JavaXML.class.getClassLoader().getResource("").getPath();
         file = file.replaceAll("%20", " ");
@@ -758,7 +764,7 @@ public class BaseAction extends ActionSupport
         final String url = String.valueOf(file) + filename;
         return ServletActionContext.getServletContext().getResourceAsStream("/WEB-INF/source/" + filename);
     }
-    
+
     public void setXml(final InputStream xml) {
         this.xml = xml;
     }

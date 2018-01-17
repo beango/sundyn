@@ -20,7 +20,7 @@
 <link rel="stylesheet" type="text/css" href="js/easyui-1.5.3/themes/bootstrap/easyui.css" />
 <link rel="stylesheet" type="text/css" href="js/easyui-1.5.3/themes/icon.css" />
 <script type="text/javascript" src="js/easyui-1.5.3/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?1"></script>
 <script type="text/javascript">
 var tab = null;
 $(function ()
@@ -48,7 +48,7 @@ function loadMenu(){
         			$('#leftmenu').accordion('add',{
                         title: menu.menuName,
                         selected: i===0,
-                        content: getSubMenu(data, menu.id),
+                        content: getSubMenu(menu.menuName, data, menu.id),
                     });
         		}
     		});
@@ -56,21 +56,22 @@ function loadMenu(){
     			var link = $(this).find("a");
     			var title = $(link).text();
     			var url = $(link).attr('data-link');
-    			console.log(url)
+    			var pName = $(link).attr('pname');
+    			//console.log(url)
     			var iconCls = $(link).attr('data-icon');
     			var iframe = $(link).attr('iframe')==1?true:false;
-    			addTabMenu(title,url,iconCls,iframe);
+    			addTabMenu(pName, title,url,iconCls,iframe);
     		});
     	}
     });
 }
 
-function getSubMenu(data, parentid){
+function getSubMenu(pName, data, parentid){
 	var h = "<ul class=\"easyui-tree wu-side-tree\">";
 	for(var i=0; i<data.length; i++){
 		if(parentid == data[i].parentId){
 			h += "<li><a href=\"javascript:void(0)\" data-link=\""
-			+data[i].nav+"\" iframe=\"1\">"+data[i].menuName+"</a></li>"
+			+data[i].nav+"\" iframe=\"1\" pname=\""+pName+"\">"+data[i].menuName+"</a></li>"
 		}
 	}
 	h += "</ul>";
@@ -83,13 +84,13 @@ function getSubMenu(data, parentid){
 * Param iconCls 图标样式
 * Param iframe 链接跳转方式（true为iframe，false为href）
 */
-function addTabMenu(title, href, iconCls, iframe){
+function addTabMenu(pName, title, href, iconCls, iframe){
 	var tabPanel = $('#wu-tabs');
 	if(!tabPanel.tabs('exists',title)){
 		var content = '<iframe scrolling="auto" frameborder="0"  src="'+ href +'" style="width:100%;height:100%;"></iframe>';
 		if(iframe){
 			tabPanel.tabs('add',{
-				title:title,
+				title:pName + '-' + title,
 				content:content,
 				iconCls:iconCls,
 				fit:true,
@@ -144,7 +145,7 @@ function closeTabMenu(title){
 	<!-- begin of main -->
     <div class="wu-main" data-options="region:'center'">
         <div id="wu-tabs" class="easyui-tabs" data-options="border:false,fit:true">
-            <div title="首页" data-options="href:'queryIndex.action',closable:false,iconCls:'icon-tip',cls:'pd3'"></div>
+            <div title="首页" data-options="href:'queryIndex.action?1',closable:false,iconCls:'icon-tip',cls:'pd3'"></div>
         </div>
     </div>
     <!-- end of main -->
