@@ -423,6 +423,8 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
     public String personDuiBi() throws Exception {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         String deptId = this.request.getParameter("deptId");
+        if(deptId == "" || deptId == null)
+            deptId = "-1";
         deptId = this.deptService.findChildALLStr123(deptId);
         final int rowsCount = this.totalService.countTotalPerson(deptId, this.startDate, this.endDate);
         this.pager = new Pager("currentPage", 10, rowsCount, this.request);

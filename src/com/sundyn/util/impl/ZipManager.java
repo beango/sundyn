@@ -74,7 +74,7 @@ public class ZipManager
     
     public void releaseZipToFile(final String sourceZip, final String outFileName) throws IOException {
         final ZipFile zfile = new ZipFile(sourceZip);
-        System.out.println(zfile.getName());
+        System.out.println("生成升级包文件:" + zfile.getName());
         final Enumeration zList = zfile.entries();
         ZipEntry ze = null;
         final byte[] buf = new byte[1024];

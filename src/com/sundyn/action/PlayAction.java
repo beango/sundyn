@@ -173,7 +173,7 @@ public class PlayAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.playService.countPlayQuery("");
         this.pager = new Pager("currentPage", 6, rowsCount, request, "playPage");
-        final List list = this.playService.playQuery("", (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        final List list = this.playService.playQuery(request.getParameter("keyword"), (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         return "success";
     }

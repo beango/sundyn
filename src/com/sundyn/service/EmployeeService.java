@@ -1,7 +1,9 @@
 package com.sundyn.service;
 
 import com.sundyn.dao.SuperDao;
+import com.sundyn.utils.StringUtils;
 import com.sundyn.vo.EmployeeVo;
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -14,13 +16,14 @@ import java.util.Map;
 
 public class EmployeeService extends SuperDao
 {
+    private static Logger logger = Logger.getLogger("EmployeeService");
+
     public Map findEmployeeById(final Integer employeeID) throws SQLException {
         final String sql = "select * from appries_Employee where id = " + employeeID;
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -42,10 +45,13 @@ public class EmployeeService extends SuperDao
 
     public boolean addEmployee(final EmployeeVo emp) {
         final String sql = "insert into appries_employee (name,deptid,sex,job_desc,phone,cardnum,Password,picture,ext2,remark,showDeptName,showWindowName,companyName,ext3,ext4) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        final Object[] arg = { emp.getName(), emp.getDeptid(), emp.getSex(), emp.getJob_desc(), emp.getPhone(), emp.getCardnum(), emp.getPassWord(), emp.getPicture(), emp.getExt2(), emp.getRemark(), emp.getShowDeptName(), emp.getShowWindowName(), emp.getCompanyName(), emp.getExt3(), emp.getExt4() };
+        final Object[] arg = { StringUtils.getNotNullString(emp.getName()), emp.getDeptid(), StringUtils.getNotNullString(emp.getSex()),
+                StringUtils.getNotNullString(emp.getJob_desc()), StringUtils.getNotNullString(emp.getPhone()), StringUtils.getNotNullString(emp.getCardnum()),
+                StringUtils.getNotNullString(emp.getPassWord()), StringUtils.getNotNullString(emp.getPicture()), StringUtils.getNotNullString(emp.getExt2()),
+                StringUtils.getNotNullString(emp.getRemark()), StringUtils.getNotNullString(emp.getShowDeptName()), StringUtils.getNotNullString(emp.getShowWindowName()),
+                StringUtils.getNotNullString(emp.getCompanyName()), StringUtils.getNotNullString(emp.getExt3()), StringUtils.getNotNullString(emp.getExt4()) };
         try {
-            final int num = this.getJdbcTemplate().update(sql, arg);
-            return num > 0;
+            return this.getJdbcTemplate().update(sql, arg) > 0;
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -54,11 +60,25 @@ public class EmployeeService extends SuperDao
     }
 
     public boolean UpdateEmployee(final EmployeeVo emp) {
-        final String sql = "update appries_employee set name =?,sex=?,phone=?,cardnum=?,job_desc=?,picture=?,ext2=?,remark=?,showDeptName=?,showWindowName=? ,companyName=?,ext3=?,ext4=? where id =?";
-        final Object[] arg = { emp.getName(), emp.getSex(), emp.getPhone(), emp.getCardnum(), emp.getJob_desc(), emp.getPicture(), emp.getExt2(), emp.getRemark(), emp.getShowDeptName(), emp.getShowWindowName(), emp.getCompanyName(), emp.getExt3(), emp.getExt4(), emp.getId() };
+        /*String sql = "update appries_employee set name='"+emp.getName()+"',sex='"+emp.getSex()
+                +"',phone='"+emp.getPhone()+"',cardnum='"+emp.getCardnum()+"',job_desc='"+emp.getJob_desc()+"'," +
+                "picture=?,ext2='"+emp.getExt2()+"',remark='"+emp.getRemark()+"'," +
+                "showDeptName='"+emp.getShowDeptName()+"',showWindowName='"+emp.getShowWindowName()+"' ," +
+                "companyName='"+emp.getCompanyName()+"',ext3='"+emp.getExt3()+"',ext4='"+emp.getExt4()+"' where id =" + emp.getId();
+*/
+        String sql = "update appries_employee set name=?,sex=?,phone=?,cardnum=?,job_desc=?,picture=?,ext2=?,remark=?,showDeptName=?,showWindowName=? ,companyName=?,ext3=?,ext4=? where id =?";
+        final Object[] arg = { emp.getName()==null?"":emp.getName(),
+                emp.getSex()==null?"":emp.getSex(), emp.getPhone()==null?"":emp.getPhone(),
+                emp.getCardnum()==null?"":emp.getCardnum(), emp.getJob_desc()==null?"":emp.getJob_desc(),
+                emp.getPicture()==null?"":emp.getPicture(), emp.getExt2()==null?"":emp.getExt2(),
+                emp.getRemark()==null?"":emp.getRemark(), emp.getShowDeptName()==null?"":emp.getShowDeptName(),
+                emp.getShowWindowName()==null?"":emp.getShowWindowName(),
+                emp.getCompanyName()==null?"":emp.getCompanyName(), emp.getExt3()==null?"":emp.getExt3(),
+                emp.getExt4()==null?"":emp.getExt4(),
+                emp.getId() };
+
         try {
-            final int num = this.getJdbcTemplate().update(sql, arg);
-            return num > 0;
+            return this.getJdbcTemplate().update(sql, arg) > 0;
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -120,7 +140,8 @@ public class EmployeeService extends SuperDao
     }
 
     public List findEmployeeByDeptid(final Integer deptId, final int start, final int num) throws SQLException {
-        final String sql = "select Id, Name,Sex,CardNum,Phone from appries_employee where    isnull(ext1) and  deptid in (" + deptId + ")   order by id desc limit " + start + "," + num;
+        String sql = "select row_number() over(order by id desc) as rows, Id, Name,Sex,CardNum,Phone from appries_employee where ext1 is null and  deptid in (" + deptId + ")";
+        sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -142,7 +163,7 @@ public class EmployeeService extends SuperDao
     }
 
     public int countEmployeeByDeptid(final Integer deptId) throws SQLException {
-        final String sql = "select count(*) from appries_employee where    isnull(ext1) and   deptid =" + deptId;
+        final String sql = "select count(*) from appries_employee where ext1 is null and deptid =" + deptId;
         try {
             return this.getJdbcTemplate().queryForInt(sql);
         }
@@ -152,8 +173,11 @@ public class EmployeeService extends SuperDao
         }
     }
 
-    public List findEmployeeByName(final String name, final int start, final int num) throws SQLException {
-        final String sql = "select Id, Name,Sex,CardNum,Phone from appries_employee where  Name  like '%" + name + "%' order by id desc limit " + start + "," + num;
+    public List findEmployeeByName(final Integer deptId, final String name, final int start, final int num) throws SQLException {
+        String sql = "select row_number() over(order by id desc) as rows, Id, Name,Sex,CardNum,Phone from appries_employee where ext1 is null and Name like '%" + name + "%'";
+        if (deptId!=null)
+            sql += " and deptid in (" + deptId + ")";
+        sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -175,7 +199,8 @@ public class EmployeeService extends SuperDao
     }
 
     public List findMovedEmployee(final int start, final int num) throws SQLException {
-        final String sql = "select  Id, Name,Sex,CardNum,Phone from appries_Employee  where  ext1='yes' order by Id desc limit " + start + "," + num;
+        String sql = "select  row_number() over(order by id desc) as rows, Id, Name,Sex,CardNum,Phone from appries_Employee  where  ext1='yes'";
+        sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -197,7 +222,10 @@ public class EmployeeService extends SuperDao
     }
 
     public List findEmployeeByKeyowrd(final String keyword, final String deptIdGroup) {
-        final String sql = "select appries_employee.id ,appries_employee.name,appries_employee.cardnum,concat(appries_dept.name,'') as deptName from appries_employee,appries_dept where appries_employee.name like '%" + keyword + "%'  and appries_employee.deptid in (" + deptIdGroup + ")  and   appries_employee.deptId=appries_dept.id  order by appries_employee.name ";
+        final String sql = "select appries_employee.id ,appries_employee.name,appries_employee.cardnum,appries_dept.name as deptName " +
+                "from appries_employee,appries_dept where appries_employee.name like '%" + keyword + "%'  " +
+                "and appries_employee.deptid in (" + deptIdGroup + ")  and   appries_employee.deptId=appries_dept.id  " +
+                "order by appries_employee.name ";
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -219,7 +247,7 @@ public class EmployeeService extends SuperDao
     }
 
     public Map employeeLogin(final String cardnum, final String psw) {
-        final String sql = "select * from appries_employee where CardNum='" + cardnum + "' and PassWord='" + psw + "' limit 0,1";
+        final String sql = "select top 1 * from appries_employee where CardNum='" + cardnum + "' and PassWord='" + psw + "'";
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }
@@ -230,7 +258,7 @@ public class EmployeeService extends SuperDao
     }
 
     public Map employeeLogin2(final String name, final String psw) {
-        final String sql = "select * from appries_employee where ext2='" + name + "' and PassWord='" + psw + "' limit 0,1";
+        final String sql = "select top 1 * from appries_employee where ext2='" + name + "' and PassWord='" + psw + "'";
         System.out.println("employeeLogin2-sql=" + sql);
         try {
             return this.getJdbcTemplate().queryForMap(sql);
@@ -242,7 +270,7 @@ public class EmployeeService extends SuperDao
     }
 
     public Map employeeLoginMd5(final String name, final String psw) {
-        final String sql = "select * from appries_employee where ext2='" + name + "' and PassWord='password('" + psw + "')' limit 0,1";
+        final String sql = "select top 1 * from appries_employee where ext2='" + name + "' and PassWord='password('" + psw + "')'";
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }
@@ -265,8 +293,10 @@ public class EmployeeService extends SuperDao
     }
 
     public Map employeeFindByCardnum(final String cardnum) {
-        final String sql = "select appries_employee.*,concat(appries_dept.name ,'') as deptName from appries_employee,appries_dept where CardNum='" + cardnum + "' and appries_employee.deptid=appries_dept.id  limit 0,1";
-        System.out.println("employeeFindByCardnum-sql=" + sql);
+        final String sql = "select top 1 appries_employee.*,appries_dept.name as deptName " +
+                "from appries_employee,appries_dept where CardNum='" + cardnum + "' " +
+                "and appries_employee.deptid=appries_dept.id";
+        logger.debug("employeeFindByCardnum-sql=" + sql);
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }
@@ -277,7 +307,7 @@ public class EmployeeService extends SuperDao
     }
 
     public boolean employeeExists(final String ext2) {
-        final String sql = "select count(*) from appries_employee where ext2='" + ext2 + "'  limit 0,1";
+        final String sql = "select count(*) from appries_employee where ext2='" + ext2 + "'";
         try {
             final int num = this.getJdbcTemplate().queryForInt(sql);
             return num > 0;
@@ -289,7 +319,7 @@ public class EmployeeService extends SuperDao
     }
 
     public boolean employeeCardNumExsits(final String cardNum) {
-        final String sql = "select count(*) from appries_employee where CardNum='" + cardNum + "'  limit 0,1";
+        final String sql = "select count(*) from appries_employee where CardNum='" + cardNum + "'";
         try {
             final int num = this.getJdbcTemplate().queryForInt(sql);
             return num > 0;
@@ -301,7 +331,9 @@ public class EmployeeService extends SuperDao
     }
 
     public List findByCardnumOrName(final String keyword) {
-        final String sql = "select Name,CardNum from appries_employee where Name like '%" + keyword + "%' or CardNum like '%" + keyword + "%' order by CardNum limit 0,5 ";
+        String sql = "select row_number() over(order by datingid) as rows, Name,CardNum from appries_employee " +
+                "where Name like '%" + keyword + "%' or CardNum like '%" + keyword + "%' order by CardNum";
+        sql = "select * from ("+sql+") t where t.rows>0 and t.rows<=5";
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -312,7 +344,7 @@ public class EmployeeService extends SuperDao
     }
 
     public Map findByCardnum(final String cardNum) {
-        final String sql = "select id, Name,CardNum from appries_employee where  CardNum = '" + cardNum + "' limit 1";
+        final String sql = "select top 1 id, Name,CardNum from appries_employee where  CardNum = '" + cardNum + "'";
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }
@@ -323,7 +355,7 @@ public class EmployeeService extends SuperDao
     }
 
     public Map findEmployeeByName(final String name) {
-        final String sql = "select   *  from appries_employee where Name = '" + name + "' limit 0,1  ";
+        final String sql = "select top 1 * from appries_employee where Name = '" + name + "'";
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }
@@ -334,7 +366,7 @@ public class EmployeeService extends SuperDao
     }
 
     public Map findEmployeeByExt2(final String ext2) {
-        final String sql = "select   *  from appries_employee where ext2 = '" + ext2 + "' limit 0,1  ";
+        final String sql = "select  top 1 *  from appries_employee where ext2 = '" + ext2 + "'";
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }
@@ -356,7 +388,7 @@ public class EmployeeService extends SuperDao
     }
 
     public List employeeExcel() {
-        final String sql = "select  appries_employee.Name,appries_employee.ext2,Sex,CardNum,Phone, showWindowName,showDeptName,companyName,concat(appries_dept.name ,'') as deptName from appries_employee ,appries_dept where appries_employee.deptid=appries_dept.id order by appries_dept.id ";
+        final String sql = "select  appries_employee.Name,appries_employee.ext2,Sex,CardNum,Phone, showWindowName,showDeptName,companyName,appries_dept.name as deptName from appries_employee ,appries_dept where appries_employee.deptid=appries_dept.id order by appries_dept.id ";
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -367,8 +399,17 @@ public class EmployeeService extends SuperDao
     }
 
     public List employeeOnline(final String deptIds, final String employeeIds, final int start, final int num) {
-        String sql = "select  concat(appries_employee.Name,'') as employeeName,  appries_employee.Sex ,appries_employee.CardNum , concat(appries_dept.name,'') as deptName   ,'\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id in(" + employeeIds + ")" + " union " + "select  concat(appries_employee.Name,'') as employeeName,  appries_employee.Sex ,appries_employee.CardNum , concat(appries_dept.name,'') as deptName  ,'\u4e0d\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id not  in(" + employeeIds + ")";
-        sql = "select * from (" + sql + ") as temp limit " + start + "," + num;
+        String sql = "select  appries_employee.Name as employeeName, appries_employee.Sex, appries_employee.CardNum , " +
+                "appries_dept.name as deptName, '\u5728\u7ebf' as isline " +
+                "from  appries_employee, appries_dept " +
+                "where appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  " +
+                "and appries_employee.id in(" + employeeIds + ")" +
+                " union " + "select appries_employee.Name as employeeName, appries_employee.Sex ,appries_employee.CardNum , " +
+                "appries_dept.name as deptName  ,'\u4e0d\u5728\u7ebf' as isline " +
+                "from  appries_employee, appries_dept where  appries_dept.id=appries_employee.deptid  " +
+                "and appries_dept.id in(" + deptIds + ")  and appries_employee.id not  in(" + employeeIds + ")";
+        sql = "select row_number() over(order by Name) as rows, * from ("+sql+") t";
+        sql = "select * from ("+sql+") t2 where t2.rows>" + start + " and t2.rows<=" + (num+start);
         try {
             System.out.println("employeeOnline:" + sql);
             return this.getJdbcTemplate().queryForList(sql);
@@ -380,10 +421,12 @@ public class EmployeeService extends SuperDao
     }
 
     public int countEmployeeOnline(final String deptIds, final String employeeIds) {
-        String sql = " select  concat(appries_employee.Name,'') as employeeName,  appries_employee.Sex ,appries_employee.CardNum , concat(appries_dept.name,'') as deptName   ,'\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id in(" + employeeIds + ")" + " union " + " select  concat(appries_employee.Name,'') as employeeName,  appries_employee.Sex ,appries_employee.CardNum , concat(appries_dept.name,'') as deptName  ,'\u4e0d\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id not  in(" + employeeIds + ")";
+        String sql = " select appries_employee.Name as employeeName, appries_employee.Sex ,appries_employee.CardNum , appries_dept.name as deptName   ,'\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id in(" + employeeIds + ")" +
+                " union " +
+                " select appries_employee.Name as employeeName, appries_employee.Sex ,appries_employee.CardNum, appries_dept.name as deptName  ,'\u4e0d\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id not  in(" + employeeIds + ")";
         sql = "select count(*) from (" + sql + ") as temp";
         try {
-            System.out.println("countEmployeeOnline:" + sql);
+            logger.debug("countEmployeeOnline:" + sql);
             return this.getJdbcTemplate().queryForInt(sql);
         }
         catch (Exception e) {
@@ -393,7 +436,7 @@ public class EmployeeService extends SuperDao
     }
 
     public int countEmployeeOnline2(final String deptIds, final String employeeIds) {
-        String sql = " select  concat(appries_employee.Name,'') as employeeName,  appries_employee.Sex ,appries_employee.CardNum , concat(appries_dept.name,'') as deptName   ,'\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id in(" + employeeIds + ")";
+        String sql = " select appries_employee.Name as employeeName,  appries_employee.Sex ,appries_employee.CardNum, appries_dept.name as deptName ,'\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id in(" + employeeIds + ")";
         sql = "select count(*) from (" + sql + ") as temp";
         try {
             System.out.println("countEmployeeOnline2:" + sql);
@@ -406,7 +449,7 @@ public class EmployeeService extends SuperDao
     }
 
     public void onlineEmployee(final String employeeId, final String name, final String cardnum) {
-        final String sql = "call onlineemployee(?,?,?)";
+        final String sql = "{call onlineemployee(?,?,?)}";
         try {
             this.getJdbcTemplate().update(sql, new Object[] { employeeId, name, cardnum });
         }
@@ -416,7 +459,7 @@ public class EmployeeService extends SuperDao
     }
 
     public void onlineEmployeeDel(final String mac) {
-        final String sql = "call onlineemployeeDel(?)";
+        final String sql = "{call onlineemployeeDel(?)}";
         try {
             this.getJdbcTemplate().update(sql, new Object[] { mac });
         }
@@ -438,7 +481,8 @@ public class EmployeeService extends SuperDao
     }
 
     public List onlineEmployees(final String mac) {
-        final String sql = "select CONCAT(appries_onlineemployee.employeeId,'') as 'id',CONCAT(appries_onlineemployee.ename,'') as 'name',cardnum from appries_onlineemployee";
+        final String sql = "select appries_onlineemployee.employeeId as 'id',appries_onlineemployee.ename as 'name'," +
+                "cardnum from appries_onlineemployee";
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -504,19 +548,15 @@ public class EmployeeService extends SuperDao
     }
 
     public boolean updateOnline(String cardNum, int isonline) {
-        final String sql = "update appries_employee set isonline='" + isonline + "' where cardnum ='" + cardNum + "'";
+        final String sql = "update appries_employee set isonline='" + isonline + "',onlinetime=getdate() where cardnum ='" + cardNum + "'";
         try {
             final int num = this.getJdbcTemplate().update(sql);
             if (num > 0) {
                 return true;
             }
-            System.err.println("修改卡号" + cardNum + "为" + isonline+"在线成功");
-            System.out.println("修改卡号成功。");
-
             return false;
         }
         catch (Exception e) {
-            System.err.println("修改卡号" + cardNum + "为" + isonline+"在线失败");
             e.printStackTrace();
             return false;
         }

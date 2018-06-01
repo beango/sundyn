@@ -32,7 +32,9 @@ public class KeyTypeService extends SuperDao
     }
     
     public List findByApprieserId(final Integer ApprieserId) throws SQLException {
-        final String sql = "select id,name,isJoy,yes,ext1 from appries_keytype where apprieserid=" + ApprieserId;
+        String sql = "select id,name,isJoy,yes,ext1 from appries_keytype where 1=1 ";
+        if(ApprieserId != null)
+            sql += "and apprieserid=" + ApprieserId;
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }

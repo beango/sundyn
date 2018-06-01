@@ -3,6 +3,7 @@ package com.sundyn.action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.*;
 import com.sundyn.util.ColorHelper;
+import com.sundyn.util.DateHelper;
 import com.sundyn.util.SundynSet;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
@@ -26,6 +27,46 @@ public class AnalyseAction extends ActionSupport
     private String msg;
     private PowerService powerService;
 
+    public EmployeeService getEmployeeService() {
+        return employeeService;
+    }
+
+    public void setEmployeeService(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    private EmployeeService employeeService;
+
+    public List getEmployeeTreeData() {
+        return employeeTreeData;
+    }
+
+    public void setEmployeeTreeData(List employeeTreeData) {
+        this.employeeTreeData = employeeTreeData;
+    }
+
+    private List employeeTreeData;
+
+    public List getDeptJSON() {
+        return deptJSON;
+    }
+
+    public void setDeptJSON(List deptJSON) {
+        this.deptJSON = deptJSON;
+    }
+
+    private List deptJSON;
+    public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
+
+    public void getDeptTree(int deep) throws SQLException {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final Map manager2 = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
+        final Map power2 = this.powerService.getUserGroup(groupid2);
+        final String deptIdGroup2 = power2.get("deptIdGroup").toString();
+        this.deptJSON = this.deptService.findChildALL(deptIdGroup2, deep);
+    }
+
     public QueryService getQueryService() {
         return queryService;
     }
@@ -45,11 +86,12 @@ public class AnalyseAction extends ActionSupport
     public String analyseContentAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String type = request.getParameter("type");
-        if (this.startDate == null) {
-            this.startDate = "";
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null || startDate.equals("")) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
         }
-        if (this.endDate == null) {
-            this.endDate = "";
+        if(endDate == null || endDate.equals("")) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
         if (type == null) {
             type = "day";
@@ -58,7 +100,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, type, this.getDeptIds());
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='¬˙“‚¡ø◊ﬂ ∆∑÷Œˆ' xAxisName=' ±º‰' yAxisName=' ˝¡ø' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='Êª°ÊÑèÈáèËµ∞ÂäøÂàÜÊûê' xAxisName='Êó∂Èó¥' yAxisName='Êï∞Èáè' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -96,6 +138,7 @@ public class AnalyseAction extends ActionSupport
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
+        request.setAttribute("w", request.getParameter("w"));
         return "success";
     }
 
@@ -136,11 +179,12 @@ public class AnalyseAction extends ActionSupport
         String type = request.getParameter("type");
         startDate = request.getParameter("startDate");
         endDate = request.getParameter("endDate");
-        if (this.startDate == null) {
-            this.startDate = "";
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null || startDate.equals("")) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
         }
-        if (this.endDate == null) {
-            this.endDate = "";
+        if(endDate == null || endDate.equals("")) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
         if (type == null) {
             type = "day";
@@ -152,7 +196,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='¬˙“‚¬ ◊ﬂ ∆∑÷Œˆ' xAxisName=' ±º‰' yAxisName=' ˝¡ø' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='Êª°ÊÑèÁéáËµ∞ÂäøÂàÜÊûê' xAxisName='Êó∂Èó¥' yAxisName='Êï∞Èáè' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -168,8 +212,8 @@ public class AnalyseAction extends ActionSupport
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(5, 7);
-                chartM.put("serviceDate", String.valueOf(day) + "‘¬");
-                strXML1.append("<set name='" + String.valueOf(day) + "‘¬" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                chartM.put("serviceDate", String.valueOf(day) + "Êúà");
+                strXML1.append("<set name='" + String.valueOf(day) + "Êúà" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else {
@@ -177,12 +221,12 @@ public class AnalyseAction extends ActionSupport
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(0, 4);
-                strXML1.append("<set name='" + String.valueOf(day) + "ƒÍ" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                strXML1.append("<set name='" + String.valueOf(day) + "Âπ¥" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
-        request.setAttribute("strXMLType", "Column3D.swf");//’º±»
+        request.setAttribute("strXMLType", "Column3D.swf");//Âç†ÊØî
         return "success";
     }
 
@@ -205,7 +249,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='¬˙“‚¬ ÷˘◊¥Õº' xAxisName=' ±º‰' yAxisName='’º±»' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='Êª°ÊÑèÁéáÊü±Áä∂Âõæ' xAxisName='Êó∂Èó¥' yAxisName='Âç†ÊØî' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         for (int i = 0; i < this.chartList.size(); ++i) {
             final Map chartM = (Map) this.chartList.get(i);
@@ -253,7 +297,7 @@ public class AnalyseAction extends ActionSupport
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", (Object)strXML1.toString());
-        request.setAttribute("strXMLType", "FCF_Pie3D.swf");
+        request.setAttribute("strXMLType", "FCF_Pie2D.swf");
         return "success";
     }
 
@@ -266,6 +310,9 @@ public class AnalyseAction extends ActionSupport
         final String deptIdGroup = power.get("deptIdGroup").toString();
         deptList.add(this.deptService.findDeptById(Integer.valueOf(deptIdGroup)));
         request.setAttribute("deptList", (Object)deptList);
+
+        getDeptTree(999);
+
         return "success";
     }
 
@@ -274,11 +321,12 @@ public class AnalyseAction extends ActionSupport
         final String deptId = request.getParameter("deptId");
         final String deptIds = this.deptService.findChildALLStr123(deptId);
         String type = request.getParameter("type");
-        if (this.startDate == null) {
-            this.startDate = "";
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null || startDate.equals("")) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
         }
-        if (this.endDate == null) {
-            this.startDate = "";
+        if(endDate == null || endDate.equals("")) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
         if (type == null) {
             type = "day";
@@ -287,7 +335,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseDeptTotal(deptIds, this.startDate, this.endDate, allId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='“µŒÒ¡ø∑÷Œˆ' xAxisName=' ±º‰' yAxisName=' ˝¡ø' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='‰∏öÂä°ÈáèÂàÜÊûê' xAxisName='Êó∂Èó¥' yAxisName='Êï∞Èáè' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -318,6 +366,7 @@ public class AnalyseAction extends ActionSupport
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
+        request.setAttribute("w", request.getParameter("w"));
         return "success";
     }
 
@@ -326,11 +375,12 @@ public class AnalyseAction extends ActionSupport
         final String deptId = request.getParameter("deptId");
         final String deptIds = this.deptService.findChildALLStr123(deptId);
         String type = request.getParameter("type");
-        if (this.startDate == null) {
-            this.startDate = "";
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null || startDate.equals("")) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
         }
-        if (this.endDate == null) {
-            this.startDate = "";
+        if(endDate == null || endDate.equals("")) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
         if (type == null) {
             type = "day";
@@ -339,7 +389,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseDeptContent(deptIds, this.startDate, this.endDate, contentId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='¬˙“‚∂Ó∑÷Œˆ' xAxisName=' ±º‰' yAxisName=' ˝¡ø' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='Êª°ÊÑèÈ¢ùÂàÜÊûê' xAxisName='Êó∂Èó¥' yAxisName='Êï∞Èáè' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -379,11 +429,12 @@ public class AnalyseAction extends ActionSupport
         final String deptId = request.getParameter("deptId");
         final String deptIds = this.deptService.findChildALLStr123(deptId);
         String type = request.getParameter("type");
-        if (this.startDate == null) {
-            this.startDate = "";
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null || startDate.equals("")) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
         }
-        if (this.endDate == null) {
-            this.startDate = "";
+        if(endDate == null || endDate.equals("")) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
         if (type == null) {
             type = "day";
@@ -395,7 +446,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='¬˙“‚∂»∑÷Œˆ' xAxisName=' ±º‰' yAxisName=' ˝¡ø' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='Êª°ÊÑèÂ∫¶ÂàÜÊûê' xAxisName='Êó∂Èó¥' yAxisName='Êï∞Èáè' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -432,27 +483,45 @@ public class AnalyseAction extends ActionSupport
     }
 
     public String analyseEmployee() throws Exception {
+        getEmployeeTree();
         return "success";
     }
+    public void getEmployeeTree() throws SQLException {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final Map manager2 = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
+        final Map power2 = this.powerService.getUserGroup(groupid2);
+        final String deptIdGroup2 = power2.get("deptIdGroup").toString();
+        this.deptJSON = this.deptService.findChildALL(deptIdGroup2, 2);
 
+        final List temp = new ArrayList();
+        for (int i = 0; i < this.deptJSON.size(); ++i) {
+            Map map = (Map)deptJSON.get(i);
+            temp.addAll(this.employeeService.findEmployeeByDeptId(Integer.valueOf(map.get("id").toString())));
+        }
+        employeeTreeData = temp;
+    }
     public String analyseEmployeeAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String employeeId = request.getParameter("employeeId");
         String type = request.getParameter("type");
-        if (this.startDate == null) {
-            this.startDate = "";
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null || startDate.equals("")) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
         }
-        if (this.endDate == null) {
-            this.startDate = "";
+        if(endDate == null || endDate.equals("")) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
         if (type == null) {
             type = "day";
         }
+        getEmployeeTree();
+
         final String allId = this.getAllId();
         this.chartList = this.analyseService.AnalyseEmployeeTotal(employeeId, this.startDate, this.endDate, allId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='“µŒÒ¡ø∑÷Œˆ' xAxisName=' ±º‰' yAxisName=' ˝¡ø' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='‰∏öÂä°ÈáèÂàÜÊûê' xAxisName='Êó∂Èó¥' yAxisName='Êï∞Èáè' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -484,6 +553,7 @@ public class AnalyseAction extends ActionSupport
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
+        request.setAttribute("w", request.getParameter("w"));
         return "success";
     }
 
@@ -491,11 +561,12 @@ public class AnalyseAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String employeeId = request.getParameter("employeeId");
         String type = request.getParameter("type");
-        if (this.startDate == null) {
-            this.startDate = "";
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null || startDate.equals("")) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
         }
-        if (this.endDate == null) {
-            this.startDate = "";
+        if(endDate == null || endDate.equals("")) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
         if (type == null) {
             type = "day";
@@ -504,7 +575,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseEmployeeContent(employeeId, this.startDate, this.endDate, contentId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='¬˙“‚∂Ó∑÷Œˆ' xAxisName=' ±º‰' yAxisName=' ˝¡ø' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='Êª°ÊÑèÈ¢ùÂàÜÊûê' xAxisName='Êó∂Èó¥' yAxisName='Êï∞Èáè' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -536,6 +607,7 @@ public class AnalyseAction extends ActionSupport
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
+        request.setAttribute("w", request.getParameter("w"));
         return "success";
     }
 
@@ -543,11 +615,12 @@ public class AnalyseAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String employeeId = request.getParameter("employeeId");
         String type = request.getParameter("type");
-        if (this.startDate == null) {
-            this.startDate = "";
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null || startDate.equals("")) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
         }
-        if (this.endDate == null) {
-            this.startDate = "";
+        if(endDate == null || endDate.equals("")) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
         if (type == null) {
             type = "day";
@@ -559,7 +632,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='¬˙“‚∂»∑÷Œˆ' xAxisName=' ±º‰' yAxisName=' ˝¡ø' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='Êª°ÊÑèÂ∫¶ÂàÜÊûê' xAxisName='Êó∂Èó¥' yAxisName='Êï∞Èáè' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
             for (int i = 0; i < this.chartList.size(); ++i) {
@@ -590,6 +663,7 @@ public class AnalyseAction extends ActionSupport
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
+        request.setAttribute("w", request.getParameter("w"));
         return "success";
     }
 
@@ -600,11 +674,12 @@ public class AnalyseAction extends ActionSupport
     public String analyseTotalAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String type = request.getParameter("type");
-        if (this.startDate == null) {
-            this.startDate = "";
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null || startDate.equals("")) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
         }
-        if (this.endDate == null) {
-            this.endDate = "";
+        if(endDate == null || endDate.equals("")) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
         if (type == null) {
             type = "day";
@@ -651,11 +726,13 @@ public class AnalyseAction extends ActionSupport
     public String analyseTotalAjax2() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String type = request.getParameter("type");
-        if (this.startDate == null) {
-            this.startDate = "";
+        String w = request.getParameter("w");
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null || startDate.equals("")) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
         }
-        if (this.endDate == null) {
-            this.endDate = "";
+        if(endDate == null || endDate.equals("")) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
         if (type == null) {
             type = "day";
@@ -665,7 +742,7 @@ public class AnalyseAction extends ActionSupport
 
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='“µŒÒ◊‹¡ø◊ﬂ ∆∑÷Œˆ' xAxisName=' ±º‰' yAxisName=' ˝¡ø' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='‰∏öÂä°ÊÄªÈáèËµ∞ÂäøÂàÜÊûê' xAxisName='Êó∂Èó¥' yAxisName='Êï∞Èáè' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
 
         if (type.equals("day")) {
 
@@ -684,7 +761,7 @@ public class AnalyseAction extends ActionSupport
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(5, 7);
                 //chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                strXML1.append("<set name='" + String.valueOf(day) + "Êúà" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         else {
@@ -692,13 +769,13 @@ public class AnalyseAction extends ActionSupport
                 final Map chartM = (Map) this.chartList.get(i);
                 String day = chartM.get("serviceDate").toString();
                 day = day.substring(0, 4);
-                chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                chartM.put("serviceDate", String.valueOf(day) + "Âπ¥");
+                strXML1.append("<set name='" + String.valueOf(day) + "Âπ¥" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
             }
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
-
+        request.setAttribute("w",w);
         return "success";
     }
 
@@ -958,6 +1035,7 @@ public class AnalyseAction extends ActionSupport
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String ids = this.deptService.findChildALLStr123(deptIdGroup);
+        System.out.println("deptIdGroup:" + deptIdGroup);
         return ids;
     }
 
@@ -1115,11 +1193,12 @@ public class AnalyseAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String sectionName = request.getParameter("sectionName");
         String type = request.getParameter("type");
-        if (this.startDate == null) {
-            this.startDate = "";
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null || startDate.equals("")) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
         }
-        if (this.endDate == null) {
-            this.startDate = "";
+        if(endDate == null || endDate.equals("")) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
         if (type == null) {
             type = "day";

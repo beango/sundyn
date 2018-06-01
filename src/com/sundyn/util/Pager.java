@@ -122,7 +122,12 @@ public class Pager extends ActionSupport
         catch (Exception e) {
             this.currentPage = 1;
         }
-        this.pageSize = pageSize;
+        try {
+            this.pageSize = Integer.parseInt(request.getParameter("pageSize").toString());
+        }
+        catch (Exception e) {
+            this.pageSize = pageSize;
+        }
         this.rowsCount = rowsCount;
         if (rowsCount % pageSize == 0) {
             this.pages = rowsCount / pageSize;
@@ -275,7 +280,12 @@ public class Pager extends ActionSupport
         catch (Exception e) {
             this.currentPage = 1;
         }
-        this.pageSize = pageSize;
+        try {
+            this.pageSize = Integer.parseInt(request.getParameter("pageSize").toString());
+        }
+        catch (Exception e) {
+            this.pageSize = pageSize;
+        }
         if (rowsCount % pageSize == 0) {
             this.pages = rowsCount / pageSize;
         }

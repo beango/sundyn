@@ -1,6 +1,8 @@
 package com.sundyn.action;
 
 import java.util.*;
+
+import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.*;
 import com.sundyn.vo.*;
 import com.sundyn.util.*;
@@ -11,10 +13,8 @@ import com.sundyn.utils.*;
 import com.sundyn.statistics.*;
 import java.sql.*;
 
-public class AdviceSurveyAction
+public class AdviceSurveyAction extends MainAction
 {
-    private static final Integer pageSize;
-    private static final Integer pageSize1;
     public List<Map<String, List<Map<String, Map<String, Double>>>>> adviceStatistics;
     public QuestionVo question;
     public AnswerVo answer;
@@ -30,11 +30,6 @@ public class AdviceSurveyAction
     private Pager pager;
     private CitysUtils citysUtils;
     private String addInput;
-    
-    static {
-        pageSize = 6;
-        pageSize1 = 1;
-    }
     
     public AdviceSurveyAction() {
         this.sh = new StringHql();
@@ -134,7 +129,7 @@ public class AdviceSurveyAction
     public String adviceList() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.adviceService.getCount1();
-        this.pager = new Pager("currentPage", AdviceSurveyAction.pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         this.advices = this.adviceService.findAdvice(false, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.advices);
         return "adviceListOk";
@@ -165,7 +160,7 @@ public class AdviceSurveyAction
     public String showAnserTable() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.adviceService.getCount1();
-        this.pager = new Pager("currentPage", AdviceSurveyAction.pageSize1, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         this.adviceStatistics = (List<Map<String, List<Map<String, Map<String, Double>>>>>)AdviceStatistics.adviceStatistics((this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), this.adviceService);
         this.pager.setPageList(this.adviceStatistics);
         return "showAnserTableOk";
@@ -174,7 +169,7 @@ public class AdviceSurveyAction
     public String checkList() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.adviceService.getCount();
-        this.pager = new Pager("currentPage", AdviceSurveyAction.pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         this.checks = this.adviceService.getChecks((this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.checks);
         return "checkListOk";
@@ -302,14 +297,6 @@ public class AdviceSurveyAction
     
     public void setPager(final Pager pager) {
         this.pager = pager;
-    }
-    
-    public static Integer getPagesize() {
-        return AdviceSurveyAction.pageSize;
-    }
-    
-    public static Integer getPagesize1() {
-        return AdviceSurveyAction.pageSize1;
     }
     
     public CitysUtils getCitysUtils() {

@@ -25,10 +25,17 @@
 		<action name="guideSimpleOne" class="guideAction" method="guideSimpleOne">
 			<result name="success">guide/simpleOne.jsp</result>
 		</action>
+        <action name="guideSimpleOnePost" class="guideAction" method="guideSimpleOnePost">
+            <result name="success">guide/simpleOne.jsp</result>
+        </action>
 		<action name="guideSimpleTwo" class="guideAction" method="guideSimpleTwo">
 			<result name="success">guide/simpleTwo.jsp</result>
 			<result name="multi" type="chain">guideMultiSelect</result>
 		</action>
+        <action name="guideSimpleTwoPost" class="guideAction" method="guideSimpleTwoPost">
+            <result name="success">guide/simpleTwo.jsp</result>
+            <result name="multi" type="chain">guideMultiSelect</result>
+        </action>
 		<action name="guideSimpleThree" class="guideAction" method="guideSimpleThree">
 			<result name="success">guide/simpleThree.jsp</result>
 		</action>

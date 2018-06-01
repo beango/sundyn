@@ -31,10 +31,13 @@ public class WeburlService extends SuperDao
         }
     }
     
-    public List findWeburl(final int startrow, final int pageSize) {
-        final String sql = "select * from appries_weburl order by id desc limit ?,? ";
+    public List findWeburl(final String key_title, final int startrow, final int pageSize) {
+        String sql = "select row_number() over(order by id desc) as rows, * from appries_weburl where 1=1 ";
+        if(null!=key_title && !"".equals(key_title))
+            sql += "and name like '%"+key_title+"%'";
+        sql = "select * from ("+sql+") t where t.rows>" + startrow + " and t.rows<=" + (pageSize+startrow);
         try {
-            return this.getJdbcTemplate().queryForList(sql, new Object[] { startrow, pageSize });
+            return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -86,8 +89,10 @@ public class WeburlService extends SuperDao
         }
     }
     
-    public int getCount() {
-        final String sql = "select count(id) from appries_weburl";
+    public int getCount(String key_title) {
+        String sql = "select count(id) from appries_weburl where 1=1 ";
+        if(null!=key_title && !"".equals(key_title))
+            sql += "and name like '%"+key_title+"%'";
         return this.getJdbcTemplate().queryForInt(sql);
     }
     
@@ -153,7 +158,7 @@ public class WeburlService extends SuperDao
                 final String id = array[i];
                 if (!id.equals("")) {
                     if (id != null) {
-                        final String sql = "insert into  appries_weburl_dept set weburlId=" + id + " ,deptId=" + deptId;
+                        final String sql = "insert into  appries_weburl_dept(weburlId,deptId) values('"+id+"','"+deptId+"')";
                         num = this.getJdbcTemplate().update(sql);
                         if (num < 1) {
                             return false;

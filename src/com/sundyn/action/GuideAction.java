@@ -1,16 +1,22 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.service.*;
-import org.apache.struts2.*;
-import javax.servlet.http.*;
-import org.jdom.*;
-import java.io.*;
-import net.sf.json.*;
-import java.sql.*;
-import com.sundyn.util.*;
-import com.sundyn.vo.*;
-import java.util.*;
+import com.opensymphony.xwork2.ActionSupport;
+import com.sundyn.service.DeptService;
+import com.sundyn.service.EmployeeService;
+import com.sundyn.util.Mysql;
+import com.sundyn.util.SundynSet;
+import com.sundyn.vo.DeptVo;
+import com.sundyn.vo.EmployeeVo;
+import net.sf.json.JSONObject;
+import org.apache.struts2.ServletActionContext;
+import org.jdom.JDOMException;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GuideAction extends ActionSupport
 {
@@ -107,7 +113,15 @@ public class GuideAction extends ActionSupport
         request.getSession().setAttribute("multi", (Object)multi);
         return "success";
     }
-    
+
+    public String guideSimpleOnePost() {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final Integer id = Integer.valueOf(request.getParameter("id"));
+        String name = request.getParameter("name");
+        this.deptService.update(id, name);
+        return "success";
+    }
+
     public String guideSimpleTwo() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         boolean multi = false;
@@ -118,8 +132,8 @@ public class GuideAction extends ActionSupport
             e.printStackTrace();
         }
         final Integer id = Integer.valueOf(request.getParameter("id"));
-        final String name = request.getParameter("name");
-        this.deptService.update(id, name);
+        String name = request.getParameter("name");
+        //this.deptService.update(id, name);
         final List ls = this.deptService.findchild(id);
         if (ls != null && ls.size() > 0) {
             this.m = (Map) ls.get(0);
@@ -129,8 +143,8 @@ public class GuideAction extends ActionSupport
         }
         return "success";
     }
-    
-    public String guideSimpleThree() {
+
+    public String guideSimpleTwoPost() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String ids = request.getParameter("id");
         final String name = request.getParameter("name");
@@ -151,6 +165,35 @@ public class GuideAction extends ActionSupport
         else {
             final Integer id = Integer.valueOf(ids);
             this.deptService.update(id, name, remark);
+            this.m = this.deptService.findDeptById(id);
+            this.ls = this.deptService.findchild(id);
+            request.setAttribute("fatherId", (Object)id);
+            System.out.println("\u4fee\u6539\u73b0\u6709\u5927\u5385-name=" + name);
+        }
+        return "success";
+    }
+
+    public String guideSimpleThree() {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String ids = request.getParameter("id");
+        final String name = request.getParameter("name");
+        final String remark = request.getParameter("remark");
+        System.out.println("guideSimpleThree-id=" + ids);
+        if (ids == null || ids == "") {
+            final DeptVo dept = new DeptVo();
+            dept.setName(name);
+            dept.setFatherId(1);
+            dept.setLenvel(2);
+            dept.setDeptType(2);
+            dept.setRemark(remark);
+            //this.deptService.addDept(dept, 1);
+            this.m = this.deptService.findDeptByName(name);
+            request.setAttribute("fatherId", (Object)Integer.valueOf(this.m.get("id").toString()));
+            System.out.println("\u5df2\u6dfb\u52a0\u65b0\u5927\u5385-name=" + name);
+        }
+        else {
+            final Integer id = Integer.valueOf(ids);
+            //this.deptService.update(id, name, remark);
             this.m = this.deptService.findDeptById(id);
             this.ls = this.deptService.findchild(id);
             request.setAttribute("fatherId", (Object)id);

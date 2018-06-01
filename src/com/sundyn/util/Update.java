@@ -210,7 +210,8 @@ public class Update
         try {
             final ZipOutputStream out = new ZipOutputStream(new FileOutputStream(path));
             for (int i = 0; i < file.length; ++i) {
-                this.zip(out, file[i], file2[i]);
+                if(file[i]!=null && !"".equals(file[i]))
+                    this.zip(out, file[i], file2[i]);
             }
             out.close();
         }
@@ -221,7 +222,11 @@ public class Update
     
     public void zip(final ZipOutputStream out, final String file, final String file2) throws IOException {
         final byte[] buf = new byte[1024];
-        if (new File(file).isFile()) {
+        System.out.println("打包文件:file:" + file + "---file2:" + file2 );
+        File f=new File(file);
+        if(!f.exists())
+            return;
+        if (f.isFile()) {
             final FileInputStream in = new FileInputStream(file);
             out.putNextEntry(new ZipEntry(file2));
             int len;
@@ -234,8 +239,6 @@ public class Update
         else {
             final File[] child = new File(file).listFiles();
             for (int j = 0; j < child.length; ++j) {
-                System.out.println(child[j].getAbsolutePath());
-                System.out.println(String.valueOf(file2) + "/" + child[j].getName());
                 this.zip(out, child[j].getAbsolutePath(), String.valueOf(file2) + "/" + child[j].getName());
             }
         }

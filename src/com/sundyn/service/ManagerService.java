@@ -1,27 +1,48 @@
 package com.sundyn.service;
 
-import com.sundyn.dao.*;
-import java.sql.*;
-import com.sundyn.vo.*;
-import java.util.*;
+import com.sundyn.dao.SuperDao;
+import com.sundyn.util.Cache;
+import com.sundyn.util.CacheManager;
+import com.sundyn.util.EhCacheHelper;
+import com.sundyn.vo.ManagerVo;
+import org.apache.log4j.Logger;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 public class ManagerService extends SuperDao
 {
+    private static Logger logger = Logger.getLogger("ManagerService");
+
     public Map findManageBy(final String userName, final String pwd) throws SQLException {
+        if(userName==null || userName.equals(""))
+            return null;
+        String KEY_FINDMANAGERBY= "com.sundyn.service.ManagerService:KEY_FINDMANAGERBY";
+        KEY_FINDMANAGERBY = KEY_FINDMANAGERBY + "_" + userName;
+        Object data = EhCacheHelper.getCache(KEY_FINDMANAGERBY);
+        if (data != null ){
+            logger.info("findManageBy获取到缓存数据");
+            return (Map)data;
+        }
+        logger.info("findManageBy获取不到缓存数据");
         final String sql = "select * from appries_manager where name= ? and password= ?";
         System.out.println("findManageBy-sql=" + sql);
         System.out.println("findManageBy-userName=" + userName);
         System.out.println("findManageBy-password=" + pwd);
         final Object[] arg = { userName, pwd };
         try {
-            return this.getJdbcTemplate().queryForMap(sql, arg);
+            Map d = this.getJdbcTemplate().queryForMap(sql, arg);
+            if(d!=null && d.size()>0){
+                EhCacheHelper.putCache(KEY_FINDMANAGERBY, d);
+            }
+            return d;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
-    
+
     public boolean manageExist(final String userName) throws SQLException {
         final String sql = "select count(*) from appries_manager where name= ?";
         final Object[] arg = { userName };
@@ -34,7 +55,7 @@ public class ManagerService extends SuperDao
             return false;
         }
     }
-    
+
     public Map findManageById(final Integer id) {
         final String sql = "select id,name,password,realname,userGroupId,remark,ext1,ext2 from appries_manager where id=" + id;
         try {
@@ -45,7 +66,7 @@ public class ManagerService extends SuperDao
             return null;
         }
     }
-    
+
     public boolean AddManager(final ManagerVo form) throws SQLException {
         final String sql = "insert into appries_manager (name,realname,password,skinid,userGroupId,remark,ext1,ext2) values(?,?,?,?,?,?,?,?)";
         final Object[] arg = { form.getName(), form.getRealname(), form.getPassword(), form.getSkinid(), form.getUserGroupId(), form.getRemark(), form.getExt1(), form.getExt2() };
@@ -58,7 +79,7 @@ public class ManagerService extends SuperDao
             return false;
         }
     }
-    
+
     public boolean UpdateManage(final ManagerVo form) throws SQLException {
         final String sql = "update appries_manager set  name=?,realname=?,skinid=?,userGroupId=?,remark=?,ext1=?,ext2=? where id =?";
         final Object[] arg = { form.getName(), form.getRealname(), form.getSkinid(), form.getUserGroupId(), form.getRemark(), form.getExt1(), form.getExt2(), form.getId() };
@@ -71,7 +92,7 @@ public class ManagerService extends SuperDao
             return false;
         }
     }
-    
+
     public boolean delManage(final Integer id) throws SQLException {
         final String sql = "delete from appries_manager where id =" + id;
         try {
@@ -83,7 +104,7 @@ public class ManagerService extends SuperDao
             return false;
         }
     }
-    
+
     public boolean reSetManage(final Integer id) throws SQLException {
         final String sql = "update  appries_manager set password='123456'  where id =" + id;
         try {
@@ -95,7 +116,7 @@ public class ManagerService extends SuperDao
             return false;
         }
     }
-    
+
     public boolean UpdatePower(final ManagerVo form) throws SQLException {
         final String sql = "update appries_manager set userGroupId=? where id =?";
         final Object[] arg = { form.getUserGroupId(), form.getId() };
@@ -108,7 +129,7 @@ public class ManagerService extends SuperDao
             return false;
         }
     }
-    
+
     public boolean UpdateManage(final Integer id, final String pass) throws SQLException {
         final String sql = "update appries_manager set password=? where id =?";
         final Object[] arg = { pass, id };
@@ -121,7 +142,7 @@ public class ManagerService extends SuperDao
             return false;
         }
     }
-    
+
     public List findAll() {
         final String sql = "select * from appries_manager ";
         try {
@@ -131,7 +152,7 @@ public class ManagerService extends SuperDao
             return null;
         }
     }
-    
+
     public List findByName(final String name, final int start, final int num) {
         final String sql = "select * from appries_manager where name like '%" + name + "%' order by id desc limit " + start + "," + num;
         try {
@@ -142,7 +163,7 @@ public class ManagerService extends SuperDao
             return null;
         }
     }
-    
+
     public int countByName(final String name) {
         final String sql = "select count(*) from appries_manager where name like '%" + name + "%' ";
         try {
@@ -153,10 +174,14 @@ public class ManagerService extends SuperDao
             return 0;
         }
     }
-    
+
     public List findLowerManagerByName(final String name, final String deptgroup, final int start, final int num) {
-        final String sql = "select * from appries_manager where name like '%" + name + "%' and userGroupId in(select id from appries_power where deptIdGroup in (" + deptgroup + "))" + " order by id desc limit " + start + "," + num;
-        System.out.println("sql2=" + sql);
+        String sql = "select row_number() over(order by id desc) as rows, * from appries_manager where name like '%" + name + "%' " +
+                "and userGroupId in(" +
+                "select id from appries_power " +
+                "where deptIdGroup in (" + deptgroup + "))";
+        sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
+        logger.debug("findLowerManagerByName.sql=" + sql);
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -165,7 +190,7 @@ public class ManagerService extends SuperDao
             return null;
         }
     }
-    
+
     public int countLowerManagerByName(final String name, final String deptgroup) {
         final String sql = "select count(*) from appries_manager where  name like '%" + name + "%' and userGroupId in (select id from appries_power where deptIdGroup in (" + deptgroup + "))";
         System.out.println("sql1=" + sql);
@@ -177,7 +202,7 @@ public class ManagerService extends SuperDao
             return 0;
         }
     }
-    
+
     public boolean isUseUserGroupId(final Integer id) {
         final String sql = "select count(*) from appries_manager where userGroupId=" + id;
         try {
@@ -189,7 +214,7 @@ public class ManagerService extends SuperDao
             return false;
         }
     }
-    
+
     public List getuserHost() {
         final String sql = "select ext2 from appries_manager where remark in(2,3)";
         try {
@@ -200,7 +225,7 @@ public class ManagerService extends SuperDao
             return null;
         }
     }
-    
+
     public List getuserMobile() {
         final String sql = "select ext1 from appries_manager where remark in(1,3)";
         try {
@@ -211,7 +236,7 @@ public class ManagerService extends SuperDao
             return null;
         }
     }
-    
+
     public void onlineMac(final String mac) {
         final String sql = "call onlinemac(?)";
         try {
@@ -221,7 +246,7 @@ public class ManagerService extends SuperDao
             e.printStackTrace();
         }
     }
-    
+
     public void onlineMacDel(final String mac) {
         final String sql = "call onlinemacDel(?)";
         try {
@@ -231,7 +256,7 @@ public class ManagerService extends SuperDao
             e.printStackTrace();
         }
     }
-    
+
     public List onlineMacs(final String mac) {
         final String sql = "select mac from appries_onlinemac";
         try {

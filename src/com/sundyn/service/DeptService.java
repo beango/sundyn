@@ -1,6 +1,8 @@
 package com.sundyn.service;
 
 import com.sundyn.dao.SuperDao;
+import com.sundyn.entity.Province;
+import com.sundyn.util.EhCacheHelper;
 import com.sundyn.utils.StringUtils;
 import com.sundyn.vo.DeptVo;
 
@@ -11,6 +13,7 @@ import java.util.Map;
 
 public class DeptService extends SuperDao
 {
+    public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
     private ArrayList temp;
 
     public DeptService() {
@@ -26,7 +29,7 @@ public class DeptService extends SuperDao
     }
 
     public void updateUseVideo(final String ids, final String video) {
-        final String sql = "update appries_dept set useVideo =" + video + " where id in(" + ids + ")";
+        final String sql = "update appries_dept set useVideo ='" + video + "' where id in(" + ids + ")";
         try {
             this.getJdbcTemplate().update(sql);
         }
@@ -36,13 +39,13 @@ public class DeptService extends SuperDao
     }
 
     public Map findDeptById(final Integer id) {
-        final String sql = "select * from appries_dept where id=?";
+        final String sql = "select *,(select count(*) from appries_dept t1 where t1.fatherid=t2.id) as childs from appries_dept t2 where id=?";
         final Object[] arg = { id };
+        logger.debug("findDeptById: " + sql + id);
         try {
             return this.getJdbcTemplate().queryForMap(sql, arg);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -85,7 +88,12 @@ public class DeptService extends SuperDao
 
     public boolean addDept(final DeptVo dept, final int fartherId) {
         final String sql = "Insert into appries_dept (name, fatherId, remark, child,lenvel,client_type,product_type,deptType,dept_camera_url,dept_businessId,dept_playListId,ext1,ext2,ext3,useVideo,notice,cityid,provinceid,ext5) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        final Object[] arg = { dept.getName(), dept.getFatherId(), dept.getRemark(), new Integer(0), dept.getLenvel(), dept.getClient_type(), dept.getProduct_Type(), dept.getDeptType(), dept.getDept_camera_url(), dept.getDept_businessId(), dept.getDept_playListId(), dept.getDeptPause(), dept.getDeptPic(), dept.getDeptLogoPic(), dept.getUseVideo(), dept.getNotice(), dept.getCityid(), dept.getProvinceid(), dept.getExt5() };
+        final Object[] arg = { dept.getName()==null?"":dept.getName(), dept.getFatherId(), dept.getRemark()==null?"":dept.getRemark(), new Integer(0),
+                dept.getLenvel(), dept.getClient_type(), dept.getProduct_Type()==null?"":dept.getProduct_Type(), dept.getDeptType(),
+                dept.getDept_camera_url()==null?"":dept.getDept_camera_url(), dept.getDept_businessId(), dept.getDept_playListId(),
+                dept.getDeptPause()==null?"":dept.getDeptPause(), dept.getDeptPic()==null?"":dept.getDeptPic(),
+                dept.getDeptLogoPic()==null?"":dept.getDeptLogoPic(), dept.getUseVideo()==null?"":dept.getUseVideo(),
+                dept.getNotice()==null?"":dept.getNotice(), dept.getCityid(), dept.getProvinceid(), dept.getExt5()==null?"":dept.getExt5() };
         final String sql2 = "update appries_dept set child = child+1 where id = ?";
         final Object[] arg2 = { dept.getFatherId() };
         try {
@@ -161,11 +169,12 @@ public class DeptService extends SuperDao
     }
 
     public List findAll(final String ids) {
-        final String sql = "select * from appries_dept where id in (" + ids + ")";
+        final String sql = "select *,(select count(*) from appries_dept t1 where t1.fatherid=t2.id) as childs from appries_dept t2 where id in (" + ids + ")";
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -204,8 +213,16 @@ public class DeptService extends SuperDao
     }
 
     public List findchild(final Integer id) {
-        final String sql = "select * from appries_dept  where  fatherId =" + id;
+        return this.findchild(id, true);
+    }
+
+    public List findchild(final Integer id, boolean isCountChild) {
+        String sql = "select * ";
+        if(isCountChild)
+            sql += ",(select count(*) from appries_dept t1 where t1.fatherid=t2.id) as childs ";
+        sql += "from appries_dept t2 where fatherId =" + id;
         try {
+            logger.info(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
@@ -215,7 +232,7 @@ public class DeptService extends SuperDao
     }
 
     public List findchild(final Integer id, final Integer deptType) {
-        final String sql = "select * from appries_dept  where  fatherId = ? and deptType=? ";
+        final String sql = "select * from appries_dept where fatherId = ? and deptType=? ";
         final Object[] args = { id, deptType };
         try {
             return this.getJdbcTemplate().queryForList(sql, args);
@@ -227,7 +244,7 @@ public class DeptService extends SuperDao
     }
 
     public String findchildstr(final Integer id) throws SQLException {
-        final List temp = this.findChildALL(id);
+        final List temp = this.findChildALL(id, 999);
         String rtemp = "";
         if (temp == null || temp.size() == 0) {
             return "";
@@ -240,14 +257,16 @@ public class DeptService extends SuperDao
         return rtemp;
     }
 
-    public List findChildALL(final Integer id) throws SQLException {
-        final List tem = this.findchild(id);
+    public List findChildALL(final Integer id, int deep) throws SQLException {
+        deep -= 1;
+        final List tem = this.findchild(id,deep>0);
         if (tem != null && tem.size() > 0) {
             this.temp.addAll(tem);
             for (final Object o : tem) {
                 final Map m = (Map)o;
                 final Integer idtemp = Integer.valueOf(m.get("id").toString());
-                this.findChildALL(idtemp);
+                if(deep>0)
+                    this.findChildALL(idtemp, deep);
             }
         }
         return this.temp;
@@ -259,13 +278,21 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
-
     public List findChildALL(final String ids) throws SQLException {
+        return this.findChildALL(ids,999);
+    }
+    public List findChildALL(final String ids, int deep) throws SQLException {
         if(ids == null)
             return null;
+        String Key = "com.sundyn.service.DeptService.findChildALL_" + ids + "_" + deep;
+        Object data = EhCacheHelper.getCache(Key);
+        if(data!=null){
+            return (List)data;
+        }
         final List temp = new ArrayList();
         List idAll = findAll(ids);
         if(null!=idAll)
@@ -274,9 +301,10 @@ public class DeptService extends SuperDao
         for (int i = 0; i < idarray.length; ++i) {
             if(idarray[i].equals(""))
                 continue;
-            temp.addAll(this.findChildALL(Integer.valueOf(idarray[i])));
+            temp.addAll(this.findChildALL(Integer.valueOf(idarray[i]),deep-1));
             this.setTemp(new ArrayList());
         }
+        EhCacheHelper.putCache(Key, temp);
         return temp;
     }
 
@@ -284,6 +312,11 @@ public class DeptService extends SuperDao
         final List temp = this.findChildALL(ids);
         if(temp == null)
             return null;
+        String Key = "com.sundyn.service.DeptService.findChildALLStr123_" + ids;
+        Object data = EhCacheHelper.getCache(Key);
+        if(data!=null){
+            return (String)data;
+        }
         String resl = "";
         for (int i = 0; i < temp.size(); ++i) {
             final Map m = (Map) temp.get(i);
@@ -298,6 +331,7 @@ public class DeptService extends SuperDao
         if (resl.endsWith(",")) {
             resl = resl.substring(0, resl.length() - 1);
         }
+        EhCacheHelper.putCache(Key, resl);
         return resl;
     }
 
@@ -317,7 +351,7 @@ public class DeptService extends SuperDao
     }
 
     public int getPaiHangInfo(final Integer id) throws SQLException {
-        return this.findChildALL(id).size();
+        return this.findChildALL(id, 999).size();
     }
 
     public List getPaiHangInfo(final String id, final String starDate, final String endDate, final int startRow, final int endRow, final Map sortValueMap) {
@@ -659,13 +693,11 @@ public class DeptService extends SuperDao
         else {
             sql = "UPDATE appries_dept SET ext5='" + dt + "' where remark ='" + mac + "'";
         }
-        System.out.println("\u5fc3\u8df3sql" + sql);
         try {
             final int num = this.getJdbcTemplate().update(sql);
             return num > 0;
         }
         catch (Exception e) {
-            System.out.println("MAC\u5730\u5740\u4e3a" + mac + "\u66f4\u65b0\u5931\u8d25\uff01");
             e.printStackTrace();
             return false;
         }
@@ -685,7 +717,7 @@ public class DeptService extends SuperDao
     }
 
     public List getAllleafesAll3(final String deptIds, final String dt) {
-        final String sql = "select * from  (  (select t1.id,t1.ext5,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.depttype=0  and t1.ext5 >= '" + dt + "' order by t1.fatherId ,t1.name ) union   (select t1.id,t1.ext5,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u4e0d\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5<'" + dt + "' and t1.depttype=0  order by t1.fatherId ,t1.name) union(select t1.id,t1.ext5,t1.name,t2.name as fatherName,t1.remark ,t1.ext3,'\u4e0d\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5<'" + dt + "' and t1.depttype=0  order by t1.fatherId ,t1.name )) as t3 where t3.id in(" + deptIds + ") ";
+        final String sql = "select * from ((select t1.id,t1.ext5,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.depttype=0  and t1.ext5 >= '" + dt + "') union (select t1.id,t1.ext5,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u4e0d\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5<'" + dt + "' and t1.depttype=0) union(select t1.id,t1.ext5,t1.name,t2.name as fatherName,t1.remark ,t1.ext3,'\u4e0d\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5<'" + dt + "' and t1.depttype=0)) as t3 where t3.id in(" + deptIds + ") order by name";
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -696,8 +728,10 @@ public class DeptService extends SuperDao
     }
 
     public List findOnlineMacNotNull3(final String dt, final int start, final int num, final String deptIds) {
-        final String sql = "select * from  ((select b.name as fatherNames , a.* from(  select t1.id,t1.ext5, t2.fatherId as fatherId, t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5 >= '" + dt + "'  and t1.depttype=0  order by t1.fatherId ,t1.name ) as a left join appries_dept as b on a.fatherId = b.id)" + " union   (select b.name as fatherNames , a.* from( select t1.id,t1.ext5, t2.fatherId as fatherId,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u4e0d\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5 < '" + dt + "'  and t1.depttype=0  order by t1.fatherId ,t1.name) as a left join appries_dept as b on a.fatherId = b.id) union" + "(select b.name as fatherNames , a.* from( select t1.id,t1.ext5, t2.fatherId as fatherId,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u4e0d\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5 < '" + dt + "' and t1.depttype=0 order by t1.fatherId ,t1.name ) as a left join appries_dept as b on a.fatherId = b.id)" + ") as t3 where t3.id in(" + deptIds + ") limit " + start + " , " + num;
+        String sql = "select row_number() over(order by ext5 desc,fatherId ,name) as rows, * from  ((select b.name as fatherNames , a.* from(select t1.id,t1.ext5, t2.fatherId as fatherId, t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'在线' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5 >= '" + dt + "'  and t1.depttype=0) as a left join appries_dept as b on a.fatherId = b.id)" + " union   (select b.name as fatherNames , a.* from( select t1.id,t1.ext5, t2.fatherId as fatherId,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u4e0d\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5 < '" + dt + "'  and t1.depttype=0) as a left join appries_dept as b on a.fatherId = b.id) union" + "(select b.name as fatherNames , a.* from( select t1.id,t1.ext5, t2.fatherId as fatherId,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'不在线' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5 < '" + dt + "' and t1.depttype=0) as a left join appries_dept as b on a.fatherId = b.id)" + ") as t3 where t3.id in(" + deptIds + ")";
         try {
+            sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
+            logger.info("findOnlineMacNotNull3: " + sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {

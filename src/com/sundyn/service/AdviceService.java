@@ -86,10 +86,12 @@ public class AdviceService extends SuperDao
     public List<AdviceVo> findAdvice(final Boolean isSort, final int startrow, final int pageSize) {
         String sql = "";
         if (isSort) {
-            sql = "select * from appries_question order by sortid limit " + startrow + ", " + pageSize;
+            sql = "select row_number() over(order by sortid) as rows, * from appries_question";
+            sql = "select * from ("+sql+") t2 where t2.rows>" + startrow + " and t2.rows<=" + (startrow+pageSize);
         }
         else {
-            sql = "select * from appries_question order by id limit " + startrow + ", " + pageSize;
+            sql = "select row_number() over(order by id) as rows, * from appries_question";
+            sql = "select * from ("+sql+") t2 where t2.rows>" + startrow + " and t2.rows<=" + (startrow+pageSize);
         }
         final List<AdviceVo> advices = new ArrayList<AdviceVo>();
         try {

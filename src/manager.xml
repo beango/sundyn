@@ -35,9 +35,9 @@
 		<action name="managerChangePswDeal2" class="managerAction"
 			method="managerChangePswDeal2">
 <!--		<result name="success" type="chain">managerChangePsw</result>-->
-		<result name="success" >/msg.jsp</result>
-		<result name="input" >/msg.jsp</result>
-		<result name="error" >/msg.jsp</result>
+		<result name="success" >/manager/changePsw.jsp</result>
+		<result name="input" >/manager/changePsw.jsp</result>
+		<result name="error" >/manager/changePsw.jsp</result>
 		</action>
 		<!--<action name="ManagerQuery" class="managerAction"
 			method="ManagerQuery">
@@ -84,7 +84,7 @@
 			method="managerReset">
 			<result name="success">manager/success.jsp</result>
 		</action>
-		
+
 		<action name="managerLogout" class="managerAction"
 			method="managerLogout">
 			<result name="success" type="redirect">login.jsp</result>
@@ -105,7 +105,7 @@
 			method="deleteVideoFileDeal">
 			<result name="success">manager/success.jsp</result>
 		</action>
-		
+
 	</package>
 	<package name="login" extends="struts-default">
 		<action name="managerLogin" class="managerAction"

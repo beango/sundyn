@@ -34,6 +34,16 @@ public class EmployeeAction extends ActionSupport
     private AttendanceService attendanceService;
     private Integer deptId;
     private DeptService deptService;
+
+    public ClientService getClientService() {
+        return clientService;
+    }
+
+    public void setClientService(ClientService clientService) {
+        this.clientService = clientService;
+    }
+
+    private ClientService clientService;
     private EmployeeService employeeService;
     private PlayListService playListService;
     private File img;
@@ -239,9 +249,13 @@ public class EmployeeAction extends ActionSupport
         employeeVo.setRemark(remark);
         employeeVo.setShowDeptName(showDeptName);
         employeeVo.setShowWindowName(showWindowName);
-        if (imgName != null && !imgName.equals("")) {
+        //File f = new File(imgName);
+
+        String filename = String.valueOf(ServletActionContext.getServletContext().getRealPath("/")) + imgName;
+        System.out.println("用户信息保存1:"+filename);
+        if (imgName != null && !imgName.equals("") && new File(filename).exists()) {
             final MD5toPic md5 = new MD5toPic();
-            final String md5Str = md5.MD5(String.valueOf(ServletActionContext.getServletContext().getRealPath("/")) + imgName);
+            final String md5Str = md5.MD5(filename);
             employeeVo.setExt4(md5Str);
         }
         this.employeeService.UpdateEmployee(employeeVo);
@@ -467,10 +481,19 @@ public class EmployeeAction extends ActionSupport
         final HttpSession session = request.getSession();
         final String cardNum = request.getParameter("cardNum");
         final String dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        System.out.println("employeeHeart------cardNum=" + cardNum);
         if (cardNum != null && cardNum != "") {
             final Map employee = this.employeeService.findByCardnum(cardNum);
+
+            Iterator<String> iter = employee.keySet().iterator();
+
+            while (iter.hasNext()) {
+                String key = iter.next();
+                Object valuevv = employee.get(key);
+                System.out.println("employee.keyand value: " + key + " value:" + valuevv);
+            }
             if (employee != null) {
-                System.out.println("employeeHeart---\u6dfb\u52a0\u5458\u5de5---name=" + employee.get("name").toString());
+                System.out.println("employeeHeart---添加员工---name=" + employee.get("name").toString());
                 session.setAttribute("employee", (Object)employee);
                 employeeService.updateOnline(cardNum,1);
             }
@@ -478,7 +501,7 @@ public class EmployeeAction extends ActionSupport
         final String mac = request.getParameter("mac");
         String clientVer = request.getParameter("clientVer");
         if (mac != null && !mac.equals("")) {
-            System.out.println("employeeHeart---\u6dfb\u52a0M7---mac=" + mac);
+            System.out.println("employeeHeart---添加M7---mac=" + mac);
             final Map m = this.deptService.findDeptByMac(mac);
             if (m != null && !"".equals(m.get("id"))) {
                 if (clientVer == null) {
@@ -587,7 +610,14 @@ public class EmployeeAction extends ActionSupport
         final String cardnum = request.getParameter("cardnum");
         final Object abc = session.getAttribute("employee");
         final Map e = (Map)session.getAttribute("employee");
-        final String userId = e.get("Id").toString();
+        System.out.println("employee.loginout:e==nul " + (e == null));
+        /*while (iter.hasNext()) {
+            String key = iter.next();
+            Object valuevv = employee.get(key);
+            System.out.println("employee.keyand value: " + key + " value:" + valuevv);
+        }*/
+        System.out.println("employeeLogout:" + e.get("id")+"," + e.keySet().size());
+        final String userId = e.get("id").toString();
         final String d = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         final String t = new SimpleDateFormat("HH:mm:ss").format(new Date());
         final AttendanceVo attendanceVo = new AttendanceVo();
@@ -672,7 +702,7 @@ public class EmployeeAction extends ActionSupport
         keyword = keyword.trim();
         final int num = this.employeeService.countEmployeeByName(keyword);
         this.pager = new Pager("currentPage", 10, num, request, "keywordpage");
-        this.list = this.employeeService.findEmployeeByName(keyword, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        this.list = this.employeeService.findEmployeeByName(this.deptId, keyword, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.list);
         request.setAttribute("keyword", (Object)keyword);
         return "success";
@@ -853,6 +883,58 @@ public class EmployeeAction extends ActionSupport
         return "success";
     }
 
+    public String getClientUpdateVersion() throws IOException, JDOMException {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final HttpServletResponse response = ServletActionContext.getResponse();
+        String mac = request.getParameter("mac");
+        final String ip = request.getRemoteAddr();
+        this.url = "";
+        String playListName = "";
+        String windowName = "";
+        String version = request.getParameter("version");
+        final String config = request.getParameter("config");
+        final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final String basepath = ServletActionContext.getServletContext().getRealPath("\\");
+        String playListId = "";
+        final String dd = df.format(new Date());
+        List newestClient = this.clientService.getNewest();
+
+        if (mac != null) {
+            final Map dept = this.deptService.findByMac(mac);
+            if (dept != null) {
+                playListId = dept.get("dept_playListId").toString();
+                windowName = dept.get("name").toString();
+                final Map playListM = this.playListService.findById(Integer.valueOf(playListId));
+                playListName = playListM.get("playListName").toString();
+            }
+        }
+        final String m7binpath = String.valueOf(basepath) + "update" + File.separator + playListId;
+        if (config != null && config.equals("true")) {
+            System.out.println("config=ture返回版本号");
+            final Map dept = this.deptService.findByMac(mac);
+            System.out.println("config=ture返回客户端版本号:" + newestClient!=null);
+            if (newestClient!=null && newestClient.size()==1){
+                int newestClientNo = Integer.valueOf(((Map)newestClient.get(0)).get("ClientNo").toString());
+                System.out.println("config=ture返回客户端版本号:" + newestClientNo);
+                System.out.println("Version=" + newestClientNo);
+                this.msg = "Version=" + newestClientNo;
+                return "success";
+            }
+        } else if (config != null && config.equals("false")) {
+            System.out.println("config=false下载客户端升级包.");
+            if (newestClient!=null && newestClient.size()==1){
+                int newestClientNo = Integer.valueOf(((Map)newestClient.get(0)).get("ClientNo").toString());
+                String newestClientPath = ((Map)newestClient.get(0)).get("FilePath").toString();
+                System.out.println("config=ture返回客户端版本号:" + newestClientNo);
+                System.out.println("Filepath=" + newestClientPath);
+                this.filename = "client.7z";
+                this.url = newestClientPath;
+                return "url";
+            }
+        }
+        return "error";
+    }
+
     public String getUpdateVersion() throws IOException, JDOMException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpServletResponse response = ServletActionContext.getResponse();
@@ -876,14 +958,13 @@ public class EmployeeAction extends ActionSupport
                 playListName = playListM.get("playListName").toString();
             }
         }
+        final String m7binpath = String.valueOf(basepath) + "update" + File.separator + playListId;
         if (mac != null && config != null && config.equals("true")) {
-            System.out.println("1\u4e09\u4e2a\u53c2\u6570\u90fd\u4f20\uff0cconfig=ture \u8fd4\u56de\u7248\u672c\u53f7");
+            System.out.println("config=ture返回版本号");
             final Map dept = this.deptService.findByMac(mac);
             if (dept != null) {
                 playListId = dept.get("dept_playListId").toString();
-                System.out.println("1-2 \u4e09\u4e2a\u53c2\u6570\u90fd\u4f20 playListId= " + playListId);
-                final String m7binpath = String.valueOf(basepath) + "update" + File.separator + playListId;
-                System.out.println("1-3 \u4e09\u4e2a\u53c2\u6570\u90fd\u4f20 m7binpath= " + m7binpath);
+                System.out.println("m7binpath= " + m7binpath);
                 final File f = new File(String.valueOf(m7binpath) + File.separator + "CONFIG.XML");
                 if (f.exists()) {
                     this.excel = new FileInputStream(f);
@@ -898,7 +979,7 @@ public class EmployeeAction extends ActionSupport
                     final Element root = doc.getRootElement();
                     final Element Software = root.getChild("Software");
                     final String version2 = Software.getChild("Version").getText();
-                    System.out.println("1-5 \u4e09\u4e2a\u53c2\u6570\u90fd\u4f20 Version2= " + version2);
+                    System.out.println("Version=" + version2);
                     this.msg = "Version=" + version2;
                     return "success";
                 }
@@ -914,23 +995,38 @@ public class EmployeeAction extends ActionSupport
             }
         }
         else if (mac != null && config != null && config.equals("false")) {
-            System.out.println("2\u4e09\u4e2a\u53c2\u6570\u90fd\u4f20\uff0cconfig=false \u4e0b\u8f7d\u5b8c\u6574\u5347\u7ea7\u5305");
+            System.out.println("config=false下载升级包.");
             final Map dept = this.deptService.findByMac(mac);
             if (dept != null) {
-                playListId = dept.get("dept_playListId").toString();
-                final String m7binpath = String.valueOf(basepath) + "update" + File.separator + playListId;
-                final File f = new File(String.valueOf(m7binpath) + File.separator + "M7Update.zip");
-                if (f.exists()) {
-                    this.excel = new FileInputStream(f);
-                    this.url = "update/" + playListId + "/M7Update.zip";
-                    System.out.println("getUpdateVersion-\u5b8c\u6574\u5347\u7ea7-url=" + this.url);
-                    System.out.println("getUpdateVersion-\u5b8c\u6574\u5347\u7ea7-File.separator=" + File.separator);
-                    this.filename = "M7Update.zip";
-                }
-                else {
-                    this.msg = String.valueOf(f.getAbsolutePath()) + "\u627e\u4e0d\u5230";
-                    this.excel = new ByteArrayInputStream(this.msg.getBytes());
-                    this.filename = "error.txt";
+
+                final File cf = new File(String.valueOf(m7binpath) + File.separator + "CONFIG.XML");
+                if (cf.exists()) {
+                    this.excel = new FileInputStream(cf);
+                    this.url = "update/" + playListId + "/NEWCONFIG.XML";
+                    this.filename = "NEWCONFIG.XML";
+                    final Format format = Format.getPrettyFormat();
+                    format.setIndent("    ");
+                    format.setEncoding("gb2312");
+                    final XMLOutputter XMLOut = new XMLOutputter(format);
+                    final SAXBuilder sb = new SAXBuilder();
+                    final Document doc = sb.build(String.valueOf(m7binpath) + File.separator + "NEWCONFIG.XML");
+                    final Element root = doc.getRootElement();
+                    final Element Software = root.getChild("Software");
+                    version = Software.getChild("Version").getText();
+
+                    playListId = dept.get("dept_playListId").toString();
+                    final File fd = new File(String.valueOf(m7binpath) + File.separator + "M7Update"+version+".zip");
+                    if (fd.exists()) {
+                        this.excel = new FileInputStream(fd);
+                        this.url = "update/" + playListId + "/M7Update"+version+".zip";
+                        System.out.println("getUpdateVersion-完整升级-url=" + this.url);
+                        this.filename = "M7Update"+version+".zip";
+                    }
+                    else {
+                        this.msg = String.valueOf(fd.getAbsolutePath()) + "\u627e\u4e0d\u5230";
+                        this.excel = new ByteArrayInputStream(this.msg.getBytes());
+                        this.filename = "error.txt";
+                    }
                 }
             }
             else {
@@ -944,7 +1040,6 @@ public class EmployeeAction extends ActionSupport
             final Map dept = this.deptService.findByMac(mac);
             if (dept != null) {
                 playListId = dept.get("dept_playListId").toString();
-                final String m7binpath = String.valueOf(basepath) + "update" + File.separator + playListId;
                 final File f = new File(String.valueOf(m7binpath) + File.separator + "M7Update" + version + ".zip");
                 if (f.exists()) {
                     this.excel = new FileInputStream(f);
@@ -974,7 +1069,7 @@ public class EmployeeAction extends ActionSupport
         final Map m = new HashMap();
         m.put("mac", mac);
         if (version == null || version.equals("")) {
-            System.out.println("\u6ca1\u6709\u53d1\u9001\u7248\u672c\u53f7\uff0c\u662f\u8bf7\u6c42\u914d\u7f6e\u6587\u4ef6\uff0c\u53bb\u914d\u7f6e\u6587\u4ef6\u8bfb\u53d6\u7248\u672c\u53f7");
+            System.out.println("没有发送版本号，是请求配置文件，去配置文件读取版本号");
             final String filePath = String.valueOf(basepath) + "update" + File.separator + playListId + File.separator + "CONFIG.XML";
             SAXBuilder sb2 = new SAXBuilder();
             try {

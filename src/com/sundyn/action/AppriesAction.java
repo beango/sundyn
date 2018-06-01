@@ -1,18 +1,33 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import org.apache.log4j.*;
+import com.opensymphony.xwork2.ActionSupport;
+import com.sundyn.entity.City;
+import com.sundyn.entity.Province;
 import com.sundyn.service.*;
-import com.sundyn.entity.*;
-import org.apache.struts2.*;
-import com.sundyn.vo.*;
-import javax.servlet.http.*;
-import java.text.*;
-import com.sundyn.util.*;
-import java.net.*;
-import java.util.*;
-import java.sql.*;
-import com.sundyn.utils.*;
+import com.sundyn.util.Pager;
+import com.sundyn.util.SundynSet;
+import com.sundyn.util.socketUdp;
+import com.sundyn.utils.CitysUtils;
+import com.sundyn.utils.GetWeatherString;
+import com.sundyn.vo.AppriesVo;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
+import org.jfree.util.Log;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AppriesAction extends ActionSupport
 {
@@ -241,6 +256,274 @@ public class AppriesAction extends ActionSupport
         }
         return "success";
     }
+    public List<String> list = new ArrayList<String>();
+    private File file;
+    private String fileContentType;
+    private String fileFileName;
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public String getFileContentType() {
+        return fileContentType;
+    }
+
+    public void setFileContentType(String fileContentType) {
+        this.fileContentType = fileContentType;
+    }
+
+    public String getFileFileName() {
+        return fileFileName;
+    }
+
+    public void setFileFileName(String fileFileName) {
+        this.fileFileName = fileFileName;
+    }
+
+    public List<String> getList() {
+        return list;
+    }
+    // 接受依赖注入的属性
+    private String savePath;
+    public String appriesFileupload()
+    {
+        System.out.println("获取Android端传过来的普通信息：111111111111111");
+        System.out.println("-----------------");
+        System.out.println(fileFileName + "------------------" + file.length());
+        //HttpServletRequest request=ServletActionContext.getRequest();
+        FileOutputStream fos = null;
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file);
+            System.out.println("获取Android端传过来的普通信息：");
+            System.out.println("文件名："+fileFileName);
+            System.out.println("获取Android端传过来的文件信息：");
+            String uploadpath = ServletActionContext.getRequest().getRealPath(
+                    "download/recorder");
+            System.out.println(uploadpath);
+            if (!new File(uploadpath).exists())
+                new File(uploadpath).mkdir();
+            File fs = new File(uploadpath, fileFileName);
+            fos = new FileOutputStream(fs);
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = fis.read(buffer)) != -1) {
+                fos.write(buffer, 0, len);
+            }
+            System.out.println("文件上传成功");
+        } catch (Exception e) {
+            System.out.println("文件上传失败");
+            e.printStackTrace();
+        } finally {
+            close(fos, fis);
+        }
+        return "success";
+    }
+
+    private void close(FileOutputStream fos, FileInputStream fis) {
+        if (fis != null) {
+            try {
+                fis.close();
+                fis=null;
+            } catch (IOException e) {
+                System.out.println("FileInputStream关闭失败");
+                e.printStackTrace();
+            }
+        }
+        if (fos != null) {
+            try {
+                fos.close();
+                fis=null;
+            } catch (IOException e) {
+                System.out.println("FileOutputStream关闭失败");
+                e.printStackTrace();
+            }
+        }
+    }
+    public String appriesFileupload1() {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        //得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
+        String savePath = "E:/abc";
+        File file = new File(savePath);
+        //判断上传文件的保存目录是否存在
+        if (!file.exists() && !file.isDirectory()) {
+            System.out.println(savePath+"目录不存在，需要创建");
+            //创建目录
+            file.mkdir();
+        }
+        //消息提示
+        String message = "";
+        try{
+            //使用Apache文件上传组件处理文件上传步骤：
+            //1、创建一个DiskFileItemFactory工厂
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            //2、创建一个文件上传解析器
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            //解决上传文件名的中文乱码
+            upload.setHeaderEncoding("UTF-8");
+            //3、判断提交上来的数据是否是上传表单的数据
+            if(!ServletFileUpload.isMultipartContent(request)){
+                //按照传统方式获取数据
+                System.out.println("没有文件上传");
+                return "success";
+            }
+            //4、使用ServletFileUpload解析器解析上传数据，解析结果返回的是一个List<FileItem>集合，每一个FileItem对应一个Form表单的输入项
+            List<FileItem> list = upload.parseRequest(request);
+            for(FileItem item : list){
+                //如果fileitem中封装的是普通输入项的数据
+                if(item.isFormField()){
+                    String name = item.getFieldName();
+                    //解决普通输入项的数据的中文乱码问题
+                    String value = item.getString("UTF-8");
+                    //value = new String(value.getBytes("iso8859-1"),"UTF-8");
+                    System.out.println(name + "=" + value);
+                }else{//如果fileitem中封装的是上传文件
+                    //得到上传的文件名称，
+                    String filename = item.getName();
+                    System.out.println(filename);
+                    if(filename==null || filename.trim().equals("")){
+                        continue;
+                    }
+                    //注意：不同的浏览器提交的文件名是不一样的，有些浏览器提交上来的文件名是带有路径的，如：  c:\a\b\1.txt，而有些只是单纯的文件名，如：1.txt
+                    //处理获取到的上传文件的文件名的路径部分，只保留文件名部分
+                    filename = filename.substring(filename.lastIndexOf("\\")+1);
+                    //获取item中的上传文件的输入流
+                    InputStream in = item.getInputStream();
+                    //创建一个文件输出流
+                    FileOutputStream out = new FileOutputStream(savePath + "\\" + filename);
+                    //创建一个缓冲区
+                    byte buffer[] = new byte[1024];
+                    //判断输入流中的数据是否已经读完的标识
+                    int len = 0;
+                    //循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
+                    while((len=in.read(buffer))>0){
+                        //使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath + "\\" + filename)当中
+                        out.write(buffer, 0, len);
+                    }
+                    //关闭输入流
+                    in.close();
+                    //关闭输出流
+                    out.close();
+                    //删除处理文件上传时生成的临时文件
+                    item.delete();
+                    message = "文件上传成功！";
+                }
+            }
+        }catch (Exception e) {
+            System.out.println("文件上传失败"+ e.getMessage());
+            message= "文件上传失败！";
+            e.printStackTrace();
+
+        }
+        return "success";
+    }
+
+    /**
+     * 直接通过HTTP协议提交数据到服务器,实现如下面表单提交功能:
+     *   <FORM METHOD=POST ACTION="http://192.168.1.101:8083/upload/servlet/UploadServlet" enctype="multipart/form-data">
+     <INPUT TYPE="text" NAME="name">
+     <INPUT TYPE="text" NAME="id">
+     <input type="file" name="imagefile"/>
+     <input type="file" name="zip"/>
+     </FORM>
+     * @param path 上传路径(注：避免使用localhost或127.0.0.1这样的路径测试，因为它会指向手机模拟器，你可以使用http://www.iteye.cn或http://192.168.1.101:8083这样的路径测试)
+     * @param params 请求参数 key为参数名,value为参数值
+     * @param file 上传文件
+     */
+    public static boolean post(String path, Map<String, String> params, FormFile[] files) throws Exception{
+        final String BOUNDARY = "---------------------------7da2137580612"; //数据分隔线
+        final String endline = "--" + BOUNDARY + "--\r\n";//数据结束标志
+
+        int fileDataLength = 0;
+        for(FormFile uploadFile : files){//得到文件类型数据的总长度
+            StringBuilder fileExplain = new StringBuilder();
+            fileExplain.append("--");
+            fileExplain.append(BOUNDARY);
+            fileExplain.append("\r\n");
+            fileExplain.append("Content-Disposition: form-data;name=\""+ uploadFile.getParameterName()+"\";filename=\""+ uploadFile.getFilname() + "\"\r\n");
+            fileExplain.append("Content-Type: "+ uploadFile.getContentType()+"\r\n\r\n");
+            fileExplain.append("\r\n");
+            fileDataLength += fileExplain.length();
+            if(uploadFile.getInStream()!=null){
+                fileDataLength += uploadFile.getFile().length();
+            }else{
+                fileDataLength += uploadFile.getData().length;
+            }
+        }
+        StringBuilder textEntity = new StringBuilder();
+        for (Map.Entry<String, String> entry : params.entrySet()) {//构造文本类型参数的实体数据
+            textEntity.append("--");
+            textEntity.append(BOUNDARY);
+            textEntity.append("\r\n");
+            textEntity.append("Content-Disposition: form-data; name=\""+ entry.getKey() + "\"\r\n\r\n");
+            textEntity.append(entry.getValue());
+            textEntity.append("\r\n");
+        }
+        //计算传输给服务器的实体数据总长度
+        int dataLength = textEntity.toString().getBytes().length + fileDataLength +  endline.getBytes().length;
+
+        URL url = new URL(path);
+        int port = url.getPort()==-1 ? 80 : url.getPort();
+        Socket socket = new Socket(InetAddress.getByName(url.getHost()), port);
+        OutputStream outStream = socket.getOutputStream();
+        //下面完成HTTP请求头的发送
+        String requestmethod = "POST "+ url.getPath()+" HTTP/1.1\r\n";
+        outStream.write(requestmethod.getBytes());
+        String accept = "Accept: image/gif, image/jpeg, image/pjpeg, image/pjpeg, application/x-shockwave-flash, application/xaml+xml, application/vnd.ms-xpsdocument, application/x-ms-xbap, application/x-ms-application, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*\r\n";
+        outStream.write(accept.getBytes());
+        String language = "Accept-Language: zh-CN\r\n";
+        outStream.write(language.getBytes());
+        String contenttype = "Content-Type: multipart/form-data; boundary="+ BOUNDARY+ "\r\n";
+        outStream.write(contenttype.getBytes());
+        String contentlength = "Content-Length: "+ dataLength + "\r\n";
+        outStream.write(contentlength.getBytes());
+        String alive = "Connection: Keep-Alive\r\n";
+        outStream.write(alive.getBytes());
+        String host = "Host: "+ url.getHost() +":"+ port +"\r\n";
+        outStream.write(host.getBytes());
+        //写完HTTP请求头后根据HTTP协议再写一个回车换行
+        outStream.write("\r\n".getBytes());
+        //把所有文本类型的实体数据发送出来
+        outStream.write(textEntity.toString().getBytes());
+        //把所有文件类型的实体数据发送出来
+        for(FormFile uploadFile : files){
+            StringBuilder fileEntity = new StringBuilder();
+            fileEntity.append("--");
+            fileEntity.append(BOUNDARY);
+            fileEntity.append("\r\n");
+            fileEntity.append("Content-Disposition: form-data;name=\""+ uploadFile.getParameterName()+"\";filename=\""+ uploadFile.getFilname() + "\"\r\n");
+            fileEntity.append("Content-Type: "+ uploadFile.getContentType()+"\r\n\r\n");
+            outStream.write(fileEntity.toString().getBytes());
+            if(uploadFile.getInStream()!=null){
+                byte[] buffer = new byte[1024];
+                int len = 0;
+                while((len = uploadFile.getInStream().read(buffer, 0, 1024))!=-1){
+                    outStream.write(buffer, 0, len);
+                }
+                uploadFile.getInStream().close();
+            }else{
+                outStream.write(uploadFile.getData(), 0, uploadFile.getData().length);
+            }
+            outStream.write("\r\n".getBytes());
+        }
+        //下面发送数据结束标志，表示数据已经结束
+        outStream.write(endline.getBytes());
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        if(reader.readLine().indexOf("200")==-1){//读取web服务器返回的数据，判断请求码是否为200，如果不是200，代表请求失败
+            return false;
+        }
+        outStream.flush();
+        outStream.close();
+        reader.close();
+        socket.close();
+        return true;
+    }
     
     public String appriesAddSpByPantryn() throws Exception {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
@@ -274,8 +557,10 @@ public class AppriesAction extends ActionSupport
         final String phone = request.getParameter("phone");
         final String demo = request.getParameter("content");
         String businessType = request.getParameter("businessType");
-        final String videofile = request.getParameter("videofile");
+        final String videofile = request.getParameter("videofile2");
         String businessTime = request.getParameter("businessTime");
+        String imgfile = request.getParameter("imgfile");
+        String busRst = request.getParameter("busRst");
         int min = 0;
         int sec = 0;
         if (businessTime != null) {
@@ -422,13 +707,13 @@ public class AppriesAction extends ActionSupport
                             this.msg = "error:mac=" + mac + "--tt=" + tt + "--cardnum=" + cardnum + "--pj=" + pj + " has been saved";
                         }
                         else if (list.size() == 0) {
-                            if (this.appriesService.addArriresXiangYang(mac, tt, cardnum, pj, demo, videofile, businessTime, min, sec, tel, idCard, name, phone)) {
+                            if (this.appriesService.addArriresXiangYang(mac, tt, cardnum, pj, demo, videofile, businessTime, min, sec, tel, idCard, name, phone, imgfile, busRst)) {
                                 AppriesAction.logger.debug((Object)("\u5199\u5165\u8bc4\u4ef7\u6570\u636e\uff1amac:" + mac + "tt:" + tt + "cardnum:" + cardnum + "pj:" + pj + "cf:" + cf + "demo:" + demo + "\u6210\u529f"));
                                 this.msg = "success";
                             }
                             else {
                                 AppriesAction.logger.debug((Object)("\u5199\u5165\u8bc4\u4ef7\u6570\u636e\uff1amac:" + mac + "tt:" + tt + "cardnum:" + cardnum + "pj:" + pj + "cf:" + cf + "demo:" + demo + "\u5931\u8d25"));
-                                AppriesAction.logger.debug((Object)"\u5f00\u59cb\u5199\u5165\u9519\u8bef\u7684\u8bc4\u4ef7\u6570\u636e��������");
+                                AppriesAction.logger.debug((Object)"\u5f00\u59cb\u5199\u5165\u9519\u8bef\u7684\u8bc4\u4ef7\u6570\u636e��������");
                                 msg2 = this.getText("sundyn.query.error.wrongDB");
                                 final boolean flag = this.errorInfoService.addDetail(mac, cardnum, pj, msg2);
                                 AppriesAction.logger.debug((Object)("\u5199\u5165\u9519\u8bef\u7684\u8bc4\u4ef7\u6570\u636e\u7ed3\u679c\u4e3a:" + flag));
@@ -603,7 +888,7 @@ public class AppriesAction extends ActionSupport
                 }
                 else {
                     AppriesAction.logger.debug((Object)("\u5199\u5165\u8bc4\u4ef7\u6570\u636e\uff1amac:" + mac + "tt:" + tt + "cardnum:" + cardnum + "pj:" + pj + "cf:" + cf + "demo:" + demo + "\u5931\u8d25"));
-                    AppriesAction.logger.debug((Object)"\u5f00\u59cb\u5199\u5165\u9519\u8bef\u7684\u8bc4\u4ef7\u6570\u636e��������");
+                    AppriesAction.logger.debug((Object)"\u5f00\u59cb\u5199\u5165\u9519\u8bef\u7684\u8bc4\u4ef7\u6570\u636e��������");
                     final boolean flag = this.errorInfoService.add(mac, cardnum, pj);
                     AppriesAction.logger.debug((Object)("\u5199\u5165\u9519\u8bef\u7684\u8bc4\u4ef7\u6570\u636e\u7ed3\u679c\u4e3a:" + flag));
                     this.msg = "error";
@@ -748,7 +1033,7 @@ public class AppriesAction extends ActionSupport
         final String msg = "http://localhost/appriesAddSp.action?mac=" + mac + "&&tt=" + tt + "&&cardnum=" + cardNum + "&&pj=" + appriesButton + "&&tel=" + tel + "&&idCard=" + idCard + "&&businessType=1";
         System.out.println("debug\u6dfb\u52a0\u8bc4\u4ef7\u6570\u636e\u8bf7\u6c42=" + msg);
         request.setAttribute("msg", (Object)msg);
-        this.appriesService.addArriresXiangYang(mac, tt, cardNum, appriesButton, "13333", "", businessTime, 0, 0, tel, idCard, null, null);
+        this.appriesService.addArriresXiangYang(mac, tt, cardNum, appriesButton, "13333", "", businessTime, 0, 0, tel, idCard, null, null, null, null);
         return "success";
     }
     

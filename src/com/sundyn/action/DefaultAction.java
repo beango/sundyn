@@ -2,19 +2,17 @@ package com.sundyn.action;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import com.sundyn.dao.*;
+import com.sundyn.service.DeptService;
 import com.sundyn.service.PowerService;
-import com.sundyn.vo.AdviceVo;
-import com.sundyn.vo.QuestionVo;
-
 import net.sf.json.JSONObject;
+import org.apache.struts2.ServletActionContext;
 
-import org.apache.struts2.*;
-import javax.servlet.http.*;
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.*;
+import java.sql.SQLException;
+import java.util.Map;
 
 public class DefaultAction extends ActionSupport
 {
@@ -94,4 +92,6 @@ public class DefaultAction extends ActionSupport
 	public PowerService getPowerService() {
         return this.powerService;
     }
+
+
 }

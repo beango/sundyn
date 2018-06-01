@@ -1,17 +1,31 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.vo.*;
-import com.sundyn.service.*;
-import org.apache.struts2.*;
-import java.util.*;
-import com.sundyn.util.*;
-import java.net.*;
-import org.jdom.input.*;
-import org.jdom.output.*;
-import javax.servlet.http.*;
-import org.jdom.*;
-import java.io.*;
+import com.opensymphony.xwork2.ActionSupport;
+import com.sundyn.service.DeptService;
+import com.sundyn.service.ManagerService;
+import com.sundyn.service.PowerService;
+import com.sundyn.util.CookieUtils;
+import com.sundyn.util.Mysql;
+import com.sundyn.util.Pager;
+import com.sundyn.vo.ManagerVo;
+import org.apache.struts2.ServletActionContext;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.util.List;
+import java.util.Map;
 
 public class ManagerAction extends ActionSupport
 {
@@ -19,42 +33,42 @@ public class ManagerAction extends ActionSupport
     private ManagerService managerService;
     private DeptService deptService;
     private ManagerVo managerVo;
-    private String msg;
+    private String msg,type;
     private Pager pager;
     private PowerService powerService;
-    
+
     public DeptService getDeptService() {
         return this.deptService;
     }
-    
+
     public void setDeptService(final DeptService deptService) {
         this.deptService = deptService;
     }
-    
+
     public List getList() {
         return this.list;
     }
-    
+
     public ManagerService getManagerService() {
         return this.managerService;
     }
-    
+
     public ManagerVo getManagerVo() {
         return this.managerVo;
     }
-    
+
     public String getMsg() {
         return this.msg;
     }
-    
+
     public Pager getPager() {
         return this.pager;
     }
-    
+
     public PowerService getPowerService() {
         return this.powerService;
     }
-    
+
     public String managerAdd() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         (this.managerVo = new ManagerVo()).setSkinid(0);
@@ -70,12 +84,12 @@ public class ManagerAction extends ActionSupport
         this.managerService.AddManager(this.managerVo);
         return "success";
     }
-    
+
     public String managerAddDialog() throws Exception {
         this.list = this.powerService.getUserGroupList();
         return "success";
     }
-    
+
     public String lowerManagerAddDialog() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -85,11 +99,11 @@ public class ManagerAction extends ActionSupport
         this.list = this.powerService.getLowerPowerByDeptId(alldept);
         return "success";
     }
-    
+
     public String managerChangePsw() throws Exception {
         return "success";
     }
-    
+
     public String managerChangePswDeal() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -98,18 +112,22 @@ public class ManagerAction extends ActionSupport
         final String newpsw2 = request.getParameter("newPsw2");
         if (newpsw.length() > 50) {
             this.msg = "your code over 50!";
+            this.type = "input";
             return "input";
         }
         if (newpsw2.length() > 50) {
             this.msg = "your code over 50!";
+            this.type = "input";
             return "input";
         }
         if (!newpsw2.equals(newpsw)) {
             this.msg = "your code is error";
+            this.type = "input";
             return "input";
         }
         if (!oldpsw.equals(manager.get("password").toString())) {
             this.msg = "your code is error";
+            this.type = "input";
             return "input";
         }
         try {
@@ -118,18 +136,21 @@ public class ManagerAction extends ActionSupport
                 this.msg = "change password success ";
                 manager.put("password", newpsw);
                 request.getSession().setAttribute("manager", (Object)manager);
+                this.type = "succ";
                 return "success";
             }
             this.msg = "change passord faild!";
+            this.type = "error";
             return "error";
         }
         catch (Exception e) {
             e.printStackTrace();
             this.msg = "system error";
+            this.type = "error";
             return "error";
         }
     }
-    
+
     public String managerChangePswDeal2() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -141,18 +162,22 @@ public class ManagerAction extends ActionSupport
         System.out.println("newPsw2=" + newpsw2);
         if (newpsw.length() > 50) {
             this.msg = "your code over 50!";
+            this.type = "input";
             return "input";
         }
         if (newpsw2.length() > 50) {
             this.msg = "your code over 50!";
+            this.type = "input";
             return "input";
         }
         if (!newpsw2.equals(newpsw)) {
             this.msg = "\u4e24\u6b21\u65b0\u5bc6\u7801\u8f93\u5165\u4e0d\u4e00\u81f4";
+            this.type = "input";
             return "input";
         }
         if (!oldpsw.equals(manager.get("password").toString())) {
             this.msg = "\u5bc6\u7801\u9519\u8bef";
+            this.type = "input";
             return "input";
         }
         try {
@@ -161,32 +186,35 @@ public class ManagerAction extends ActionSupport
                 this.msg = "\u5bc6\u7801\u4fee\u6539\u6210\u529f ";
                 manager.put("password", newpsw);
                 request.getSession().setAttribute("manager", (Object)manager);
+                this.type = "success";
                 return "success";
             }
             this.msg = "\u5bc6\u7801\u4fee\u6539\u5931\u8d25!";
+            this.type = "error";
             return "error";
         }
         catch (Exception e) {
             e.printStackTrace();
             this.msg = "\u7cfb\u7edf\u9519\u8bef";
+            this.type = "error";
             return "error";
         }
     }
-    
+
     public String managerDel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Integer id = Integer.valueOf(request.getParameter("id"));
         this.managerService.delManage(id);
         return "success";
     }
-    
+
     public String managerReset() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Integer id = Integer.valueOf(request.getParameter("id"));
         this.managerService.reSetManage(id);
         return "success";
     }
-    
+
     public String managerEdit() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         (this.managerVo = new ManagerVo()).setId(Integer.valueOf(request.getParameter("id")));
@@ -201,7 +229,7 @@ public class ManagerAction extends ActionSupport
         this.managerService.UpdateManage(this.managerVo);
         return "success";
     }
-    
+
     public String managerEditDialog() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -214,7 +242,7 @@ public class ManagerAction extends ActionSupport
         request.setAttribute("manager", (Object)m);
         return "success";
     }
-    
+
     public String managerExist() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String name = request.getParameter("name");
@@ -227,10 +255,11 @@ public class ManagerAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public String managerLogin() throws Exception {
         final Map manager = this.managerService.findManageBy(this.managerVo.getName(), this.managerVo.getPassword());
         final HttpServletRequest request = ServletActionContext.getRequest();
+        final HttpServletResponse response = ServletActionContext.getResponse();
         final HttpSession session = request.getSession();
         final String rand = request.getParameter("rand");
         final InetAddress addr = InetAddress.getLocalHost();
@@ -276,33 +305,37 @@ public class ManagerAction extends ActionSupport
             XMLOut.output(doc5, (OutputStream)new FileOutputStream(updateFilepath));
             XMLOut = null;
         }
-        if (rand.equals("")) {
+        /*if (rand.equals("")) {
             this.msg = this.getText("login.identifyingCodeNotNull");
             return "input";
-        }
-        if (session.getAttribute("rand1") == null) {
+        }*/
+        /*if (session.getAttribute("rand1") == null) {
             this.msg = this.getText("login.identifyingCodeError");
             return "input";
         }
         if (!rand.equals(session.getAttribute("rand1").toString())) {
             this.msg = this.getText("login.identifyingCodeError");
             return "input";
-        }
+        }*/
         if (manager != null) {
+            CookieUtils cookieUtils = new CookieUtils();
+            Cookie cookie = cookieUtils.addCookie(manager);
+            response.addCookie(cookie);// 添加cookie到response中
+
             session.setAttribute("manager", (Object)manager);
             return "success";
         }
         this.msg = this.getText("login.passwordError");
         return "input";
     }
-    
+
     public String managerLogout() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpSession session = request.getSession();
         session.invalidate();
         return "success";
     }
-    
+
     public String ManagerQuery() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String name = request.getParameter("name");
@@ -316,7 +349,7 @@ public class ManagerAction extends ActionSupport
         this.pager.setPageList(this.list);
         return "success";
     }
-    
+
     public String LowerManagerQuery() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String name = request.getParameter("name");
@@ -342,7 +375,7 @@ public class ManagerAction extends ActionSupport
         this.pager.setPageList(this.list);
         return "success";
     }
-    
+
     public String managerQueryAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String name = request.getParameter("name");
@@ -357,7 +390,7 @@ public class ManagerAction extends ActionSupport
         request.setAttribute("name", (Object)name);
         return "success";
     }
-    
+
     public String lowerManagerQueryAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String name = request.getParameter("name");
@@ -379,7 +412,7 @@ public class ManagerAction extends ActionSupport
         request.setAttribute("name", (Object)name);
         return "success";
     }
-    
+
     public String managerQx() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpSession session = request.getSession();
@@ -394,31 +427,31 @@ public class ManagerAction extends ActionSupport
         }
         return "success";
     }
-    
+
     public void setList(final List list) {
         this.list = list;
     }
-    
+
     public void setManagerService(final ManagerService managerService) {
         this.managerService = managerService;
     }
-    
+
     public void setManagerVo(final ManagerVo managerVo) {
         this.managerVo = managerVo;
     }
-    
+
     public void setMsg(final String msg) {
         this.msg = msg;
     }
-    
+
     public void setPager(final Pager pager) {
         this.pager = pager;
     }
-    
+
     public void setPowerService(final PowerService powerService) {
         this.powerService = powerService;
     }
-    
+
     public String createTxt() throws IOException {
         final String sPath = "E:\\Abc\\124\\123.txt";
         boolean flag = false;
@@ -432,5 +465,13 @@ public class ManagerAction extends ActionSupport
             flag = true;
         }
         return "success";
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

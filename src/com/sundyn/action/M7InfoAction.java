@@ -10,7 +10,7 @@ import com.sundyn.util.*;
 import java.util.*;
 import java.util.Date;
 
-public class M7InfoAction extends ActionSupport
+public class M7InfoAction extends MainAction
 {
     private DeptService deptService;
     private PowerService powerService;
@@ -36,7 +36,9 @@ public class M7InfoAction extends ActionSupport
         final List ls = M7Info.getList(false);
         final List temp = new ArrayList();
         final HttpServletRequest request = ServletActionContext.getRequest();
-        final Pager pager = new Pager("currentpage", 10, ls.size(), request);
+        System.out.println("获取配置:"+ pageSize);
+        final Pager pager = new Pager("currentpage", pageSize, ls.size(), request);
+        System.out.println("获取配置2:"+ pageSize);
         for (int start = (pager.getCurrentPage() - 1) * pager.getPageSize(), end = start + pager.getPageSize(); start < end && start < ls.size(); ++start) {
             temp.add(ls.get(start));
         }
@@ -62,7 +64,9 @@ public class M7InfoAction extends ActionSupport
         if (ls != null) {
             num = ls.size();
         }
-        final Pager pager = new Pager("currentpage", 10, num, request);
+        System.out.println("获取配置:"+ pageSize);
+        final Pager pager = new Pager("currentPage", pageSize, num, request);
+        System.out.println("获取配置:"+ pageSize);
         final List lsOnline = this.deptService.findOnlineMacNotNull3(dt, (pager.getCurrentPage() - 1) * pager.getPageSize(), pager.getPageSize(), deptIds);
         pager.setPageList(lsOnline);
         request.setAttribute("pager", (Object)pager);

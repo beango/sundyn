@@ -4,7 +4,9 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.*;
 import com.sundyn.util.*;
+import net.sf.json.JSONArray;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,6 +34,26 @@ public class QueryAction extends ActionSupport
     }
 
     private List deptList2;
+
+    public List getDeptJSON() {
+        return deptJSON;
+    }
+
+    public void setDeptJSON(List deptJSON) {
+        this.deptJSON = deptJSON;
+    }
+
+    private List deptJSON;
+
+    public List getEmployeeTreeData() {
+        return employeeTreeData;
+    }
+
+    public void setEmployeeTreeData(List employeeTreeData) {
+        this.employeeTreeData = employeeTreeData;
+    }
+
+    private List employeeTreeData;
     private DeptService deptService;
     private EmployeeService employeeService;
     private String endDate;
@@ -52,6 +74,16 @@ public class QueryAction extends ActionSupport
     private boolean k7;
     private List mls;
     private List bmls;
+
+    public JSONObject getPagerJSON() {
+        return pagerJSON;
+    }
+
+    public void setPagerJSON(JSONObject pagerJSON) {
+        this.pagerJSON = pagerJSON;
+    }
+
+    private JSONObject pagerJSON;
 
     static {
         pageSize = 15;
@@ -250,6 +282,18 @@ public class QueryAction extends ActionSupport
         return "success";
     }
 
+    public String queryDeptAjax2() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final Map manager = (Map) request.getSession().getAttribute("manager");
+        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
+        final Map power = this.powerService.getUserGroup(groupid);
+        final String deptIdGroup = power.get("deptIdGroup").toString();
+        this.select = "";
+        this.deptList = this.deptService.findchild(this.id);
+        request.setAttribute("level", Integer.valueOf(request.getParameter("level"))+1);
+        return "success";
+    }
+
     public String queryDeptAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -272,7 +316,7 @@ public class QueryAction extends ActionSupport
                     final String name = map.get("name").toString();
                     temp = String.valueOf(temp) + "<option value=" + idt;
                     if (i == 0) {
-                        temp = String.valueOf(temp) + "  selected='selected'  ";
+                        temp = String.valueOf(temp) + " selected='selected' ";
                     }
                     temp = String.valueOf(temp) + ">" + name + "</>";
                 }
@@ -347,6 +391,13 @@ public class QueryAction extends ActionSupport
     }
 
     public String queryDeptDeal() throws Exception {
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+        }
+        if(endDate == null) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
 
@@ -354,19 +405,23 @@ public class QueryAction extends ActionSupport
         final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
         final Map power2 = this.powerService.getUserGroup(groupid2);
         final String deptIdGroup2 = power2.get("deptIdGroup").toString();
+        request.setAttribute("rootdept", deptIdGroup2);
         this.deptList2 = new ArrayList();
         final Map dept2 = this.deptService.findDeptById(Integer.valueOf(deptIdGroup2));
         this.deptList2.add(dept2);
+        this.deptJSON = this.deptService.findChildALL(deptIdGroup2,2);
 
-        if(request.getParameter("deptId")!=null)
+        if(request.getParameter("deptId")!=null&&!request.getParameter("deptId").equals(""))
             this.deptId = Integer.valueOf(request.getParameter("deptId"));
         final String deptIds = this.deptService.findChildALLStr123(request.getParameter("deptId"));
         final String allKeyInUse = this.keyTypeService.findAllKeyInUse(1);
         final int rowsCount = this.queryService.countQueryDept2(deptIds, this.startDate, this.endDate, allKeyInUse);
         this.pager = new Pager("currentPage", QueryAction.pageSize, rowsCount, request);
         List list = this.queryService.queryDept2(deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), allKeyInUse);
-        list = this.handleEmptyFile(list);
+        //list = this.handleEmptyFile(list);
         this.pager.setPageList(list);
+        JSONObject gson = new JSONObject(pager);
+        this.pagerJSON = gson;
         final List chatList = this.queryService.QueryDeptChat(deptIds, this.startDate, this.endDate);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
@@ -656,8 +711,60 @@ public class QueryAction extends ActionSupport
         this.pager.setPageList(querylist);
         return "success";
     }
+    public void queryPeopleyData() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final Map manager = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
+        final Map power = this.powerService.getUserGroup(groupid);
+        String deptIdGroup = power.get("deptIdGroup").toString();
+        final List temp = new ArrayList();
+        temp.add(this.deptService.findDeptById(Integer.valueOf(deptIdGroup)));
+        deptIdGroup = this.deptService.findChildALLStr123(deptIdGroup);
+        if (this.keyword == null) {
+            this.keyword = "";
+        }
+        this.keyword.trim();
+        this.keyword = Mysql.mysql(this.keyword);
+        this.deptList = this.employeeService.findEmployeeByKeyowrd(this.keyword, deptIdGroup);
+        request.setAttribute("temp", (Object)temp);
+    }
+
+    public void getDeptTree() throws SQLException {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final Map manager2 = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
+        final Map power2 = this.powerService.getUserGroup(groupid2);
+        final String deptIdGroup2 = power2.get("deptIdGroup").toString();
+        this.deptJSON = this.deptService.findChildALL(deptIdGroup2, 2);
+    }
+
+    public void getEmployeeTree() throws SQLException {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final Map manager2 = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
+        final Map power2 = this.powerService.getUserGroup(groupid2);
+        final String deptIdGroup2 = power2.get("deptIdGroup").toString();
+        this.deptJSON = this.deptService.findChildALL(deptIdGroup2, 2);
+
+        final List temp = new ArrayList();
+        for (int i = 0; i < this.deptJSON.size(); ++i) {
+            Map map = (Map)deptJSON.get(i);
+            temp.addAll(this.employeeService.findEmployeeByDeptId(Integer.valueOf(map.get("id").toString())));
+        }
+        employeeTreeData = temp;
+    }
 
     public String queryPeopleyDeal() throws Exception {
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+        }
+        if(endDate == null) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
+
+        getEmployeeTree();
+
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final String allKeyInUse = this.keyTypeService.findAllKeyInUse(1);
@@ -736,6 +843,14 @@ public class QueryAction extends ActionSupport
     }
 
     public String queryResultDeal() throws Exception {
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+        }
+        if(endDate == null) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
+
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
@@ -751,7 +866,7 @@ public class QueryAction extends ActionSupport
         final int rowsCount = this.queryService.countQueryResult(deptIds, keys, this.startDate, this.endDate);
         this.pager = new Pager("currentPage", 10, rowsCount, request);
         List querylist = this.queryService.queryResult(deptIds, keys, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
-        querylist = this.handleEmptyFile(querylist);
+        //querylist = this.handleEmptyFile(querylist);
         this.pager.setPageList(querylist);
         this.keys = new StringBuilder(String.valueOf(keys)).toString();
         final List chatList = this.queryService.QueryResultChat(keys, this.startDate, this.endDate);

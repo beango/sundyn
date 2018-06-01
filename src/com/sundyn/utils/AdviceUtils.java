@@ -20,7 +20,11 @@ public class AdviceUtils extends ActionSupport
                 dir.mkdirs();
             }
             path = String.valueOf(path.replace("\\", "/")) + "/advise.db";
+
             str.setStr(path);
+            File pat = new File("c:/tmp/");
+            if(!pat.exists())
+                pat.mkdir();
             //final File pat = new File(path);
             conn = DriverManager.getConnection("jdbc:sqlite:/c:/tmp/advise.db");
             stat = conn.createStatement();

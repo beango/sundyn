@@ -7,6 +7,7 @@
 	<constant name="struts.devMode" value="false"></constant>
  	<constant name="struts.configuration.xml.reload" value="true"></constant>
  	<constant name="struts.custom.i18n.resources" value="sundyn"></constant>
+    <constant name="struts.multipart.saveDir" value="c:/windows/Temp"/>
   	<!--
 	<constant name="struts.custom.i18n.resources" value="set"></constant>
 	 -->

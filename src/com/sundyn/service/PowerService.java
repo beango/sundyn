@@ -1,12 +1,17 @@
 package com.sundyn.service;
 
-import com.sundyn.dao.*;
-import java.util.*;
-import com.sundyn.vo.*;
-import java.sql.*;
+import com.sundyn.dao.SuperDao;
+import com.sundyn.vo.PowerVo;
+import org.apache.log4j.Logger;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 public class PowerService extends SuperDao
 {
+    private static Logger logger = Logger.getLogger("PowerService");
+
     public Map getUserGroup(final Integer id) {
         final String sql = "select * from appries_power where id=" + id;
         try {
@@ -123,8 +128,10 @@ public class PowerService extends SuperDao
     }
     
     public List findLowerPowerByName(final String name, final String deptgroup, final int start, final int num) {
-        final String sql = "select * from appries_power where name like '%" + name + "%' and deptIdGroup in(" + deptgroup + ")" + " order by id desc limit " + start + "," + num;
-        System.out.println("sql-findLowerPowerByName=" + sql);
+        String sql = "select row_number() over(order by t1.id desc) as rows, t1.*,t2.name as deptname from appries_power t1 join appries_dept t2 on t1.deptidgroup = t2.id where t1.name like '%" + name + "%' " +
+                "and t1.deptIdGroup in(" + deptgroup + ")";
+        sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
+        logger.debug("sql-findLowerPowerByName=" + sql);
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }

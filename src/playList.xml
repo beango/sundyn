@@ -73,6 +73,7 @@
 		<action name="playListEditDialogAndroid" class="playListAction"
 			method="playListEditDialogAndroid">
 			<result name="success">/playList/editDialogAndroid.jsp</result>
+            <result name="input">/playList/msg.jsp</result>
 		</action>
 		<action name="playListEdit" class="playListAction"
 			method="playListEdit">

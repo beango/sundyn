@@ -95,7 +95,7 @@ public class PlayListAction extends ActionSupport
         if (manager.get("id").toString().equals("1")) {
             final int rowsCount = this.playListService.countPlayListQuery("", null);
             this.pager = new Pager("currentPage", 6, rowsCount, request, "playListPage");
-            final List list = this.playListService.playListQuery("", null, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+            final List list = this.playListService.playListQuery(request.getParameter("keyword"), null, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list);
         }
         else {
@@ -105,7 +105,7 @@ public class PlayListAction extends ActionSupport
             final String deptIds = this.deptService.findChildALLStr123(deptIdGroup);
             final int rowsCount2 = this.playListService.countPlayListQuery("", deptIds);
             this.pager = new Pager("currentPage", 6, rowsCount2, request, "playListPage");
-            final List list2 = this.playListService.playListQuery("", deptIds, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+            final List list2 = this.playListService.playListQuery(request.getParameter("keyword"), deptIds, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list2);
         }
         return "success";
@@ -261,9 +261,13 @@ public class PlayListAction extends ActionSupport
         final String basePath = ServletActionContext.getServletContext().getRealPath(File.separator);
         final String filePath = String.valueOf(basePath) + "m7app" + File.separator + playListId.toString() + File.separator + "NEWCONFIG.XML";
         SAXBuilder sb = new SAXBuilder(false);
-        Document doc = sb.build(new File(filePath));
+        File docFile = new File(filePath);
+        if (!docFile.exists()){
+            this.msg = "文件丢失,请删除后重新添加!";
+            return "input";
+        }
+        Document doc = sb.build(docFile);
         final Element root = doc.getRootElement();
-        System.out.println("playListConfigDialog-filePath=" + filePath);
         final String[] Shutdown = root.getChild("Software").getChildText("Shutdown").toString().split(":");
         final String[] Boot = root.getChild("Software").getChildText("Boot").toString().split(":");
         final int Shutdownhh = Integer.valueOf(Shutdown[0]);
@@ -297,7 +301,7 @@ public class PlayListAction extends ActionSupport
         if (ids.endsWith(",")) {
             ids = ids.substring(0, ids.length() - 1);
         }
-        final List pls = this.playService.findByIds(ids);
+        final List pls = this.playService.findByIds(ids); //播放列表勾选资源
         final List als = this.playService.playQuery("", null, null);
         if (pls != null) {
             for (int i = 0; i < pls.size(); ++i) {
@@ -549,7 +553,7 @@ public class PlayListAction extends ActionSupport
         final Element root2 = doc2.getRootElement();
         String version = root2.getChild("Software").getChild("Version").getText();
         version = new StringBuilder().append(Integer.parseInt(version) + 1).toString();
-        System.out.println("playListCreateUpdateZip-version=" + version);
+        System.out.println("生成新资源版本号=" + version);
         root2.getChild("Software").getChild("Version").setText(version);
         XMLOut.output(doc2, (OutputStream)new FileOutputStream(String.valueOf(m7apppath) + File.separator + "NEWCONFIG.XML"));
         XMLOut.output(doc2, (OutputStream)new FileOutputStream(String.valueOf(m7binpath) + File.separator + "NEWCONFIG.XML"));
@@ -565,25 +569,24 @@ public class PlayListAction extends ActionSupport
         String[] array;
         for (int length = (array = file).length, k = 0; k < length; ++k) {
             final String s = array[k];
-            System.out.println("file=" + s);
+            System.out.println("升级包1文件=" + s);
         }
         String[] array2;
         for (int length2 = (array2 = file2).length, l = 0; l < length2; ++l) {
             final String s = array2[l];
-            System.out.println("file2=" + s);
+            System.out.println("升级包2文件=" + s);
         }
         final Update upadd = new Update();
-        System.out.println("playListCreateUpdateZip-version2=" + version);
         final String versionTar = String.valueOf(m7binpath) + File.separator + "M7Update" + version + ".zip";
         System.out.println("m7apppath=" + m7apppath);
         file[playlist.size() + 1] = String.valueOf(m7apppath) + File.separator + "NEWCONFIG.XML";
         file2[playlist.size() + 1] = "NEWCONFIG.XML";
-        final String tar = String.valueOf(m7binpath) + File.separator + "M7Update.zip";
-        System.out.println("tar=" + tar);
+        //final String tar = String.valueOf(m7binpath) + File.separator + "M7Update.zip";
+        //System.out.println("tar=" + tar);
         upadd.makeZip(versionTar, file, file2);
         final ZipManager zipManager = new ZipManager();
         zipManager.releaseZipToFile(versionTar, String.valueOf(m7apptemppath) + File.separator);
-        zipManager.createZip(String.valueOf(m7apptemppath) + File.separator, tar);
+        //zipManager.createZip(String.valueOf(m7apptemppath) + File.separator, tar);
         return "success";
     }
     

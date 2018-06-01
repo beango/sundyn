@@ -2,10 +2,7 @@ package com.sundyn.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.*;
-import com.sundyn.util.JfreeChart;
-import com.sundyn.util.Pager;
-import com.sundyn.util.Poi;
-import com.sundyn.util.SundynSet;
+import com.sundyn.util.*;
 import com.sundyn.vo.WeburlVo;
 import org.apache.struts2.ServletActionContext;
 import org.jdom.JDOMException;
@@ -22,6 +19,8 @@ import java.util.Map;
 
 public class TotalAction extends ActionSupport
 {
+    public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
+
     private List bmls;
     private DeptService deptService;
     private String endDate;
@@ -30,7 +29,15 @@ public class TotalAction extends ActionSupport
     private boolean k7;
     private KeyTypeService keyTypeService;
     private List list;
+    public List getDeptJSON() {
+        return deptJSON;
+    }
 
+    public void setDeptJSON(List deptJSON) {
+        this.deptJSON = deptJSON;
+    }
+
+    private List deptJSON;
     public List getList2() {
         return list2;
     }
@@ -361,11 +368,12 @@ public class TotalAction extends ActionSupport
                 final Integer key5 = Integer.valueOf(m.get("key4").toString());
                 final Integer key6 = Integer.valueOf(m.get("key5").toString());
                 final Integer key7 = Integer.valueOf(m.get("key6").toString());
+                logger.info("key1:"+key0+",key2:"+key2+",key3:"+key3+",key4:"+key4+",key5:"+key5+",key6:"+key6+",key7:"+key7);
                 if (key0 + key2 + key3 + key4 + key5 + key6 == 0) {
                     m.put("num", 100);
                 }
                 else {
-                    m.put("num", (key0 * keyWeight[0] + key2 * keyWeight[1] + key3 * keyWeight[2] + key4 * keyWeight[3] + key5 * keyWeight[4] + key6 * keyWeight[5] + key7 * keyWeight[6]) / (key0 + key2 + key3 + key4 + key5 + key6 + key7) * 20);
+                    m.put("num", Math.floor((key0 * keyWeight[0] + key2 * keyWeight[1] + key3 * keyWeight[2] + key4 * keyWeight[3] + key5 * keyWeight[4] + key6 * keyWeight[5] + key7 * keyWeight[6])*1.0 / (key0 + key2 + key3 + key4 + key5 + key6 + key7) * 20.0));
                 }
                 temp.add(m);
             }
@@ -708,6 +716,13 @@ public class TotalAction extends ActionSupport
     }
 
     public String totalDatingDeal() throws Exception {
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+        }
+        if(endDate == null) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -726,14 +741,14 @@ public class TotalAction extends ActionSupport
         final String standard = sundynSet.getM_content().get("standard").toString();
         final Map m1 = new HashMap();
         m1.put("num", standard);
-        m1.put("category", "\u611f\u77e5");
-        m1.put("item", "\u6807\u51c6");
+        m1.put("category", "感知");
+        m1.put("item", "标准");
         ls.add(m1);
         for (int i = 0; i < this.list.size(); ++i) {
             final Map temp = (Map) this.list.get(i);
             final Map j = new HashMap();
             j.put("num", temp.get("num"));
-            j.put("category", "\u611f\u77e5");
+            j.put("category", "感知");
             j.put("item", temp.get("datingname"));
             ls.add(j);
         }
@@ -928,6 +943,195 @@ public class TotalAction extends ActionSupport
     }
 
     public String totalDeptDeal() throws Exception {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        String path = ServletActionContext.getServletContext().getRealPath("/");
+        this.k7 = isK7();
+        this.mls = this.keyTypeService.findByApprieserId(Integer.valueOf(1), Integer.valueOf(1), "on");
+        int n = 0;
+        for (int i = 0; i < this.mls.size(); i++) {
+            Map m = (Map)this.mls.get(i);
+            String s = m.get("ext2") + "=" + m.get("name");
+            if (n % 3 == 0) {
+                this.str = (this.str + s + " ");
+            }
+            else if (n % 3 == 2)
+                this.str = (this.str + " , " + s + "</br></br>");
+            else {
+                this.str = (this.str + "," + s);
+            }
+            n++;
+        }
+        this.bmls = this.keyTypeService.findByApprieserId(Integer.valueOf(1), Integer.valueOf(1), "");
+        for (int i = 0; i < this.bmls.size(); i++) {
+            Map m = (Map)this.bmls.get(i);
+            String s = m.get("ext2") + "=" + m.get("name");
+            if (n % 3 == 0) {
+                this.str = (this.str + s + " ");
+            }
+            else if (n % 3 == 2)
+                this.str = (this.str + " , " + s + "</br></br>");
+            else {
+                this.str = (this.str + ", " + s);
+            }
+
+            n++;
+        }
+        Map manager = (Map)request.getSession().getAttribute("manager");
+        Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
+
+        Map power = this.powerService.getUserGroup(groupid);
+        String deptIdGroup = power.get("deptIdGroup").toString();
+        logger.info(">>>1:deptIdGroup" + deptIdGroup);
+
+        List temp = this.deptService.findchild(Integer.valueOf(deptIdGroup));
+        logger.info(">>>2:temp" + temp.size());
+        List res = new ArrayList();
+        for (int i = 0; i < temp.size(); i++) {
+            String name = ((Map)temp.get(i)).get("name").toString();
+            String id = ((Map)temp.get(i)).get("id").toString();
+            String ids = this.deptService.findChildALLStr123(id);
+            Map m = this.totalService.totalDept(ids, this.startDate, this.endDate);
+            if (m != null) {
+                m.put("DeptId", id);
+                m.put("name", name);
+                Integer key0 = Integer.valueOf(m.get("key0").toString());
+                Integer key1 = Integer.valueOf(m.get("key1").toString());
+                Integer key2 = Integer.valueOf(m.get("key2").toString());
+                Integer key3 = Integer.valueOf(m.get("key3").toString());
+                Integer key4 = Integer.valueOf(m.get("key4").toString());
+                Integer key5 = Integer.valueOf(m.get("key5").toString());
+                Integer key6 = Integer.valueOf(m.get("key6").toString());
+                Integer[] key = { key0, key1, key2, key3, key4, key5, key6 };
+                double prate = Math.rint((1.0D - key6.intValue() * 1.0D / (key0.intValue() + key1.intValue() +
+                        key3.intValue() + key4.intValue() + key5.intValue() + key6.intValue())) * 10000.0D) / 100.0D;
+
+                double erate = Math.rint((key0.intValue() * 1.0D + key1.intValue() * 1.0D) / (key0.intValue() + key1.intValue() + key2.intValue() +
+                        key3.intValue() + key4.intValue() + key5.intValue() + key6.intValue()) * 10000.0D) / 100.0D;
+
+                double mrate = 0.0D;
+
+                List km = new ArrayList();
+                List kbm = new ArrayList();
+                int msum = 0;
+                int bmsum = 0;
+                int p = 0;
+                int sum = 0;
+
+                if (this.k7) {
+                    for (int j = 0; j < this.mls.size(); j++) {
+                        Map k = (Map)this.mls.get(j);
+                        if (!k.get("keyNo").toString().equals("6"))
+                        {
+                            msum = msum +
+                                    key[Integer.parseInt(k.get("keyNo").toString())].intValue();
+                            km.add(key[Integer.parseInt(k.get("keyNo").toString())]);
+                        } else {
+                            this.mls.remove(j);
+                        }
+                    }
+                    System.out.println("k7=true，msum=" + msum);
+                    for (int j = 0; j < this.bmls.size(); j++) {
+                        Map k = (Map)this.bmls.get(j);
+                        if (!k.get("keyNo").toString().equals("6"))
+                        {
+                            bmsum = bmsum +
+                                    key[Integer.parseInt(k.get("keyNo")
+                                            .toString())].intValue();
+
+                            kbm.add(key[Integer.parseInt(k.get("keyNo")
+                                    .toString())]);
+                        } else {
+                            this.bmls.remove(j);
+                        }
+                    }
+                    System.out.println("k7=true，bmsum=" + bmsum);
+                    mrate = Math.rint(msum * 1.0D / (
+                            msum * 1.0D + bmsum * 1.0D) * 10000.0D) * 1.0D / 100.0D;
+
+                    for (int j = 0; j < key.length - 1; j++) {
+                        p += key[j].intValue();
+                    }
+                    for (int j = 0; j < key.length; j++)
+                        sum += key[j].intValue();
+                }
+                else {
+                    for (int j = 0; j < this.mls.size(); j++) {
+                        Map k = (Map)this.mls.get(j);
+
+                        msum = msum +
+                                key[Integer.parseInt(k.get("keyNo").toString())].intValue();
+                        km.add(key[Integer.parseInt(k.get("keyNo").toString())]);
+                    }
+                    System.out.println("k7=false，msum=" + msum);
+                    for (int j = 0; j < this.bmls.size(); j++) {
+                        Map k = (Map)this.bmls.get(j);
+
+                        bmsum = bmsum +
+                                key[Integer.parseInt(k.get("keyNo").toString())].intValue();
+                        kbm.add(key[Integer.parseInt(k.get("keyNo").toString())]);
+                    }
+                    System.out.println("k7=false，bmsum=" + bmsum);
+                    mrate = Math.rint(msum * 1.0D / (
+                            msum * 1.0D + bmsum * 1.0D) * 10000.0D) * 1.0D / 100.0D;
+                    for (int j = 0; j < key.length; j++) {
+                        p += key[j].intValue();
+                    }
+                    for (int j = 0; j < key.length; j++) {
+                        sum += key[j].intValue();
+                    }
+                }
+                m.put("prate", Double.valueOf(prate));
+                m.put("erate", Double.valueOf(erate));
+                m.put("mrate", Double.valueOf(mrate));
+                m.put("km", km);
+                m.put("kbm", kbm);
+                m.put("msum", Integer.valueOf(msum));
+                m.put("bmsum", Integer.valueOf(bmsum));
+                m.put("p", Integer.valueOf(p));
+                m.put("sum", Integer.valueOf(sum));
+                res.add(m);
+            }
+        }
+        this.list = res;
+        this.list = getStar(this.list);
+        this.list = getD(this.list);
+
+        List ls = new ArrayList();
+        SundynSet sundynSet = SundynSet.getInstance(path);
+        String standard = ((String)sundynSet.getM_content().get("standard")).toString();
+        Map m1 = new HashMap();
+        m1.put("num", standard);
+        m1.put("category", "感知");
+        m1.put("item", "标准");
+        ls.add(m1);
+        for (int i = 0; i < this.list.size(); i++) {
+            Map t = (Map)this.list.get(i);
+            Map m = new HashMap();
+            m.put("num", t.get("num"));
+            m.put("category", "感知");
+            m.put("item", t.get("name"));
+            ls.add(m);
+        }
+        JfreeChart jfreeChart = new JfreeChart();
+
+        jfreeChart.createBar("总的满意度指数", "感知项", "满意度", ls, path + "pubpic.jpg");
+
+        String ids = this.deptService.findChildALLStr123(deptIdGroup);
+        Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
+        totalMap = getRate(totalMap);
+        request.setAttribute("totalMap", totalMap);
+
+        return "success";
+    }
+
+    public String totalDeptDeal1() throws Exception {
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+        }
+        if(endDate == null) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         this.k7 = this.isK7();
@@ -966,6 +1170,7 @@ public class TotalAction extends ActionSupport
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
+        System.out.println("机构ID:" + deptIdGroup);
         final List temp = this.deptService.findchild(Integer.valueOf(deptIdGroup));
         final List res = new ArrayList();
         for (int j = 0; j < temp.size(); ++j) {
@@ -1059,15 +1264,15 @@ public class TotalAction extends ActionSupport
             }
         }
         this.list = res;
-        this.list = this.getStar(this.list);
-        this.list = this.getD(this.list);
+        this.list = this.getStar(this.list);//获取星级
+        this.list = this.getD(this.list);//
         final List ls = new ArrayList();
         final SundynSet sundynSet = SundynSet.getInstance(path);
         final String standard = sundynSet.getM_content().get("standard").toString();
         final Map m2 = new HashMap();
         m2.put("num", standard);
-        m2.put("category", "\u611f\u77e5");
-        m2.put("item", "\u6807\u51c6");
+        m2.put("category", "感知");
+        m2.put("item", "标准");
         ls.add(m2);
         for (int i2 = 0; i2 < this.list.size(); ++i2) {
             final Map t = (Map) this.list.get(i2);
@@ -1392,6 +1597,14 @@ public class TotalAction extends ActionSupport
     }
 
     public String totalPersonDeal() throws Exception {
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+        }
+        if(endDate == null) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
+
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
 
@@ -1403,12 +1616,13 @@ public class TotalAction extends ActionSupport
         final Map dept2 = this.deptService.findDeptById(Integer.valueOf(deptIdGroup2));
         deptList2.add(dept2);
         request.setAttribute("deptList", (Object)deptList2);
+        this.deptJSON = this.deptService.findChildALL(deptIdGroup2);
 
         String deptId = request.getParameter("deptId");
-        deptId = this.deptService.findChildALLStr123(deptId);
-        final int rowsCount = this.totalService.countTotalPerson(deptId, this.startDate, this.endDate);
+        final String ids = this.deptService.findChildALLStr123(deptId);
+        final int rowsCount = this.totalService.countTotalPerson(ids, this.startDate, this.endDate);
         this.pager = new Pager("currentPage", 10, rowsCount, request);
-        this.list = this.totalService.totalPerson(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        this.list = this.totalService.totalPerson(ids, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
         this.list = this.getD(this.list);
@@ -1431,8 +1645,8 @@ public class TotalAction extends ActionSupport
         final JfreeChart jfreeChart = new JfreeChart();
         jfreeChart.createBar("\u4eba\u5458\u6ee1\u610f\u5ea6\u6307\u6570", "\u611f\u77e5\u9879", "\u6ee1\u610f\u5ea6", ls, String.valueOf(path) + "pubpic.jpg");
         this.pager.setPageList(this.list);
-        final String ids = this.deptService.findChildALLStr123(deptId);
-        Map totalMap = this.totalService.totalDept(deptId, this.startDate, this.endDate);
+
+        Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
         totalMap = this.getRate(totalMap);
         request.setAttribute("totalMap", (Object)totalMap);
         request.setAttribute("deptId", (Object)deptId);
@@ -1667,20 +1881,30 @@ public class TotalAction extends ActionSupport
     }
 
     public String totalWindowDeal() throws Exception {
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+        }
+        if(endDate == null) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final String deptId = request.getParameter("deptId");
         System.out.println(deptId);
+
         final Map manager2 = (Map)request.getSession().getAttribute("manager");
         final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
         final Map power2 = this.powerService.getUserGroup(groupid2);
         final String deptIdGroup2 = power2.get("deptIdGroup").toString();
         final String ids22 = this.deptService.findChildALLStr123(deptIdGroup2);
         this.list2 = this.deptService.findDeptByType(ids22, 1);
+        this.deptJSON = this.deptService.findChildALL(deptIdGroup2);
 
         final int rowsCount = this.totalService.counttotalWindow(deptId, this.startDate, this.endDate);
         this.pager = new Pager("currentPage", 10, rowsCount, request);
-        this.list = this.totalService.totalWindow(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        final String ids2 = this.deptService.findChildALLStr123(deptId);
+        this.list = this.totalService.totalWindow(ids2, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
         this.list = this.getD(this.list);
@@ -1692,18 +1916,19 @@ public class TotalAction extends ActionSupport
         m1.put("category", "\u611f\u77e5");
         m1.put("item", "\u6807\u51c6");
         ls.add(m1);
-        for (int i = 0; i < this.list.size(); ++i) {
-            final Map temp = (Map) this.list.get(i);
-            final Map j = new HashMap();
-            j.put("num", temp.get("num"));
-            j.put("category", "\u611f\u77e5");
-            j.put("item", temp.get("windowname"));
-            ls.add(j);
+        if(this.list.size()>0){
+            for (int i = 0; i < this.list.size(); ++i) {
+                final Map temp = (Map) this.list.get(i);
+                final Map j = new HashMap();
+                j.put("num", temp.get("num"));
+                j.put("category", "\u611f\u77e5");
+                j.put("item", temp.get("windowname"));
+                ls.add(j);
+            }
         }
         final JfreeChart jfreeChart = new JfreeChart();
-        jfreeChart.createBar("\u603b\u7684\u6ee1\u610f\u5ea6\u6307\u6570", "\u611f\u77e5\u9879", "\u6ee1\u610f\u5ea6", ls, String.valueOf(path) + "pubpic.jpg");
+        jfreeChart.createBar("总满意度指数", "感知项", "满意度", ls, String.valueOf(path) + "pubpic.jpg");
         this.pager.setPageList(this.list);
-        final String ids2 = this.deptService.findChildALLStr123(deptId);
         Map totalMap = this.totalService.totalDept(ids2, this.startDate, this.endDate);
         totalMap = this.getRate(totalMap);
         request.setAttribute("totalMap", (Object)totalMap);

@@ -49,12 +49,13 @@ public class WeburlAction extends ActionSupport
     public String weburlList() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String uri = request.getRequestURL().toString();
-        final int rowsCount = this.weburlService.getCount();
+        final String key_title = request.getParameter("key_title");
+        final int rowsCount = this.weburlService.getCount(key_title);
         Integer pageSize = WeburlAction.pageSize;
         if(request.getParameter("pageSize")!=null)
         	pageSize = Integer.parseInt(request.getParameter("pageSize"));
         this.pager = new Pager("currentPage", pageSize, rowsCount, request, "weburlPage");
-        this.weburls = this.weburlService.findWeburl((this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        this.weburls = this.weburlService.findWeburl(key_title,(this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.weburls);
         return "weburlListOk";
     }
@@ -101,9 +102,10 @@ public class WeburlAction extends ActionSupport
         String file = JavaXML.class.getClassLoader().getResource("").getPath();
         file = file.replaceAll("%20", " ");
         file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
+        System.out.println(file+".....................2");
         final String filename = String.valueOf(mac) + ".xml";
-        final String url = String.valueOf(file) + filename;
-        final File f = new File(url);
+        String url = String.valueOf(file) + filename;
+        File f = new File(url);
         System.out.println("weburlDownload:" + url);
         if (!f.exists()) {
             f.createNewFile();

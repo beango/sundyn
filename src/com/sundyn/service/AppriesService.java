@@ -27,7 +27,7 @@ public class AppriesService extends SuperDao
     }
     
     public boolean addArrires(final String mac, final String tt, final String cardnum, final String pj, final String demo, final String businessType, final String cf) {
-        final String sql = "call testAdd(?,?,?,?,?,?,?)";
+        final String sql = "{call testAdd(?,?,?,?,?,?,?)}";
         final Object[] args = { mac, tt, cardnum, pj, demo, businessType, cf };
         try {
             final int num = this.getJdbcTemplate().update(sql, args);
@@ -41,7 +41,7 @@ public class AppriesService extends SuperDao
     }
     
     public boolean addArrires(final String mac, final String tt, final String cardnum, final String pj, final String demo) {
-        final String sql = "call appriesAdd(?,?,?,?,?,?)";
+        final String sql = "{call appriesAdd(?,?,?,?,?,?)}";
         final Object[] args = { mac, tt, cardnum, pj, demo, 1 };
         try {
             final int num = this.getJdbcTemplate().update(sql, args);
@@ -55,7 +55,7 @@ public class AppriesService extends SuperDao
     }
     
     public boolean addArriresAuto(final String mac, final String tt, final String cardnum, final String pj, final String demo) {
-        final String sql = "call appriesAddAuto(?,?,?,?,?,?)";
+        final String sql = "{call appriesAddAuto(?,?,?,?,?,?)}";
         final Object[] args = { mac, tt, cardnum, pj, demo, 1 };
         try {
             final int num = this.getJdbcTemplate().update(sql, args);
@@ -68,9 +68,21 @@ public class AppriesService extends SuperDao
         }
     }
     
-    public boolean addArriresXiangYang(final String mac, final String tt, final String cardnum, final String pj, final String demo, final String videofile, final String businessTime, final int min, final int sec, final String tel, final String idCard, final String name, final String phone) {
-        final String sql = "call appriesAdd(?,?,?,?,?,?,?,?,?,?,?,?)";
-        final Object[] args = { mac, tt, cardnum, pj, demo, 1, videofile, businessTime, min, sec, name, phone };
+    public boolean addArriresXiangYang(final String mac, final String tt, final String cardnum, final String pj, final String demo,
+                                       final String videofile, final String businessTime, final int min, final int sec, final String tel,
+                                       final String idCard, final String name, final String phone, String imgfile, String busRst) {
+        final String sql = "{call appriesAdd(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        final Object[] args = { mac==null?"":mac,
+                tt==null?"":tt,
+                cardnum==null?"":cardnum,
+                pj==null?"":pj,
+                demo==null?"":demo, 1,
+                videofile==null?"":videofile,
+                businessTime==null?"":businessTime,
+                min,
+                sec,
+                name==null?"":name,
+                phone==null?"":phone,imgfile,busRst };
         try {
             final int num = this.getJdbcTemplate().update(sql, args);
             return num > 0;
@@ -83,7 +95,7 @@ public class AppriesService extends SuperDao
     }
     
     public boolean addArrires2(final String mac, final String tt, final String cardnum, final String pj, final String demo, final String videofile, final String businessTime) {
-        final String sql = "call appriesAdd(?,?,?,?,?,?,?,?)";
+        final String sql = "{call appriesAdd(?,?,?,?,?,?,?,?)}";
         final Object[] args = { mac, tt, cardnum, pj, demo, 1, videofile, businessTime };
         try {
             final int num = this.getJdbcTemplate().update(sql, args);
@@ -97,7 +109,7 @@ public class AppriesService extends SuperDao
     }
     
     public boolean addArrires3(final String mac, final String tt, final String cardnum, final String pj, final String demo, final String videofile, final String businessTime, final int min, final int sec) {
-        final String sql = "call appriesAdd(?,?,?,?,?,?,?,?,?,?)";
+        final String sql = "{call appriesAdd(?,?,?,?,?,?,?,?,?,?)}";
         final Object[] args = { mac, tt, cardnum, pj, demo, 1, videofile, businessTime, min, sec };
         try {
             final int num = this.getJdbcTemplate().update(sql, args);
@@ -111,7 +123,7 @@ public class AppriesService extends SuperDao
     }
     
     public boolean addArrires(final String mac, final String tt, final String cardnum, final String pj, final String demo, final String businessTypeId) {
-        final String sql = "call appriesAdd(?,?,?,?,?,?)";
+        final String sql = "{call appriesAdd(?,?,?,?,?,?)}";
         final Object[] args = { mac, tt, cardnum, pj, demo, businessTypeId };
         try {
             final int num = this.getJdbcTemplate().update(sql, args);
@@ -125,7 +137,8 @@ public class AppriesService extends SuperDao
     }
     
     public Map getAppriesInfo(final String cardNum, final String mac, final String key) {
-        final String sql = "select concat(a.name,'') as dating , concat( a.id,'') as datingid, concat( b.name,'') as window, concat(b.id,'') as windowid    from appries_dept  a  ,  appries_dept b where a.id =b.fatherid and b.remark='" + mac + "'";
+        final String sql = "select a.name as dating , a.id as datingid, b.name as window, b.id as windowid " +
+                "from appries_dept a,appries_dept b where a.id =b.fatherid and b.remark='" + mac + "'";
         final String sql2 = "select id as  bumenid ,name as bumen from appries_dept where id= 1 ";
         final String sql3 = "select Name, deptid from appries_employee where cardnum='" + cardNum + "'";
         final String sql4 = "select name from appries_keytype where keyNo='" + key + "'";

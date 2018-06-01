@@ -49,7 +49,14 @@ public class StringUtils
         s.insert(c.length() - 1, ".");
         return Double.valueOf(s.toString());
     }
-    
+
+    public static String getNotNullString(String orgin){
+        if(orgin==null)
+            return "";
+        else
+            return orgin;
+
+    }
     public static void main(final String[] args) {
         final List<Integer> ids = new ArrayList<Integer>();
         ids.add(1);

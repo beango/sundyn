@@ -194,6 +194,12 @@
 			<result name="error">employee/msg.jsp</result>
 			<result name="url" type="redirect">${url}</result>
 		</action>
+        <action name="getClientUpdateVersion" class="employeeAction"
+                method="getClientUpdateVersion">
+            <result name="success">employee/msg.jsp</result>
+            <result name="error">employee/msg.jsp</result>
+            <result name="url" type="redirect">${url}</result>
+        </action>
 		<action name="getDeptVideo" class="employeeAction" method="getDeptVideo">
 			<result name="success">/employee/msg.jsp</result>
 		</action>

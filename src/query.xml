@@ -28,6 +28,11 @@
 			method="queryDeptAjax">
 			<result name="success">/query/deptAjax.jsp</result>
 		</action>
+        <action name="queryDeptAjax2" class="queryAction"
+                method="queryDeptAjax2">
+            <result name="success">/query/deptAjax2.jsp</result>
+            <result name="empty">/query/json.jsp</result>
+        </action>
 		<action name="queryDeptDeal" class="queryAction"
 			method="queryDeptDeal">
 			<result name="camera">/query/deptDeal_camera.jsp</result>

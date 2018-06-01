@@ -14,7 +14,7 @@ import net.sf.json.*;
 import com.sundyn.util.*;
 import java.sql.*;
 
-public class DeptAction extends ActionSupport
+public class DeptAction extends MainAction
 {
     private String bind;
     private BusinessService businessService;
@@ -38,7 +38,12 @@ public class DeptAction extends ActionSupport
     private WeburlService weburlService;
     private List<WeburlVo> haveList;
     private List<WeburlVo> noList;
-    
+
+    /*public DeptAction(){
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<DeptAction");
+        super.setPowerService(powerService);
+        super.setDeptService(this.deptService);
+    }*/
     public String getDeptLogoPic() {
         return this.deptLogoPic;
     }
@@ -145,11 +150,7 @@ public class DeptAction extends ActionSupport
     
     public String deptAddDialog() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        final Map manager = (Map)request.getSession().getAttribute("manager");
-        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
-        final Map power = this.powerService.getUserGroup(groupid);
-        final String deptIdGroup = power.get("deptIdGroup").toString();
-        final String deptIds = this.deptService.findChildALLStr123(deptIdGroup);
+
         final String deptType = request.getParameter("deptType");
         this.list = this.businessService.find(true);
         final List playListList = this.playListService.playListQuery();
@@ -160,9 +161,9 @@ public class DeptAction extends ActionSupport
         request.setAttribute("deptType", (Object)deptType);
         request.setAttribute("playListList", (Object)playListList);
         request.setAttribute("remark", (Object)remark);
-        this.provinces = this.cityutils.getProvinces();
+        //this.provinces = this.cityutils.getProvinces();
         this.provinces = this.cityutils.getProvincesOnly();
-        this.province = this.cityutils.getProvinceWithCitysById(0);
+        this.province = this.cityutils.getProvinceDef();
         this.citys = this.province.getCitys();
         if (this.getCamera().equals("true")) {
             return "camera";
@@ -190,17 +191,20 @@ public class DeptAction extends ActionSupport
     public String deptEditDialog() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         this.dept = this.deptService.findDeptById(this.deptId);
-        System.out.println("deptEditDialog-notice=" + this.dept.get("notice"));
         this.list = this.businessService.find(true);
+/*
+
         final Map manager = (Map)request.getSession().getAttribute("manager");
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
-        final String deptIds = this.deptService.findChildALLStr123(deptIdGroup);
+        final String deptIds = this.deptService.findChildALLStr123(deptIdGroup);//low
+*/
+
         final int pid = (int) this.dept.get("provinceid");
         this.cityid = (int) this.dept.get("cityid");
         final int id = (int) this.dept.get("id");
-        this.provinces = this.cityutils.getProvinces();
+        //this.provinces = this.cityutils.getProvinces();
         this.provinces = this.cityutils.getProvincesOnly();
         this.province = this.cityutils.getProvinceWithCitysById(pid);
         this.citys = this.province.getCitys();
@@ -415,7 +419,7 @@ public class DeptAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String weburlIds = request.getParameter("retVal");
         this.weburlService.updateWeburlChoose(weburlIds, this.deptId);
-        return null;
+        return "ok";
     }
     
     public Map getDept() {

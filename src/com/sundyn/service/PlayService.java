@@ -51,15 +51,16 @@ public class PlayService extends SuperDao
     }
     
     public List playQuery(final String playName, final Integer start, final Integer num) {
-        String sql = "select * from appries_play where playName like '%" + playName + "%' order by playIndex, playId desc ";
+        String sql = "select row_number() over(order by playIndex, playId desc) as rows, * from appries_play where 1=1 ";
+        if (playName!=null && !playName.equals(""))
+            sql += "and playName like '%" + playName + "%'";
         if (start != null && num != null) {
-            sql = String.valueOf(sql) + " limit " + start + "," + num;
+            sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
         }
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

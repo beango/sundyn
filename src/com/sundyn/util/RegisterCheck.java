@@ -37,6 +37,7 @@ public class RegisterCheck extends AbstractInterceptor
     }
     
     public String intercept(final ActionInvocation arg0) throws Exception {
+        System.out.println("RegisterCheck>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         this.reg = Reg.getInstance();
         arg0.getInvocationContext().put("ser", (Object)this.reg.getSerial());
         final boolean regcheck = this.reg.isRegCheck();

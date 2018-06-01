@@ -46,12 +46,14 @@ public class PlayListService extends SuperDao
     }
     
     public List playListQuery(final String playListName, final String deptIds, final Integer start, final Integer num) {
-        String sql = "select * from appries_playlist where playListName like '%" + playListName + "%'   ";
+        String sql = "select row_number() over(order by playListId desc) as rows, * from appries_playlist where 1=1 " ;
+        if (playListName!=null && !playListName.equals(""))
+            sql += "and playListName like '%" + playListName + "%'   ";
         if (deptIds != null && !deptIds.equals("")) {
             sql = String.valueOf(sql) + "and  playListId  in(select dept_playListId from appries_dept where id in( " + deptIds + "))  ";
         }
         if (start != null && num != null) {
-            sql = String.valueOf(sql) + " limit " + start + "," + num;
+            sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
         }
         try {
             return this.getJdbcTemplate().queryForList(sql);

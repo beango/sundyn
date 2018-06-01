@@ -32,9 +32,10 @@ public class NoticeService extends SuperDao
     }
     
     public List findNotices(final int startrow, final int pageSize) {
-        final String sql = "select * from appries_notice order by date desc limit ?,?";
+        String sql = "select row_number() over(order by date desc) as rows, * from appries_notice";
+        sql = "select * from ("+sql+") t2 where t2.rows>" + startrow + " and t2.rows<=" + (startrow+pageSize);
         try {
-            return this.getJdbcTemplate().queryForList(sql, new Object[] { startrow, pageSize });
+            return this.getJdbcTemplate().queryForList(sql, new Object[] { });
         }
         catch (Exception e) {
             e.printStackTrace();
