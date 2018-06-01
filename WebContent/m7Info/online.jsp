@@ -28,73 +28,66 @@
 		<script type="text/javascript" src="js/pie.js"></script>
 		<script type="text/javascript" src="js/Pie3D.js"></script>
  		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+        <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
+        <script type="text/javascript" src="lib/layui/layui.js"></script>
+        <script type="text/javascript" src="js/application.js?1"></script>
+
  	</head>
 	<body>
-		<div id="man_zone">
-			<div class="sundyn_main">
-			   <div class="fengge">&nbsp;</div>
-			   <table width="98%" class="t" >
-					<tr>
-						<td  class="tdtitle">
-							<s:text name="sundyn.system.checkM7Info.macAddress"/>
-						</td>
-						<td  class="tdtitle">
-							<s:text name="sundyn.column.windowName"/>
-						</td>
-						<td  class="tdtitle">
-						<s:text name="sundyn.system.checkOnlineM7.unitName"/>
-						</td>
-						<td   class="tdtitle">
-						<s:text name="sundyn.system.checkOnlineM7.onlineOrNot"/>
-						</td>
-					</tr>
-					<c:forEach items="${pager.pageList}" var="query">
-						<tr>
-							<td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
-								${query.remark}
-							</td>
-							<td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
-								${query.name}
-							</td>
-							<td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
-								${query.fatherName}
-							</td>
-							<td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
-								<c:if test="${query.online ==  '在线'}">  <s:text name="sundyn.system.m7Online.online"/> </c:if>  <c:if test="${query.online ==  '不在线'}"> <s:text name="sundyn.system.m7Online.offline"/></c:if>
-							</td>
-						</tr>
-					</c:forEach>
-					<c:forEach items="${errorMac}" var="mac">
-						<tr>
-							<td   class="td" style="color:red;">
-								${mac}
-							</td>
-							<td   class="td" style="color:red;">
-								<s:text name="sundyn.system.m7Online.noWindow"/>
-							</td>
-							<td   class="td" style="color:red;">
-								-
-							</td>
-							<td   class="td" style="color:red;">
-								<s:text name="sundyn.system.m7Online.online"/>
-							</td>
-					</tr>
-					</c:forEach>
-				</table>
-				<c:if test="${pager.rowsCount == 0}">
-					<div class="sundyn_rows">
-						<s:text name="sundyn.system.checkM7Info.noRecord" />
-					</div>
-				</c:if>
-				<c:if test="${pager.rowsCount > 0}">
-					<div class="sundyn_rows">
-						${pager.pageTextCn}
-					</div>
-		 		</c:if>
-   				<div><a href="m7OnlineExcel.action" target="_blank"><img src="<s:text name='sundyn.total.pic.excel'/>" /></a>&nbsp;&nbsp;&nbsp;&nbsp;</div>
-		   
-   			</div>
-		</div>
-		<div id="dialog" style="width: 479px; height: 328px; display: none;"></div>
+		<div id="layui-main">
+            <div><a href="m7OnlineExcel.action" target="_blank"><img src="<s:text name='sundyn.total.pic.excel'/>" /></a>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <table width="98%" class="layui-table" >
+                <tr>
+                    <td  class="tdtitle">
+                        <s:text name="sundyn.system.checkM7Info.macAddress"/>
+                    </td>
+                    <td  class="tdtitle">
+                        <s:text name="sundyn.column.windowName"/>
+                    </td>
+                    <td  class="tdtitle">
+                        <s:text name="sundyn.system.checkOnlineM7.unitName"/>
+                    </td>
+                    <td   class="tdtitle">
+                        <s:text name="sundyn.system.checkOnlineM7.onlineOrNot"/>
+                    </td>
+                </tr>
+                <c:forEach items="${pager.pageList}" var="query">
+                    <tr>
+                        <td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
+                                ${query.remark}
+                        </td>
+                        <td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
+                                ${query.name}
+                        </td>
+                        <td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
+                                ${query.fatherName}
+                        </td>
+                        <td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
+                            <c:if test="${query.online ==  '在线'}">  <s:text name="sundyn.system.m7Online.online"/> </c:if>  <c:if test="${query.online ==  '不在线'}"> <s:text name="sundyn.system.m7Online.offline"/></c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+                <c:forEach items="${errorMac}" var="mac">
+                    <tr>
+                        <td   class="td" style="color:red;">
+                                ${mac}
+                        </td>
+                        <td   class="td" style="color:red;">
+                            <s:text name="sundyn.system.m7Online.noWindow"/>
+                        </td>
+                        <td   class="td" style="color:red;">
+                            -
+                        </td>
+                        <td   class="td" style="color:red;">
+                            <s:text name="sundyn.system.m7Online.online"/>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+            <div id="pp"></div>
+        </div>
  	</body>
+    <script type="text/javascript">
+        initPager(${pager.getRowsCount()}, ${pager.getCurrentPage()},${pager.getPageSize()});
+    </script>
 </html>

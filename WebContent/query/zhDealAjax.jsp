@@ -59,8 +59,8 @@
                 <td width="10%" class="td">
                         ${query.keyName}
                 </td>
-                <td width="18%" class="td">
-                    <fmt:formatDate value="${query.JieshouTime}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/>
+                <td width="18%" class="td">${query.JieshouTime}
+                    <%--<fmt:formatDate value="${query.JieshouTime}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/>--%>
                 </td>
                 <td width="10%" class="td">
                     <c:if test="${empty query.videofile}">

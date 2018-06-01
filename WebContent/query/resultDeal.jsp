@@ -7,24 +7,6 @@
 <html xmlns:v="urn:schemas-microsoft-com:vml"
       xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-    <STYLE type="text/css">
-        v\: * {
-            Behavior: url(#default#VML)
-        }
-
-        o\: * {
-            behavior: url(#default#VML)
-        }
-
-        #PieDiv {
-            font-family: arial;
-            line-height: normal;
-        }
-
-        #PieDiv div {
-            font-size: 9px;
-        }
-    </STYLE>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE"/>
     <link rel="stylesheet"
@@ -129,21 +111,18 @@
                             ${query.keyName}
                     </td>
                     <td width="18%" class="td">
-                        <fmt:formatDate value="${query.JieshouTime}" type="both"
-                                        pattern="yyyy-MM-dd HH:mm:ss"/>
+                            ${query.JieshouTime}
                     </td>
                     <td width="10%" class="td">
                         <c:if test="${empty query.videofile}">
                             <s:text name="sundyn.inquiry.result.noVideo"/>
                         </c:if>
                         <c:if test="${!empty query.videofile}">
-                            <%-- 							    <a  href="query/videoPlay2.jsp?videofile=${query.videofile}"  target="_blank"><img src="images/lx.jpg"/></a>--%>
-                            <a href="#" id="${query.id }"><img src="images/lx.jpg"
-                                                               onclick="toshow('${query.videofile}','${pageContext.request.contextPath }','${query.id}');"/></a>
+                            <a href="#" id="${query.id }">
+                                <img src="images/lx.jpg" onclick="toshow('${query.videofile}','${pageContext.request.contextPath }','${query.id}');"/></a>
                             </a>
-                            <%-- 							    <a  href="/download/${query.videofile}"  target="_blank"> <s:text name="sundyn.inquiry.result.download"></s:text></a>--%>
-                            <a href="downloadVideo.action?videofile=${query.videofile}"><s:text
-                                    name="sundyn.inquiry.result.download"></s:text>
+                            <a href="downloadVideo.action?videofile=${query.videofile}">
+                                <s:text name="sundyn.inquiry.result.download"></s:text>
                             </a>
                         </c:if>
                     </td>

@@ -57,6 +57,16 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    <servlet>
+        <servlet-name>log4jconfigfile</servlet-name>
+        <servlet-class>com.sundyn.util.Log4jInitServlet</servlet-class>
+        <init-param>
+            <param-name>configfile</param-name>
+            <param-value>WEB-INF/log4j.properties</param-value>
+        </init-param>
+
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 	<servlet>
 		<servlet-name>proxoolServletConfigurator</servlet-name>
 		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>
@@ -67,9 +77,9 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<!-- 统计在线人数，M7 -->
-	<!-- <listener>
+	<listener>
 		<listener-class>com.sundyn.util.OnLineListener</listener-class>
-	</listener> -->
+	</listener>
 	<!--FCKeditor 开始 -->
 	<servlet>
 		<servlet-name>ConnectorServlet</servlet-name>

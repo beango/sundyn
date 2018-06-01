@@ -62,34 +62,51 @@ function deptopen(selectedval){
 
 //增加星级
 function addInput(){
-	 var inputText=document.getElementById("addInput");
- 	 var inp=document.createElement("li");
- 	 inp.style.width="400px";
- 	inp.innerHTML ="<input style='width:300px' type='text' name='as' value='' /> <img src='images/tp_del.gif' onclick='delInput(this)' /></li>"
- 		 inputText.appendChild(inp);
+    var inputText=document.getElementById("addInput");
+    var inp=document.createElement("li");
+    inp.style.width="100%";
+    inp.style.marginTop="5px";
+ 	inp.innerHTML ="<input style='width:80%;' type='text' name='as' value='' class=\"input_comm\" /> <img src='images/tp_del.gif' onclick='delInput(this)' /></li>"
+    inputText.appendChild(inp);
+    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+    parent.layer.iframeAuto(index);
 }
+
 //删除星级
 function delInput(data){
 	 var inputText=document.getElementById("addInput");
 	 if(inputText.childNodes.length>1){
-		 inputText.removeChild(data.parentNode);
-		 }else{
+	     inputText.removeChild(data.parentNode);
+         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+         parent.layer.iframeAuto(index);
+	 }else{
 		  alert("最少要一个");
 	 }
 }
 
 // 得到当前机构的下一个机构
 function querydept() {
-	var deptids = document.getElementsByName("deptId");
-	var deptId = -1;
+	//var deptids = document.getElementsByName("deptId");
+	/*var deptId = -1;
 	for (i = 0; i < deptids.length; i++) {
 		if (eval(deptId) < eval(deptids[i].value)) {
 			deptId = deptids[i].value;
 		}
-	}
+	}*/
+    var deptId = "";
+    var d = $("#deptId").val().split(",");
+    if(d.length>0)
+    {
+        for (var i=d.length-1; i--; i>-1){
+            if(d[i]!=''){
+                deptId = d[i];
+                break;
+            }
+        }
+    }
  	var startDate = getStartDate();
 	var endDate =  getEndDate();
-  	window.location.href = "queryDeptDeal.action?deptId=" + deptId + "&startDate=" + startDate + "&endDate=" + endDate;
+  	window.location.href = "queryDeptDeal.action?deptId=" + deptId + "&startDate=" + startDate + "&endDate=" + endDate+"&deptpath=" + $("#deptId").val();
 }
 // 删除选定范围内的视频文件
 function deleteVideoFileDeal() {
@@ -168,8 +185,31 @@ function clearEmployee() {
 
 // 关闭弹窗口
 function closeDialog() {
-	var dia = new dialog();
-	dia.close("dialog");
+	try {
+        var dia = new dialog();
+        dia.close("dialog");
+    }
+    catch (e) {
+
+    }
+	try {
+        layer.closeAll('iframe');
+    }
+    catch (e) {
+
+    }
+    try {
+        parent.layer.closeAll('iframe');
+    }
+    catch (e) {
+
+    }
+    try{
+        layer.closeAll('page');
+    }
+    catch (e) {
+
+    }
 }
 
 function closeWindows() {
@@ -191,8 +231,9 @@ function queryEmployeeDeal() {
 	}
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-	var keyword = encodeURI(encodeURI(document.getElementById("keyword").value));
-	document.getElementById("keyword").value="";
+    var keyword = "";
+    //var keyword = encodeURI(encodeURI(document.getElementById("keyword").value));
+	//document.getElementById("keyword").value="";
 	window.location.href = "queryPeopleyDeal.action?id=" + id + "&keyword=" + keyword + "&startDate=" + startDate + "&endDate=" + endDate;
 }
 // 显示按工号查询结果
@@ -308,11 +349,11 @@ function analyseTotalAjaxDay(data) {
     analyseTotalAjax();
 }
 
-function analyseTotalAjax() {
+function analyseTotalAjax(w) {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var type = document.getElementById("type").value;
-	dojo.xhrPost({url:"analyseTotalAjax2.action", content:{startDate:startDate, endDate:endDate, type:type}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"analyseTotalAjax2.action", content:{startDate:startDate, endDate:endDate, type:type, w:w}, load:function (resp, ioArgs) {
 		$("#chartcontainer").html(resp);
     }});
 }
@@ -325,11 +366,11 @@ function analyseContentAjaxDay(data) {
     $("#startDate").val(now.format("yyyy-MM-dd") + " 00:00:00");
     analyseContentAjax();
 }
-function analyseContentAjax() {
+function analyseContentAjax(w) {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var type = document.getElementById("type").value;
-	dojo.xhrPost({url:"analyseContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"analyseContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type, w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
 	}});
 }
@@ -352,10 +393,10 @@ function analyseContentRateAjaxDay(data) {
  function analyseContentRateIndexAjaxDay(data) {
 	dojo.xhrPost({url:"analyseContentRateAjaxDay.action", content:{num:data}, load:function (resp, ioArgs) {
         $("#chartcontainer1").html(resp);
+        dojo.xhrPost({url:"analyseResultRateAjaxDay.action", content:{num:data}, load:function (resp, ioArgs) {
+            $("#chartcontainer2").html(resp);
+        }});
 	}});
-     dojo.xhrPost({url:"analyseResultRateAjaxDay.action", content:{num:data}, load:function (resp, ioArgs) {
-         $("#chartcontainer2").html(resp);
-     }});
 }
 function analyseContentRateAjax() {
 	var startDate = document.getElementById("startDate").value;
@@ -391,7 +432,7 @@ function analyseContentDAjax(){
 
 // 机构分析
 // 业务量分析
-function analyseDeptAjax() {
+function analyseDeptAjax(w) {
 	var deptids = document.getElementsByName("deptId");
 	var deptId = -1;
 	for (i = 0; i < deptids.length; i++) {
@@ -408,7 +449,7 @@ function analyseDeptAjax() {
 			type = types[i].value;
 		}
 	}
-	dojo.xhrPost({url:"analyseDeptAjax123.action", content:{startDate:startDate, endDate:endDate, type:type, deptId:deptId}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"analyseDeptAjax123.action", content:{startDate:startDate, endDate:endDate, type:type, deptId:deptId, w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
 	}});
 }
@@ -521,7 +562,7 @@ function analyseSectionContentRateAjax() {
 }
 
 // 员工业务量
-function analyseEmployeeAjax() {
+function analyseEmployeeAjax(w) {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var types = document.getElementsByName("type");
@@ -531,17 +572,17 @@ function analyseEmployeeAjax() {
 			type = types[i].value;
 		}
 	}
-	var employeeId = document.getElementById("id").value;
-	if(employeeId == ""){
-	 alert("先查询，选择人员");
-	 return false;
-	}
-	dojo.xhrPost({url:"analyseEmployeeAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId}, load:function (resp, ioArgs) {
+	var employeeId = document.getElementById("id").value;console.log("2123");
+	/*if(employeeId == ""){
+	    alert("先查询，选择人员");
+	    return false;
+	}*/
+	dojo.xhrPost({url:"analyseEmployeeAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId,w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
 	}});
 }
 // 员工满意量
-function analyseEmployeeContentAjax() {
+function analyseEmployeeContentAjax(w) {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var types = document.getElementsByName("type");
@@ -556,12 +597,12 @@ function analyseEmployeeContentAjax() {
 	 alert("先查询，选择人员");
 	 return false;
 	}
-	dojo.xhrPost({url:"analyseEmployeeContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"analyseEmployeeContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId, w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
 	}});
 }
 // 员工满意度
-function analyseEmployeeContentRateAjax() {
+function analyseEmployeeContentRateAjax(w) {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var types = document.getElementsByName("type");
@@ -576,7 +617,7 @@ function analyseEmployeeContentRateAjax() {
 	 alert("先查询，选择人员");
 	 return false;
 	}
-	dojo.xhrPost({url:"analyseEmployeeContentRateAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"analyseEmployeeContentRateAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId, w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
 	}});
 }
@@ -589,14 +630,14 @@ function regId(data) {
 	}});
 }
 // 添加机构节点
-function addChildItem() {
+function addChildItem(deptId) {
 
 	if(document.getElementById("tip").innerHTML == "mac 已经被占用"){
 		alert("mac 已经被占用!");
 		return false;
 	}
 
-	if (document.getElementById("deptId").value == "") {
+	if (!deptId) {
 		alert("\u8bf7\u9009\u62e9\u90e8\u95e8");
 		return false;
 	}
@@ -604,7 +645,6 @@ function addChildItem() {
 		alert("\u8bf7\u8f93\u5165\u673a\u6784\u540d\u79f0");
 		return false;
 	}
-	var deptId = document.getElementById("deptId").value;
 	var deptName = document.getElementById("deptName").value;
 	var reMark = document.getElementById("reMark").value;
 	var client_type = 0;
@@ -658,13 +698,19 @@ function addChildItem() {
 	}
 // alert("product_type="+product_type);
 	dojo.xhrPost({url:"deptAddChildItem.action", content:{deptId:deptId, deptName:deptName, reMark:reMark, client_type:client_type, product_type:product_type, deptType:deptType,dept_camera_url:dept_camera_url,dept_businessId:dept_businessId,dept_playListId:dept_playListId,deptPause:deptPause,deptPic:deptPic,deptLogoPic:deptLogoPic,useVideo:useVideo,notice:notice,provinceid:provinceid,cityid:cityid}, load:function (resp, ioArgs) {
-		var deptList = eval(resp);
-		d = new dTree("d");
-		for (i = 0; i < deptList.length; i++) {
-			d.add(deptList[i].id, deptList[i].fatherId, deptList[i].name, "javascript:regId(" + deptList[i].id + ")");
-		}
-		document.getElementById("tree").innerHTML = d;
-		closeDialog();
+	    var _newUrl = parent.location.href;
+	    if(parent.parent.qc){
+                var currTab = parent.parent.qc.main.mainTabs.tabs('getSelected');
+                parent.parent.qc.main.mainTabs.tabs('update', {
+                    tab : currTab,
+                    options : {
+                        content : '<iframe class="iframe-fluid" src="'+_newUrl+'"></iframe>'
+                    }
+                });
+            }
+            else{
+                parent.location.href = _newUrl;
+            }
 	}});
 }
 // 删除机构
@@ -689,53 +735,62 @@ function del() {
 	}});
 }
 // 添加机构对话框
-function deptAddDialog(data) {
+function deptAddDialog(data, deptid, title) {
+    layer.open({
+        type: 2,
+        title: title?title:'提示页',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['600px', '50%'],
+        content: 'deptAddDialog.action?deptType='+data + "&deptId="+deptid,
+        success:function(ly,index){
+
+        }
+    });
+    return;
 	dojo.xhrPost({url:"deptAddDialog.action", content:{deptType:data}, load:function (resp, ioArgs) {
 		dojo.byId("dialog").innerHTML = resp;
 		var dia = new dialog();
 		dia.show("dialog");
-            //页面加载完后执行js代码
-            var fh_group= document.getElementById('provinces').options;
-            var fh_group_value=document.getElementById('provinces').getAttribute('rel');
-            var temp='';
-            console.log(fh_group.length);
-            for(var i=0;i<fh_group.length;i++){
-                temp=fh_group[i].innerHTML;
-                if(temp=='广东'){
-                    document.getElementById("provinces")[i].selected=true;
-                }
-            }
-        showCitys();
+
 	}});
 }
 // 修改机构对话框
-function deptEditDialog() {
+function deptEditDialog(title) {
 	var deptId = document.getElementById("deptId").value;
-	dojo.xhrPost({url:"deptEditDialog.action", content:{deptId:deptId}, load:function (resp, ioArgs) {
-		dojo.byId("dialog").innerHTML = resp;
-
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+    layer.open({
+        type: 2,
+        title: title?title:'提示页',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['600px', '60%'],
+        content: 'deptEditDialog.action?deptId='+deptId,
+        success:function(ly,index){
+            //layer.iframeAuto(index);
+        }
+    });
 }
 // 修改机构
-function deptEditItem() {
+function deptEditItem(deptId) {
 // if (document.getElementById("deptId").value == "") {
 // alert("\u8bf7\u9009\u62e9\u90e8\u95e8");
 // return false;
 // }
-	var deptId= "";
-	var deptId = document.getElementById("deptId").value;
 	var deptName = document.getElementById("deptName").value;
-	var reMark = document.getElementById("reMark").value;
+
+	var reMark = "";
+	if(document.getElementById("reMark"))
+        reMark = document.getElementById("reMark").value;
 // var client_type = document.getElementById("client_type").value;
 	var client_type = 0;
-	var useVideo = document.getElementById("useVideo").value;
+	var useVideo = "";
+    if(document.getElementById("useVideo"))
+        useVideo = document.getElementById("useVideo").value;
 
-	var notice = document.getElementById("notice").value;
-// alert( notice.firstChild.nodeValue);
-// alert("notice");
-// alert("notice.value="+notice);
+	var notice = "";
+    if(document.getElementById("notice"))
+        notice = document.getElementById("notice").value;
+
 
 	var dept_camera_url="";
 	var dept_businessId="";
@@ -748,14 +803,14 @@ function deptEditItem() {
 	var cityid = "";
 
 	if (document.getElementById("deptLogoPic")!=null){
-	deptLogoPic = document.getElementById("deptLogoPic").value;
+	    deptLogoPic = document.getElementById("deptLogoPic").value;
 	}
 	if (document.getElementById("deptPause")!=null){
-	dept_Pause = document.getElementById("deptPause").value;
+	    dept_Pause = document.getElementById("deptPause").value;
 	}
 
 	if (document.getElementById("deptPausePic")!=null){
-	deptPic = document.getElementById("deptPausePic").value;
+	    deptPic = document.getElementById("deptPausePic").value;
 	}
 	if(document.getElementById("dept_camera_url")!=null){
 		dept_camera_url=document.getElementById("dept_camera_url").value;
@@ -777,15 +832,19 @@ function deptEditItem() {
 	}
 // alert("product_type="+product_type);
 	dojo.xhrPost({url:"deptEditItem.action", content:{deptId:deptId, deptName:deptName, reMark:reMark, client_type:client_type,product_type:product_type,dept_camera_url:dept_camera_url,dept_businessId:dept_businessId,dept_playListId:dept_playListId,deptPause:dept_Pause,deptPic:deptPic,deptLogoPic:deptLogoPic,useVideo:useVideo,notice:notice,provinceid:provinceid,cityid:cityid}, load:function (resp, ioArgs) {
-		var deptList = eval(resp);
-		d = new dTree("d");
-		for (i = 0; i < deptList.length; i++) {
-			d.add(deptList[i].id, deptList[i].fatherId, deptList[i].name, "javascript:regId(" + deptList[i].id + ")");
-		}
-		document.getElementById("tree").innerHTML = d;
-		closeDialog();
-		var data = document.getElementById("deptId").value;
-		regId(data);// 显示修改后的信息
+        var _newUrl = parent.location.href;
+	    if(parent.parent.qc){
+                var currTab = parent.parent.qc.main.mainTabs.tabs('getSelected');
+                parent.parent.qc.main.mainTabs.tabs('update', {
+                    tab : currTab,
+                    options : {
+                        content : '<iframe class="iframe-fluid" src="'+_newUrl+'"></iframe>'
+                    }
+                });
+            }
+            else{
+                parent.location.href = _newUrl;
+	    }
 	}});
 }
 // 员工管理
@@ -804,7 +863,20 @@ function page(data) {
 	}});
 }
 // 添加员工对话框
-function employeeAddDialog() {
+function employeeAddDialog(title) {
+    var deptId = document.getElementById("deptId").value;
+    layer.open({
+        type: 2,
+        title: title?title:'提示页',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['600px', '60%'],
+        content: 'employeeAddDialog.action?deptId='+deptId,
+        success:function(ly,index){
+            layer.iframeAuto(index);
+        }
+    });
+    return;
 	dojo.xhrPost({url:"employeeAddDialog.action", load:function (resp, ioArgs) {
 		document.getElementById("dialog").innerHTML = resp;
 		var dia = new dialog();
@@ -858,13 +930,9 @@ function employeeAdd() {
 		Sex = "1";
 	}
 	dojo.xhrPost({url:"employeeAdd.action", content:{Name:Name, job_desc:job_desc, CardNum:CardNum, imgName:imgName, Sex:Sex, Phone:Phone, dept:dept,ext2:ext2,remark:remark,showDeptName:showDeptName,showWindowName:showWindowName,unitName:unitName}, load:function (resp, ioArgs) {
-		if(""!=trim(resp)){
-		    alert(trim(resp));
-		    return;
-        }
-	    document.getElementById("dialog").innerHTML = resp;
-		closeDialog();
-		employeeManage(document.getElementById("deptId").value);
+	    //document.getElementById("dialog").innerHTML = resp;
+		parent.closeDialog();
+		parent.employeeManage(document.getElementById("deptId").value);
 	}});
 }
 // 把file名字放入input传过去
@@ -883,26 +951,38 @@ function getFileName2() {
 }
 // 删除员工
 function employeeDel(data) {
-	dojo.xhrPost({url:"employeeDel.action", content:{employeeId:data}, load:function (resp, ioArgs) {
-		employeeManage(document.getElementById("deptId").value);
-	}});
+	if(confirm('确定要删除该员工吗')){
+        dojo.xhrPost({url:"employeeDel.action", content:{employeeId:data}, load:function (resp, ioArgs) {
+                layer.msg('删除成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    employeeManage(document.getElementById("deptId").value);
+                });
+
+        }});
+    }
 }
 // 修改员工
-function employeeEditDialog(data) {
-	dojo.xhrPost({url:"employeeEditDialog.action", content:{employeeId:data}, load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+function employeeEditDialog(data, title) {
+    layer.open({
+        type: 2,
+        title: title?title:'提示页',
+        shadeClose: true,
+        shade: 0.8,
+        area: 'auto',
+        area: ['600px', '60%'],
+        content: 'employeeEditDialog.action?employeeId='+data,
+        success:function(ly,index){
+            layer.iframeAuto(index);
+        }
+    });
 }
+
 // 导出人员
 function employeeExcel(){
 	window.location.href="employeeExcel.action";
 }
-
-
-
-
 
 // 上传机构暂停图片
 function pauseUpload() {
@@ -930,6 +1010,7 @@ function employeeUpload() {
 	dojo.io.iframe.send({url:"employeeUpload.action", method:"post", handleAs:"text", form:dojo.byId("pic"), handle:function (data, ioArgs) {
 		if (data != "") {
 			document.getElementById("imgName").value = "" + data;
+            console.log('upload.img: ' + data);
 			var img123 = document.getElementById("img123");
 			img123.src = data;
 		}
@@ -970,9 +1051,16 @@ function employeeEdit() {
 	}});
 }
 function employeeOut(data) {
-	dojo.xhrPost({url:"employeeOut.action", content:{employeeId:data}, load:function (resp, ioArgs) {
-		employeeManage(document.getElementById("deptId").value);
-	}});
+     if (confirm("确认要调出吗?")){
+         dojo.xhrPost({url:"employeeOut.action", content:{employeeId:data}, load:function (resp, ioArgs) {
+                 layer.msg('调出成功!', {
+                     icon: 1,
+                     time: 800
+                 }, function(){
+                     employeeManage(document.getElementById("deptId").value);
+                 });
+         }});
+     }
 }
 function employeeOutView() {
 	dojo.xhrPost({url:"employeeOutView.action", load:function (resp, ioArgs) {
@@ -992,13 +1080,18 @@ function employeeIn(data) {
 		return false;
 	}
 	dojo.xhrPost({url:"employeeIn.action", content:{deptId:deptId, employeeId:data}, load:function (resp, ioArgs) {
-		alert("\u5df2\u7ecf\u8c03\u5165\u8be5\u90e8\u95e8\uff0c\u8bf7\u70b9\u51fb\u67e5\u770b");
+            layer.msg('调入成功', {
+                icon: 1,
+                time: 800
+            }, function(){
+                employeeOutView();
+            });
 	}});
 }
 // 根据人员姓名，查询人员
-function employeeQueryKeyword() {
+function employeeQueryKeyword(deptId) {
 	var keyword = document.getElementById("keyword").value;
-	dojo.xhrPost({url:"employeeQueryKeyword.action", content:{keyword:keyword}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"employeeQueryKeyword.action", content:{keyword:keyword, deptId:document.getElementById("deptId").value}, load:function (resp, ioArgs) {
 		document.getElementById("employeeView").innerHTML = resp;
 	}});
 }
@@ -1019,7 +1112,7 @@ function keyTypeQueryDialog(data) {
 	dojo.xhrPost({url:"keyTypeQueryDialog.action", content:{id:data}, load:function (resp, ioArgs) {
 		document.getElementById("dialog").innerHTML = resp;
 		var dia = new dialog();
-		dia.show("dialog");
+		dia.show(resp);
 	}});
 }
 // 修改按键
@@ -1080,11 +1173,8 @@ function managerAddDialog() {
 }
 // 添加低等级用户对话框
 function lowerManagerAddDialog() {
-	dojo.xhrPost({url:"lowerManagerAddDialog.action", load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+    var dia = new dialog();
+    dia.iframe("lowerManagerAddDialog.action");
 }
 // 验证用户不为空
 function managerCheck(){
@@ -1124,17 +1214,14 @@ function managerAdd() {
 	var ext2 = document.getElementById("ext2").value;
 	var userGroupId = document.getElementById("userGroupId").value;
 	dojo.xhrPost({url:"managerAdd.action", content:{name:name, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId}, load:function (resp, ioArgs) {
-		closeDialog();
-		lowerManagerQueryAjax();
+		parent.closeDialog();
+		parent.lowerManagerQueryAjax();
 	}});
 }
 // 修改用户对话框
 function managerEditDialog(data) {
-	dojo.xhrPost({url:"managerEditDialog.action", content:{id:data}, load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+    var dia = new dialog();
+    dia.iframe("managerEditDialog.action?id="+data);
 }
 // 修改用户
 function managerEdit() {
@@ -1154,8 +1241,14 @@ function managerEdit() {
 	var ext2 = document.getElementById("ext2").value;
 	var userGroupId = document.getElementById("userGroupId").value;
 	dojo.xhrPost({url:"managerEdit.action", content:{id:id, name:name, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId}, load:function (resp, ioArgs) {
-		closeDialog();
-		lowerManagerQueryAjax();
+
+            layer.msg('修改成功', {
+                icon: 1,
+                time: 800
+            }, function(){
+                parent.closeDialog();
+                parent.lowerManagerQueryAjax();
+            });
 	}});
 }
 function managerQueryAjax() {
@@ -1164,10 +1257,27 @@ function managerQueryAjax() {
 		document.getElementById("man_zone").innerHTML = resp;
 	}});
 }
+
 function lowerManagerQueryAjax() {
 	var keyword = document.getElementById("keyword").value;
+    var myURL = parseURL(location.href);
+    var _newUrl = replaceUrlParams(myURL, { name: keyword });
+    if(parent.qc && parent.qc.main.mainTabs){
+        var currTab = parent.qc.main.mainTabs.tabs('getSelected');
+        parent.qc.main.mainTabs.tabs('update', {
+            tab : currTab,
+            options : {
+                content: '<iframe class="iframe-fluid" src="'+_newUrl+'"></iframe>'
+            }
+        });
+    }
+    else{
+        location.href = _newUrl;
+    }
+
+    return;
 	dojo.xhrPost({url:"lowerManagerQueryAjax.action", content:{name:keyword}, load:function (resp, ioArgs) {
-		document.getElementById("man_zone").innerHTML = resp;
+		document.getElementById("layui-form").innerHTML = resp;
 	}});
 }
 function managerPage(data) {
@@ -1184,22 +1294,35 @@ function lowerManagerPage(data) {
 }
 function managerDel(data) {
 	var managerId=document.getElementById("managerId").value;
-// alert("managerId="+managerId);
 	if(data==1){
 		alert("不能删除此超级用户！");
 	}else if(managerId==data){
 		alert("不能删除自己！");
 	}else{
-	dojo.xhrPost({url:"managerDel.action", content:{id:data}, load:function (resp, ioArgs) {
-		lowerManagerQueryAjax();
-	}});
+        if (confirm("确认要删除吗?")){
+            dojo.xhrPost({url:"managerDel.action", content:{id:data}, load:function (resp, ioArgs) {
+                    layer.msg('删除成功', {
+                        icon: 1,
+                        time: 800
+                    }, function(){
+                        lowerManagerQueryAjax();
+                    });
+            }});
+        }
 	}
 }
 // 重置密码
 function managerReset(data) {
-	dojo.xhrPost({url:"managerReset.action", content:{id:data}, load:function (resp, ioArgs) {
-		alert("密码重置换成功，为初始密码")
-	}});
+	if (confirm("确认要重置该用户密码吗?")){
+        dojo.xhrPost({url:"managerReset.action", content:{id:data}, load:function (resp, ioArgs) {
+                layer.msg('密码已重置为初始密码', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    closeDialog();
+                });
+        }});
+    }
 }
 // 角色管理
 function powerQueryAjax() {
@@ -1210,10 +1333,12 @@ function powerQueryAjax() {
 }
 // 查找权限低于自身角色的角色
 function lowerPowerQueryAjax() {
-	var keyword = document.getElementById("keyword").value;
+    var keyword = document.getElementById("keyword").value;
+	/*var keyword = document.getElementById("keyword").value;
 	dojo.xhrPost({url:"lowerPowerQueryAjax.action", content:{name:keyword}, load:function (resp, ioArgs) {
 		document.getElementById("man_zone").innerHTML = resp;
-	}});
+	}});*/
+	refreshTab({name: keyword});
 }
 // 分页
 function powerPage(data) {
@@ -1230,18 +1355,20 @@ function lowerPowerPage(data) {
 }
 // 删除
 function powerDel(data) {
-	dojo.xhrPost({url:"powerDel.action", content:{id:data}, load:function (resp, ioArgs){
-		alert(resp);
-		lowerPowerQueryAjax();
-	}});
+	if (confirm("确认要删除吗?")){
+        dojo.xhrPost({url:"powerDel.action", content:{id:data}, load:function (resp, ioArgs){
+                layer.msg('删除成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    lowerPowerQueryAjax();
+                });
+        }});
+    }
 }
 // 添加角色对话框
 function powerAddDialog() {
-	dojo.xhrPost({url:"powerAddDialog.action", load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+    new dialog().iframe("powerAddDialog.action");
 }
 // 判断该角色名是否存在
 function powerExist(){
@@ -1275,17 +1402,19 @@ function powerAdd() {
 	}
 	var deptId = document.getElementById("deptId").value;
 	dojo.xhrPost({url:"powerAdd.action", content:{name:name, baseSet:baseSet, dataManage:dataManage, deptId:deptId}, load:function (resp, ioArgs) {
-		closeDialog();
-		lowerPowerQueryAjax();
+            layer.msg('角色添加成功', {
+                icon: 1,
+                time: 800
+            }, function(){
+                parent.closeDialog();
+                parent.refreshTab();
+            });
+
 	}});
 }
 // 修改角色对话框
 function powerEditDialog(data) {
-	dojo.xhrPost({url:"powerEditDialog.action", content:{id:data}, load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+    new dialog().iframe("powerEditDialog.action?id="+data);
 }
  function powerEdit() {
 	var id = document.getElementById("id").value;
@@ -1312,8 +1441,8 @@ function powerEditDialog(data) {
 	}
 	var deptId = document.getElementById("deptId").value;
 	dojo.xhrPost({url:"powerEdit.action", content:{id:id, name:name, baseSet:baseSet, dataManage:dataManage, deptId:deptId}, load:function (resp, ioArgs) {
-		closeDialog();
-		lowerPowerQueryAjax();
+		parent.closeDialog();
+		parent.refreshTab();
 	}});
 }
 // 汇总
@@ -1507,9 +1636,7 @@ function tipChange(data) {
 // 播放查詢
 function playQueryAjax() {
 	var keyword = document.getElementById("keyword").value;
-	dojo.xhrPost({url:"playQueryAjax.action", content:{keyword:keyword}, load:function (resp, ioArgs) {
-		document.getElementById("man_zone").innerHTML = resp;
-	}});
+	refreshTab({keyword:keyword});
 }
 // 播放翻页面
 function playPage(data) {
@@ -1519,12 +1646,8 @@ function playPage(data) {
 	}});
 }
 // 播放 添加对话框
-function playAddDialog() {
-	dojo.xhrPost({url:"playAddDialog.action", load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+function playAddDialog(title) {
+     new dialog().iframe("playAddDialog.action",{title:title});
 }
 // 上传
 function playupload() {
@@ -1553,23 +1676,17 @@ function playAdd() {
 	var playIndex=document.getElementById("playIndex").value;
 	var playTitle=document.getElementById("playTitle").value;
 
-//    var playContent=FCKeditorAPI.GetInstance("playContent").GetXHTML(true);
 	var playContent = document.getElementById("playContent").value;
 	var patrn=/^[0-9]{1,20}$/;
 	if (!patrn.exec(playIndex)){alert("序列只能为数字");document.getElementById("playIndex").focus();return false;}
  	dojo.xhrPost({url:"playAdd.action", content:{playName:playName, playType:playType, playSource:playSource,playTimes:playTimes,playIndex:playIndex,playTitle:playTitle,playContent:playContent}, load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		closeDialog();
-		playQueryAjax();
+ 	    parent.closeDialog();
+		parent.refreshTab();
 	}});
 }
 // 播放修改对话框
-function playEditDialog(data) {
-	dojo.xhrPost({url:"playEditDialog.action", content:{playId:data}, load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+function playEditDialog(playId, title) {
+     new dialog().iframe("playEditDialog.action?playId="+playId, {title: title});
 }
 // 播放修改
 function playEdit(data) {
@@ -1585,15 +1702,22 @@ function playEdit(data) {
 	var patrn=/^[0-9]{1,20}$/;
 	if (!patrn.exec(playIndex)){alert("序列只能为数字");document.getElementById("playIndex").focus();return false;}
 	dojo.xhrPost({url:"playEdit.action", content:{playName:playName, playType:playType, playSource:playSource, playId:playId,playTimes:playTimes,playIndex:playIndex,playTitle:playTitle,playContent:playContent}, load:function (resp, ioArgs) {
-		closeDialog();
-		playQueryAjax();
+		parent.closeDialog();
+		parent.refreshTab();
 	}});
 }
 // 播放删除
 function playDel(data) {
-	dojo.xhrPost({url:"playDel.action", content:{playId:data}, load:function (resp, ioArgs) {
-		playQueryAjax();
-	}});
+     if (confirm("确定要删除吗?")){
+         dojo.xhrPost({url:"playDel.action", content:{playId:data}, load:function (resp, ioArgs) {
+                 layer.msg('删除成功', {
+                     icon: 1,
+                     time: 800
+                 }, function(){
+                     refreshTab();
+                 });
+             }});
+     }
 }
 // 播放列表查询
 function playListQueryAjax() {
@@ -1605,9 +1729,7 @@ function playListQueryAjax() {
 // 播放列表查询 Android
 function playListQueryAjaxAndroid() {
 	var keyword = document.getElementById("keyword").value;
-	dojo.xhrPost({url:"playListQueryAjaxAndroid.action", content:{keyword:keyword}, load:function (resp, ioArgs) {
-		document.getElementById("man_zone").innerHTML = resp;
-	}});
+    refreshTab({keyword:keyword});
 }
 function playListPage(data){
 	var keyword = document.getElementById("keyword").value;
@@ -1624,12 +1746,8 @@ function playListAddDialog() {
 	}});
 }
 // 播放列表 添加对话框 android
-function playListAddDialogAndroid() {
-	dojo.xhrPost({url:"playListAddDialogAndroid.action", load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+function playListAddDialogAndroid(title) {
+     new dialog().iframe("playListAddDialogAndroid.action",{title: title});
 }
 
 // 播放列表添加
@@ -1648,8 +1766,8 @@ function playListAddAndroid() {
 	var playListDescription = document.getElementById("playListDescription").value;
 	var playIds = getAllKey();
 	dojo.xhrPost({url:"playListAddAndroid.action", content:{playListName:playListName, playListDescription:playListDescription, playIds:playIds}, load:function (resp, ioArgs) {
-		playListQueryAjaxAndroid();
-		closeDialog();
+	    parent.closeDialog();
+		parent.refreshTab();
 	}});
 }
 
@@ -1662,12 +1780,8 @@ function playListEditDialog(data) {
 	}});
 }
 // 播放列表修改Android
-function playListEditDialogAndroid(data) {
-	dojo.xhrPost({url:"playListEditDialogAndroid.action", content:{playListId:data}, load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+function playListEditDialogAndroid(playListId, title) {
+     new dialog().iframe("playListEditDialogAndroid.action?playListId="+playListId, {title: title});
 }
 // 生成在线升级包
 function playListCreateUpdateFile(data){
@@ -1691,31 +1805,27 @@ function playListCreateUpdateZip(data){
 	}});
 }
 
-
 // 生成在线升级包,Zip格式和Bin格式
 function playListCreateUpdateZipFile(data){
 	document.getElementById("pbar").src="images/update_processbar.gif";
 	var playIds = getAllKey();
-	dojo.xhrPost({url:"playListCreateUpdateFile.action", content:{playListId:data,playIds:playIds}, load:function (resp, ioArgs) {
-		document.getElementById("pbar").src="images/update_processend.gif";
-	}});
 	dojo.xhrPost({url:"playListCreateUpdateZip.action", content:{playListId:data,playIds:playIds}, load:function (resp, ioArgs) {
 		document.getElementById("pbar").src="images/update_processend.gif";
-		alert("生成Bin、Zip成功");
-		closeDialog();
-
-// alert("Zip生成成功");
+            layer.msg('生成升级成功', {
+                icon: 1,
+                time: 800
+            }, function(){
+            });
 	}, error:function(){
 		alert("系统错误");
 	}});
-
 }
-
 
 // 给文本框值
 function setvalue() {
 	document.getElementById("playIds").value = getAllKey();
 }
+
 // 播放列表修改
 function playListEdit() {
 	var ShowEmployeePage=1;
@@ -1740,7 +1850,13 @@ function playListEdit() {
 	var playIds = document.getElementById("playIds").value;
 	var playListId = document.getElementById("playListId").value;
 	dojo.xhrPost({url:"playListEdit.action", content:{playListId:playListId, playListName:playListName, playListDescription:playListDescription, playIds:playIds,Version:Version,Approvertime:Approvertime,Welcometime:Welcometime,Shutdownhh:Shutdownhh,Shutdownmm:Shutdownmm,Boothh:Boothh,Bootmm:Bootmm,ShowEmployeePage:ShowEmployeePage,IP:IP,Port:Port,Type:Type}, load:function (resp, ioArgs) {
- 		 alert("保存成功");
+	    layer.msg('保存成功', {
+                icon: 1,
+                time: 800
+            }, function(){
+                parent.closeDialog();
+                parent.refreshTab();
+	    });
 	}});
 }
 // 播放列表删除
@@ -1757,10 +1873,16 @@ function playListDelAndroid(data) {
 		return false;
 	}
 
-	dojo.xhrPost({url:"playListDelAndroid.action", content:{playListId:data}, load:function (resp, ioArgs) {
-		alert(resp);
-		playListQueryAjaxAndroid();
-	}});
+	if (confirm("确认要删除吗?")){
+        dojo.xhrPost({url:"playListDelAndroid.action", content:{playListId:data}, load:function (resp, ioArgs) {
+                layer.msg('删除成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    refreshTab();
+                });
+        }});
+    }
 }
 // 更新M7程序
 function playListUpdateDialog(data) {
@@ -1772,12 +1894,8 @@ function playListUpdateDialog(data) {
 }
 
 // 更新M7程序 Android
-function playListUpdateDialogAndroid(data) {
-	dojo.xhrPost({url:"playListUpdateDialogAndroid.action", content:{playListId:data}, load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+function playListUpdateDialogAndroid(data, title) {
+     new dialog().iframe("playListUpdateDialogAndroid.action?playListId="+ data, {title: title});
 }
 // 配置m7 Config.xml 文件
 function playListConfigDialog(data){
@@ -1788,12 +1906,8 @@ function playListConfigDialog(data){
  }});
 }
 // 配置m7 Config.xml 文件 Android
-function playListConfigDialogAndroid(data){
-	dojo.xhrPost({url:"playListConfigDialogAndroid.action", content:{playListId:data}, load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+function playListConfigDialogAndroid(data, title){
+     new dialog().iframe("playListConfigDialogAndroid.action?playListId="+data, {title: title});
 }
 
 // 保存m7 Config.xml 文件
@@ -1894,8 +2008,12 @@ function playListConfigSaveAndroid(){
  dojo.xhrPost({url:"playListConfigSaveAndroid.action",
 	 content:{playListId:playListId,Version:Version,Approvertime:Approvertime,Welcometime:Welcometime,Shutdownhh:Shutdownhh,Shutdownmm:Shutdownmm,Boothh:Boothh,Bootmm:Bootmm,ShowEmployeePage:ShowEmployeePage,IP:IP,Port:Port,Type:Type},
 	 load:function (resp, ioArgs) {
- 		 alert("保存成功");
- 		 closeDialog();
+         layer.msg('修改成功', {
+             icon: 1,
+             time: 800
+         }, function(){
+             closeDialog();
+         });
  }});
 
 
@@ -2448,14 +2566,15 @@ function starDel(data){
 }
 // 增加星级
 function starAdd(){
-	 var stars=document.getElementById("stars");
-	 if(stars.childNodes.length>=10){
+	 var stars=$("#stars");
+	 console.log(stars.find("li").length);
+	 if(stars.find("li").length>=10){
 		   alert("最多10个");
 		   return 0;
 	 }
  	 var star=document.createElement("li");
-	 star.innerHTML ="<b>满意率:</b><input type='text'   class='input_comm' name='prate' /><b>以上</b><input type='text'    class='input_comm' name='pgrade'/><b>分</b><input type='text'   class='input_comm' name='pstar' /><b>星</b>  <img src='images/tp_add.gif'  onclick='starAdd()'/> <img src='images/tp_del.gif' onclick='starDel(this)' />"
- 	 stars.appendChild(star);
+	 star.innerHTML ="<b>满意率：</b><input type='text'   class='input_comm' name='prate' /><b>以上</b><input type='text'    class='input_comm' name='pgrade'/><b>分</b><input type='text'   class='input_comm' name='pstar' /><b>星</b>  <img src='images/tp_add.gif'  onclick='starAdd()'/> <img src='images/tp_del.gif' onclick='starDel(this)' />"
+ 	 stars[0].appendChild(star);
 }
 // 保存设置
 function sundynSetSave(){
@@ -2543,7 +2662,7 @@ function sundynSetSave(){
 		est9="false";
 	}
 	if(coun>5){
-		alert('员工信息配置最多可以选择四个选项');
+		alert('员工信息配置最多可以选择五个选项');
 		return;
 	}
 	if(document.getElementById("k7").checked){
@@ -2631,9 +2750,12 @@ function sundynSetSave(){
  	   // }
 	}
   	 dojo.xhrPost({url:"baseSetSave.action",content:{camera:camera,k7:k7,star:star,bind:bind,guide:guide,tipLanguage:tipLanguage,title:title,logo:logo,sam:sam,eam:eam,spm:spm,epm:epm,prates:prates,pgrades:pgrades,pstars:pstars,buttom:buttom,requestAddress:requestAddress,standard:standard,est1:est1,est2:est2,est3:est3,est4:est4,est5:est5,est6:est6,est7:est7,est8:est8,est9:est9},load:function (resp, ioArgs){
-			  alert(resp);
+             layer.msg(resp, {
+                 icon: 1,
+                 time: 800
+             }, function(){
+             });
 	 }});
-
 }
 // 查看投票
 function voteResult(data){
@@ -3141,16 +3263,22 @@ function guideSimpleOne(){
      window.location.href="guideSimpleOne.action?multi="+multi;
 }
 
-function guideSimpleTwo(){
+function guideSimpleTwo(){//
      var id =document.getElementById("id").value;
      var name=document.getElementById("name").value;
-     window.location.href="guideSimpleTwo.action?id="+id+"&name="+encodeURI(name)
+    dojo.xhrPost({url:"guideSimpleOnePost.action",content:{id:id,name:name},load:function (resp, ioArgs){
+            window.location.href="guideSimpleTwo.action?id="+id+"&name="+encodeURI(name);
+        }});
+     //window.location.href="guideSimpleTwo.action?id="+id+"&name="+encodeURI(name)
 }
 function guideSimpleThree(){
      var id =document.getElementById("id").value;
      var name=document.getElementById("name").value;
      var remark=document.getElementById("remark").value;
-     window.location.href="guideSimpleThree.action?id="+id+"&name="+encodeURI(name)+"&remark="+encodeURI(remark)
+    dojo.xhrPost({url:"guideSimpleTwoPost.action",content:{id:id,name:name,remark:remark},load:function (resp, ioArgs){
+            window.location.href="guideSimpleThree.action?id="+id+"&name="+encodeURI(name)+"&remark="+encodeURI(remark)
+    }});
+
 }
 function guideEdit(data){
 	dojo.xhrPost({url:"guideEdit.action",content:{id:data},load:function (resp, ioArgs){
@@ -3536,15 +3664,16 @@ function autoDeal2() {
 // ================================================================
 // weburl 信息查询添加框
 function weburToAdd(data) {
+    new dialog().iframe("weburlToAdd.action");
+    return;
 	$('#dialog-window').load("weburlToAdd.action",function(html){
-
 		$('#dialog-window').html(html);
-		UE.getEditor('weburl');
+        UE.getEditor('weburl');
 		var $win;
 		$win = $('#dialog-window').window({
-		    title: '添加信息查询',
-		    width: 920,
-		    height: 450,
+		    title: '添加信息查询',border:false,
+		    width: '80%',
+		    height:'80%',
 		    shadow: true,
 		    modal: true,
 		    iconCls: 'icon-add',
@@ -3559,8 +3688,6 @@ function weburToAdd(data) {
 		});
 		$win.window('open');
 	});
-	//
-
 }
 
 // 添加信息查询
@@ -3569,22 +3696,24 @@ function weburlAdd(){
 	var webname = document.getElementById("webname").value;
 	var weburl = ue.getContent();//document.getElementById("weburl").value;
 	dojo.xhrPost({url:"weburlAdd.action", content:{name:webname,url:weburl}, load:function (resp, ioArgs) {
-		closeWindows();
-		weburlPageAjax('1');
+		parent.closeDialog();
+		parent.refreshTab();
 	}});
 }
 // weburl 信息查询更新框
 function weburlToUpate(data) {
+    new dialog().iframe("weburlToUpdate.action?id=" + data);
+    return;
+
 	$('#dialog-window').load("weburlToUpdate.action",
 		{id: data},
 		function(html){
 			UE.getEditor('weburl');
-			//$('#dialog-window').html(html);
 			var $win;
 			$win = $('#dialog-window').window({
 			    title: '修改信息查询',
-			    width: 920,
-			    height: 450,
+			    width: '80%',
+			    height: '80%',
 			    shadow: true,
 			    modal: true,
 			    iconCls: 'icon-edit',
@@ -3606,16 +3735,22 @@ function weburlUpate(){
 	var weburl = ue.getContent();
 	var id = document.getElementById("uid").value;
 	dojo.xhrPost({url:"weburlUpdate.action", content:{name:webname,url:weburl,id:id}, load:function (resp, ioArgs) {
-		closeWindows();
-		weburlPageAjax('1');
+	    parent.closeDialog();
+		parent.refreshTab();
 	}});
 }
 // 删除 信息查询
 function weburlDelete(data){
-// alert(data);
-	dojo.xhrPost({url:"weburlDelete.action", content:{id:data}, load:function (resp, ioArgs) {
-		weburlPageAjax('1');
-	}});
+    if (confirm("确认要删除吗?")){
+        dojo.xhrPost({url:"weburlDelete.action", content:{id:data}, load:function (resp, ioArgs) {
+                layer.msg('删除成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    refreshTab();
+                });
+        }});
+    }
 }
 // weburl 信息查询 分页
 function weburlPageAjax(data) {
@@ -3631,37 +3766,22 @@ function weburlPage(data) {
 // ================================================================
 // notice 通知公告添加框
 function noticToAdd(data) {
-// var name = document.getElementById("keyword").value;
-	dojo.xhrPost({url:"noticeToAdd.action", content:{name:'123'}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-		dojo.byId("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+    // var name = document.getElementById("keyword").value;
+    new dialog().iframe("noticeToAdd.action?name=123");
 }
 
 // 添加 通知公告
 function noticAdd(){
-// alert('error');
 	var noticeTitle = document.getElementById("noticeTitle").value;
 	var noticeContent = document.getElementById("noticeContent").value;
 	dojo.xhrPost({url:"noticeAdd.action", content:{title:noticeTitle,content:noticeContent}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-// var dia = new dialog();
-// alert('close');
-		closeDialog();
-		noticPageAjax('1');
-
+		parent.closeDialog();
+		parent.refreshTab();
 	}});
 }
 // weburl 通知公告 更新框
-function noticToUpate(data) {
-	dojo.xhrPost({url:"noticeToUpdate.action", content:{id:data}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-		dojo.byId("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+function noticToUpate(data, title) {
+    new dialog().iframe("noticeToUpdate.action?id="+data,{title:title});
 }
 // 更新通知公告
 function noticUpate(){
@@ -3669,22 +3789,25 @@ function noticUpate(){
 	var noticeContent = document.getElementById("noticeContent").value;
 	var id = document.getElementById("nid").value;
 	dojo.xhrPost({url:"noticeUpdate.action", content:{title:noticeTitle,content:noticeContent,id:id}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-		closeDialog();
-		noticPageAjax('1');
-
+		parent.closeDialog();
+		parent.refreshTab();
 	}});
 }
+
 // 删除 通知公告
 function noticDelete(data){
-// alert(data);
-	dojo.xhrPost({url:"noticeDelete.action", content:{id:data}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-// closeDialog();
-		noticPageAjax('1');
-
-	}});
+    if (confirm("确实要删除吗?")){
+        dojo.xhrPost({url:"noticeDelete.action", content:{id:data}, load:function (resp, ioArgs) {
+                layer.msg('删除成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    refreshTab();
+                });
+            }});
+    }
 }
+
 // advice 通知公告 分页
 function noticPageAjax(data) {
 // var name = document.getElementById("keyword").value;
@@ -3704,14 +3827,8 @@ function noticPage(data) {
 
 // ================================================================
 // advice 意见调查 添加框
-function adviceToAdd() {
-// alert('inn...');
-// var name = document.getElementById("keyword").value;
-	dojo.xhrPost({url:"adviceToAdd.action", content:{name:'123'}, load:function (resp, ioArgs) {
-		dojo.byId("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+function adviceToAdd(title) {
+    new dialog().iframe("adviceToAdd.action", {title: title});
 }
 // 添加 意见调查
 function adviceAdd(){
@@ -3725,22 +3842,13 @@ function adviceAdd(){
 		}
 	}
 	dojo.xhrPost({url:"adviceAdd.action", content:{aq:aq,answerString:ac}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-// var dia = new dialog();
-// alert('close');
-		closeDialog();
-		advicePageAjax('1');
-
+		parent.closeDialog();
+		parent.refreshTab();
 	}});
 }
 // 意见调查 更新框
-function adviceToUpate(data) {
-	dojo.xhrPost({url:"adviceToUpdate.action", content:{id:data}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-		dojo.byId("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+function adviceToUpate(data, title) {
+    new dialog().iframe("adviceToUpdate.action?id=" + data, {title:title});
 }
 // 更新意见调查
 function adviceUpate(){
@@ -3754,21 +3862,22 @@ function adviceUpate(){
 		}
 	}
 	dojo.xhrPost({url:"adviceUpdate.action", content:{aq:aq,answerString:ac,id:id}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-		closeDialog();
-		advicePageAjax('1');
-
+		parent.closeDialog();
+		parent.refreshTab();
 	}});
 }
 // 删除 意见调查
 function adviceDelete(data){
-// alert(data);
-	dojo.xhrPost({url:"adviceDelete.action", content:{id:data}, load:function (resp, ioArgs) {
-// document.getElementById("man_zone").innerHTML = resp;
-// closeDialog();
-		advicePageAjax('1');
-
-	}});
+	if(confirm("确定要删除吗?")){
+        dojo.xhrPost({url:"adviceDelete.action", content:{id:data}, load:function (resp, ioArgs) {
+                layer.msg('删除成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    refreshTab();
+                });
+            }});
+    }
 }
 // 意见调查 分页
 function advicePageAjax(data) {
@@ -3795,12 +3904,35 @@ function macCheck(data){
 function noData(id){
 	alert('没有可以导出的数据。');
 }
-function bindWeburlDialog(){
+function bindWeburlDialog(title){
 	var deptId = document.getElementById("deptId").value;
+    /*layer.open({
+        type: 2,
+        title: title?title:'提示页',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['600px', '60%'],
+        content: 'toBindWeburl.action?deptId='+deptId,
+        success:function(ly,index){
+            layer.iframeAuto(index);
+        }
+    });
+    return;*/
 	dojo.xhrPost({url:"toBindWeburl.action", content:{deptId:deptId}, load:function (resp, ioArgs) {
-		dojo.byId("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
+            layer.open({
+                type: 1,
+                title: title?title:'提示页',
+                shadeClose: true,
+                shade: 0.8,
+                area: '500px',
+                content: resp,
+                success:function(ly,index){
+                    //layer.iframeAuto(index);
+                }
+            });
+		//dojo.byId("dialog").innerHTML = resp;
+		//var dia = new dialog();
+		//dia.show("dialog");
 	}});
 }
 function deptWeburlAdd(){
@@ -3813,9 +3945,12 @@ function deptWeburlAdd(){
    	}
     var ids = retVal.toString();
 	dojo.xhrPost({url:"deptWeburlAdd.action", content:{deptId:deptId,retVal:ids}, load:function (resp, ioArgs) {
-		if(alert('修改成功')){
-			closeDialog();
-		}
+            layer.msg('修改成功', {
+                icon: 1,
+                time: 800
+            }, function(){
+                closeDialog();
+            });
 	}});
 }
 //图片或者视频预览
@@ -3834,12 +3969,73 @@ function toshow(videofile,path1,id){
 	  }
 
 function showRemark(content){
-
 	  layer.alert(content, {
 	    skin: 'layui-layer-lan'
 	    ,closeBtn: 0
 	    ,shift: 4 //动画类型
 	  });
+}
 
+function refreshTab(param){
+    var myURL = location.href;//parseURL(location.href);
+    if (param){
+        myURL = parseURL(location.href);
+        myURL = replaceUrlParams(myURL, param);
+    }
+    console.log("刷新:" + myURL);
+    //myURL = replaceUrlParams(myURL, { pageSize: pageSize, currentPage:pageNumber });
+    if(parent.qc && parent.qc.main.mainTabs){
+        var currTab = parent.qc.main.mainTabs.tabs('getSelected');
+        parent.qc.main.mainTabs.tabs('update', {
+            tab : currTab,
+            options : {
+                content : '<iframe class="iframe-fluid" onload="CreatNodeAll()" src="'+myURL+'"></iframe>'
+            }
+        });
+    }
+    else{
+        location.href = _newUrl;
+    }
+}
 
+function initPager(_count, _curr, _limit){
+    layui.use('laypage', function(){
+        var laypage = layui.laypage;
+
+        //执行一个laypage实例
+        laypage.render({
+            elem: 'pp', //注意，这里的 test1 是 ID，不用加 # 号
+            layout:['limit','prev', 'page', 'next','count'],
+            count: _count, //数据总数，从服务端得到
+            curr: _curr,
+            limit: _limit,
+            jump: function(obj, first){
+                //obj包含了当前分页的所有参数，比如：
+                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                console.log(obj.limit); //得到每页显示的条数
+                console.log(first);
+                //首次不执行
+                if(!first){
+                    var myURL = parseURL(location.href);
+                    var _newUrl = replaceUrlParams(myURL, { pageSize: obj.limit, currentPage:obj.curr });
+                    if(parent.qc&&parent.qc.main.mainTabs){
+                        var currTab = parent.qc.main.mainTabs.tabs('getSelected');
+                        console.log("创建层1");
+                        parent.qc.main.mainTabs.tabs('update', {
+                            tab : currTab,
+                            options : {
+                                content : '<iframe class="iframe-fluid" onload="parent.parent.CreatNodeAll()" onreadystatechange="CancelAll();" src="'+_newUrl+'"></iframe>'
+                            }
+                        });
+                    }
+                    else{
+                        location.href = _newUrl;
+                    }
+                }
+                else{
+
+                }
+            }
+        });
+    });
 }

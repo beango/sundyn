@@ -6,7 +6,7 @@
 	<bean id="menuService" class="com.sundyn.service.MenuService" parent="superDao"/>
 	<bean id="quicklyService" class="com.sundyn.service.QuicklyService" parent="superDao"/>
 	<bean id="powerService" class="com.sundyn.service.PowerService" parent="superDao"/>
-	<bean id="deptService" class="com.sundyn.service.DeptService" parent="superDao"/>
+	<bean id="deptService" class="com.sundyn.service.DeptService" parent="superDao" />
 	<bean id="queryService" class="com.sundyn.service.QueryService" parent="superDao"/>
 	<bean id="employeeService" class="com.sundyn.service.EmployeeService" parent="superDao"></bean>
 	<bean id="errorInfoService" class="com.sundyn.service.ErrorInfoService" parent="superDao"></bean>
@@ -21,6 +21,7 @@
     <bean id="lybService" class="com.sundyn.service.LybService" parent="superDao"></bean>
     <bean id="voteService" class="com.sundyn.service.VoteService" parent="superDao"></bean>
     <bean id="businessService" class="com.sundyn.service.BusinessService" parent="superDao"></bean>
+    <bean id="clientService" class="com.sundyn.service.ClientService" parent="superDao"></bean>
     <!--
     <bean id="loginService" class="com.sundyn.service.LoginService" parent="superDao"></bean>
     -->
@@ -49,5 +50,5 @@
       <!--    设置最多页数工具类-->
     <bean id="pageUtils" class="com.sundyn.utils.PageUtils" parent="superDao"></bean>
     <bean id="citysUtils" class="com.sundyn.utils.CitysUtils" parent="superDao"></bean>
-      
+
 </beans>

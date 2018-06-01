@@ -9,47 +9,24 @@
 <html xmlns:v="urn:schemas-microsoft-com:vml"
 	xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-<STYLE type="text/css">
-v\:* {
-	Behavior: url(#default#VML)
-}
-
-o\:* {
-	behavior: url(#default#VML)
-}
-
-#PieDiv {
-	font-family: arial;
-	line-height: normal;
-}
-
-#PieDiv div {
-	font-size: 9px;
-}
-
-table {
-	font-size: 12px;
-	font-weight: 10px;
-	text-align: center;
-}
-</STYLE>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet"
-	href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+
 <title><s:text name='sundyn.title' /></title>
+    <link rel="stylesheet"
+          href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+    <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
     <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
     <script type="text/javascript" src="lib/lhgdialog/lhgdialog.js"></script>
-<script type="text/javascript" src="js/wz_jsgraphics.js"></script>
-<script type="text/javascript" src="js/pie.js"></script>
-<script type="text/javascript" src="js/Pie3D.js"></script>
-<script type="text/javascript" src="js/dojo.js"></script>
-<script type="text/javascript"
-	src="js/my_<s:text name='sundyn.language' />.js"></script>
-<script language="javascript" type="text/javascript"
-	src="My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
+    <script type="text/javascript" src="js/pie.js"></script>
+    <script type="text/javascript" src="js/Pie3D.js"></script>
+    <script type="text/javascript" src="js/dojo.js"></script>
+    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+    <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
 </head>
 <body>
-	<div id="man_zone">
+<div id="layui-main">
 		<form id="form1" name="form1" method="post" action="">
 			<table width="100%" height="50" border="0" cellpadding="0"
 				cellspacing="0" style="border-color: #FFFFFF;">
@@ -97,7 +74,7 @@ table {
 			</table>
 		</form>
 		<div style="width: 100%; margin: 0 auto;">
-			<table width="100%" cellpadding="0" cellspacing="0">
+			<table width="100%" cellpadding="0" cellspacing="0" class="layui-table">
 				<tr>
 					<td width="8%" rowspan="2" align="center" valign="middle"
 						background="images/03_02_07.jpg" class="px13_1"><s:text
@@ -215,7 +192,7 @@ table {
 				</c:forEach>
 			</table>
 		</div>
-		<div class="sundyn_row">${pager.pageTextCn }</div>
+		<div id="pp" class="sundyn_row">${pager.pageTextCn }</div>
 
 		<div class="fengge" style="height: 21px; text-align: left;">
 			<%
@@ -258,14 +235,14 @@ table {
 			</s:if>
 			<s:if test='getText("sundyn.language") eq "en"'>
 				<span style="color: red;"> <%
- 	out.print(str);
- %>
+                out.print(str);
+             %>
 				</span>
 			</s:if>
 		</div>
 		<!-- 统计信息开始 -->
 		<table id="table1" width="100%" height="172" border="0"
-			cellpadding="0" cellspacing="0" class="px12"
+			cellpadding="0" cellspacing="0" class="layui-table"
 			style="border-top: 1px solid #bad6ec; border-right: 1px solid #bad6ec; margin: 0 auto;">
 			<tr>
 				<td colspan="7" align="center" valign="middle"
@@ -338,4 +315,7 @@ table {
 
 	</div>
 </body>
+<script type="text/javascript">
+    initPager(${pager.getRowsCount()}, ${pager.getCurrentPage()},${pager.getPageSize()});
+</script>
 </html>

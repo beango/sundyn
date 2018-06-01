@@ -4,20 +4,17 @@
 <something-else-entirely>
 	<proxool>
 		<alias>DbPool</alias>
-		<driver-url>jdbc:mysql://127.0.0.1:3306/appries</driver-url>
-		<driver-class>com.mysql.jdbc.Driver</driver-class>
+		<driver-url>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=zxeval</driver-url>
+		<driver-class>com.microsoft.jdbc.sqlserver.SQLServerDriver</driver-class>
 		<driver-properties>
-			<property name="user" value="root" />
-			<property name="password" value="123456" />
-			<property name="useUnicode" value="true" />
-			<property name="characterEncoding" value="GBK" />
+			<property name="user" value="sa" />
+			<property name="password" value="sa123456." />
 		</driver-properties>
 		<minimum-connection-count>5</minimum-connection-count>
 		<maximum-connection-count>100</maximum-connection-count>
-		<maximum-active-time>60000000</maximum-active-time>
+		<maximum-active-time>6000000</maximum-active-time>
 		<house-keeping-test-sql>select 1</house-keeping-test-sql>
 		<prototype-count>5</prototype-count>
 		<house-keeping-sleep-time>100000</house-keeping-sleep-time>
-		<simultaneous-build-throttle>20</simultaneous-build-throttle>
  	</proxool>
 </something-else-entirely>

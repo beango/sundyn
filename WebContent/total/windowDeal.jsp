@@ -1,9 +1,11 @@
-<%@ page pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
-<%@ page import="java.util.List,java.util.Map"%>
+<%@page import="java.util.List,java.util.Map"%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:v="urn:schemas-microsoft-com:vml"
 	xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -34,26 +36,31 @@ table {
 </STYLE>
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet"
-	href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
 <title><s:text name='sundyn.title' /></title>
+    <link rel="stylesheet"
+          href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+    <link href="${ctx}/assets/stylesheets/application.css?1442799557" rel="stylesheet" />
+    <link href="${ctx}/assets/stylesheets/vendor/fontawesome/fontawesome.css?1440992355" rel="stylesheet" />
+    <link href="${ctx}/assets/stylesheets/highlighting.css?1442373184" rel="stylesheet" />
+    <link href="${ctx}/assets/stylesheets/main.css?1514875963" rel="stylesheet" media="screen">
+    <script src="${ctx}/assets/javascripts/vendor/jquery-2.1.3.min.js?1440992355"></script>
     <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
     <script type="text/javascript" src="lib/lhgdialog/lhgdialog.js"></script>
-<script type="text/javascript" src="js/wz_jsgraphics.js"></script>
-<script type="text/javascript" src="js/pie.js"></script>
-<script type="text/javascript" src="js/Pie3D.js"></script>
-<script type="text/javascript" src="js/dojo.js"></script>
-<script type="text/javascript"
-	src="js/my_<s:text name='sundyn.language' />.js"></script>
-<script language="javascript" type="text/javascript"
-	src="My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
+    <script type="text/javascript" src="js/pie.js"></script>
+    <script type="text/javascript" src="js/Pie3D.js"></script>
+    <script type="text/javascript" src="js/dojo.js"></script>
+    <script type="text/javascript"
+	    src="js/my_<s:text name='sundyn.language' />.js"></script>
+    <script language="javascript" type="text/javascript"
+	    src="My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 $(function(){
-	deptopen('${deptId}');
+	//deptopen('${deptId}');
 });
 </script>
 </head>
-<body>
+<body class="theme-default easyui-layout">
 	<div id="man_zone">
 		<form id="form1" name="form1" method="post" action="">
 			<table width="100%" height="50" border="0" cellpadding="0"
@@ -72,21 +79,22 @@ $(function(){
 
 						</div>
                         <div style="float:left;">选择大厅：</div>
-						<div id="dept" style="float:left;padding-top:-9px;margin-right:10px;">
-							<select id="deptId" name="deptId">
-								<c:forEach items="${list2}" var="dept" varStatus="index">
-									<option
-										<c:if test="${index.index==0 || deptId==dept.id}">  selected="selected" </c:if>
-										value="${dept.id }">${dept.name}</option>
-								</c:forEach>
-							</select>
-						</div>
-						<div style="float: left; height: 25px; background: url("
-							<s:text name='sundyn.total.pic.query'/>") center
-							no-repeat" style="border-color:#FFFFFF;"
+                        <div id="dept" class="sundyn_content" style="float: left;">
+                            <a id="deptSelectMenu" class="easyui-menubutton l-btn-primary" data-options="menu:'#mm-deptSelectMenu'" href="javascript:void(0)">-- 请选择 --</a>
+                            <input type="hidden" id="deptId" name="deptId" value="${deptId}"/>
+                            <div data-options='itemHeight:32' id='mm-deptSelectMenu'>
+                                <jsp:include page="../control/recursive.jsp">
+                                    <jsp:param name="objectid" value="deptSelectMenu,deptId"></jsp:param>
+                                    <jsp:param name="fatherId" value="-1"></jsp:param>
+                                    <jsp:param name="idPath" value='-1'></jsp:param>
+                                    <jsp:param name="namePath" value=""></jsp:param>
+                                    <jsp:param name="selected" value="${deptId}"></jsp:param>
+                                </jsp:include>
+                            </div>
+                        </div>
+						<div style="float: left; height: 25px; margin-left:10px; background: url("<s:text name='sundyn.total.pic.query'/>") center no-repeat" style="border-color:#FFFFFF;"
 							onclick="totalWindowDeal()">
-							<img src="<s:text name='sundyn.total.pic.query'/>" width="80"
-								height="25" />
+							<img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" />
 						</div>
 						<div style="float:left; margin-left:10px;">
 							<s:if test="list.size==0">
@@ -364,4 +372,8 @@ $(function(){
 		<div class="fengge"></div>
 	</div>
 </body>
+<script src="${ctx}/assets/javascripts/jquery.easyui.min.js"></script>
+<%--<script src="${ctx}/js/easyui-1.5.3/jquery.easyui.min.js"></script>--%>
+<script src="${ctx}/js/main.js"></script>
+
 </html>

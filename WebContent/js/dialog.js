@@ -6,7 +6,34 @@ function dialog()
         document.body.removeChild(document.getElementById("bgDiv"));
 		document.getElementById(o).style.display="none";
     }
-    this.show=function(o)
+    this.show=function(resp){
+        layer.open({
+            type: 1,
+            title: '提示页',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['600px', '60%'],
+            content: resp,
+            success:function(ly,index){
+                //layer.iframeAuto(index);
+            }
+        });
+    }
+    this.iframe=function(url, args, cb){
+        layer.open({
+            type: 2,
+            title: args && args.title ? args.title : '提示页',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['600px', '60%'],
+            content: url,
+            success:function(ly,index){
+                if(cb)cb();
+                layer.iframeAuto(index);
+            }
+        });
+    }
+    this.show1=function(o)
     {
         var sWidth,sHeight;
         var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;

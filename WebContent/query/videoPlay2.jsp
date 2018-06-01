@@ -20,13 +20,13 @@
 <script type="text/javascript">
 	var s1 = new SWFObject("flvplayer.swf","single","700","500","7");
 	s1.addParam("allowfullscreen","true");
-	s1.addVariable("file","../download/<%=videofile%>");
+	s1.addVariable("file","../download/recorder/<%=videofile%>");
+    //s1.addVariable("file","ftp://111.230.14.84/recorder/<%=videofile%>");
 	s1.addVariable("image","preview.jpg");
 	s1.addVariable("width","700");
-	s1.addVariable("height","600");
+	s1.addVariable("height","600");//s1.addVariable("autostart","true");
 	s1.write("player1");
 </script>
-
 
 </body>
 

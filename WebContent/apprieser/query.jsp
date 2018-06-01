@@ -5,38 +5,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
-		<link rel="stylesheet" href="css/dialog.css" type="text/css" />
 		<title>终端管理</title>
-		<script type="text/javascript" src="js/dojo.js"></script>
-		<script type="text/javascript" src="js/dialog.js"></script>
-		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+        <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+        <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
+        <script type="text/javascript" src="js/dojo.js"></script>
+
+        <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+        <script type="text/javascript" src="lib/layer/layer.js"></script>
+        <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+        <script type="text/javascript" src="js/dialog.js"></script>
+        <script type="text/javascript" src="js/myAjax.js"></script>
 	</head>
 	<body>
-		<div id="man_zone">
-			 <div class="fengge" style="height:15px;">&nbsp;</div>
-			 <div style="width:99%;padding-left: 5px">
-			 <table width="99%"   cellpadding="0" cellspacing="0" align="center">
-			  <tr>
-			    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.apprieser.index' /></td>
-			    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.apprieser.apprieserName' /></td>
-			    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.operation' /></td>
-			  </tr>
-			  <c:forEach items="${list}" var="apprieser" varStatus="index">
-						<tr style="height: 30px;">
-							<td align="center" valign="middle">
-								${index.index+1}
-							</td>
-							<td align="center" valign="middle">
-								<s:text name="sundyn.system.deviceManagement.sixKeyMachine"/>
-							</td>
-							<td align="center" valign="middle">
-							   <div class="button" onclick="keyTypeQueryDialog(${apprieser.apprieserid})"><s:text name='sundyn.apprieser.keySteup' /></div>
-							</td>
-						</tr>
-		 	 </c:forEach>
-			 </table>
-			</div>
+		<div id="layer-form">
+            <div class="fengge" style="height:15px;">&nbsp;</div>
+            <table class="layui-table">
+                <tr>
+                    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.apprieser.index' /></td>
+                    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.apprieser.apprieserName' /></td>
+                    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.operation' /></td>
+                </tr>
+                <c:forEach items="${list}" var="apprieser" varStatus="index">
+                    <tr style="height: 30px;">
+                        <td>
+                                ${index.index+1}
+                        </td>
+                        <td>
+                            <s:text name="sundyn.system.deviceManagement.sixKeyMachine"/>
+                        </td>
+                        <td>
+                            <div class="button" onclick="keyTypeQueryDialog(${apprieser.apprieserid})"><s:text name='sundyn.apprieser.keySteup' /></div>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
 		</div>
 		<div id="dialog" style="width: 700px; display: none;">
 	</body>

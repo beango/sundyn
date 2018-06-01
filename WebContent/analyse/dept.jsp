@@ -2,39 +2,43 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
-    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
     <title><s:text name='sundyn.title'/></title>
-    <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
+    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
+    <link href="${ctx}/assets/stylesheets/vendor/fontawesome/fontawesome.css?1440992355" rel="stylesheet" />
+    <link href="${ctx}/assets/stylesheets/application.css?1442799557" rel="stylesheet" />
+    <link href="${ctx}/assets/stylesheets/vendor/fontawesome/fontawesome.css?1440992355" rel="stylesheet" />
+    <link href="${ctx}/assets/stylesheets/highlighting.css?1442373184" rel="stylesheet" />
+    <link href="${ctx}/assets/stylesheets/main.css?1514875963" rel="stylesheet" media="screen">
+    <script src="${ctx}/assets/javascripts/vendor/jquery-2.1.3.min.js?1440992355"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="js/line.js"></script>
     <script type="text/javascript" src="js/jscharts.js"></script>
-    <script type="text/javascript" src="js/json.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
 </head>
-<body>
-<script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
-<form id="form1" name="form1" method="post" action="">
+<body class="theme-default easyui-layout">
     <table width="100%" height="50" border="0" cellpadding="0" cellspacing="0" style="border-color:#FFFFFF;">
         <tr>
-            <td align="left" style="border-color:#FFFFFF;"><div style="float:left;padding-top:5px;">选择大厅：</div>
-                <div id="dept" style="float:left;margin-top:5px;">
-                    <select name="deptId">
-                        <c:forEach items="${deptList}" var="dept" varStatus="index">
-                            <option value="${dept.id}"
-                                    <c:if test="${index.index ==0 }">
-                                        selected="selected"
-                                    </c:if>
-                            >
-                                    ${dept.name}
-                            </option>
-                        </c:forEach>
-                    </select>
-                    <img src="images/arrow.gif" style="cursor: pointer;" onclick="deptopen()"/>
+            <td align="left" style="border-color:#FFFFFF;">${detpJSON}
+                <div style="float:left;"><s:text name='sundyn.query.selectDept'/></div>
+                <div id="dept2" class="sundyn_content" style="float: left;">
+                    <a id="deptSelectMenu" class="easyui-menubutton l-btn-primary" data-options="menu:'#mm-deptSelectMenu'" href="javascript:void(0)">-- 请选择 --</a>
+                    <input type="hidden" id="deptId" name="deptId" value="${deptId}"/>
+                    <div data-options='itemHeight:32' id='mm-deptSelectMenu' style="display: none;">
+                        <jsp:include page="../control/recursive.jsp">
+                            <jsp:param name="objectid" value="deptSelectMenu,deptId"></jsp:param>
+                            <jsp:param name="fatherId" value="-1"></jsp:param>
+                            <jsp:param name="idPath" value='-1'></jsp:param>
+                            <jsp:param name="namePath" value=""></jsp:param>
+                            <jsp:param name="selected" value="${deptId}"></jsp:param>
+                        </jsp:include>
+                    </div>
                 </div>
                 <div style="float:left;">
                     <s:text name='sundyn.total.startDate'/>
@@ -51,13 +55,16 @@
             </td>
         </tr>
     </table>
-</form>
-<div style="height:100%;" id="chartcontainer">
+<div style="height:100%;width:100%;" id="chartcontainer">
 </div>
+
+</body>
+<script src="${ctx}/assets/javascripts/jquery.easyui.min.js"></script>
+<%--<script src="${ctx}/js/easyui-1.5.3/jquery.easyui.min.js"></script>--%>
+<script src="${ctx}/js/main.js"></script>
 <script type="text/javascript">
     $(function () {
-        deptopen();
+        analyseDeptAjax($("#chartcontainer").width());
     })
 </script>
-</body>
 </html>

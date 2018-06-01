@@ -11,26 +11,14 @@
 		<link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
 		<link rel="stylesheet" href="css/dtree.css" type="text/css" />
 		<title><s:text name='sundyn.title'/></title>
+        <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
 		<script type="text/javascript" src="js/ddtree.js"></script>
+        <script type="text/javascript" src="js/json2.js"></script>
 		<script type="text/javascript" src="js/dojo.js"></script>
 		<script type="text/javascript" src="js/dialog.js"></script>
 		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?<%=new Date().getTime()%>"></script>
- 		<style type="text/css">
-			a:link { font-family:12px; color:#000; text-decoration:none}
-			a:visited { font-family:12px; color: #000; text-decoration:none}
-			a:hover { font-family:12px; color: #09437d; text-decoration:none}
-			a:active { font-family:12px; color: #000; text-decoration:none}
-			.td{
-				font-size:12px;
-				color:#09437d;
-				font-family:"宋体";
-				line-height:210%;
-				font-weight: bold;
-			}
-			.td1{
-				font-size:12px; color:#333333; font-family:"宋体"; line-height:210%;
-			}
-		</style>
+        <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
+        <script type="text/javascript" src="lib/layer/layer.js"></script>
 	</head>
 	<body>
 		<div id="man_zone">

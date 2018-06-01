@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <%@ page import="java.util.List,java.util.Map" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -32,8 +33,14 @@
         }
     </STYLE>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
     <title><s:text name='sundyn.title'/></title>
+    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
+    <link href="${ctx}/assets/stylesheets/vendor/fontawesome/fontawesome.css?1440992355" rel="stylesheet" />
+    <link href="${ctx}/assets/stylesheets/application.css?1442799557" rel="stylesheet" />
+    <link href="${ctx}/assets/stylesheets/vendor/fontawesome/fontawesome.css?1440992355" rel="stylesheet" />
+    <link href="${ctx}/assets/stylesheets/highlighting.css?1442373184" rel="stylesheet" />
+    <link href="${ctx}/assets/stylesheets/main.css?1514875963" rel="stylesheet" media="screen">
+    <script src="${ctx}/assets/javascripts/vendor/jquery-2.1.3.min.js?1440992355"></script>
     <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
     <script type="text/javascript" src="lib/lhgdialog/lhgdialog.js"></script>
     <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
@@ -42,19 +49,15 @@
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?<%=new java.util.Date().getTime()%>"></script>
     <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            deptopen('${deptId}');
-        });
-    </script>
 </head>
-<body>
+<body class="theme-default easyui-layout">
 <div id="man_zone">
     <form id="form1" name="form1" method="post" action="">
         <table width="100%" height="50" border="0" cellpadding="0" cellspacing="0" style="border-color:#FFFFFF;">
             <tr>
                 <td align="left" style="border-color:#FFFFFF;width:100%;">
                     <div style="float: left; margin-right:10px;">
+                        <div style="float: left; margin-right: 10px;">
                         <s:text name='sundyn.total.startDate'/>
                         <input type="text" id="startDate" class="input_comm" value="${startDate}"  <s:text
                                 name="sundyn.language.calendar.setDay"/>
@@ -63,20 +66,22 @@
                         <input type="text" id="endDate" class="input_comm" value="${endDate}" <s:text
                                 name="sundyn.language.calendar.setDay"/>
                                onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-                        <span style="padding-top:5px;">选择大厅：</span>
-                        <span id="dept">
-								<select name="deptId">
-								<c:forEach items="${deptList}" var="dept" varStatus="index">
-									<option value="${dept.id}"
-                                            <c:if test="${index.index ==0 }">
-                                                selected="selected"
-                                            </c:if>>${dept.name}
-                                    </option>
-                                </c:forEach>
-								</select>
-							</span>
+                        </div>
+                        <div style="float:left;">选择大厅：</div>
+                        <div id="dept" class="sundyn_content" style="float: left;">
+                            <a id="deptSelectMenu" class="easyui-menubutton l-btn-primary" data-options="menu:'#mm-deptSelectMenu'" href="javascript:void(0)">-- 请选择 --</a>
+                            <input type="hidden" id="deptId" name="deptId" value="${deptId}"/>
+                            <div data-options='itemHeight:32' id='mm-deptSelectMenu' style="display: none;">
+                                <jsp:include page="../control/recursive.jsp">
+                                    <jsp:param name="objectid" value="deptSelectMenu,deptId"></jsp:param>
+                                    <jsp:param name="fatherId" value="-1"></jsp:param>
+                                    <jsp:param name="idPath" value='-1'></jsp:param>
+                                    <jsp:param name="namePath" value=""></jsp:param>
+                                    <jsp:param name="selected" value="${deptId}"></jsp:param>
+                                </jsp:include>
+                            </div>
+                        </div>
                     </div>
-
                     <div style="float:left; height:25px;background:url('<s:text
                             name='sundyn.total.pic.query'/>') center no-repeat" onclick="totalPersonDeal()"><img
                             src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25"/>
@@ -325,4 +330,7 @@
     <div class="fengge"></div>
 </div>
 </body>
+<script src="${ctx}/assets/javascripts/jquery.easyui.min.js"></script>
+<%--<script src="${ctx}/js/easyui-1.5.3/jquery.easyui.min.js"></script>--%>
+<script src="${ctx}/js/main.js"></script>
 </html>

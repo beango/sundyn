@@ -1,21 +1,3 @@
-html{
-}
-body {
-	text-align: center;
-	overflow: hidden;
-	font-family: Verdana, Arial, Vrinda, Tahoma;
-	font-size: 12px;
-	color: #666;
-	padding:0 2px; margin:0;
-}
-html,body { height: 100%;margin: 0; padding: 0;}
-IMG {
-	border: 0;
-}
-
-TABLE {
-	font-size: 15px;
-}
 
 a {
 	color: #555;
@@ -275,16 +257,19 @@ div {
 }
 
 .input_comm {
-	border: 1px solid #4172B7;
-	height: 18px;
+	border: 1px solid #000;
+	height: 28px;
 	width: 150px;
+    padding-left:3px;
+    -moz-border-radius: 3px;      /* Gecko browsers */
+    -webkit-border-radius: 3px;   /* Webkit browsers */
+    border-radius:3px;            /* W3C syntax */
 }
 .hand{
 cursor: pointer;
 }
 .ff{
 color:#333333;
-font-family:"瀹嬩綋";
 font-size:12px;
 }
 .button{
@@ -317,7 +302,7 @@ font-size:12px;
 .left{
 float: left;
 }
-/*瀹氫箟鏍囬寮�濮�*/
+
 .title360{
 	background-image: url('../images/02_01_03_title_bg.gif');
 	background-repeat:no-repeat;
@@ -395,9 +380,6 @@ float: left;
  	*margin-left: 145px;
 }
 
-
-
-/*瀹氫箟鏍囬缁撴潫*/
 .list{
 	margin-top: 0 auto;
 	width: 90%;
@@ -435,8 +417,9 @@ float: left;
   border-top-width: 0px;
   background-image: url("../images/table_bg_03.jpg");
   font-weight: bold;
-  font-size: 14px;
-  text-align: center;
+  font-size: 12px;
+    height:26px !important;
+  text-align: center;  padding: 0;
 }
 /*瀹氫箟琛ㄦ牸*/
 .nouse{
@@ -514,14 +497,12 @@ width: 100%;
 }
 .ftitle{
 	 color:#333333;
-     font-family:Arial,Helvetica,sans-serif,"瀹嬩綋";
      font-size:13px;
      font-weight:bold;
      text-align:right;
 }
 .ftext{
 	 color:#333333;
-     font-family:Arial,Helvetica,sans-serif,"瀹嬩綋";
      font-size:13px;
      text-align:left;
 }
@@ -611,13 +592,11 @@ width: 100%;
 #content1 div b{
 	 color:#064481;
 	 font-size: 12px;
-	 font-family: 瀹嬩綋;
 	 font-weight: normal;
 }
 #content1 div c{
 	 color:#666666;
 	 font-size: 12px;
-	 font-family: 瀹嬩綋;
 }
 #content2 div{
 	width: 300px;
@@ -628,7 +607,6 @@ width: 100%;
 #content2 div b{
 	 color:#064481;
 	 font-size: 12px;
-	 font-family: 瀹嬩綋;
 	 font-weight: normal;
 }
 #content2 .left{
@@ -642,13 +620,11 @@ width: 100%;
 #content3 div b{
 	 color:#064481;
 	 font-size: 12px;
-	 font-family: 瀹嬩綋;
 	 font-weight: normal;
 }
 #content4 div b{
 	 color:#064481;
 	 font-size: 12px;
-	 font-family: 瀹嬩綋;
 	 font-weight: normal;
 }
 #content4 ul{
@@ -697,7 +673,6 @@ width: 100%;
 	*padding-top: 7px!important;
 	color:#0e407d;
 	font-size: 13px;
-	font-family:瀹嬩綋;
 	cursor: pointer;
 }
 .top718 div b.current{
@@ -710,13 +685,11 @@ width: 100%;
 	*padding-top: 7px!important;
 	color:#0097ff;
 	font-size: 13px;
-	font-family:瀹嬩綋;
 	cursor: text;
 }
 .top718 div img{
-float: left;
+    float: left;
 }
-/*鎶曠エ*/
 .a718{
 	width:718px;
 	height:33px;
@@ -867,8 +840,7 @@ float: left;
 .textDisable{
 	background-color:#b7bcbe;
 }
-/*鎶曠エ缁撴潫*/
-/*杞欢浣跨敤瀵艰埅寮�濮�*/
+
 .guide{
   width: 734px;
   height: 406px;
@@ -886,7 +858,6 @@ float: left;
   color:#000000;
 }
 .guide .tip h3{
-  font-family:瀹嬩綋;
   font-weight: normal;
 }
 .guide .tip img{
@@ -907,7 +878,7 @@ float: left;
    display:inline;
    text-align: right;
 }
-/*杞欢浣跨敤瀵艰埅缁撴潫*/
+
 .guide_start2{
    width: 100%;
    height: 12px;
@@ -931,7 +902,6 @@ float: left;
 	width:50px;
     color:#0067b3;
 	font-size: 13px;
-	font-family: 瀹嬩綋;
 	font-weight: bold;
  	margin-top:10px;
 }
@@ -970,7 +940,6 @@ float: left;
 .guide_simpleOne div{
 	color:#0067b3;
 	font-size: 13px;
-	font-family: 瀹嬩綋;
 	font-weight: bold;
  	margin-top:10px;
 }
@@ -1017,7 +986,6 @@ float: left;
  	background:url("../images/guide_simpleThree_bg.gif")   repeat-x;
  	color:#0067b3;
 	font-size: 13px;
-	font-family: 瀹嬩綋;
 	font-weight: bold;
 	padding-top:3px;
 	overflow:hidden;
@@ -1066,7 +1034,6 @@ float: left;
 	text-align: left;
 	color:#0067b3;
 	font-size: 13px;
-	font-family: 瀹嬩綋;
 	font-weight: bold;
 }
 .guide_simpleThree_l_m_r img{
@@ -1077,7 +1044,6 @@ float: left;
 .guide_title{
 	color:#0067b3;
 	font-size: 13px;
-	font-family: 瀹嬩綋;
 	font-weight: bold;
     background-color: red;
     display:block;
@@ -1107,13 +1073,11 @@ float: left;
 	background: url("../images/guideFour_bg.gif") repeat-x;
 	color:#09437d;
 	font-size: 13px;
-	font-family: 瀹嬩綋;
 	font-weight: bold;
 }
 .guideFont{
 	color:#09437d;
 	font-size: 13px;
-	font-family: 瀹嬩綋;
 	font-weight: bold;
 }
 .guide_simpleFour table tr td.text{
@@ -1179,7 +1143,7 @@ float: left;
 }
 #three #three_dh{
 	width:355px;
-	height:36;
+	height:36px;
 	float:left;
 	margin-top:25px;
 	display: inline;
@@ -1202,7 +1166,6 @@ float: left;
 	font-size: 12px;
 }
 
-/*缇庡伐鍋氱殑涓滆タ*/
 table {
 	border-top-color: #bad6ec;
 	border-top-style: solid;
@@ -1212,13 +1175,17 @@ table {
 	border-right-width: 1px;
 }
 
+table tbody tr td{
+    padding:4px;
+}
+
 td {
-	border-bottom-style: solid;
+	/*border-bottom-style: solid;
 	border-bottom-width: 1px;
 	border-bottom-color: #bad6ec;
 	border-left-style: solid;
 	border-left-width: 1px;
-	border-left-color: #bad6ec;
+	border-left-color: #bad6ec;*/
 }
 .kuang {
 	border:1px  solid #bad6ec;
@@ -1227,42 +1194,38 @@ td {
 }
 
 .px14 {
-	font-family: Arial, Helvetica, sans-serif, "榛戜綋";
 	font-size: 14px;
 	color: #333333;
 	font-weight: bold;
 }
 
 .px13 {
-	font-family: Arial, Helvetica, sans-serif, "榛戜綋";
 	font-size: 13px;
 	color: #333333;
 	font-weight: bold;
 }
 
 .px13_1 {
-	font-family: Arial, Helvetica, sans-serif, "榛戜綋";
-	font-size: 13px;
+	font-size: 12px;
 	color: #09437d;
 	font-weight: bold;
+    padding: 4px;
+    height: 20px !important;
 }
 
 .px13_2 {
-	font-family: Arial, Helvetica, sans-serif, "榛戜綋";
 	font-size: 13px;
 	color: #FF0000;
-	font-weight: bold;
+	font-weight: bold; padding: 0;height: 20px !important;
 }
 
 .px13_3 {
-	font-family: Arial, Helvetica, sans-serif, "榛戜綋";
-	font-size: 13px;
+	font-size: 12px;
 	color: #336600;
-	font-weight: bold;
+	font-weight: bold;padding: 0;height: 20px !important;
 }
 
 .px12 {
-	font-family: "瀹嬩綋";
 	font-size: 12px;
 	color: #09437d;
 }
@@ -1274,11 +1237,9 @@ td {
 	clear: both;
 }
 
-/* 涓婚〉css */
 .neirong {
 	/* width: 100%;
 	height:600px;*/
-
 }
 
 .neirong_lanmu {
@@ -1322,9 +1283,8 @@ td {
 	padding-top: 27px;
 }
 
-/* 04 css */
 .04_01 {
-	white-space: 636px;
+	/*white-space: 636px;*/
 	height: 414px;
 }
 .center_04{ width:616px;
@@ -1371,5 +1331,3 @@ td {
 /* 11 css */
 .center_11_center{width:730px;padding-top:5px;
 }
-
-/*缇庡伐鍋氱殑涓滆タ*/

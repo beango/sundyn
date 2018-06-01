@@ -6,113 +6,54 @@
 <%@ page import="java.util.List,java.util.Map"%>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:v="urn:schemas-microsoft-com:vml"
-	xmlns:o="urn:schemas-microsoft-com:office:office">
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-<STYLE type="text/css">
-v\:* {
-	Behavior: url(#default#VML)
-}
-
-o\:* {
-	behavior: url(#default#VML)
-}
-
-#PieDiv {
-	font-family: arial;
-	line-height: normal;
-}
-
-#PieDiv div {
-	font-size: 9px;
-}
-
-table {
-	font-size: 12px;
-	font-weight: 10px;
-	text-align: center;
-}
-</STYLE>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet"
-	href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+
 <title><s:text name='sundyn.title' /></title>
+    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+    <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
     <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
-<script type="text/javascript" src="js/wz_jsgraphics.js"></script>
-<script type="text/javascript" src="js/pie.js"></script>
-<script type="text/javascript" src="js/Pie3D.js"></script>
-<script type="text/javascript" src="js/dojo.js"></script>
+    <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
+    <script type="text/javascript" src="js/pie.js"></script>
+    <script type="text/javascript" src="js/Pie3D.js"></script>
+    <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="lib/lhgdialog/lhgdialog.js"></script>
-<script type="text/javascript"
-	src="js/my_<s:text name='sundyn.language' />.js"></script>
-<script language="javascript" type="text/javascript"
-	src="My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+    <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
 </head>
 <body>
-	<div id="man_zone">
-		<form id="form1" name="form1" method="post" action="">
-			<table width="100%" height="50" border="0" cellpadding="0"
-				cellspacing="0" style="border-color: #FFFFFF;">
-				<tr>
-					<td align="left" style="border-color: #FFFFFF;">
-						<div style="float: left; margin-right: 10px;">
-							<s:text name='sundyn.total.startDate' />
-							<input type="text" id="startDate" class="input_comm"
-								value="${startDate}"
-								onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
-							<s:text name='sundyn.total.endDate' />
-							<input type="text" id="endDate" value="${endDate}"
-								<s:text name="sundyn.language.calendar.setDay"/>
-								class="input_comm"
-								onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
-						</div>
-						<div style="float: left; height: 25px; background: url("<s:text name='sundyn.total.pic.query'/>") center no-repeat" onclick="totalDeptDeal()">
-							<img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" />
-						</div>
-						<div style="padding-left: 20px; float: left;">
-							<s:if test="list.size==0">
-								<a href="javascript:noData('this');">
-							</s:if>
-							<s:else>
-								<a
-									href="totalDeptExcel.action?startDate=${startDate}&endDate=${endDate}"
-									target="_blank">
-							</s:else>
-							<img src="<s:text name='sundyn.total.pic.excel'/>" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
-							<a
-								href="totalDeptPrint.action?startDate=${startDate}&endDate=${endDate}"
-								target="_blank"> <img
-								src="<s:text name='sundyn.total.pic.print'/>" /></a>&nbsp;&nbsp;&nbsp;&nbsp;
-							<!--
-	            <select name="type" id="type">
-								<option value="day" selected="selected">
-									<s:text name='工作量' />
-								</option>
-								<option value="month">
-									<s:text name='工作效率' />
-								</option>
-								<option value="year">
-									<s:text name='工作满意度' />
-								</option>
-							</select>
-				-->
-							<a
-								href="#"
-                                onclick="$.dialog({title:'数据分析',content:'url:duibiAction.action?startDate=${startDate}&endDate=${endDate}'});"> <img
-								src="<s:text name='sundyn.total.jigou.duibi'/>" /></a></br>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</form>
-
+	<div id="layui-main">
+        <table width="100%" class="layui-table">
+            <tr>
+                <td align="left" style="border-color: #FFFFFF;">
+                    <div style="float: left; margin-right: 10px;">
+                        <s:text name='sundyn.total.startDate' />
+                        <input type="text" id="startDate" class="input_comm" value="${startDate}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                        <s:text name='sundyn.total.endDate' />
+                        <input type="text" id="endDate" value="${endDate}" class="input_comm" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                    </div>
+                    <div style="float: left; height: 25px;" onclick="totalDeptDeal()">
+                        <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" />
+                    </div>
+                    <div style="padding-left: 20px; float: left;">
+                        <a href="totalDeptExcel.action?startDate=${startDate}&endDate=${endDate}" target="_blank">
+                            <img src="<s:text name='sundyn.total.pic.excel'/>" />
+                        </a>
+                        <a href="totalDeptPrint.action?startDate=${startDate}&endDate=${endDate}" target="_blank">
+                            <img src="<s:text name='sundyn.total.pic.print'/>" /></a>
+                        <a href="#" onclick="$.dialog({title:'数据分析',content:'url:duibiAction.action?startDate=${startDate}&endDate=${endDate}'});">
+                            <img src="<s:text name='sundyn.total.jigou.duibi'/>" />
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </table>
 		<div style="width: 100%; margin: 0 auto;">
-			<table width="100%" cellpadding="0" cellspacing="0"
-				style="font-size: 10px;" id="table123">
+			<table width="100%" class="layui-table" id="table123">
 				<tr>
 					<td width="8%" rowspan="2" align="center" valign="middle"
 						background="images/03_02_07.jpg" class="px13_1"><s:text
@@ -128,11 +69,11 @@ table {
 							name="sundyn.column.nocontent" /></td>
 					<td width="10%" rowspan="2" align="center" valign="middle"
 						background="images/03_02_07.jpg" class="px13_1"><s:text
-							name="sundyn.column.noappries" /></td>
+							name="sundyn.column.noappries" /></td><%--未评价--%>
 					<c:if test="${k7 == true}">
 						<td width="7%" rowspan="2" align="center" valign="middle"
 							background="images/03_02_07.jpg" class="px13_1"><s:text
-								name="sundyn.column.appriesNum" /></td>
+								name="sundyn.column.appriesNum" /></td><%--合计--%>
 					</c:if>
 
 					<td width="5%" rowspan="2" align="center" valign="middle"
@@ -206,7 +147,7 @@ table {
 							</td>
 						</c:if>
 						<td align="center" valign="middle">
-							${total.key0+total.key1+total.key2+total.key3+total.key4+total.key5+total.key6}
+							${total.msum+total.bmsum+total.key6}
 						</td>
 						<!--
 									<c:if test="${k7 == true}">
@@ -227,14 +168,8 @@ table {
 			</table>
 		</div>
 		<div class="sundyn_row">${pager.pageTextCn }</div>
-		<div class="fengge"></div>
+
 		<div id="bt">
-
-
-
-
-
-			<div class="fengge" style="height: 21px; text-align: left;">
 				<%
 					String str = "";
 				%>
@@ -276,17 +211,13 @@ table {
 				<s:if test='getText("sundyn.language") eq "en"'>
 					<span style="color: red;">
 						<%
-							out.print(str);
+							//out.print(str);
 						%>
 					</span>
 				</s:if>
 			</div>
-			</br>
-			</br>
 			<!-- 统计信息开始 -->
-			<table id="table1" width="100%" height="172" border="0"
-				cellpadding="0" cellspacing="0" class="px12"
-				style="border-top: 1px solid #bad6ec; border-right: 1px solid #bad6ec; margin: 0 auto;">
+			<table id="table1" class="layui-table">
 				<tr>
 					<td colspan="7" align="center" valign="middle"
 						background="images/03_05_11.jpg" class="px12"><s:text
@@ -296,7 +227,7 @@ table {
 					<tr>
 						<c:if test="${index.index == 0}">
 							<td width="15%" rowspan="${fn:length(mls)}" align="center"
-								valign="middle" bgcolor="fef9f3" class="px13_2"><s:text
+								valign="middle" bgcolor="fef9f3"><s:text
 									name="sundyn.column.content" /></td>
 						</c:if>
 						<td width="19%" align="center" valign="middle" bgcolor="fffcf9">${key.name}</td>
@@ -353,8 +284,6 @@ table {
 					</tr>
 				</c:if>
 			</table>
-			<!-- 统计信息结束-->
-			<div class="fengge"></div>
 		</div>
 </body>
 </html>

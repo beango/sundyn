@@ -62,21 +62,13 @@
         </tr>
     </table>
 </form>
-<div style="height:100%;" id="chartcontainer">
-    <%
-        String strXML1 = (String) request.getAttribute("strXML1");
-        if (strXML1 != null && !"".equals(strXML1)) {
-            String chartHTML1 = createChartHTML("Charts/FCF_Line.swf", "", strXML1, "", 600, 350, false);
-    %>
-    <span style="z-index:0"> <%=chartHTML1%> </span>
-    <%
-        }
-    %>
+<div style="height:100%;width:100%;" id="chartcontainer">
+
 </div>
 
 <script language="javascript">
     $(function () {
-        analyseContentAjax();
+        analyseContentAjax($("#chartcontainer").width());
     });
 </script>
 </body>

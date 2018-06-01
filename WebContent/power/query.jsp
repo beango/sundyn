@@ -5,14 +5,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" href="css/dtree.css" type="text/css"></link>
-		<link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
-		<link rel="stylesheet" href="css/dialog.css" type="text/css" />
 		<title>角色管理</title>
-		<script type="text/javascript" src="js/dojo.js"></script>
-		<script type="text/javascript" src="js/dialog.js"></script>
-		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-		<script type="text/javascript" src="js/dtree.js"></script>
+        <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+        <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
+
+        <script type="text/javascript" src="js/dojo.js"></script>
+        <script type="text/javascript" src="js/dialog.js"></script>
+        <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+        <script type="text/javascript" src="js/jquery.blockUI.js?1"></script>
+        <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+        <script type="text/javascript" src="lib/layer/layer.js"></script>
+        <script type="text/javascript" src="lib/layui/layui.js"></script>
+        <script type="text/javascript" src="js/myAjax.js"></script>
+        <script type="text/javascript" src="js/application.js?1"></script>
+
 	</head>
 	<body>
 		<div id="man_zone">
@@ -20,13 +26,13 @@
 			    <div>
 				    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-color:#FFFFFF;">
 				       <tr>
-				         <td style="border-color:#FFFFFF;width:120px;" align="center">	<input name="keyword" id="keyword" class="input_comm" /></td>
+				         <td style="border-color:#FFFFFF;width:120px;" align="center">	<input name="keyword" id="keyword" class="input_comm"  value="<%=request.getParameter("name")==null?"":request.getParameter("name")%>"/></td>
 				         <td style="border-color:#FFFFFF;width:60px;" align="left"><img src="<s:text name='sundyn.pic.query' />" width="55" height="25" onclick="lowerPowerQueryAjax()" class="hand"/></td>
 				         <td style="border-color:#FFFFFF;" align="left"><img src="<s:text name='sundyn.pic.add' />" width="63" height="25" onclick="powerAddDialog()" class="hand"/></td>
 				      </tr>
 				     </table>
 			    </div>
-				<table width="100%" cellpadding="0" cellspacing="0" style="border-top: 1px solid #bad6ec;border-right:1px solid #bad6ec;">
+                <table class="layui-table">
 				  <tr>
 				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name="sundyn.column.roleName" /></td>
 				     <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name="sundyn.column.systemSetup" /></td>
@@ -40,23 +46,23 @@
 								${power.name}
 							</td>
 							<td style="text-align: center;">
-								<c:if test="${ power.baseSet==true    }">
+								<c:if test="${ power.baseSet==1    }">
 									<s:text name='sundyn.yes' />
 							    </c:if>
-								<c:if test="${   power.baseSet==false   }">
+								<c:if test="${ power.baseSet==0   }">
 									<s:text name='sundyn.no' />
 							     </c:if>
 							</td>
 							<td style="text-align: center;">
-								<c:if test="${power.dataManage ==  true}">
+								<c:if test="${power.dataManage ==  1}">
 								   <s:text name='sundyn.yes' />
 								</c:if>
-								<c:if test="${power.dataManage ==  false}">
+								<c:if test="${power.dataManage ==  0}">
 								   <s:text name='sundyn.no' /> 
 								</c:if>
 							</td>
 							<td style="text-align: center;">
-								${power.deptIdGroup}
+								${power.deptname}
 							</td>
 								<td style="text-align: center;">
 								<a href="javascript:powerEditDialog(${power.id});"><s:text name='sundyn.modify' /></a>
@@ -65,10 +71,12 @@
 						</tr>
 					</c:forEach>
 				</table>
-			    <div class="fengge" style="height:15px;">&nbsp;</div>
-				<div>${pager.pageTextAjax}</div>
+				<div id="pp"></div>
 		    </div> 
 		</div>
-		<div id="dialog" style="width: 600px; display: none;">
+        <div id="dialog" style="width: 600px; display: none;"></div>
 	</body>
+    <script type="text/javascript">
+        initPager(${pager.getRowsCount()}, <%=request.getParameter("currentPage")==null?1:request.getParameter("currentPage")%>,<%=request.getParameter("pageSize")==null?10:request.getParameter("pageSize")%>);
+    </script>
 </html>

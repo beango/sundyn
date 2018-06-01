@@ -16,8 +16,8 @@
 	  </tr>
  	  <tr>
 	    <td align="center" style="border-color:#FFFFFF;" colspan="2" >
-	    <div style="margin: 0px auto;width: 260px;"><div class="button left" onclick="deptEditDialog(1)"  ><s:text name="sundyn.dept.modifyDating" /></div>
-	    <div class="button left" onclick="deptAddDialog(0)" style="margin-left: 5px;" ><s:text name="sundyn.dept.addWindow" /></div>
+	    <div style="margin: 0px auto;width: 260px;"><div class="button left" onclick="deptEditDialog(null,1)"  ><s:text name="sundyn.dept.modifyDating" /></div>
+	    <div class="button left" onclick="deptAddDialog(0,'<%=request.getParameter("deptId")%>')" style="margin-left: 5px;" ><s:text name="sundyn.dept.addWindow" /></div>
 	    <div class="button left" onclick="del()" style="margin-left: 5px;"><s:text name="sundyn.del" /></div></div>
 	    </td>
 	  </tr>

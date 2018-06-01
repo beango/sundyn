@@ -2592,12 +2592,27 @@ a.label:hover, a.label:focus {
 }
 
 .panel-header {
-    position: relative;
-    padding: 10px 12px;
+    /*position: relative;
+    padding: 5px 5px;
     -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     text-align: left;
+    background-image: url(../../images/guide_three_bg.gif);
+    background-repeat: repeat-x;*/
+    /* -webkit-box-sizing: content-box; */
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    position: relative;
+    min-height: 30px;
+    background: #f7f7f7 repeat-x;
+    background-image: -webkit-linear-gradient(top,#fff 0,#D3F3FA 100%);
+    background-image: -o-linear-gradient(top,#fff 0,#eee 100%);
+    background-image: linear-gradient(to bottom,#fff 0,#D3F3FA 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffeeeeee', GradientType=0);
+    color: #669fc7;
+    border-bottom: 1px solid #DDD;
+    /*padding-left: 12px;*/
 }
 
 .panel-icon, .panel-tool {
@@ -2671,7 +2686,8 @@ a.label:hover, a.label:focus {
 .panel-title {
     /*color: #f7f7f7;*/
     font-size: 14px;
-    margin: 0
+    margin: 0;
+    padding-top:5px;
 }
 
 .panel-tool-icon {
@@ -5734,7 +5750,8 @@ a.fc-more:hover {
 }
 
 .header {
-    background-color: #1582DC;
+    /*background-color: #1582DC;*/
+    background: rgb(67, 142, 185);
 }
 
 .header.panel-body {
@@ -5744,9 +5761,9 @@ a.fc-more:hover {
 .logo {
     float: left;
     display: table;
-    width: 250px;
+    width: 350px;
     height: inherit;
-    background-color: #1582DC;
+    /*background-color: #1582DC;*/
     font-size: 14px;
     color: #fff;
     font-weight: 300
@@ -5765,7 +5782,7 @@ a.fc-more:hover {
 }
 
 .navbar-header .fa {
-    font-size: 20px
+    /*font-size: 20px*/
 }
 
 .nav {
@@ -5835,7 +5852,8 @@ a.fc-more:hover {
 
 .list-user-info {
     display: table-cell;
-    vertical-align: middle
+    vertical-align: middle;
+    color:white;
 }
 
 .list-user-info > li:not(:last-child) {
@@ -6006,7 +6024,8 @@ a.fc-more:hover {
 }
 
 .theme-default .sidebar {
-    background-color: #fff
+    background-color: #fff;
+    border-right:2px solid #D3F3FA;
 }
 
 .theme-default .sidebar .tree-node-hover {

@@ -56,12 +56,12 @@
             </td>
         </tr>
     </table>
-    <div style="height:100%;" id="chartcontainer">
+    <div style="height:100%;width:100%;" id="chartcontainer">
     </div>
 </div>
 <script type="text/javascript" language="javascript">
     $(function () {
-        analyseTotalAjax();
+        analyseTotalAjax($("#chartcontainer").width());
     });
 </script>
 </body>

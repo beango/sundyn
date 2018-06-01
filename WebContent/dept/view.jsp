@@ -11,16 +11,16 @@
 		<link rel="stylesheet" href="css/dialog.css" type="text/css" />
 		<link rel="stylesheet" href="css/dtree.css" type="text/css" />
 		<title><s:text name='sundyn.title'/></title>
+        <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
 		<script type="text/javascript" src="js/ddtree.js"></script>
 		<script type="text/javascript" src="js/dojo.js"></script>
 		<script type="text/javascript" src="js/dialog.js"></script>
 		<script type="text/javascript" src="js/myAjax.js"></script>
 		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?<%=new Date().getTime()%>"></script>
+        <script type="text/javascript" src="lib/layer/layer.js"></script>
 	</head>
 	<body>
-	<script>
-	</script>
-	 <script >
+	 <script type="text/javascript">
 	  function chooseMenus(){
 		    var menus=document.getElementById("CmenuNames");
 		    var retVal=new Array();
@@ -29,23 +29,20 @@
 		       retVal[i]=menus.options[i].value;
 		   	}
 		   return retVal;
-		   }
-		  function checkForm(ac){
-
-		   var menus=chooseMenus();
+      }
+      function checkForm(ac){
+          var menus=chooseMenus();
 		  $.ajax({url: ac+"&menus="+menus,
 				type: 'GET',
 				dataType:'json',
 				timeout: 20000,
 				success: function(html){
-
 				    dialogAjaxDone(html);
 				}
 			});
+      }
 
-		 }
-
-		    function moveMenus(){
+      function moveMenus(){
 		      var e1=document.getElementById("menuNames");
 		      var e2=document.getElementById("CmenuNames");
 
@@ -58,8 +55,9 @@
 					i--;
 				}
 		     }
-		  }
-		  function removeMenus(){
+      }
+
+      function removeMenus(){
 		    var e1=document.getElementById("menuNames");
 		    var e2=document.getElementById("CmenuNames");
 		       for( var i=0;i<e2.options.length;i++){
@@ -70,8 +68,7 @@
 				    i--;
 				  }
 		     	}
-		  }
-
+      }
      </script>
  		<div id="man_zone">
 		   <div class="fengge" style="height:15px;">&nbsp;</div>

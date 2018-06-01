@@ -1,2 +1,2 @@
 <%@ page pageEncoding="UTF-8"%>
-${imgPath}
+<html><head></head><body><textarea>${imgPath}</textarea></body></html>
