@@ -8,6 +8,8 @@ import java.sql.*;
 
 public class AdviceService extends SuperDao
 {
+    public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
+
     public boolean addAdviceVo(final QuestionVo question, final String answers) {
         final String sql1 = "Insert into appries_question (question, sortid) values(?,?)";
         final String sql2 = "select max(id) id from appries_question";
@@ -106,7 +108,7 @@ public class AdviceService extends SuperDao
                 final String str2 = "select * from appries_answer where fatherid=" + q.getId();
                 final List li = this.getJdbcTemplate().queryForList(str2);
                 for (final Object m1 : li) {
-                	Map m = (Map)map1;
+                	Map m = (Map)m1;
                     final AnswerVo a = new AnswerVo();
                     a.setId((int)m.get("id"));
                     a.setAnswer((String)m.get("answer"));

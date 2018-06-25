@@ -77,7 +77,7 @@
 	<include file="advice.xml"></include>
 	<!--自动下载意见调查、信息查询、通知公告 -->
 	<include file="download.xml"></include>
-
+    <include file="device.xml"></include>
     <bean type="org.apache.struts2.dispatcher.multipart.MultiPartRequest"
           name="myRequestParser" class="com.sundyn.wrapper.RequestParseWrapper"
           scope="default" optional="true" />

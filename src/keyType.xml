@@ -29,9 +29,8 @@
 			method="keyTypeQueryDialog">
 			<result name="success">/keyType/dialog.jsp</result>
 		</action>
-		<action name="keyTypeEdit" class="keyTypeAction"
-			method="keyTypeEdit">
-			<result name="success">/keyType/success.jsp</result>
+		<action name="keyTypeEdit" class="keyTypeAction" method="keyTypeEdit">
+			<result name="success">/keyType/msg.jsp</result>
 		</action>
 	
 	</package>

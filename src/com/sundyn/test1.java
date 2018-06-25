@@ -1,10 +1,17 @@
 package com.sundyn;
 
 import com.sundyn.action.FormFile;
+import com.sundyn.cer.CertifacateGenerate;
+import com.sundyn.util.BaseCert;
 import org.apache.logging.log4j.Level;
+import org.junit.Test;
 
 import java.io.*;
 import java.net.*;
+import java.security.*;
+import java.security.cert.*;
+import java.security.cert.Certificate;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -208,7 +215,7 @@ public class test1 {
     }
 
     public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         logger.debug("Will not show.");
         logger.error("Hello, World!");
 
@@ -218,5 +225,155 @@ public class test1 {
         logger.fatal("我是fatal信息");
         int a=10, b=11;
         logger.printf(Level.TRACE, "%d+%d=%d", a, b, a + b);
+    }
+
+    private static String storepass = "storepass";
+    private static String storepath = "1.keystore";
+    private static String storealias = "testalias";
+    public static void main(String[] args) throws Exception {
+        FileInputStream in=new FileInputStream(storepath);
+        KeyStore ks=KeyStore.getInstance("JKS");
+        ks.load(in,storepass.toCharArray());
+        Certificate cchain=ks.getCertificate(storealias);//获取别名对应条目的证书链
+        PrivateKey pk=(PrivateKey)ks.getKey(storealias,storepass.toCharArray());//获取别名对应条目的私钥
+        //ks.setKeyEntry(storealias,pk,storepass.toCharArray(),cchain);//向密钥库中添加条目
+
+        /*FileInputStream in=new FileInputStream(storepath);
+        KeyStore ks=KeyStore.getInstance("JKS");
+        ks.load(in,storepass.toCharArray());
+        ks.containsAlias("sage");//检验条目是否在密钥库中，存在返回true
+        FileOutputStream output=new FileOutputStream(storepath);
+        ks.store(output,storepass.toCharArray());*/
+
+    }
+    public static void main333(String[] args) throws Exception {
+        BaseCert bc = new BaseCert();
+        X509Certificate x = bc.generateCert("root");
+        // 导出为 cer 证书
+        try {
+            FileOutputStream fos = new FileOutputStream("d:/zxroot.cer");
+            fos.write(x.getEncoded());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CertificateEncodingException e) {
+            e.printStackTrace();
+        }
+        x = bc.generateCert("CCB8A8DB14F8");
+        // 导出为 cer 证书
+        try {
+            FileOutputStream fos = new FileOutputStream("d:/CCB8A8DB14F8.cer");
+            fos.write(x.getEncoded());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CertificateEncodingException e) {
+            e.printStackTrace();
+        }
+        //x = bc.generateCert("123");
+        // 导出为 cer 证书
+        /*try {
+            FileOutputStream fos = new FileOutputStream("d:/t2.cer");
+            fos.write(x.getEncoded());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CertificateEncodingException e) {
+            e.printStackTrace();
+        }
+*/
+        InputStream i1 = new FileInputStream("d:/zxroot.cer");
+        InputStream i2 = new FileInputStream("d:/CCB8A8DB14F8.cer");
+
+        X509Certificate x509Certificate = (X509Certificate) getCertificate(i1);
+        x509Certificate.verify(((X509Certificate) getCertificate(i2)).getPublicKey());
+
+        //byte[] decodedText = MyCertifacate.decode(encodedText, x509Certificate.getPublicKey());
+        //System.out.println("Decoded Text : " + new String(decodedText));
+        //System.out.println("Signature is : " + verify(receivedCertificate, decodedText, signature));
+    }
+
+    private static Certificate getCertificate(InputStream inputStream) throws Exception {
+        return CertificateFactory.getInstance("X.509").generateCertificate(inputStream);
+    }
+
+    @Test
+    public void testsa(){
+        try {
+            CertifacateGenerate cer = new CertifacateGenerate();
+            cer.GenRootKeyPair();//生成密钥
+            cer.GenRootCert();//生成根证书
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testca(){
+        try {
+            CertifacateGenerate cer = new CertifacateGenerate();
+            String userCerPub = "D:/certtest/test.public";
+            String dnuser = "CN=广州车管所,OU=广州车管所,O=广州车管所,L=GuangZhou,ST=GuangDong,C=CN";
+            cer.ZhangsanKeyPair(userCerPub,"D:/certtest/test.private");//生成密钥
+            cer.GenZhangsanCert("D:/certtest/CCB8A8DB14F8.cer",new Date(System.currentTimeMillis()+ 100 * 24 * 60 * 60 * 1000),
+                    userCerPub,dnuser);//生成用户证书
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testverify(){
+        CertificateFactory certificateFactory = null;
+        try {
+            certificateFactory = CertificateFactory.getInstance("X.509","BC");
+
+            //FileInputStream inStream = new FileInputStream("D:/certtest/ca.cer");
+            //X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(inStream);
+            //System.out.println(certificate.getPublicKey().toString());
+
+            FileInputStream inStream2 = new FileInputStream("D:/certtest/zhangsan.cer");//D:/certtest/CCB8A8DB14F8.cer
+            X509Certificate certificate2 = (X509Certificate) certificateFactory.generateCertificate(inStream2);
+            System.out.println(certificate2.getPublicKey().toString());
+
+            Signature signature2 = Signature.getInstance(certificate2.getSigAlgName(),"BC");
+            signature2.initVerify(getRootPublicKey());
+            signature2.update(certificate2.getTBSCertificate());
+            boolean legal2 = signature2.verify(certificate2.getSignature());
+            System.out.println(legal2);
+
+            certificate2.verify(getRootPublicKey());
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public PublicKey getRootPublicKey() throws Exception {
+        return PublicKey.class.cast(readKey("d:/certtest/zxroot.public"));
+    }
+
+    public Key readKey(String path) throws Exception {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
+        Key key = Key.class.cast(ois.readObject());
+        ois.close();
+        return key;
     }
 }

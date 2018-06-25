@@ -29,6 +29,12 @@
 		<action name="totalDeptDeal" class="totalAction"
 			method="totalDeptDeal">
 			<result name="success">/total/deptDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
 		</action>
 		<action name="totalDeptPrint" class="totalAction"
 			method="totalDeptDeal">
@@ -41,6 +47,12 @@
 		<action name="totalDatingDeal" class="totalAction"
 			method="totalDatingDeal">
 			<result name="success">/total/datingDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
 		</action>
 		<action name="totalWindow" class="totalAction"
 			method="totalWindow">
@@ -49,6 +61,12 @@
 		<action name="totalWindowDeal" class="totalAction"
 			method="totalWindowDeal">
 			<result name="success">/total/windowDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
 		</action>
 		<action name="totalPerson" class="totalAction"
 			method="totalPerson">
@@ -61,6 +79,12 @@
 		<action name="totalPersonDeal" class="totalAction"
 			method="totalPersonDeal">
 			<result name="success">/total/personDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
 		</action>
 		<action name="totalJobNum" class="totalAction"
 			method="totalJobNum">

@@ -29,15 +29,15 @@
 			method="appriesAddDebug">
 			<result name="success">/appries/msg.jsp</result>
 		</action>
-		
 		<!-- 下载视频 -->
 		<action name="downloadVideo" class="com.sundyn.action.DownVideo">
-		<result name="success" type="stream">
-			<param name="contentDisposition">filename=${fileName}</param>
-			<param name="inputName">downloadFile</param>
-			<!-- 指定下载资源的缓冲大小 -->
-			<param name="bufferSize">8096</param>
-		</result>
+            <result name="success" type="stream">
+                <param name="contentDisposition">filename=${fileName}</param>
+                <param name="inputName">downloadFile</param>
+                <!-- 指定下载资源的缓冲大小 -->
+                <param name="bufferSize">8096</param>
+            </result>
+            <result name="fail">/base/msg2.jsp</result>
 		</action>
 
         <action name="appriesFileupload" class="appriesAction"

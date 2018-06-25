@@ -1,18 +1,26 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.entity.*;
-import com.sundyn.utils.*;
+import com.sundyn.cer.CertifacateGenerate;
+import com.sundyn.entity.City;
+import com.sundyn.entity.Province;
 import com.sundyn.service.*;
-import org.apache.struts2.*;
-import javax.servlet.http.*;
-import java.util.*;
+import com.sundyn.util.Mysql;
+import com.sundyn.util.SundynSet;
+import com.sundyn.utils.CitysUtils;
+import com.sundyn.vo.DeptVo;
+import com.sundyn.vo.WeburlVo;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.struts2.ServletActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.text.*;
-import com.sundyn.vo.*;
-import net.sf.json.*;
-import com.sundyn.util.*;
-import java.sql.*;
+import java.util.List;
+import java.util.Map;
 
 public class DeptAction extends MainAction
 {
@@ -216,7 +224,40 @@ public class DeptAction extends MainAction
         }
         return "success";
     }
-    
+
+    public String deptGenCer() throws Exception{
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String mac = request.getParameter("mac");
+        final String batchname = request.getParameter("batchname");
+        final JSONObject json = new JSONObject();
+        String rootpath=ServletActionContext.getServletContext().getRealPath("/");
+        if (!new File(rootpath+"/cer/").exists()){
+            new File(rootpath+"/cer/").mkdir();
+        }
+        if (mac != null || !mac.equals("")){
+            try {
+
+                CertifacateGenerate cer = new CertifacateGenerate();
+                String userCerPub = rootpath + "/cer/test.public";
+                String userCerPri = rootpath + "/cer/test.private";
+                if (!new File(userCerPub).exists() || !new File(userCerPri).exists()){
+                    cer.ZhangsanKeyPair(userCerPub,userCerPri);//生成密钥
+                }
+
+                String dnuser = "CN="+mac+",OU="+batchname+",O="+batchname+",L=GuangZhou,ST=GuangDong,C=CN";
+                cer.GenZhangsanCert(rootpath +"/cer/"+mac+".cer",new Date(System.currentTimeMillis()+ 3650*100 * 24 * 60 * 60 * 1000), userCerPub,dnuser);//生成用户证书
+                json.put("rst", true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                json.put("rst", false);
+            }
+        }
+        else
+            json.put("rst", false);
+        request.setAttribute("json", json);
+        return "success";
+    }
+
     public String deptEditItem() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String cityId = request.getParameter("cityid");

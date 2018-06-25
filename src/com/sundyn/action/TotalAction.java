@@ -1,6 +1,5 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.*;
 import com.sundyn.util.*;
 import com.sundyn.vo.WeburlVo;
@@ -10,14 +9,13 @@ import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-public class TotalAction extends ActionSupport
+public class TotalAction extends MainAction
 {
     public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
 
@@ -55,6 +53,15 @@ public class TotalAction extends ActionSupport
     private BusinessService businessService;
     private String str;
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    private String fileName;
     public TotalAction() {
         this.str = "";
     }
@@ -355,25 +362,69 @@ public class TotalAction extends ActionSupport
         return null;
     }
 
+    private HashMap<String, String> getAllId() throws Exception {
+        this.k7 = this.isK7();
+        this.mls = this.keyTypeService.findByApprieserId(1, 1, "on");
+        this.bmls = this.keyTypeService.findByApprieserId(1, 1, "");
+        HashMap<String, String> result = new HashMap<String, String>();
+        if (this.k7) {
+            for (int j = 0; j < this.mls.size(); ++j) {
+                final Map k = (Map) this.mls.get(j);
+                if (!k.get("keyNo").toString().equals("6")) {
+                    result.put(k.get("keyNo").toString(),k.get("keyNo").toString());
+                }
+            }
+            for (int j = 0; j < this.bmls.size(); ++j) {
+                final Map k = (Map) this.bmls.get(j);
+                if (!k.get("keyNo").toString().equals("6")) {
+                    result.put(k.get("keyNo").toString(),k.get("keyNo").toString());
+                }
+            }
+        }
+        else {
+            for (int j = 0; j < this.mls.size(); ++j) {
+                final Map k = (Map) this.mls.get(j);
+                result.put(k.get("keyNo").toString(),k.get("keyNo").toString());
+            }
+            for (int j = 0; j < this.bmls.size(); ++j) {
+                final Map k = (Map) this.bmls.get(j);
+                result.put(k.get("keyNo").toString(),k.get("keyNo").toString());
+            }
+        }
+        return result;
+    }
+
     private List getD(final List ls) throws Exception {
         final int[] keyWeight = this.getDegreeWeight();
         if (this.list != null) {
             final List temp = new ArrayList();
+            final HashMap<String, String> allId = this.getAllId();
             for (int i = 0; i < this.list.size(); ++i) {
                 final Map m = (Map) this.list.get(i);
-                final Integer key0 = Integer.valueOf(m.get("key0").toString());
-                final Integer key2 = Integer.valueOf(m.get("key1").toString());
-                final Integer key3 = Integer.valueOf(m.get("key2").toString());
-                final Integer key4 = Integer.valueOf(m.get("key3").toString());
-                final Integer key5 = Integer.valueOf(m.get("key4").toString());
-                final Integer key6 = Integer.valueOf(m.get("key5").toString());
-                final Integer key7 = Integer.valueOf(m.get("key6").toString());
-                logger.info("key1:"+key0+",key2:"+key2+",key3:"+key3+",key4:"+key4+",key5:"+key5+",key6:"+key6+",key7:"+key7);
+                Integer key0 = Integer.valueOf(m.get("key0").toString());
+                Integer key2 = Integer.valueOf(m.get("key1").toString());
+                Integer key3 = Integer.valueOf(m.get("key2").toString());
+                Integer key4 = Integer.valueOf(m.get("key3").toString());
+                Integer key5 = Integer.valueOf(m.get("key4").toString());
+                Integer key6 = Integer.valueOf(m.get("key5").toString());
+                Integer key7 = Integer.valueOf(m.get("key6").toString());
+                if(!allId.containsKey("0"))key0=0;
+                if(!allId.containsKey("1"))key2=0;
+                if(!allId.containsKey("2"))key3=0;
+                if(!allId.containsKey("3"))key4=0;
+                if(!allId.containsKey("4"))key5=0;
+                if(!allId.containsKey("5"))key6=0;
+                if(!allId.containsKey("6"))key7=0;
+                //logger.info("key1:"+key0+",key2:"+key2+",key3:"+key3+",key4:"+key4+",key5:"+key5+",key6:"+key6+",key7:"+key7);
+                //logger.info("keyWeight1:"+keyWeight[0]+",keyWeight2:"+keyWeight[1]+",keyWeight3:"+keyWeight[2]+",keyWeight4:"+keyWeight[3]+",keyWeight5:"+keyWeight[4]+",keyWeight6:"+keyWeight[5]+",keyWeight7:"+keyWeight[6]);
                 if (key0 + key2 + key3 + key4 + key5 + key6 == 0) {
                     m.put("num", 100);
                 }
                 else {
-                    m.put("num", Math.floor((key0 * keyWeight[0] + key2 * keyWeight[1] + key3 * keyWeight[2] + key4 * keyWeight[3] + key5 * keyWeight[4] + key6 * keyWeight[5] + key7 * keyWeight[6])*1.0 / (key0 + key2 + key3 + key4 + key5 + key6 + key7) * 20.0));
+                    //logger.info("计算满意度1:"+(key0 * keyWeight[0] + key2 * keyWeight[1] + key3 * keyWeight[2] + key4 * keyWeight[3] + key5 * keyWeight[4] + key6 * keyWeight[5] + key7 * keyWeight[6]));
+                    //logger.info("计算满意度2:"+(keyWeight[0] + keyWeight[1] + keyWeight[2] + keyWeight[3] + keyWeight[4] + keyWeight[5] + keyWeight[6]));
+                    //logger.info("计算满意度:"+(48.0/10.0/7*100.0));
+                    m.put("num", Math.floor((key0 * keyWeight[0] + key2 * keyWeight[1] + key3 * keyWeight[2] + key4 * keyWeight[3] + key5 * keyWeight[4] + key6 * keyWeight[5] + key7 * keyWeight[6])*1.0 / 10.0 / (1.0*(key0 + key2 + key3 + key4 + key5 + key6 + key7)) * 100.0));
                 }
                 temp.add(m);
             }
@@ -416,7 +467,7 @@ public class TotalAction extends ActionSupport
                         }
                     }
                     if (j == l_star.size()) {
-                        t.put("star", "&nbsp");
+                        t.put("star", "");
                         temp.add(t);
                     }
                 }
@@ -729,10 +780,23 @@ public class TotalAction extends ActionSupport
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
-        final String ids = this.deptService.findChildALLStr123(deptIdGroup);
-        final int rowsCount = this.totalService.counttotalDating(ids, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, request);
-        this.list = this.totalService.totalDating(ids, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        String ids = this.deptService.findChildALLStr123(deptIdGroup);
+        String dating=null;
+        if (request.getParameter("deptId")!=null && !request.getParameter("deptId").equals("")){
+            Map dataMap = this.deptService.findDeptById(Integer.valueOf(request.getParameter("deptId")));
+            if (dataMap!=null && (int)dataMap.get("deptType")==ENUM_DEPTTYPE.DATING.getValue()){
+                dating = request.getParameter("deptId");
+            }
+            if (dataMap!=null && (int)dataMap.get("deptType")==ENUM_DEPTTYPE.DEPT.getValue()){
+                ids = this.deptService.findChildALLStr123(request.getParameter("deptId"));
+            }
+        }
+        this.pager = new Pager("currentPage", pageSize, 0, request);
+        Integer[] total = new Integer[1];
+        this.list = this.totalService.totalDating(ids, dating, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
+                this.pager.getPageSize(), total);
+        final int rowsCount = total[0];
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
         this.list = this.getD(this.list);
@@ -758,6 +822,159 @@ public class TotalAction extends ActionSupport
         Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
         totalMap = this.getRate(totalMap);
         request.setAttribute("totalMap", (Object)totalMap);
+
+        String exportExcel = request.getParameter("export");
+        if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
+            List list2 = this.totalService.totalDating(ids, dating, this.startDate, this.endDate, null, null, null);
+            list2 = this.getPandM(list2);
+            list2 = this.getStar(list2);
+            list2 = this.getD(list2);
+            List ls2 = new ArrayList();
+            for (int i = 0; i < list2.size(); ++i) {
+                final Map m = new LinkedHashMap();
+                final Map temp = (Map) list2.get(i);
+                m.put("m1", temp.get("datingname"));
+                m.put("m2", temp.get("star"));
+                int j = 3;
+                for (Object item: (ArrayList)(temp.get("km"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("msum"));
+                for (Object item: (ArrayList)(temp.get("kbm"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("bmsum"));
+                m.put("m" + (j++), temp.get("key6"));
+                m.put("m" + (j++), (int)temp.get("key0")+(int)temp.get("key1")+(int)temp.get("key2")+(int)temp.get("key3")+(int)temp.get("key4")+(int)temp.get("key5")+(int)temp.get("key6"));
+                m.put("m" + (j++), temp.get("mrate")+"%");
+                m.put("m" + (j++), temp.get("num"));
+                ls2.add(m);
+            }
+            final Poi poi = new Poi();
+            List<String> args = new ArrayList<String>();
+            args.add(this.getText("sundyn.column.datingName"));
+            args.add(this.getText("sundyn.column.star"));
+            for (Object item : mls){
+                //Map map = (Map)this.mls.get(i);
+                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
+                args.add(this.getText("sundyn.column.content"));
+            }
+            args.add(this.getText("sundyn.column.content"));
+            for (Object item : bmls){
+                //Map map = (Map)this.mls.get(i);
+                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
+                args.add(this.getText("sundyn.column.nocontent"));
+            }
+            args.add(this.getText("sundyn.column.nocontent"));
+            args.add(this.getText("sundyn.column.noappries"));
+            args.add(this.getText("sundyn.column.sum"));
+            args.add(this.getText("sundyn.column.contentRate"));
+            args.add(this.getText("sundyn.column.contentDegree"));
+
+            poi.addTitle(this.getText("sundyn.total.excelTitle.dating"), 1, args.size()-1);
+            poi.addListTitle(args.toArray(), 1);
+            poi.addMerge(2,2,2,2+mls.size());
+            poi.addMerge(2,2+mls.size()+1,2,2+mls.size()+1 + bmls.size());
+
+            List<String> args2 = new ArrayList<String>();
+            args2.add("");
+            args2.add("");
+            for (Object item : mls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.contentTotal"));
+            for (Object item : bmls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.nocontentTotal"));
+            args2.add("");
+            args2.add("");
+            args2.add("");
+            args2.add("");
+            poi.addListTitle(args2.toArray(), 1);
+
+            poi.addMerge(2,0,3,0);
+            poi.addMerge(2,1,3,1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1,3,2+mls.size() +1+ bmls.size()+1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1,3,2+mls.size() +1+ bmls.size()+1+1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1+1);
+            poi.addList(ls2, false);
+
+            int lastr = 3 + ls2.size();
+            //统计信息
+            ls2 = new ArrayList();
+            poi.addTitle(this.getText("sundyn.total.toatlInfo.dating"), 1, args.size()-1);
+
+            for (Object item : mls){
+                Map itemMap = (Map)item;
+                final Map m2 = new LinkedHashMap();
+                m2.put("m1", this.getText("sundyn.column.content"));
+                int j = 2;
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), String.valueOf(itemMap.get("name").toString()));//keyNo
+                Integer[] d = (Integer[])(totalMap.get("key"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d[Integer.valueOf(itemMap.get("keyNo").toString())]);
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("msum"));//keyNo
+                double[] d2 = (double[])(totalMap.get("keyr"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d2[Integer.valueOf(itemMap.get("keyNo").toString())]+"%");
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("mrate")+"%");//keyNo
+                m2.put("m" + (j++), "");
+                ls2.add(m2);
+            }
+            poi.addMerge(lastr + 2 ,0,lastr + 2 + mls.size() - 1,1);
+            int _t = lastr + 2;
+            while(_t <= lastr + 2 + mls.size() - 1) {
+                poi.addMerge(_t, 2, _t, 3);
+                poi.addMerge(_t, 4, _t, 5);
+                poi.addMerge(_t, 8, _t, 9);
+                _t++;
+            }
+            poi.addMerge(lastr + 2 ,6,lastr + 2 + mls.size() - 1,7);
+            poi.addMerge(lastr + 2 ,10,lastr + 2 + mls.size() - 1,11);
+            for (Object item : bmls){
+                Map itemMap = (Map)item;
+                final Map m2 = new LinkedHashMap();
+                m2.put("m1", this.getText("sundyn.column.nocontent"));
+                int j = 2;
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), String.valueOf(itemMap.get("name").toString()));//keyNo
+                Integer[] d = (Integer[])(totalMap.get("key"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d[Integer.valueOf(itemMap.get("keyNo").toString())]);
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("bmsum"));//keyNo
+                double[] d2 = (double[])(totalMap.get("keyr"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d2[Integer.valueOf(itemMap.get("keyNo").toString())]+"%");
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("bmrate")+"%");//keyNo
+                m2.put("m" + (j++), "");
+                ls2.add(m2);
+            }
+            lastr = lastr + 2 + mls.size() - 1;
+            poi.addMerge(lastr+1 ,0,lastr + 1 + bmls.size() - 1,1);
+            _t = lastr;
+            while(_t <= lastr + 2 + bmls.size() - 1) {
+                poi.addMerge(_t, 2, _t, 3);
+                poi.addMerge(_t, 4, _t, 5);
+                poi.addMerge(_t, 8, _t, 9);
+                _t++;
+            }
+            poi.addMerge(lastr+1 ,6,lastr + 1 + bmls.size() - 1,7);
+            poi.addMerge(lastr+1 ,10,lastr + 1 + bmls.size() - 1,11);
+            poi.addList(ls2, false);
+
+
+            poi.createFile(String.valueOf(path) + "standard.xls");
+            this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
+            this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
+            return "excel";
+        }
         return "success";
     }
 
@@ -768,7 +985,7 @@ public class TotalAction extends ActionSupport
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String ids = this.deptService.findChildALLStr123(deptIdGroup);
-        this.list = this.totalService.totalDating(ids, this.startDate, this.endDate, null, null);
+        this.list = this.totalService.totalDating(ids,null, this.startDate, this.endDate, null, null, null);
         this.list = this.getPandM(this.list);
         Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
         totalMap = this.getRate(totalMap);
@@ -929,7 +1146,7 @@ public class TotalAction extends ActionSupport
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String ids = this.deptService.findChildALLStr123(deptIdGroup);
-        this.list = this.totalService.totalDating(ids, this.startDate, this.endDate, null, null);
+        this.list = this.totalService.totalDating(ids, null, this.startDate, this.endDate, null, null, null);
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
         Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
@@ -943,6 +1160,14 @@ public class TotalAction extends ActionSupport
     }
 
     public String totalDeptDeal() throws Exception {
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+        }
+        if(endDate == null) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
+
         HttpServletRequest request = ServletActionContext.getRequest();
         String path = ServletActionContext.getServletContext().getRealPath("/");
         this.k7 = isK7();
@@ -981,14 +1206,19 @@ public class TotalAction extends ActionSupport
 
         Map power = this.powerService.getUserGroup(groupid);
         String deptIdGroup = power.get("deptIdGroup").toString();
-        logger.info(">>>1:deptIdGroup" + deptIdGroup);
 
-        List temp = this.deptService.findchild(Integer.valueOf(deptIdGroup));
-        logger.info(">>>2:temp" + temp.size());
+        List dtemp = new ArrayList();
+
+        if(request.getParameter("deptId")!=null && !request.getParameter("deptId").equals("")){
+            //dtemp = this.deptService.findchild(Integer.valueOf(request.getParameter("deptId")));
+            dtemp.add(deptService.findDeptById(Integer.valueOf(request.getParameter("deptId"))));
+        }
+        else
+            dtemp.add(deptService.findDeptById(Integer.valueOf(deptIdGroup)));
         List res = new ArrayList();
-        for (int i = 0; i < temp.size(); i++) {
-            String name = ((Map)temp.get(i)).get("name").toString();
-            String id = ((Map)temp.get(i)).get("id").toString();
+        for (int i = 0; i < dtemp.size(); i++) {
+            String name = ((Map)dtemp.get(i)).get("name").toString();
+            String id = ((Map)dtemp.get(i)).get("id").toString();
             String ids = this.deptService.findChildALLStr123(id);
             Map m = this.totalService.totalDept(ids, this.startDate, this.endDate);
             if (m != null) {
@@ -1029,24 +1259,18 @@ public class TotalAction extends ActionSupport
                             this.mls.remove(j);
                         }
                     }
-                    System.out.println("k7=true，msum=" + msum);
                     for (int j = 0; j < this.bmls.size(); j++) {
                         Map k = (Map)this.bmls.get(j);
                         if (!k.get("keyNo").toString().equals("6"))
                         {
-                            bmsum = bmsum +
-                                    key[Integer.parseInt(k.get("keyNo")
-                                            .toString())].intValue();
-
-                            kbm.add(key[Integer.parseInt(k.get("keyNo")
-                                    .toString())]);
+                            bmsum = bmsum + key[Integer.parseInt(k.get("keyNo").toString())].intValue();
+                            kbm.add(key[Integer.parseInt(k.get("keyNo").toString())]);
                         } else {
                             this.bmls.remove(j);
                         }
                     }
                     System.out.println("k7=true，bmsum=" + bmsum);
-                    mrate = Math.rint(msum * 1.0D / (
-                            msum * 1.0D + bmsum * 1.0D) * 10000.0D) * 1.0D / 100.0D;
+                    mrate = Math.rint(msum * 1.0D / (msum * 1.0D + bmsum * 1.0D) * 10000.0D) * 1.0D / 100.0D;
 
                     for (int j = 0; j < key.length - 1; j++) {
                         p += key[j].intValue();
@@ -1058,21 +1282,17 @@ public class TotalAction extends ActionSupport
                     for (int j = 0; j < this.mls.size(); j++) {
                         Map k = (Map)this.mls.get(j);
 
-                        msum = msum +
-                                key[Integer.parseInt(k.get("keyNo").toString())].intValue();
+                        msum = msum + key[Integer.parseInt(k.get("keyNo").toString())].intValue();
                         km.add(key[Integer.parseInt(k.get("keyNo").toString())]);
                     }
-                    System.out.println("k7=false，msum=" + msum);
                     for (int j = 0; j < this.bmls.size(); j++) {
                         Map k = (Map)this.bmls.get(j);
 
-                        bmsum = bmsum +
-                                key[Integer.parseInt(k.get("keyNo").toString())].intValue();
+                        bmsum = bmsum + key[Integer.parseInt(k.get("keyNo").toString())].intValue();
                         kbm.add(key[Integer.parseInt(k.get("keyNo").toString())]);
                     }
                     System.out.println("k7=false，bmsum=" + bmsum);
-                    mrate = Math.rint(msum * 1.0D / (
-                            msum * 1.0D + bmsum * 1.0D) * 10000.0D) * 1.0D / 100.0D;
+                    mrate = Math.rint(msum * 1.0D / (msum * 1.0D + bmsum * 1.0D) * 10000.0D) * 1.0D / 100.0D;
                     for (int j = 0; j < key.length; j++) {
                         p += key[j].intValue();
                     }
@@ -1087,7 +1307,7 @@ public class TotalAction extends ActionSupport
                 m.put("kbm", kbm);
                 m.put("msum", Integer.valueOf(msum));
                 m.put("bmsum", Integer.valueOf(bmsum));
-                m.put("p", Integer.valueOf(p));
+                m.put("p", Integer.valueOf(p)); System.out.println("k7=false，sum=" + sum);
                 m.put("sum", Integer.valueOf(sum));
                 res.add(m);
             }
@@ -1113,14 +1333,160 @@ public class TotalAction extends ActionSupport
             ls.add(m);
         }
         JfreeChart jfreeChart = new JfreeChart();
-
         jfreeChart.createBar("总的满意度指数", "感知项", "满意度", ls, path + "pubpic.jpg");
 
         String ids = this.deptService.findChildALLStr123(deptIdGroup);
         Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
         totalMap = getRate(totalMap);
         request.setAttribute("totalMap", totalMap);
+        String exportExcel = request.getParameter("export");
+        if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
+            List ls2 = new ArrayList();
+            for (int i = 0; i < list.size(); ++i) {
+                final Map m = new LinkedHashMap();
+                final Map temp = (Map) list.get(i);
+                m.put("m1", temp.get("name"));
+                m.put("m2", temp.get("star"));
+                int j = 3;
+                for (Object item: (ArrayList)(temp.get("km"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("msum"));
+                for (Object item: (ArrayList)(temp.get("kbm"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("bmsum"));
+                m.put("m" + (j++), temp.get("key6"));
+                m.put("m" + (j++), (int)temp.get("key0")+(int)temp.get("key1")+(int)temp.get("key2")+(int)temp.get("key3")+(int)temp.get("key4")+(int)temp.get("key5")+(int)temp.get("key6"));
+                m.put("m" + (j++), temp.get("mrate")+"%");
+                m.put("m" + (j++), temp.get("num"));
+                ls2.add(m);
+            }
+            final Poi poi = new Poi();
+            List<String> args = new ArrayList<String>();
+            args.add(this.getText("sundyn.column.deptName"));
+            args.add(this.getText("sundyn.column.star"));
+            for (Object item : mls){
+                //Map map = (Map)this.mls.get(i);
+                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
+                args.add(this.getText("sundyn.column.content"));
+            }
+            args.add(this.getText("sundyn.column.content"));
+            for (Object item : bmls){
+                //Map map = (Map)this.mls.get(i);
+                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
+                args.add(this.getText("sundyn.column.nocontent"));
+            }
+            args.add(this.getText("sundyn.column.nocontent"));
+            args.add(this.getText("sundyn.column.noappries"));
+            args.add(this.getText("sundyn.column.sum"));
+            args.add(this.getText("sundyn.column.contentRate"));
+            args.add(this.getText("sundyn.column.contentDegree"));
 
+            poi.addTitle(this.getText("sundyn.total.excelTitle4"), 1, args.size()-1);
+            poi.addListTitle(args.toArray(), 1);
+            poi.addMerge(2,2,2,2+mls.size());
+            poi.addMerge(2,2+mls.size()+1,2,2+mls.size()+1 + bmls.size());
+
+            List<String> args2 = new ArrayList<String>();
+            args2.add("");
+            args2.add("");
+            for (Object item : mls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.contentTotal"));
+            for (Object item : bmls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.nocontentTotal"));
+            args2.add("");
+            args2.add("");
+            args2.add("");
+            args2.add("");
+            poi.addListTitle(args2.toArray(), 1);
+
+            poi.addMerge(2,0,3,0);
+            poi.addMerge(2,1,3,1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1,3,2+mls.size() +1+ bmls.size()+1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1,3,2+mls.size() +1+ bmls.size()+1+1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1+1);
+            poi.addList(ls2, false);
+
+            int lastr = 3 + ls2.size();
+            //统计信息
+            ls2 = new ArrayList();
+            poi.addTitle(this.getText("sundyn.total.toatlInfo"), 1, args.size()-1);
+
+            for (Object item : mls){
+                Map itemMap = (Map)item;
+                final Map m2 = new LinkedHashMap();
+                m2.put("m1", this.getText("sundyn.column.content"));
+                int j = 2;
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), String.valueOf(itemMap.get("name").toString()));//keyNo
+                Integer[] d = (Integer[])(totalMap.get("key"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d[Integer.valueOf(itemMap.get("keyNo").toString())]);
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("msum"));//keyNo
+                double[] d2 = (double[])(totalMap.get("keyr"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d2[Integer.valueOf(itemMap.get("keyNo").toString())]+"%");
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("mrate")+"%");//keyNo
+                m2.put("m" + (j++), "");
+                ls2.add(m2);
+            }
+            poi.addMerge(lastr + 2 ,0,lastr + 2 + mls.size() - 1,1);
+            int _t = lastr + 2;
+            while(_t <= lastr + 2 + mls.size() - 1) {
+                poi.addMerge(_t, 2, _t, 3);
+                poi.addMerge(_t, 4, _t, 5);
+                poi.addMerge(_t, 8, _t, 9);
+                _t++;
+            }
+            poi.addMerge(lastr + 2 ,6,lastr + 2 + mls.size() - 1,7);
+            poi.addMerge(lastr + 2 ,10,lastr + 2 + mls.size() - 1,11);
+            for (Object item : bmls){
+                Map itemMap = (Map)item;
+                final Map m2 = new LinkedHashMap();
+                m2.put("m1", this.getText("sundyn.column.nocontent"));
+                int j = 2;
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), String.valueOf(itemMap.get("name").toString()));//keyNo
+                Integer[] d = (Integer[])(totalMap.get("key"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d[Integer.valueOf(itemMap.get("keyNo").toString())]);
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("bmsum"));//keyNo
+                double[] d2 = (double[])(totalMap.get("keyr"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d2[Integer.valueOf(itemMap.get("keyNo").toString())]+"%");
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("bmrate")+"%");//keyNo
+                m2.put("m" + (j++), "");
+                ls2.add(m2);
+            }
+            lastr = lastr + 2 + mls.size() - 1;
+            poi.addMerge(lastr+1 ,0,lastr + 1 + bmls.size() - 1,1);
+            _t = lastr;
+            while(_t <= lastr + 2 + bmls.size() - 1) {
+                poi.addMerge(_t, 2, _t, 3);
+                poi.addMerge(_t, 4, _t, 5);
+                poi.addMerge(_t, 8, _t, 9);
+                _t++;
+            }
+            poi.addMerge(lastr+1 ,6,lastr + 1 + bmls.size() - 1,7);
+            poi.addMerge(lastr+1 ,10,lastr + 1 + bmls.size() - 1,11);
+            poi.addList(ls2, false);
+
+
+            poi.createFile(String.valueOf(path) + "standard.xls");
+            this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
+            this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
+            return "excel";
+        }
         return "success";
     }
 
@@ -1620,9 +1986,14 @@ public class TotalAction extends ActionSupport
 
         String deptId = request.getParameter("deptId");
         final String ids = this.deptService.findChildALLStr123(deptId);
-        final int rowsCount = this.totalService.countTotalPerson(ids, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, request);
-        this.list = this.totalService.totalPerson(ids, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        final String employeeId = request.getParameter("employeeId");
+        this.pager = new Pager("currentPage", pageSize, 0, request);
+        Integer[] totalrows = new Integer[1];
+        this.list = this.totalService.totalPerson(ids, employeeId, this.startDate, this.endDate,
+                (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), totalrows);
+        final int rowsCount = totalrows[0];
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
         this.list = this.getD(this.list);
@@ -1631,25 +2002,179 @@ public class TotalAction extends ActionSupport
         final String standard = sundynSet.getM_content().get("standard").toString();
         final Map m1 = new HashMap();
         m1.put("num", standard);
-        m1.put("category", "\u611f\u77e5");
-        m1.put("item", "\u6807\u51c6");
+        m1.put("category", "感知");
+        m1.put("item", "标准");
         ls.add(m1);
         for (int i = 0; i < this.list.size(); ++i) {
             final Map temp = (Map) this.list.get(i);
             final Map j = new HashMap();
             j.put("num", temp.get("num"));
-            j.put("category", "\u611f\u77e5");
+            j.put("category", "感知");
             j.put("item", temp.get("employeeName"));
             ls.add(j);
         }
         final JfreeChart jfreeChart = new JfreeChart();
-        jfreeChart.createBar("\u4eba\u5458\u6ee1\u610f\u5ea6\u6307\u6570", "\u611f\u77e5\u9879", "\u6ee1\u610f\u5ea6", ls, String.valueOf(path) + "pubpic.jpg");
+        jfreeChart.createBar("人员满意度指数", "感知项", "满意度", ls, String.valueOf(path) + "pubpic.jpg");
         this.pager.setPageList(this.list);
 
-        Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
+        Map totalMap = this.totalService.totalDept(ids, employeeId, this.startDate, this.endDate);
         totalMap = this.getRate(totalMap);
         request.setAttribute("totalMap", (Object)totalMap);
         request.setAttribute("deptId", (Object)deptId);
+
+        String exportExcel = request.getParameter("export");
+        if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
+            List list2 = this.totalService.totalPerson(ids, employeeId, this.startDate, this.endDate, null, null, totalrows);
+            list2 = this.getPandM(list2);
+            list2 = this.getStar(list2);
+            list2 = this.getD(list2);
+            List ls2 = new ArrayList();
+            for (int i = 0; i < list2.size(); ++i) {
+                final Map m = new LinkedHashMap();
+                final Map temp = (Map) list2.get(i);
+                m.put("m1", temp.get("employeeName"));
+                m.put("m2", temp.get("star"));
+                int j = 3;
+                for (Object item: (ArrayList)(temp.get("km"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("msum"));
+                for (Object item: (ArrayList)(temp.get("kbm"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("bmsum"));
+                m.put("m" + (j++), temp.get("key6"));
+                m.put("m" + (j++), (int)temp.get("key0")+(int)temp.get("key1")+(int)temp.get("key2")+(int)temp.get("key3")+(int)temp.get("key4")+(int)temp.get("key5")+(int)temp.get("key6"));
+                m.put("m" + (j++), temp.get("mrate")+"%");
+                m.put("m" + (j++), temp.get("num"));
+                ls2.add(m);
+            }
+            final Poi poi = new Poi();
+            List<String> args = new ArrayList<String>();
+            args.add(this.getText("sundyn.column.name"));
+            args.add(this.getText("sundyn.column.star"));
+            for (Object item : mls){
+                //Map map = (Map)this.mls.get(i);
+                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
+                args.add(this.getText("sundyn.column.content"));
+            }
+            args.add(this.getText("sundyn.column.content"));
+            for (Object item : bmls){
+                //Map map = (Map)this.mls.get(i);
+                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
+                args.add(this.getText("sundyn.column.nocontent"));
+            }
+            args.add(this.getText("sundyn.column.nocontent"));
+            args.add(this.getText("sundyn.column.noappries"));
+            args.add(this.getText("sundyn.column.sum"));
+            args.add(this.getText("sundyn.column.contentRate"));
+            args.add(this.getText("sundyn.column.contentDegree"));
+
+            poi.addTitle(this.getText("sundyn.total.excelTitle.person"), 1, args.size()-1);
+            poi.addListTitle(args.toArray(), 1);
+            poi.addMerge(2,2,2,2+mls.size());
+            poi.addMerge(2,2+mls.size()+1,2,2+mls.size()+1 + bmls.size());
+
+            List<String> args2 = new ArrayList<String>();
+            args2.add("");
+            args2.add("");
+            for (Object item : mls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.contentTotal"));
+            for (Object item : bmls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.nocontentTotal"));
+            args2.add("");
+            args2.add("");
+            args2.add("");
+            args2.add("");
+            poi.addListTitle(args2.toArray(), 1);
+
+            poi.addMerge(2,0,3,0);
+            poi.addMerge(2,1,3,1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1,3,2+mls.size() +1+ bmls.size()+1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1,3,2+mls.size() +1+ bmls.size()+1+1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1+1);
+            poi.addList(ls2, false);
+
+            int lastr = 3 + ls2.size();
+            //统计信息
+            ls2 = new ArrayList();
+            poi.addTitle(this.getText("sundyn.total.toatlInfo.person"), 1, args.size()-1);
+
+            for (Object item : mls){
+                Map itemMap = (Map)item;
+                final Map m2 = new LinkedHashMap();
+                m2.put("m1", this.getText("sundyn.column.content"));
+                int j = 2;
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), String.valueOf(itemMap.get("name").toString()));//keyNo
+                Integer[] d = (Integer[])(totalMap.get("key"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d[Integer.valueOf(itemMap.get("keyNo").toString())]);
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("msum"));//keyNo
+                double[] d2 = (double[])(totalMap.get("keyr"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d2[Integer.valueOf(itemMap.get("keyNo").toString())]+"%");
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("mrate")+"%");//keyNo
+                m2.put("m" + (j++), "");
+                ls2.add(m2);
+            }
+            poi.addMerge(lastr + 2 ,0,lastr + 2 + mls.size() - 1,1);
+            int _t = lastr + 2;
+            while(_t <= lastr + 2 + mls.size() - 1) {
+                poi.addMerge(_t, 2, _t, 3);
+                poi.addMerge(_t, 4, _t, 5);
+                poi.addMerge(_t, 8, _t, 9);
+                _t++;
+            }
+            poi.addMerge(lastr + 2 ,6,lastr + 2 + mls.size() - 1,7);
+            poi.addMerge(lastr + 2 ,10,lastr + 2 + mls.size() - 1,11);
+            for (Object item : bmls){
+                Map itemMap = (Map)item;
+                final Map m2 = new LinkedHashMap();
+                m2.put("m1", this.getText("sundyn.column.nocontent"));
+                int j = 2;
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), String.valueOf(itemMap.get("name").toString()));//keyNo
+                Integer[] d = (Integer[])(totalMap.get("key"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d[Integer.valueOf(itemMap.get("keyNo").toString())]);
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("bmsum"));//keyNo
+                double[] d2 = (double[])(totalMap.get("keyr"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d2[Integer.valueOf(itemMap.get("keyNo").toString())]+"%");
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("bmrate")+"%");//keyNo
+                m2.put("m" + (j++), "");
+                ls2.add(m2);
+            }
+            lastr = lastr + 2 + mls.size() - 1;
+            poi.addMerge(lastr+1 ,0,lastr + 1 + bmls.size() - 1,1);
+            _t = lastr;
+            while(_t <= lastr + 2 + bmls.size() - 1) {
+                poi.addMerge(_t, 2, _t, 3);
+                poi.addMerge(_t, 4, _t, 5);
+                poi.addMerge(_t, 8, _t, 9);
+                _t++;
+            }
+            poi.addMerge(lastr+1 ,6,lastr + 1 + bmls.size() - 1,7);
+            poi.addMerge(lastr+1 ,10,lastr + 1 + bmls.size() - 1,11);
+            poi.addList(ls2, false);
+
+
+            poi.createFile(String.valueOf(path) + "standard.xls");
+            this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
+            this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
+            return "excel";
+        }
+
         return "success";
     }
 
@@ -1682,7 +2207,7 @@ public class TotalAction extends ActionSupport
             ls.add(j);
         }
         final JfreeChart jfreeChart = new JfreeChart();
-        jfreeChart.createBar("\u4eba\u5458\u6ee1\u610f\u5ea6\u6307\u6570", "\u611f\u77e5\u9879", "\u6ee1\u610f\u5ea6", ls, String.valueOf(path) + "pubpic.jpg");
+        jfreeChart.createBar("人员满意度指数", "感知项", "满意度", ls, String.valueOf(path) + "pubpic.jpg");
         this.pager.setPageList(this.list);
         final String ids = this.deptService.findChildALLStr123(deptId);
         Map totalMap = this.totalService.totalDept(deptId, this.startDate, this.endDate);
@@ -1891,7 +2416,6 @@ public class TotalAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final String deptId = request.getParameter("deptId");
-        System.out.println(deptId);
 
         final Map manager2 = (Map)request.getSession().getAttribute("manager");
         final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
@@ -1933,6 +2457,160 @@ public class TotalAction extends ActionSupport
         totalMap = this.getRate(totalMap);
         request.setAttribute("totalMap", (Object)totalMap);
         request.setAttribute("deptId", (Object)deptId);
+
+        String exportExcel = request.getParameter("export");
+        if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
+            List list2 = this.totalService.totalWindow(ids2, this.startDate, this.endDate, null, null);
+            list2 = this.getPandM(list2);
+            list2 = this.getStar(list2);
+            list2 = this.getD(list2);
+            List ls2 = new ArrayList();
+            for (int i = 0; i < list2.size(); ++i) {
+                final Map m = new LinkedHashMap();
+                final Map temp = (Map) list2.get(i);
+                m.put("m1", temp.get("windowname"));
+                m.put("m2", temp.get("star"));
+                int j = 3;
+                for (Object item: (ArrayList)(temp.get("km"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("msum"));
+                for (Object item: (ArrayList)(temp.get("kbm"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("bmsum"));
+                m.put("m" + (j++), temp.get("key6"));
+                m.put("m" + (j++), (int)temp.get("key0")+(int)temp.get("key1")+(int)temp.get("key2")+(int)temp.get("key3")+(int)temp.get("key4")+(int)temp.get("key5")+(int)temp.get("key6"));
+                m.put("m" + (j++), temp.get("mrate")+"%");
+                m.put("m" + (j++), temp.get("num"));
+                ls2.add(m);
+            }
+            final Poi poi = new Poi();
+            List<String> args = new ArrayList<String>();
+            args.add(this.getText("sundyn.column.windowName"));
+            args.add(this.getText("sundyn.column.star"));
+            for (Object item : mls){
+                //Map map = (Map)this.mls.get(i);
+                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
+                args.add(this.getText("sundyn.column.content"));
+            }
+            args.add(this.getText("sundyn.column.content"));
+            for (Object item : bmls){
+                //Map map = (Map)this.mls.get(i);
+                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
+                args.add(this.getText("sundyn.column.nocontent"));
+            }
+            args.add(this.getText("sundyn.column.nocontent"));
+            args.add(this.getText("sundyn.column.noappries"));
+            args.add(this.getText("sundyn.column.sum"));
+            args.add(this.getText("sundyn.column.contentRate"));
+            args.add(this.getText("sundyn.column.contentDegree"));
+
+            poi.addTitle(this.getText("sundyn.total.excelTitle.window"), 1, args.size()-1);
+            poi.addListTitle(args.toArray(), 1);
+            poi.addMerge(2,2,2,2+mls.size());
+            poi.addMerge(2,2+mls.size()+1,2,2+mls.size()+1 + bmls.size());
+
+            List<String> args2 = new ArrayList<String>();
+            args2.add("");
+            args2.add("");
+            for (Object item : mls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.contentTotal"));
+            for (Object item : bmls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.nocontentTotal"));
+            args2.add("");
+            args2.add("");
+            args2.add("");
+            args2.add("");
+            poi.addListTitle(args2.toArray(), 1);
+
+            poi.addMerge(2,0,3,0);
+            poi.addMerge(2,1,3,1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1,3,2+mls.size() +1+ bmls.size()+1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1,3,2+mls.size() +1+ bmls.size()+1+1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1);
+            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1+1);
+            poi.addList(ls2, false);
+
+            int lastr = 3 + ls2.size();
+            //统计信息
+            ls2 = new ArrayList();
+            poi.addTitle(this.getText("sundyn.total.toatlInfo.window"), 1, args.size()-1);
+
+            for (Object item : mls){
+                Map itemMap = (Map)item;
+                final Map m2 = new LinkedHashMap();
+                m2.put("m1", this.getText("sundyn.column.content"));
+                int j = 2;
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), String.valueOf(itemMap.get("name").toString()));//keyNo
+                Integer[] d = (Integer[])(totalMap.get("key"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d[Integer.valueOf(itemMap.get("keyNo").toString())]);
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("msum"));//keyNo
+                double[] d2 = (double[])(totalMap.get("keyr"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d2[Integer.valueOf(itemMap.get("keyNo").toString())]+"%");
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("mrate")+"%");//keyNo
+                m2.put("m" + (j++), "");
+                ls2.add(m2);
+            }
+            poi.addMerge(lastr + 2 ,0,lastr + 2 + mls.size() - 1,1);
+            int _t = lastr + 2;
+            while(_t <= lastr + 2 + mls.size() - 1) {
+                poi.addMerge(_t, 2, _t, 3);
+                poi.addMerge(_t, 4, _t, 5);
+                poi.addMerge(_t, 8, _t, 9);
+                _t++;
+            }
+            poi.addMerge(lastr + 2 ,6,lastr + 2 + mls.size() - 1,7);
+            poi.addMerge(lastr + 2 ,10,lastr + 2 + mls.size() - 1,11);
+            for (Object item : bmls){
+                Map itemMap = (Map)item;
+                final Map m2 = new LinkedHashMap();
+                m2.put("m1", this.getText("sundyn.column.nocontent"));
+                int j = 2;
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), String.valueOf(itemMap.get("name").toString()));//keyNo
+                Integer[] d = (Integer[])(totalMap.get("key"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d[Integer.valueOf(itemMap.get("keyNo").toString())]);
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("bmsum"));//keyNo
+                double[] d2 = (double[])(totalMap.get("keyr"));
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), d2[Integer.valueOf(itemMap.get("keyNo").toString())]+"%");
+                m2.put("m" + (j++), "");
+                m2.put("m" + (j++), totalMap.get("bmrate")+"%");//keyNo
+                m2.put("m" + (j++), "");
+                ls2.add(m2);
+            }
+            lastr = lastr + 2 + mls.size() - 1;
+            poi.addMerge(lastr+1 ,0,lastr + 1 + bmls.size() - 1,1);
+            _t = lastr;
+            while(_t <= lastr + 2 + bmls.size() - 1) {
+                poi.addMerge(_t, 2, _t, 3);
+                poi.addMerge(_t, 4, _t, 5);
+                poi.addMerge(_t, 8, _t, 9);
+                _t++;
+            }
+            poi.addMerge(lastr+1 ,6,lastr + 1 + bmls.size() - 1,7);
+            poi.addMerge(lastr+1 ,10,lastr + 1 + bmls.size() - 1,11);
+            poi.addList(ls2, false);
+
+
+            poi.createFile(String.valueOf(path) + "standard.xls");
+            this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
+            this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
+            return "excel";
+        }
+
         return "success";
     }
 
@@ -2165,10 +2843,10 @@ public class TotalAction extends ActionSupport
             ls.add(m);
         }
         final JfreeChart jfreeChart = new JfreeChart();
-        jfreeChart.createBar("\u603b\u7684\u6ee1\u610f\u5ea6\u6307\u6570", "\u611f\u77e5\u9879", "\u6ee1\u610f\u5ea6", ls, String.valueOf(path) + "pubpic.jpg");
+        jfreeChart.createBar("总的满意度指数", "感知项", "满意度", ls, String.valueOf(path) + "pubpic.jpg");
         final Poi poi = new Poi();
-        poi.addTitle("\u603b\u7684\u6ee1\u610f\u5ea6\u6307\u6570", 0, 2);
-        final String[] args = { "\u6ee1\u610f\u5ea6", "\u56db\u7ea7\u6307\u6807", "\u4e09\u7ea7\u6307\u6807", "\u4e8c\u7ea7\u6307\u6807", "\u4e00\u7ea7\u6307\u6807" };
+        poi.addTitle("总的满意度指数", 0, 2);
+        final String[] args = { "满意度", "四级指标", "三级指标", "二级指标", "一级指标" };
         poi.addListTitle(args, 1);
         poi.addList(this.list);
         poi.addPic(new File(String.valueOf(path) + "pubpic.jpg"), 1, 2);

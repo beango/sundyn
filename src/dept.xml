@@ -47,6 +47,11 @@
 			<result name="success">/dept/editDialog.jsp</result>
 			<result name="camera">/dept/editDialog_camera.jsp</result>
 		</action>
+        <action name="deptGenCer" class="deptAction"
+                method="deptGenCer">
+            <result name="success">/dept/json.jsp</result>
+            <result name="camera">/dept/editDialog_camera.jsp</result>
+        </action>
 		<action name="deptEditItem" class="deptAction"
 			method="deptEditItem">
 			<result name="success">/dept/json.jsp</result>

@@ -37,6 +37,12 @@
 			method="queryDeptDeal">
 			<result name="camera">/query/deptDeal_camera.jsp</result>
 			<result name="success">/query/deptDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
 		</action>
 
 		<!-- 生成对比表 -->
@@ -63,6 +69,12 @@
 			method="queryPeopleyDeal">
 			<result name="camera">/query/peopleDeal_camera.jsp</result>
 			<result name="success">/query/peopleDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
 		</action>
 		<!-- 根据人员删除评价记录 -->
 		<action name="queryPeopleyForDel" class="queryAction"
@@ -81,6 +93,12 @@
 			method="queryResultDeal">
 			<result name="success">/query/resultDeal.jsp</result>
 			<result name="camera">/query/resultDeal_camera.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
 		</action>
 		<!-- 按照手机号查询 -->
 		<action name="queryTel" class="queryAction"

@@ -400,12 +400,12 @@ public class EmployeeService extends SuperDao
 
     public List employeeOnline(final String deptIds, final String employeeIds, final int start, final int num) {
         String sql = "select  appries_employee.Name as employeeName, appries_employee.Sex, appries_employee.CardNum , " +
-                "appries_dept.name as deptName, '\u5728\u7ebf' as isline " +
+                "appries_dept.name as deptName, '在线' as isline " +
                 "from  appries_employee, appries_dept " +
-                "where appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  " +
+                "where appries_dept.id=appries_employee.deptid and appries_dept.id in(" + deptIds + ") " +
                 "and appries_employee.id in(" + employeeIds + ")" +
                 " union " + "select appries_employee.Name as employeeName, appries_employee.Sex ,appries_employee.CardNum , " +
-                "appries_dept.name as deptName  ,'\u4e0d\u5728\u7ebf' as isline " +
+                "appries_dept.name as deptName  ,'不在线' as isline " +
                 "from  appries_employee, appries_dept where  appries_dept.id=appries_employee.deptid  " +
                 "and appries_dept.id in(" + deptIds + ")  and appries_employee.id not  in(" + employeeIds + ")";
         sql = "select row_number() over(order by Name) as rows, * from ("+sql+") t";

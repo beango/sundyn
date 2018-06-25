@@ -72,7 +72,8 @@ public class AppriesService extends SuperDao
                                        final String videofile, final String businessTime, final int min, final int sec, final String tel,
                                        final String idCard, final String name, final String phone, String imgfile, String busRst) {
         final String sql = "{call appriesAdd(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-        final Object[] args = { mac==null?"":mac,
+        final Object[] args = {
+                mac==null?"":mac,
                 tt==null?"":tt,
                 cardnum==null?"":cardnum,
                 pj==null?"":pj,
@@ -82,7 +83,9 @@ public class AppriesService extends SuperDao
                 min,
                 sec,
                 name==null?"":name,
-                phone==null?"":phone,imgfile,busRst };
+                phone==null?"":phone,
+                imgfile==null?"":imgfile,
+                busRst==null?"":busRst };
         try {
             final int num = this.getJdbcTemplate().update(sql, args);
             return num > 0;

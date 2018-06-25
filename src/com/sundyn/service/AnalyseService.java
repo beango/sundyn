@@ -102,7 +102,7 @@ public class AnalyseService extends SuperDao
     }
 
     public List AnalyseDeptTotal(final String deptId, final String startDate, final String endDate, final String allId, final String analyseType) {
-        String sql = "select count(*) as num, ";
+        String sql = "select deptid seriesId,t2.name seriesName,count(*) as num, ";
         if (analyseType.equals("day")) {
             sql += "CONVERT(varchar(30),JieshouTime,23) as serviceDate ";
         }
@@ -112,15 +112,18 @@ public class AnalyseService extends SuperDao
         else if (analyseType.equals("year")) {
             sql += "left(CONVERT(varchar(30),JieshouTime,23),4) as serviceDate ";
         }
-        sql += "from appries_appries where DeptId in (" + deptId + ") and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' and keyno in (" + allId + ")  ";
+        sql += ",100.0*sum(t3.ext1)/count(t1.keyno)/10.0 d ";
+        sql += "from appries_appries t1 left join appries_dept t2 on t1.deptid=t2.id " +
+                "left join appries_keytype t3 on t3.keyno=t1.keyno " +
+                "where DeptId in (" + deptId + ") and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' and t1.keyno in (" + allId + ")  ";
         if (analyseType.equals("day")) {
-            sql = String.valueOf(sql) + " group by CONVERT(varchar(30),JieshouTime,23) ";
+            sql = String.valueOf(sql) + " group by t1.deptid,t2.name, CONVERT(varchar(30),JieshouTime,23) ";
         }
         else if (analyseType.equals("month")) {
-            sql = String.valueOf(sql) + " group by left(CONVERT(varchar(30),JieshouTime,23),7)";
+            sql = String.valueOf(sql) + " group by t1.deptid,t2.name, left(CONVERT(varchar(30),JieshouTime,23),7)";
         }
         else if (analyseType.equals("year")) {
-            sql = String.valueOf(sql) + " group by left(CONVERT(varchar(30),JieshouTime,23),4)";
+            sql = String.valueOf(sql) + " group by t1.deptid,t2.name, left(CONVERT(varchar(30),JieshouTime,23),4)";
         }
         try {
             logger.debug("AnalyseDeptTotal.sql="+sql);
@@ -132,7 +135,7 @@ public class AnalyseService extends SuperDao
     }
 
     public List AnalyseDeptContent(final String deptId, final String startDate, final String endDate, final String contentId, final String analyseType) {
-        String sql = "select count(*) as num, ";
+        String sql = "select deptid seriesId,t2.name seriesName,count(*) as num, ";
         if (analyseType.equals("day")) {
             sql += "CONVERT(varchar(30),JieshouTime,23) as serviceDate ";
         }
@@ -142,15 +145,16 @@ public class AnalyseService extends SuperDao
         else if (analyseType.equals("year")) {
             sql += "left(CONVERT(varchar(30),JieshouTime,23),4) as serviceDate ";
         }
-        sql += "from appries_appries where DeptId in (" + deptId + ") and keyno in (0,1) and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' and  keyno in (" + contentId + ")  ";
+        sql += "from appries_appries t1 left join appries_dept t2 on t1.deptid=t2.id left join appries_keytype t3 on t3.keyno=t1.keyno " +
+                "where DeptId in (" + deptId + ") and t1.keyno in (0,1) and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' and t1.keyno in (" + contentId + ")  ";
         if (analyseType.equals("day")) {
-            sql = String.valueOf(sql) + " group by CONVERT(varchar(30),JieshouTime,23) ";
+            sql = String.valueOf(sql) + " group by t1.deptid,t2.name,CONVERT(varchar(30),JieshouTime,23) ";
         }
         else if (analyseType.equals("month")) {
-            sql = String.valueOf(sql) + " group by left(CONVERT(varchar(30),JieshouTime,23),7)";
+            sql = String.valueOf(sql) + " group by t1.deptid,t2.name,left(CONVERT(varchar(30),JieshouTime,23),7)";
         }
         else if (analyseType.equals("year")) {
-            sql = String.valueOf(sql) + " group by left(CONVERT(varchar(30),JieshouTime,23),4)";
+            sql = String.valueOf(sql) + " group by t1.deptid,t2.name,left(CONVERT(varchar(30),JieshouTime,23),4)";
         }
         try {
             return this.getJdbcTemplate().queryForList(sql);
@@ -303,6 +307,39 @@ public class AnalyseService extends SuperDao
             return null;
         }
     }
+    public List AnalyseEmployeeTotal2(final String employeeId, final String startDate, final String endDate, final String allId, final String analyseType) {
+        String sql = "select EmployeeId seriesId,t2.name seriesName,count(*) as num, ";
+        if (analyseType.equals("day")) {
+            sql += "CONVERT(varchar(30),JieshouTime,23) as serviceDate ";
+        }
+        else if (analyseType.equals("month")) {
+            sql += "left(CONVERT(varchar(30),JieshouTime,23),7) as serviceDate ";
+        }
+        else if (analyseType.equals("year")) {
+            sql += "left(CONVERT(varchar(30),JieshouTime,23),4) as serviceDate ";
+        }
+        sql += ",100.0*sum(t3.ext1)/count(t1.keyno)/10.0 d ";
+        sql += "from appries_appries t1 left join appries_employee t2 on t1.employeeid=t2.id left join appries_keytype t3 on t3.keyno=t1.keyno where 1=1 ";
+        if(employeeId!=null && !"".equals(employeeId))
+            sql += "and EmployeeId in (" + employeeId + ") ";
+        sql += "and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "' and t1.keyno in (" + allId + ")   ";
+        if (analyseType.equals("day")) {
+            sql = String.valueOf(sql) + " group by EmployeeId,t2.name,CONVERT(varchar(30),JieshouTime,23) ";
+        }
+        else if (analyseType.equals("month")) {
+            sql = String.valueOf(sql) + " group by EmployeeId,t2.name,left(CONVERT(varchar(30),JieshouTime,23),7)";
+        }
+        else if (analyseType.equals("year")) {
+            sql = String.valueOf(sql) + " group by EmployeeId,t2.name,left(CONVERT(varchar(30),JieshouTime,23),4)";
+        }
+        try {
+            logger.debug("AnalyseEmployeeTotal.sql = " + sql);
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
 
     public List AnalyseEmployeeContent(final String employeeId, final String startDate, final String endDate, final String contentId, final String analyseType) {
         String sql = "select count(*) as num, ";
@@ -315,7 +352,10 @@ public class AnalyseService extends SuperDao
         else if (analyseType.equals("year")) {
             sql += "left(CONVERT(varchar(30),JieshouTime,23),4) as serviceDate ";
         }
-        sql += "from appries_appries where EmployeeId in (" + employeeId + ") and keyno in (0,1) and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "'  and  keyno in (" + contentId + ")  ";
+        sql += "from appries_appries where 1=1 ";
+        if (null!=employeeId && !employeeId.equals(""))
+            sql += "and EmployeeId in (" + employeeId + ") ";
+        sql += "and keyno in (0,1) and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "'  and  keyno in (" + contentId + ")  ";
         if (analyseType.equals("day")) {
             sql = String.valueOf(sql) + " group by CONVERT(varchar(30),JieshouTime,23)";
         }
@@ -326,6 +366,40 @@ public class AnalyseService extends SuperDao
             sql = String.valueOf(sql) + " group by left(CONVERT(varchar(30),JieshouTime,23),4)";
         }
         try {
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List AnalyseEmployeeContent2(final String employeeId, final String startDate, final String endDate, final String contentId, final String analyseType) {
+        String sql = "select  employeeid seriesId,t2.name seriesName, count(*) as num, ";
+        if (analyseType.equals("day")) {
+            sql += "CONVERT(varchar(30),JieshouTime,23) as serviceDate ";
+        }
+        else if (analyseType.equals("month")) {
+            sql += "left(CONVERT(varchar(30),JieshouTime,23),7) as serviceDate ";
+        }
+        else if (analyseType.equals("year")) {
+            sql += "left(CONVERT(varchar(30),JieshouTime,23),4) as serviceDate ";
+        }
+        sql += "from appries_appries t1 left join appries_employee t2 on t1.employeeid=t2.id where 1=1 ";
+        if (null!=employeeId && !employeeId.equals(""))
+            sql += "and EmployeeId in (" + employeeId + ") ";
+        sql += "and keyno in (0,1) and JieshouTime >='" + startDate + "' and JieshouTime<='" + endDate + "'  and  keyno in (" + contentId + ")  ";
+        if (analyseType.equals("day")) {
+            sql = String.valueOf(sql) + " group by employeeid,t2.name, CONVERT(varchar(30),JieshouTime,23)";
+        }
+        else if (analyseType.equals("month")) {
+            sql = String.valueOf(sql) + " group by employeeid,t2.name, left(CONVERT(varchar(30),JieshouTime,23),7)";
+        }
+        else if (analyseType.equals("year")) {
+            sql = String.valueOf(sql) + " group by employeeid,t2.name, left(CONVERT(varchar(30),JieshouTime,23),4)";
+        }
+        try {
+            logger.debug(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {

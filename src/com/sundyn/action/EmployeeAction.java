@@ -35,6 +35,15 @@ public class EmployeeAction extends ActionSupport
     private Integer deptId;
     private DeptService deptService;
 
+    public DeviceService getDeviceService() {
+        return deviceService;
+    }
+
+    public void setDeviceService(DeviceService deviceServie) {
+        this.deviceService = deviceServie;
+    }
+
+    private DeviceService deviceService;
     public ClientService getClientService() {
         return clientService;
     }
@@ -346,14 +355,14 @@ public class EmployeeAction extends ActionSupport
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final SundynSet sundynSet = SundynSet.getInstance(path);
         String star = sundynSet.getM_system().get("star").toString();
-        System.out.println("employeeGetInfo-star=" + star);
+        System.out.println("employeeGetInfo-star1=" + star);
         this.m = this.employeeService.employeeFindByCardnum(cardnum);
         if (this.m == null) {
             this.msg = "getInfoError";
         }
         else {
             if (session.getAttribute("employee") != null) {
-                System.out.println("\u5df2\u6709\u5458\u5de5\u767b\u9646-cardnum=" + ((Map)session.getAttribute("employee")).get("cardnum"));
+                System.out.println("已有员工登陆-cardnum=" + ((Map)session.getAttribute("employee")).get("cardnum"));
             }
             else {
                 session = request.getSession();
@@ -672,6 +681,8 @@ public class EmployeeAction extends ActionSupport
             this.pager = new Pager("currentPage", 10, num, request);
             this.list = this.employeeService.findEmployeeByDeptid(this.deptId, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(this.list);
+            final Map m = EmployeeList.getList();
+            request.setAttribute("online", m);
             return "success";
         }
         return "error";
@@ -705,6 +716,7 @@ public class EmployeeAction extends ActionSupport
         this.list = this.employeeService.findEmployeeByName(this.deptId, keyword, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.list);
         request.setAttribute("keyword", (Object)keyword);
+        request.setAttribute("online", EmployeeList.getList());
         return "success";
     }
 
@@ -960,7 +972,8 @@ public class EmployeeAction extends ActionSupport
         }
         final String m7binpath = String.valueOf(basepath) + "update" + File.separator + playListId;
         if (mac != null && config != null && config.equals("true")) {
-            System.out.println("config=ture返回版本号");
+            System.out.println("config=ture返回版本号2");
+            this.deviceService.findAndAddByMac(mac);
             final Map dept = this.deptService.findByMac(mac);
             if (dept != null) {
                 playListId = dept.get("dept_playListId").toString();

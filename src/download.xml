@@ -49,6 +49,10 @@
 			method="getKeyTypeAll">
 			<result name="success">keyType/json.jsp</result>
 		</action>
+        <action name="getKeyAll" class="keyTypeAction"
+                method="getKeyAll">
+            <result name="success">keyType/json.jsp</result>
+        </action>
 	    <action name="getRecorderTime" class="baseAction" method="getRecorderTime">
 		</action>
   	</package>

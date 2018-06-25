@@ -14,7 +14,7 @@ import com.sundyn.util.*;
 import java.util.*;
 import com.sundyn.util.impl.*;
 
-public class PlayListAction extends ActionSupport
+public class PlayListAction extends MainAction
 {
     private PlayListService playListService;
     private PlayService playService;
@@ -94,7 +94,7 @@ public class PlayListAction extends ActionSupport
         final Map manager = (Map)request.getSession().getAttribute("manager");
         if (manager.get("id").toString().equals("1")) {
             final int rowsCount = this.playListService.countPlayListQuery("", null);
-            this.pager = new Pager("currentPage", 6, rowsCount, request, "playListPage");
+            this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playListPage");
             final List list = this.playListService.playListQuery(request.getParameter("keyword"), null, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list);
         }
@@ -104,7 +104,7 @@ public class PlayListAction extends ActionSupport
             final String deptIdGroup = power.get("deptIdGroup").toString();
             final String deptIds = this.deptService.findChildALLStr123(deptIdGroup);
             final int rowsCount2 = this.playListService.countPlayListQuery("", deptIds);
-            this.pager = new Pager("currentPage", 6, rowsCount2, request, "playListPage");
+            this.pager = new Pager("currentPage", pageSize, rowsCount2, request, "playListPage");
             final List list2 = this.playListService.playListQuery(request.getParameter("keyword"), deptIds, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list2);
         }
@@ -122,7 +122,7 @@ public class PlayListAction extends ActionSupport
         keyword = Mysql.mysql(keyword);
         if (manager.get("id").toString().equals("1")) {
             final int rowsCount = this.playListService.countPlayListQuery(keyword, null);
-            this.pager = new Pager("currentPage", 6, rowsCount, request, "playListPage");
+            this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playListPage");
             final List list = this.playListService.playListQuery(keyword, null, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list);
         }
@@ -132,7 +132,7 @@ public class PlayListAction extends ActionSupport
             final String deptIdGroup = power.get("deptIdGroup").toString();
             final String deptIds = this.deptService.findChildALLStr123(deptIdGroup);
             final int rowsCount2 = this.playListService.countPlayListQuery(keyword, deptIds);
-            this.pager = new Pager("currentPage", 6, rowsCount2, request, "playListPage");
+            this.pager = new Pager("currentPage", pageSize, rowsCount2, request, "playListPage");
             final List list2 = this.playListService.playListQuery(keyword, deptIds, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list2);
         }
@@ -151,7 +151,7 @@ public class PlayListAction extends ActionSupport
         keyword = Mysql.mysql(keyword);
         if (manager.get("id").toString().equals("1")) {
             final int rowsCount = this.playListService.countPlayListQuery(keyword, null);
-            this.pager = new Pager("currentPage", 6, rowsCount, request, "playListPage");
+            this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playListPage");
             final List list = this.playListService.playListQuery(keyword, null, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list);
         }
@@ -161,7 +161,7 @@ public class PlayListAction extends ActionSupport
             final String deptIdGroup = power.get("deptIdGroup").toString();
             final String deptIds = this.deptService.findChildALLStr123(deptIdGroup);
             final int rowsCount2 = this.playListService.countPlayListQuery(keyword, deptIds);
-            this.pager = new Pager("currentPage", 6, rowsCount2, request, "playListPage");
+            this.pager = new Pager("currentPage", pageSize, rowsCount2, request, "playListPage");
             final List list2 = this.playListService.playListQuery(keyword, deptIds, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list2);
         }

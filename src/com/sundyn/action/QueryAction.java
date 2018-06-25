@@ -19,9 +19,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class QueryAction extends ActionSupport
+public class QueryAction extends MainAction
 {
-    private static final Integer pageSize;
+    public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
+
     private Integer deptId;
     private List deptList;
 
@@ -85,10 +86,6 @@ public class QueryAction extends ActionSupport
 
     private JSONObject pagerJSON;
 
-    static {
-        pageSize = 15;
-    }
-
     public List getBmls() {
         return this.bmls;
     }
@@ -113,9 +110,6 @@ public class QueryAction extends ActionSupport
         this.k7 = k7;
     }
 
-    public static Integer getPagesize() {
-        return QueryAction.pageSize;
-    }
 
     public String getFileName() {
         return this.fileName;
@@ -139,10 +133,6 @@ public class QueryAction extends ActionSupport
 
     public void setKeys(final String keys) {
         this.keys = keys;
-    }
-
-    public static Integer getPageSize() {
-        return QueryAction.pageSize;
     }
 
     private String getCamera() {
@@ -289,8 +279,35 @@ public class QueryAction extends ActionSupport
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
         this.select = "";
-        this.deptList = this.deptService.findchild(this.id);
+        String type = request.getParameter("type");
         request.setAttribute("level", Integer.valueOf(request.getParameter("level"))+1);
+
+        if(this.id!=null){
+            Map map = this.deptService.findDeptByFatherid(this.id);
+            if (map!=null && map.get("deptType").equals(1) && type.equals("employee")){ //大厅
+                this.deptList = this.employeeService.findEmployeeByDeptId(this.id);
+                request.setAttribute("dataType", "employee");
+                return "success";
+            }
+        }
+
+        this.deptList = this.deptService.findchild(this.id);
+
+        List d = new ArrayList();
+        for (Object m : this.deptList){
+            Map _m = (Map)m;
+            if (type.equals("dept") && _m.get("deptType").equals(2)){//部门
+                d.add(_m);
+            }
+            if ((type.equals("dating")||type.equals("employee")) && (_m.get("deptType").equals(2) || _m.get("deptType").equals(1))){//大厅
+                d.add(_m);
+            }
+            if (type.equals("window") && (_m.get("deptType").equals(2) || _m.get("deptType").equals(1) || _m.get("deptType").equals(0))){//窗口
+                d.add(_m);
+            }
+        }
+        request.setAttribute("dataType", "dept");
+        this.deptList = d;
         return "success";
     }
 
@@ -416,7 +433,7 @@ public class QueryAction extends ActionSupport
         final String deptIds = this.deptService.findChildALLStr123(request.getParameter("deptId"));
         final String allKeyInUse = this.keyTypeService.findAllKeyInUse(1);
         final int rowsCount = this.queryService.countQueryDept2(deptIds, this.startDate, this.endDate, allKeyInUse);
-        this.pager = new Pager("currentPage", QueryAction.pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         List list = this.queryService.queryDept2(deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), allKeyInUse);
         //list = this.handleEmptyFile(list);
         this.pager.setPageList(list);
@@ -437,6 +454,40 @@ public class QueryAction extends ActionSupport
         request.setAttribute("strXML1", (Object)strXML1.toString());
         if (this.getCamera().equals("true")) {
             return "camera";
+        }
+        String exportExcel = request.getParameter("export");
+        if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
+            List list2 = this.queryService.queryDept2(deptIds, this.startDate, this.endDate, 0, 0, allKeyInUse);
+
+            final List ls = new ArrayList();
+            for (int i = 0; i < list2.size(); ++i) {
+                final Map m = new LinkedHashMap();
+                final Map temp = (Map) list2.get(i);
+                m.put("m1", temp.get("CardNum"));
+                m.put("m2", temp.get("employeeName"));
+                m.put("m3", temp.get("fatherName"));
+                m.put("m4", temp.get("keyName"));
+                m.put("m5", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(temp.get("JieshouTime")));
+                m.put("m6", "");
+                m.put("m7",  temp.get("businessMin") + getText("sundyn.inquiry.result.minuteForShort") + temp.get("businessSec") + getText("sundyn.inquiry.result.secondForShort"));
+                m.put("m8", temp.get("ext1"));
+                m.put("m9", temp.get("ext2"));
+                m.put("m10", temp.get("remark"));
+                ls.add(m);
+            }
+            final Poi poi = new Poi();
+            final String[] args = { this.getText("sundyn.column.employeeCardNum"), this.getText("sundyn.column.employeeName"),
+                    this.getText("sundyn.column.atDating"), this.getText("sundyn.column.appriesResult"),
+                    this.getText("sundyn.column.appriesTime"), this.getText("sundyn.inquiry.result.obtainEvidence"),
+                    this.getText("sundyn.inquiry.result.businessTime"), "客户姓名", "客户电话", "意见反馈"};
+
+            poi.addTitle(this.getText("sundyn.query.appriesData"), 1, args.length-1);
+            poi.addListTitle(args, 1);
+            poi.addList(ls);
+            poi.createFile(String.valueOf(path) + "standard.xls");
+            this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
+            this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
+            return "excel";
         }
         return "success";
     }
@@ -706,7 +757,7 @@ public class QueryAction extends ActionSupport
     public String queryDealPeopleyForDel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.queryService.countQueryEmployee(this.id, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", QueryAction.pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         final List querylist = this.queryService.queryEmployee(this.id, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(querylist);
         return "success";
@@ -762,17 +813,16 @@ public class QueryAction extends ActionSupport
         if(endDate == null) {
             endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
-
         getEmployeeTree();
 
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final String allKeyInUse = this.keyTypeService.findAllKeyInUse(1);
         final int rowsCount = this.queryService.countQueryEmployee2(this.id, this.startDate, this.endDate, allKeyInUse);
-        this.pager = new Pager("currentPage", QueryAction.pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         List querylist = this.queryService.queryEmployee2(this.id, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), allKeyInUse);
         if (querylist != null) {
-            querylist = this.handleEmptyFile(querylist);
+            //querylist = this.handleEmptyFile(querylist);
         }
         this.pager.setPageList(querylist);
         final List chatList = this.queryService.QueryEmployeeChat2(this.id, this.startDate, this.endDate);
@@ -792,6 +842,40 @@ public class QueryAction extends ActionSupport
             return "camera";
         }
         request.setAttribute("employeeinfo", employeeService.findEmployeeById(this.id));
+        String exportExcel = request.getParameter("export");
+        if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
+            List list2 = this.queryService.queryEmployee2(this.id, this.startDate, this.endDate, 0, 0, allKeyInUse);
+
+            final List ls = new ArrayList();
+            for (int i = 0; i < list2.size(); ++i) {
+                final Map m = new LinkedHashMap();
+                final Map temp = (Map) list2.get(i);
+                m.put("m1", temp.get("CardNum"));
+                m.put("m2", temp.get("employeeName"));
+                m.put("m3", temp.get("fatherName"));
+                m.put("m4", temp.get("keyName"));
+                m.put("m5", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(temp.get("JieshouTime")));
+                m.put("m6", "");
+                m.put("m7",  temp.get("businessMin") + getText("sundyn.inquiry.result.minuteForShort") + temp.get("businessSec") + getText("sundyn.inquiry.result.secondForShort"));
+                m.put("m8", temp.get("ext1"));
+                m.put("m9", temp.get("ext2"));
+                m.put("m10", temp.get("remark"));
+                ls.add(m);
+            }
+            final Poi poi = new Poi();
+            final String[] args = { this.getText("sundyn.column.employeeCardNum"), this.getText("sundyn.column.employeeName"),
+                    this.getText("sundyn.column.atDating"), this.getText("sundyn.column.appriesResult"),
+                    this.getText("sundyn.column.appriesTime"), this.getText("sundyn.inquiry.result.obtainEvidence"),
+                    this.getText("sundyn.inquiry.result.businessTime"), "客户姓名", "客户电话", "意见反馈"};
+
+            poi.addTitle(this.getText("sundyn.query.appriesData"), 1, args.length-1);
+            poi.addListTitle(args, 1);
+            poi.addList(ls);
+            poi.createFile(String.valueOf(path) + "standard.xls");
+            this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
+            this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
+            return "excel";
+        }
         return "success";
     }
 
@@ -803,7 +887,7 @@ public class QueryAction extends ActionSupport
         if (m3 != null && m3.size() >= 1) {
             this.id = Integer.valueOf(this.employeeService.employeeFindByCardnum(cardNum).get("id").toString());
             final int rowsCount = this.queryService.countQueryEmployee(this.id, this.startDate, this.endDate);
-            this.pager = new Pager("currentPage", QueryAction.pageSize, rowsCount, request);
+            this.pager = new Pager("currentPage", pageSize, rowsCount, request);
             final List querylist = this.queryService.queryEmployee(this.id, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(querylist);
             final List chatList = this.queryService.QueryEmployeeChat(this.id, this.startDate, this.endDate);
@@ -843,6 +927,7 @@ public class QueryAction extends ActionSupport
     }
 
     public String queryResultDeal() throws Exception {
+        final String path = ServletActionContext.getServletContext().getRealPath("/");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
             startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
@@ -860,8 +945,8 @@ public class QueryAction extends ActionSupport
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
-        int keys = 0;
-        if(request.getParameter("keys")!=null)
+        Integer keys = null;
+        if(request.getParameter("keys")!=null && !request.getParameter("keys").equals(""))
             keys =Integer.parseInt(request.getParameter("keys"));
         final int rowsCount = this.queryService.countQueryResult(deptIds, keys, this.startDate, this.endDate);
         this.pager = new Pager("currentPage", 10, rowsCount, request);
@@ -882,6 +967,44 @@ public class QueryAction extends ActionSupport
         strXML1.append("</graph>");
         request.setAttribute("strXML1", (Object)strXML1.toString());
         this.deptList = this.keyTypeService.findByApprieserId(1, 1);
+
+
+        String exportExcel = request.getParameter("export");
+        if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
+            List list2 = this.queryService.queryResult(deptIds, keys, this.startDate, this.endDate, 0, 0);
+            //querylist = this.handleEmptyFile(querylist);
+
+            final List ls = new ArrayList();
+            for (int i = 0; i < list2.size(); ++i) {
+                final Map m = new LinkedHashMap();
+                final Map temp = (Map) list2.get(i);
+                m.put("m0", i+1);
+                m.put("m1", temp.get("CardNum"));
+                m.put("m2", temp.get("employeeName"));
+                m.put("m3", temp.get("fatherName"));
+                m.put("m4", temp.get("keyName"));
+                m.put("m5", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(temp.get("JieshouTime")));
+                m.put("m6", "");
+                m.put("m7",  temp.get("businessMin") + getText("sundyn.inquiry.result.minuteForShort") + temp.get("businessSec") + getText("sundyn.inquiry.result.secondForShort"));
+                m.put("m8", temp.get("ext1"));
+                m.put("m9", temp.get("ext2"));
+                m.put("m10", temp.get("remark"));
+                ls.add(m);
+            }
+            final Poi poi = new Poi();
+            final String[] args = { this.getText("sundyn.column.employeeXuHao"), this.getText("sundyn.column.employeeCardNum"), this.getText("sundyn.column.employeeName"),
+                    this.getText("sundyn.column.atDating"), this.getText("sundyn.column.appriesResult"),
+                    this.getText("sundyn.column.appriesTime"), this.getText("sundyn.inquiry.result.obtainEvidence"),
+                    this.getText("sundyn.inquiry.result.businessTime"), "客户姓名", "客户电话", "意见反馈"};
+
+            poi.addTitle(this.getText("sundyn.query.appriesData"), 1, args.length-1);
+            poi.addListTitle(args, 1);
+            poi.addList(ls);
+            poi.createFile(String.valueOf(path) + "standard.xls");
+            this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
+            this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
+            return "excel";
+        }
 
         if (this.getCamera().equals("true")) {
             return "camera";
@@ -1026,7 +1149,7 @@ public class QueryAction extends ActionSupport
             keys = keys.substring(0, keys.length() - 1);
         }
         final int rowsCount = this.queryService.countQueryZh2(this.id, keys, deptIds, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", QueryAction.pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         List tempList = this.queryService.queryZh2(this.id, keys, deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         if (tempList != null) {
             tempList = this.handleEmptyFile(tempList);
@@ -1053,6 +1176,14 @@ public class QueryAction extends ActionSupport
     }
 
     public String queryZhDealAjax() throws Exception {
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+        }
+        if(endDate == null) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
+
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String path = ServletActionContext.getServletContext().getRealPath("/");
 
@@ -1066,8 +1197,11 @@ public class QueryAction extends ActionSupport
         if (keys == null || keys.equals("")) {
             keys = this.keyTypeService.findAllKeyInUse(1);
         }
-        if (deptIds.equals("")) {
+        if (null==deptIds || deptIds.equals("")) {
             deptIds = this.deptService.findChildALLStr123(deptIdGroup);
+        }
+        else{
+            deptIds = this.deptService.findChildALLStr123(deptIds);
         }
         if (this.startDate == null) {
             this.startDate = "";
@@ -1075,19 +1209,20 @@ public class QueryAction extends ActionSupport
         if (this.endDate == null) {
             this.startDate = "";
         }
-        if (deptIds.endsWith(",")) {
-            deptIds = deptIds.substring(0, deptIds.length() - 1);
-        }
         if (keys.endsWith(",")) {
             keys = keys.substring(0, keys.length() - 1);
         }
         final int rowsCount = this.queryService.countQueryZh2(this.id, keys, deptIds, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", QueryAction.pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         List tempList = this.queryService.queryZh2(this.id, keys, deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         if (tempList != null) {
-            tempList = this.handleEmptyFile(tempList);
+            //tempList = this.handleEmptyFile(tempList);
         }
         this.pager.setPageList(tempList);
+
+        final List keyList = this.keyTypeService.findByApprieserId(1, 1);
+        request.setAttribute("keyList", (Object)keyList);
+
         final List chatList = this.queryService.QueryZhChat2(this.id, keys, deptIds, this.startDate, this.endDate);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
@@ -1242,16 +1377,18 @@ public class QueryAction extends ActionSupport
         System.out.println("keyNo=" + keyNo);
         spath = String.valueOf(spath) + "download";
         final HttpSession session = request.getSession();
-        final String deptIds = this.deptService.findChildALLStr123(new StringBuilder().append(this.deptId).toString());
+        final String deptIds = this.deptService.findChildALLStr123(this.deptId==null?"":this.deptId.toString());
         final List l = this.queryService.queryAppriesForDel(deptIds, keyNo, this.startDate, this.endDate);
         boolean result = false;
         int num = 0;
         String path = "";
         final Delete del = new Delete();
+        logger.info("需要删除数据条数:" + l.size());
         for (final Object o : l) {
             final Map m = (Map)o;
             if (m.get("videofile") != null) {
                 path = String.valueOf(spath) + File.separator + m.get("videofile").toString();
+                logger.info("开始删除文件:" + path);
                 result = del.DeleteFolder(path);
                 final String id = m.get("id").toString();
                 this.queryService.updateAppriesById(id);
@@ -1264,7 +1401,7 @@ public class QueryAction extends ActionSupport
                 }
             }
         }
-        request.setAttribute("msg", (Object)("\u64cd\u4f5c\u5b8c\u6210\u5171\u5220\u9664\u6587\u4ef6" + num + "\u4e2a"));
+        request.setAttribute("msg", (Object)("操作完成,共删除文件" + num + "个文件"));
         return "success";
     }
 

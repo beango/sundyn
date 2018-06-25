@@ -57,7 +57,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForMap(sql, arg);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -169,7 +168,9 @@ public class DeptService extends SuperDao
     }
 
     public List findAll(final String ids) {
-        final String sql = "select *,(select count(*) from appries_dept t1 where t1.fatherid=t2.id) as childs from appries_dept t2 where id in (" + ids + ")";
+        String sql = "select *,(select count(*) from appries_dept t1 where t1.fatherid=t2.id) as childs from appries_dept t2 where 1=1 ";
+        if(null!=ids && !ids.equals(""))
+            sql += "and id in (" + ids + ")";
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }

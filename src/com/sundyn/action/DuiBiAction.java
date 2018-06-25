@@ -351,9 +351,14 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String ids = this.deptService.findChildALLStr123(deptIdGroup);
-        final int rowsCount = this.totalService.counttotalDating(ids, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, this.request);
-        this.list = this.totalService.totalDating(ids, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+
+        this.pager = new Pager("currentPage", pageSize, 0, this.request);
+        Integer[] total = new Integer[1];
+        this.list = this.totalService.totalDating(ids, null, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
+                this.pager.getPageSize(), total);
+        final int rowsCount = total[0];
+        this.pager = new Pager("currentPage", pageSize, rowsCount, this.request);
+
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.hallSatisfactionDiagram") + "' xAxisName='" + this.getText("sundyn.column.datingName") + "' yAxisName='" + this.getText("sundyn.column.contentDegree") + "' rotateYAxisName='1' baseFont='Arial' baseFontSize='14' decimalPrecision='0' formatNumberScale='0'>");

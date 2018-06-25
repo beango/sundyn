@@ -53,8 +53,7 @@ public class MainAction extends ActionSupport {
         if(null!=UserManager)
             UserName = (String) UserManager.get("name");
         try{
-             pageSize = Integer.valueOf(ConfigHelper.getValue("PageSizeDef"));
-            System.out.println("从配置文件中获取分页数:"+ pageSize);
+            pageSize = Integer.valueOf(ConfigHelper.getValue("PageSizeDef"));
         }
         catch (Exception e){
             e.printStackTrace();
@@ -75,4 +74,40 @@ public class MainAction extends ActionSupport {
             e.printStackTrace();
         }
     }
+
+    public enum ENUM_DEPTTYPE{
+        DEPT("部门",2),
+        DATING("大厅",1),
+        EMPLOYEE("人员",0);
+        // 成员变量
+        private String name;
+        private int val;
+        // 构造方法
+        private ENUM_DEPTTYPE(String name, int index) {
+            this.name = name;
+            this.val = index;
+        }
+        // 普通方法
+        public static String getName(int index) {
+            for (ENUM_DEPTTYPE c : ENUM_DEPTTYPE.values()) {
+                if (c.getValue() == index) {
+                    return c.name;
+                }
+            }
+            return null;
+        }
+        // get set 方法
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+        public int getValue() {
+            return val;
+        }
+        public void setIndex(int index) {
+            this.val = index;
+        }
+        }
 }

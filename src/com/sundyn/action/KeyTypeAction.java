@@ -31,6 +31,22 @@ public class KeyTypeAction extends ActionSupport
         final String isJoy = request.getParameter("isJoy");
         final String yes = request.getParameter("yes");
         final String ext1 = request.getParameter("ext1");
+        int extInt;
+        if (ext1 == null || ext1.equals("")){
+            request.setAttribute("msg", "权值不能为空!");
+            return "success";
+        }
+        try {
+            extInt = Integer.valueOf(ext1);
+            if(extInt>10){
+                request.setAttribute("msg", "权值不能大于10!");
+                return "success";
+            }
+        }
+        catch (Exception e){
+            request.setAttribute("msg", "权值只能为整数!");
+            return "success";
+        }
         String ext2 = name;
         if (this.getText("sundyn.language").equals("en")) {
             name.replace(" ", " ");

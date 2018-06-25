@@ -44,7 +44,7 @@ public class StringUtils
     }
     
     public static double getDoubleRate(final int a, final int b) {
-        final String c = new StringBuilder(String.valueOf(Math.round(a / b * 1000.0))).toString();
+        final String c = new StringBuilder(String.valueOf(Math.round(a*1.0 / b * 1000.0))).toString();
         final StringBuilder s = new StringBuilder(c);
         s.insert(c.length() - 1, ".");
         return Double.valueOf(s.toString());

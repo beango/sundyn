@@ -48,15 +48,67 @@ public class TotalService extends SuperDao
         }
     }
 
-    public List totalDating(final String ids, final String startDate, final String endDate, final Integer start, final Integer num) {
+    public Map totalDept(final String ids, final String employeeid, final String startDate, final String endDate) {
+        String sql_mysql = "select id,serviceDate,DeptId,employeeId";
+        String sql ="select sum(key0) as key0";
+        sql = String.valueOf(sql) + ", sum(key1) as key1";
+        sql = String.valueOf(sql) + ", sum(key2) as key2";
+        sql = String.valueOf(sql) + ", sum(key3) as key3";
+        sql = String.valueOf(sql) + ", sum(key4) as key4 ";
+        sql = String.valueOf(sql) + ", sum(key5) as key5";
+        sql = String.valueOf(sql) + ", sum(key6) as key6";
+        sql = String.valueOf(sql) + " from (";
+        sql = String.valueOf(sql) + " select id,serviceDate,DeptId,employeeId,(case keyno WHEN 0  THEN   1 else 0  end ) as key0, ";
+        sql = String.valueOf(sql) + " (case keyno WHEN 1 THEN 1 else 0 end ) as key1 ,";
+        sql = String.valueOf(sql) + " (case keyno WHEN 2 THEN 1 else 0 end ) as key2  ,";
+        sql = String.valueOf(sql) + " (case keyno WHEN 3 THEN 1 else 0 end ) as key3  ,";
+        sql = String.valueOf(sql) + " (case keyno WHEN 4 THEN 1 else 0 end ) as key4 ,";
+        sql = String.valueOf(sql) + " (case keyno WHEN 5 THEN 1 else 0 end ) as key5,";
+        sql = String.valueOf(sql) + "(case keyno WHEN 6 THEN 1 else 0 end ) as key6,";
+        sql = String.valueOf(sql) + " 1 as g";
+        sql = String.valueOf(sql) + " from appries_appries  ";
+        sql = String.valueOf(sql) + " where 1=1 ";
+        if(ids !=null && ids.length()>0)
+            sql += "and DeptId in (" + ids + ")";
+        if(employeeid !=null && employeeid.length()>0)
+            sql += "and employeeid in (" + employeeid + ")";
+        if(null!=startDate && !"".equals(startDate)) {
+            sql = String.valueOf(sql) + "  and serviceDate>='" + startDate + "'";
+        }
+        if(null!=endDate && !"".equals(endDate))
+            sql = String.valueOf(sql) + " and serviceDate <='" + endDate + "'";
+        sql = String.valueOf(sql) + ") as temp  group by g";
+
+        System.out.println("totalDept-sql=" + sql);
+        try {
+            return this.getJdbcTemplate().queryForMap(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List totalDating(final String ids, final String dating, final String startDate, final String endDate, final Integer start, final Integer num, Integer[] total) {
         String sql = "select row_number() over(order by datingid) as rows,datingname, sum(key0)   as key0 , sum(key1)   as key1, sum(key2)   as key2, sum(key3)  as key3, sum(key4)  as key4, sum(key5)   as key5, sum(key6)   as key6 from ( select   temp. id,serviceDate,DeptId,employeeId,   key0,key1 ,key2  ,key3  ,key4 ,key5,key6 ,t1.id as windowid ,t1.name as windowname,t2.id as datingid ,t2.name as datingname from ( select id,serviceDate,DeptId,employeeId, (case keyno WHEN 0  THEN   1 else 0  end ) as key0, (case keyno WHEN 1  THEN   1 else 0    end ) as key1 , (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  , (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  , (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 , (case keyno WHEN 5  THEN   1 else 0    end ) as  key5, (case keyno WHEN 6  THEN   1 else 0    end ) as  key6 from appries_appries where 1=1 ";
         if(null!=startDate)
             sql += " and serviceDate>='" + startDate + "'  ";
         if(null!=endDate)
             sql += " and serviceDate<='" + endDate + "'  " ;
-        sql += " ) as temp,appries_dept t1,appries_dept t2" + " where   temp.DeptId=t1.id and  t1.fatherId=t2.id and t2.fatherId in( " + ids + ")" + " ) " + " as A group by datingid,datingname ";
+        if(null!=dating)
+            sql += " and serviceDate<='" + endDate + "'  " ;
+        sql += " ) as temp,appries_dept t1,appries_dept t2" + " where temp.DeptId=t1.id and t1.fatherId=t2.id ";
+        if(null!=ids && !"".equals(ids))
+            sql += "and t2.fatherId in( " + ids + ")";
+        if(null!=dating && !"".equals(dating))
+            sql += "and t2.id in( " + dating + ")";
+        sql += ") as A group by datingid,datingname ";
+
+        if(total != null){
+            String totalsql = "select max(rows) from ("+sql+") t";
+            total[0] = this.getJdbcTemplate().queryForInt(totalsql);
+        }
+
         if (start != null && num != null) {
-            //mysql   sql = String.valueOf(sql) + " limit " + start + "," + num + " ";
             sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
         }
         try {
@@ -202,6 +254,53 @@ public class TotalService extends SuperDao
         }
     }
 
+    public List totalPerson(final String windowId, final String employeeId, final String startDate, final String endDate, final Integer start,
+                            final Integer num, Integer[] totalrows) {
+        String sql = "select employeeId";
+        sql = String.valueOf(sql) + ", sum(key0)   as key0";
+        sql = String.valueOf(sql) + ", sum(key1)   as key1";
+        sql = String.valueOf(sql) + ", sum(key2)   as key2";
+        sql = String.valueOf(sql) + ", sum(key3)  as  key3";
+        sql = String.valueOf(sql) + ", sum(key4)  as  key4 ";
+        sql = String.valueOf(sql) + ", sum(key5)   as key5";
+        sql = String.valueOf(sql) + ", sum(key6)   as key6";
+        sql = String.valueOf(sql) + " from (";
+        sql = String.valueOf(sql) + " select employeeId,(case keyno WHEN 0  THEN   1 else 0  end ) as key0, ";
+        sql = String.valueOf(sql) + " (case keyno WHEN 1  THEN   1 else 0    end ) as key1 ,";
+        sql = String.valueOf(sql) + "  (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  ,";
+        sql = String.valueOf(sql) + "  (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  ,";
+        sql = String.valueOf(sql) + "  (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 ,";
+        sql = String.valueOf(sql) + "  (case keyno WHEN 5  THEN   1 else 0    end ) as  key5,";
+        sql = String.valueOf(sql) + "(case keyno WHEN 6  THEN   1 else 0    end ) as  key6 ";
+        sql = String.valueOf(sql) + " from appries_appries  ";
+        sql = String.valueOf(sql) + " where 1=1 ";
+        if(windowId!=null && windowId!="")
+            sql += "and DeptId in (" + windowId + ") ";
+        if(employeeId!=null && employeeId!="")
+            sql += "and employeeId in (" + employeeId + ") ";
+        if(startDate!=null && startDate!="")
+            sql += "and serviceDate>='" + startDate + "' ";
+        if(endDate!=null && endDate!="")
+            sql += "and serviceDate <='" + endDate + "'";
+        sql = String.valueOf(sql) + ") as temp  group by employeeId ";
+        sql = "select row_number() over(order by t.employeeId) as rows, t.employeeId,t.key0,t.key1,t.key2,t.key3,t.key4,t.key5,t.key6,appries_employee.Name as employeeName from (" + sql + ") as t,appries_employee where t.employeeId=appries_employee.Id  ";
+
+        String totalsql = "select max(rows) from ("+sql+") t";
+        totalrows[0] = this.getJdbcTemplate().queryForInt(totalsql);
+        if (start != null && num != null) {
+            sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
+        }
+        logger.debug("totalPerson-sql.totalrows: " + totalrows);
+        logger.debug("totalPerson-sql: " + sql);
+        try {
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List totalPerson(final String employeeId, final String startDate, final String endDate) {
         String sql = "select employeeId";
         sql = String.valueOf(sql) + ", sum(key0)   as key0";
@@ -260,6 +359,44 @@ public class TotalService extends SuperDao
         sql = String.valueOf(sql) + " where 1=1 ";
         if (windowId != null && windowId!="")
             sql += "and DeptId in (" + windowId + ") ";
+        if (startDate != null)
+            sql += "and serviceDate>='" + startDate + "' ";
+        if (endDate != null)
+            sql += "and serviceDate <='" + endDate + "'";
+        sql = String.valueOf(sql) + ") as temp  group by employeeId ";
+        sql = "select count(*) from (" + sql + " ) as tempcount";
+        try {
+            return this.getJdbcTemplate().queryForInt(sql);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int countTotalPerson(final String windowId, final String employeeId, final String startDate, final String endDate) {
+        String sql = "select   employeeId";
+        sql = String.valueOf(sql) + ", sum(key0)   as key0";
+        sql = String.valueOf(sql) + ", sum(key1)   as key1";
+        sql = String.valueOf(sql) + ", sum(key2)   as key2";
+        sql = String.valueOf(sql) + ", sum(key3)  as  key3";
+        sql = String.valueOf(sql) + ", sum(key4)  as  key4 ";
+        sql = String.valueOf(sql) + ", sum(key5)   as key5";
+        sql = String.valueOf(sql) + ", sum(key6)   as key6";
+        sql = String.valueOf(sql) + " from (";
+        sql = String.valueOf(sql) + " select id,serviceDate,DeptId,employeeId,(case keyno WHEN 0  THEN   1 else 0  end ) as key0, ";
+        sql = String.valueOf(sql) + " (case keyno WHEN 1  THEN   1 else 0    end ) as key1 ,";
+        sql = String.valueOf(sql) + "  (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  ,";
+        sql = String.valueOf(sql) + "  (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  ,";
+        sql = String.valueOf(sql) + "  (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 ,";
+        sql = String.valueOf(sql) + "  (case keyno WHEN 5  THEN   1 else 0    end ) as  key5,";
+        sql = String.valueOf(sql) + "(case keyno WHEN 6  THEN   1 else 0    end ) as  key6 ";
+        sql = String.valueOf(sql) + " from appries_appries ";
+        sql = String.valueOf(sql) + " where 1=1 ";
+        if (windowId != null && windowId!="")
+            sql += "and DeptId in (" + windowId + ") ";
+        if (employeeId != null && employeeId!="")
+            sql += "and employeeId in (" + employeeId + ") ";
         if (startDate != null)
             sql += "and serviceDate>='" + startDate + "' ";
         if (endDate != null)

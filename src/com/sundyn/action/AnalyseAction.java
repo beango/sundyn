@@ -11,6 +11,7 @@ import org.apache.struts2.ServletActionContext;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -100,24 +101,66 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, type, this.getDeptIds());
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='满意量走势分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='满意量走势分析' xAxisName='日期' yAxisName='满意量' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(8);
-                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
-                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+            Date start = df.parse(startDate);
+            Date end = df.parse(endDate);
+            Calendar s = Calendar.getInstance();
+            s.setTime(df.parse(startDate));
+            Calendar e = Calendar.getInstance();
+            e.setTime(df.parse(endDate));
+
+            while(start.getTime()<=end.getTime()){
+                boolean iscontain = false;
+                for (int i = 0; i < this.chartList.size(); ++i) {
+                    final Map chartM = (Map) this.chartList.get(i);
+                    String day = chartM.get("serviceDate").toString();
+                    if (df.format(start).equals(day)){
+                        strXML1.append("<set name='" + day + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                        iscontain = true;
+                    }
+
+                }
+                if(!iscontain){
+                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(start);
+                cal.add(Calendar.DATE,1);
+
+                start = cal.getTime();
             }
         }
         else if (type.equals("month")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(5, 7);
-                chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM");
+            Date start = df.parse(startDate);
+            Date end = df.parse(endDate);
+            Calendar s = Calendar.getInstance();
+            s.setTime(df.parse(startDate));
+            Calendar e = Calendar.getInstance();
+            e.setTime(df.parse(endDate));
+
+            while(start.getTime()<=end.getTime()){
+                boolean iscontain = false;
+                for (int i = 0; i < this.chartList.size(); ++i) {
+                    final Map chartM = (Map) this.chartList.get(i);
+                    String day = chartM.get("serviceDate").toString();
+                    if (df.format(start).equals(day)){
+                        strXML1.append("<set name='" + day + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                        iscontain = true;
+                    }
+
+                }
+                if(!iscontain){
+                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(start);
+                cal.add(Calendar.MONTH,1);
+
+                start = cal.getTime();
             }
         }
         else if (type.equals("JiDu")) {
@@ -129,11 +172,33 @@ public class AnalyseAction extends ActionSupport
             }
         }
         else {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(0, 4);
-                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+            SimpleDateFormat df=new SimpleDateFormat("yyyy");
+            Date start = df.parse(startDate);
+            Date end = df.parse(endDate);
+            Calendar s = Calendar.getInstance();
+            s.setTime(df.parse(startDate));
+            Calendar e = Calendar.getInstance();
+            e.setTime(df.parse(endDate));
+
+            while(start.getTime()<=end.getTime()){
+                boolean iscontain = false;
+                for (int i = 0; i < this.chartList.size(); ++i) {
+                    final Map chartM = (Map) this.chartList.get(i);
+                    String day = chartM.get("serviceDate").toString();
+                    if (df.format(start).equals(day)){
+                        strXML1.append("<set name='" + day + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                        iscontain = true;
+                    }
+
+                }
+                if(!iscontain){
+                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(start);
+                cal.add(Calendar.YEAR,1);
+
+                start = cal.getTime();
             }
         }
         strXML1.append("</graph>");
@@ -196,32 +261,94 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='满意率走势分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='满意率走势分析' xAxisName='日期' yAxisName='满意率' rotateYAxisName='1' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(8);
-                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
-                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+            Date start = df.parse(startDate);
+            Date end = df.parse(endDate);
+            Calendar s = Calendar.getInstance();
+            s.setTime(df.parse(startDate));
+            Calendar e = Calendar.getInstance();
+            e.setTime(df.parse(endDate));
+
+            while(start.getTime()<=end.getTime()){
+                boolean iscontain = false;
+                for (int i = 0; i < this.chartList.size(); ++i) {
+                    final Map chartM = (Map) this.chartList.get(i);
+                    String day = chartM.get("serviceDate").toString();
+                    if (df.format(start).equals(day)){
+                        strXML1.append("<set name='" + day + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                        iscontain = true;
+                    }
+
+                }
+                if(!iscontain){
+                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(start);
+                cal.add(Calendar.DATE,1);
+
+                start = cal.getTime();
             }
         }
         else if (type.equals("month")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(5, 7);
-                chartM.put("serviceDate", String.valueOf(day) + "月");
-                strXML1.append("<set name='" + String.valueOf(day) + "月" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM");
+            Date start = df.parse(startDate);
+            Date end = df.parse(endDate);
+            Calendar s = Calendar.getInstance();
+            s.setTime(df.parse(startDate));
+            Calendar e = Calendar.getInstance();
+            e.setTime(df.parse(endDate));
+            while(start.getTime()<=end.getTime()) {
+                boolean iscontain = false;
+                for (int i = 0; i < this.chartList.size(); ++i) {
+                    final Map chartM = (Map) this.chartList.get(i);
+                    String day = chartM.get("serviceDate").toString();
+                    //day = day.substring(5, 7);
+                    chartM.put("serviceDate", String.valueOf(day) + "月");
+                    if (df.format(start).equals(day)) {
+                        strXML1.append("<set name='" + String.valueOf(day) + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                        iscontain = true;
+                    }
+                }
+                if (!iscontain) {
+                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(start);
+                cal.add(Calendar.MONTH, 1);
+                start = cal.getTime();
             }
         }
         else {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(0, 4);
-                strXML1.append("<set name='" + String.valueOf(day) + "年" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+
+            SimpleDateFormat df=new SimpleDateFormat("yyyy");
+            Date start = df.parse(startDate);
+            Date end = df.parse(endDate);
+            Calendar s = Calendar.getInstance();
+            s.setTime(df.parse(startDate));
+            Calendar e = Calendar.getInstance();
+            e.setTime(df.parse(endDate));
+            while(start.getTime()<=end.getTime()) {
+                boolean iscontain = false;
+                for (int i = 0; i < this.chartList.size(); ++i) {
+                    final Map chartM = (Map) this.chartList.get(i);
+                    String day = chartM.get("serviceDate").toString();
+                    day = day.substring(0, 4);
+                    if (df.format(start).equals(day)) {
+                        strXML1.append("<set name='" + String.valueOf(day) + "年" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                        iscontain = true;
+                    }
+                }
+                if (!iscontain) {
+                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(start);
+                cal.add(Calendar.YEAR, 1);
+                start = cal.getTime();
             }
         }
         strXML1.append("</graph>");
@@ -249,14 +376,34 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='满意率柱状图' xAxisName='时间' yAxisName='占比' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='满意率柱状图' subCaption='"+this.startDate +" 至 "+ this.endDate+"' xAxisName='日期' yAxisName='满意率' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
-        for (int i = 0; i < this.chartList.size(); ++i) {
-            final Map chartM = (Map) this.chartList.get(i);
-            String day = chartM.get("serviceDate").toString();
-            day = day.substring(8);
-            String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
-            strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+        Date start = df.parse(startDate);
+        Date end = df.parse(endDate);
+        Calendar s = Calendar.getInstance();
+        s.setTime(df.parse(startDate));
+        Calendar e = Calendar.getInstance();
+        e.setTime(df.parse(endDate));
+
+        while(start.getTime()<=end.getTime()){
+            boolean iscontain = false;
+            for (int i = 0; i < this.chartList.size(); ++i) {
+                final Map chartM = (Map) this.chartList.get(i);
+                String day = chartM.get("serviceDate").toString();
+                if (df.format(start).equals(day)){
+                    strXML1.append("<set name='" + day + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                    iscontain = true;
+                }
+
+            }
+            if(!iscontain){
+                strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
+            }
+            Calendar cal2 = Calendar.getInstance();
+            cal2.setTime(start);
+            cal2.add(Calendar.DATE,1);
+
+            start = cal2.getTime();
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
@@ -285,7 +432,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' subCaption='"+this.startDate +" 至 "+ this.endDate+"' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
         String keys = request.getParameter("keys");
         final List chatList = this.queryService.QueryResultChat(keys, this.startDate, this.endDate);
         for (int i = 0; i < chatList.size(); ++i) {
@@ -297,7 +444,7 @@ public class AnalyseAction extends ActionSupport
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", (Object)strXML1.toString());
-        request.setAttribute("strXMLType", "FCF_Pie2D.swf");
+        request.setAttribute("strXMLType", "Pie3D.swf");
         return "success";
     }
 
@@ -335,38 +482,24 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseDeptTotal(deptIds, this.startDate, this.endDate, allId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='业务量分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='单位(机构)业务量分析' xAxisName='日期' yAxisName='业务量' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(8);
-                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
-                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(1));
+            strXML1.append(mergeDataSet(1));
         }
         else if (type.equals("month")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(5, 7);
-                chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(2));
+            strXML1.append(mergeDataSet(2));
         }
         else {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(0, 4);
-                chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(3));
+            strXML1.append(mergeDataSet(3));
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
         request.setAttribute("w", request.getParameter("w"));
+        request.setAttribute("strXMLType", "MSLine.swf");
         return "success";
     }
 
@@ -389,38 +522,24 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseDeptContent(deptIds, this.startDate, this.endDate, contentId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='满意额分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='满意额分析' xAxisName='日期' yAxisName='满意额'  rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(8);
-                chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
-                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(1));
+            strXML1.append(mergeDataSet(1));
         }
         else if (type.equals("month")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(5, 7);
-                chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(2));
+            strXML1.append(mergeDataSet(2));
         }
         else {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(0, 4);
-                chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(3));
+            strXML1.append(mergeDataSet(3));
         }
         strXML1.append("</graph>");
+        request.setAttribute("w", request.getParameter("w"));
         request.setAttribute("strXML1", strXML1.toString());
+        request.setAttribute("strXMLType", "MSLine.swf");
         return "success";
     }
 
@@ -443,42 +562,34 @@ public class AnalyseAction extends ActionSupport
         final List totalList = this.analyseService.AnalyseDeptTotal(deptIds, this.startDate, this.endDate, allId, type);
         final String contentId = this.getContentId();
         final List contentList = this.analyseService.AnalyseDeptContent(deptIds, this.startDate, this.endDate, contentId, type);
-        this.chartList = this.rate(contentList, totalList);
+        this.chartList = totalList;//this.rate(contentList, totalList);
+        for (Object item: chartList)
+        {
+            Map m = (Map)item;
+            logger.info(">>>>>>>>>>>>>>>>>" + m.get("d"));
+            m.put("num", Math.floor(Double.valueOf(m.get("d").toString())));
+
+        }
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='满意度分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='满意度分析' xAxisName='日期' yAxisName='满意度' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(8);
-                chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
-                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(1));
+            strXML1.append(mergeDataSet(1));
         }
         else if (type.equals("month")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(5, 7);
-                chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(2));
+            strXML1.append(mergeDataSet(2));
         }
         else {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(0, 4);
-                chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(3));
+            strXML1.append(mergeDataSet(3));
         }
         strXML1.append("</graph>");
+        request.setAttribute("w", request.getParameter("w"));
         request.setAttribute("strXML1", strXML1.toString());
-
+        request.setAttribute("strXMLType", "MSLine.swf");
         return "success";
     }
 
@@ -518,42 +629,27 @@ public class AnalyseAction extends ActionSupport
         getEmployeeTree();
 
         final String allId = this.getAllId();
-        this.chartList = this.analyseService.AnalyseEmployeeTotal(employeeId, this.startDate, this.endDate, allId, type);
+        this.chartList = this.analyseService.AnalyseEmployeeTotal2(employeeId, this.startDate, this.endDate, allId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='业务量分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='业务量分析' xAxisName='日期' yAxisName='业务量' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(8);
-                chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
-                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(1));
+            strXML1.append(mergeDataSet(1));
         }
         else if (type.equals("month")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(5, 7);
-                chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(2));
+            strXML1.append(mergeDataSet(2));
         }
         else {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(0, 4);
-                chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(3));
+            strXML1.append(mergeDataSet(3));
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
         request.setAttribute("w", request.getParameter("w"));
+        request.setAttribute("strXMLType", "MSLine.swf");//占比
         return "success";
     }
 
@@ -572,43 +668,165 @@ public class AnalyseAction extends ActionSupport
             type = "day";
         }
         final String contentId = this.getContentId();
-        this.chartList = this.analyseService.AnalyseEmployeeContent(employeeId, this.startDate, this.endDate, contentId, type);
+        this.chartList = this.analyseService.AnalyseEmployeeContent2(employeeId, this.startDate, this.endDate, contentId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='满意额分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='满意额分析' xAxisName='日期' yAxisName='满意额' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(8);
-                chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
-                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(1));
+            strXML1.append(mergeDataSet(1));
         }
         else if (type.equals("month")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(5, 7);
-                chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(2));
+            strXML1.append(mergeDataSet(2));
         }
         else {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(0, 4);
-                chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(3));
+            strXML1.append(mergeDataSet(3));
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
         request.setAttribute("w", request.getParameter("w"));
+        request.setAttribute("strXMLType", "MSLine.swf");//占比
         return "success";
+    }
+
+    public StringBuilder mergeCategory(int fmt) throws ParseException {
+        StringBuilder strXML1 = new StringBuilder();
+        SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        if (fmt==2)
+            df=new SimpleDateFormat("yyyy-MM");
+        if (fmt==3)
+            df=new SimpleDateFormat("yyyy");
+        Date start = df.parse(startDate);
+        Date end = df.parse(endDate);
+        Calendar s = Calendar.getInstance();
+        s.setTime(df.parse(startDate));
+        Calendar e = Calendar.getInstance();
+        e.setTime(df.parse(endDate));
+        strXML1.append("<categories>");
+
+        while(start.getTime()<=end.getTime()){
+            strXML1.append("<category label='"+df.format(start)+"' />");
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(start);
+            if (fmt==1)
+                cal.add(Calendar.DATE,1);
+            if (fmt==2)
+                cal.add(Calendar.MONTH,1);
+            if (fmt==3)
+                cal.add(Calendar.YEAR,1);
+
+            start = cal.getTime();
+        }
+        strXML1.append("</categories>");
+        return strXML1;
+    }
+
+    /*
+    1按天,2按月,3按年
+     */
+    public StringBuilder mergeData(int fmt) throws ParseException {
+        StringBuilder strXML1 = new StringBuilder();
+        SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        if (fmt==2)
+            df=new SimpleDateFormat("yyyy-MM");
+        if (fmt==3)
+            df=new SimpleDateFormat("yyyy");
+        Date start = df.parse(startDate);
+        Date end = df.parse(endDate);
+        Calendar s = Calendar.getInstance();
+        s.setTime(df.parse(startDate));
+        Calendar e = Calendar.getInstance();
+        e.setTime(df.parse(endDate));
+
+        while(start.getTime()<=end.getTime()){
+            boolean iscontain = false;
+            for (int i = 0; i < this.chartList.size(); ++i) {
+                final Map chartM = (Map) this.chartList.get(i);
+                String day = chartM.get("serviceDate").toString();
+                if (df.format(start).equals(day)){
+                    strXML1.append("<set name='" + day + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                    iscontain = true;
+                }
+
+            }
+            if(!iscontain){
+                strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
+            }
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(start);
+            if (fmt==1)
+                cal.add(Calendar.DATE,1);
+            if (fmt==2)
+                cal.add(Calendar.MONTH,1);
+            if (fmt==3)
+                cal.add(Calendar.YEAR,1);
+
+            start = cal.getTime();
+        }
+        return strXML1;
+    }
+
+    /*
+    1按天,2按月,3按年
+     */
+    public StringBuilder mergeDataSet(int fmt) throws ParseException {
+        StringBuilder strXML1 = new StringBuilder();
+        SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        if (fmt==2)
+            df=new SimpleDateFormat("yyyy-MM");
+        if (fmt==3)
+            df=new SimpleDateFormat("yyyy");
+
+        HashMap<String,String> seriesHashMap = new HashMap<>();
+        for (int i = 0; i < this.chartList.size(); ++i) {
+            final Map chartM = (Map) this.chartList.get(i);
+            String seriesName = chartM.get("seriesName").toString();
+            String seriesId = chartM.get("seriesId").toString();
+            if (!seriesHashMap.containsKey(seriesId)){
+                seriesHashMap.put(seriesId, seriesName);
+            }
+        }
+
+        for (Map.Entry<String, String> item : seriesHashMap.entrySet()){
+            strXML1.append("<dataset seriesName='"+item.getValue()+"' color='"+ColorHelper.getColor()+"' showValues='0'>");
+            Date start = df.parse(startDate);
+            Date end = df.parse(endDate);
+            Calendar s = Calendar.getInstance();
+            s.setTime(df.parse(startDate));
+            Calendar e = Calendar.getInstance();
+            e.setTime(df.parse(endDate));
+            while(start.getTime()<=end.getTime()){
+                boolean iscontain = false;
+                for (int i = 0; i < this.chartList.size(); ++i) {
+                    final Map chartM = (Map) this.chartList.get(i);
+                    String seriesId = chartM.get("seriesId").toString();
+                    String day = chartM.get("serviceDate").toString();
+                    if (df.format(start).equals(day) && item.getKey().equals(seriesId)){
+                        strXML1.append("<set value='" + chartM.get("num") + "' />");
+                        iscontain = true;
+                    }
+                }
+                if(!iscontain){
+                    strXML1.append("<set value='0' />");
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(start);
+                if (fmt==1)
+                    cal.add(Calendar.DATE,1);
+                if (fmt==2)
+                    cal.add(Calendar.MONTH,1);
+                if (fmt==3)
+                    cal.add(Calendar.YEAR,1);
+
+                start = cal.getTime();
+            }
+            strXML1.append("</dataset>");
+        }
+        logger.info(strXML1);
+        return strXML1;
     }
 
     public String analyseEmployeeContentRateAjax() throws Exception {
@@ -626,44 +844,37 @@ public class AnalyseAction extends ActionSupport
             type = "day";
         }
         final String allId = this.getAllId();
-        final List totalList = this.analyseService.AnalyseEmployeeTotal(employeeId, this.startDate, this.endDate, allId, type);
+        final List totalList = this.analyseService.AnalyseEmployeeTotal2(employeeId, this.startDate, this.endDate, allId, type);
         final String contentId = this.getContentId();
-        final List contentList = this.analyseService.AnalyseEmployeeContent(employeeId, this.startDate, this.endDate, contentId, type);
-        this.chartList = this.rate(contentList, totalList);
+        final List contentList = this.analyseService.AnalyseEmployeeContent2(employeeId, this.startDate, this.endDate, contentId, type);
+        this.chartList = totalList;//this.rate2(contentList, totalList);
+        for (Object item: chartList)
+        {
+            Map m = (Map)item;
+            logger.info(">>>>>>>>>>>>>>>>>" + m.get("d"));
+            m.put("num", Math.floor(Double.valueOf(m.get("d").toString())));
+
+        }
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='满意度分析' xAxisName='时间' yAxisName='数量' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<graph caption='满意度分析' xAxisName='日期' yAxisName='满意度' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(8);
-                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
-                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(1));
+            strXML1.append(mergeDataSet(1));
         }
         else if (type.equals("month")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(5, 7);
-                chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u6708" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(2));
+            strXML1.append(mergeDataSet(2));
         }
         else {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(0, 4);
-                chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                strXML1.append("<set name='" + String.valueOf(day) + "\u5e74" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-            }
+            strXML1.append(mergeCategory(3));
+            strXML1.append(mergeDataSet(3));
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
         request.setAttribute("w", request.getParameter("w"));
+        request.setAttribute("strXMLType", "MSLine.swf");//占比
         return "success";
     }
 
@@ -742,38 +953,96 @@ public class AnalyseAction extends ActionSupport
 
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='业务总量走势分析' xAxisName='时间' yAxisName='数量' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
+        strXML1.append("<chart caption='业务总量走势分析' xAxisName='日期' yAxisName='业务总量' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+            Date start = df.parse(startDate);
+            Date end = df.parse(endDate);
+            Calendar s = Calendar.getInstance();
+            s.setTime(df.parse(startDate));
+            Calendar e = Calendar.getInstance();
+            e.setTime(df.parse(endDate));
 
-            for (int i = 0; i < chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                System.out.println(day);
-                day = day.substring(8);
-                String name = String.valueOf(day) + this.getText("sundyn.analyse.day2");
-                strXML1.append("<set name='" + name + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+            while(start.getTime()<=end.getTime()){
+                boolean iscontain = false;
+                for (int i = 0; i < chartList.size(); ++i) {
+                    final Map chartM = (Map) this.chartList.get(i);
+                    String day = chartM.get("serviceDate").toString();
+                    if (df.format(start).equals(day)){
+                        strXML1.append("<set name='" + day + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                        iscontain = true;
+                    }
+                }
+                if(!iscontain){
+                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(start);
+                cal.add(Calendar.DATE,1);
+
+                start = cal.getTime();
             }
         }
         else if (type.equals("month")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(5, 7);
-                //chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                strXML1.append("<set name='" + String.valueOf(day) + "月" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM");
+            Date start = df.parse(startDate);
+            Date end = df.parse(endDate);
+            Calendar s = Calendar.getInstance();
+            s.setTime(df.parse(startDate));
+            Calendar e = Calendar.getInstance();
+            e.setTime(df.parse(endDate));
+
+            while(start.getTime()<=end.getTime()){
+                boolean iscontain = false;
+                for (int i = 0; i < chartList.size(); ++i) {
+                    final Map chartM = (Map) this.chartList.get(i);
+                    String day = chartM.get("serviceDate").toString();
+                    if (df.format(start).equals(day)){
+                        strXML1.append("<set name='" + String.valueOf(day) + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                        iscontain = true;
+                    }
+                }
+                if(!iscontain){
+                    strXML1.append("<set name='" + String.valueOf(df.format(start)) + "' value='0' color='" + ColorHelper.getColor() + "' />");
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(start);
+                cal.add(Calendar.MONTH,1);
+
+                start = cal.getTime();
             }
         }
         else {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(0, 4);
-                chartM.put("serviceDate", String.valueOf(day) + "年");
-                strXML1.append("<set name='" + String.valueOf(day) + "年" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+            SimpleDateFormat df=new SimpleDateFormat("yyyy");
+            Date start = df.parse(startDate);
+            Date end = df.parse(endDate);
+            Calendar s = Calendar.getInstance();
+            s.setTime(df.parse(startDate));
+            Calendar e = Calendar.getInstance();
+            e.setTime(df.parse(endDate));
+
+            while(start.getTime()<=end.getTime()){
+                boolean iscontain = false;
+                for (int i = 0; i < chartList.size(); ++i) {
+                    final Map chartM = (Map) this.chartList.get(i);
+                    String day = chartM.get("serviceDate").toString();
+                    if (df.format(start).equals(day)){
+                        strXML1.append("<set name='" + String.valueOf(day) + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
+                        iscontain = true;
+                    }
+                }
+                if(!iscontain){
+                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(start);
+                cal.add(Calendar.YEAR,1);
+
+                start = cal.getTime();
             }
         }
-        strXML1.append("</graph>");
+        strXML1.append("</chart>");
         request.setAttribute("strXML1", strXML1.toString());
         request.setAttribute("w",w);
         return "success";
@@ -963,9 +1232,11 @@ public class AnalyseAction extends ActionSupport
                 if (serviceDate.equals(content.get("serviceDate").toString())) {
                     final Integer contentNum = Integer.valueOf(content.get("num").toString());
                     double num = contentNum * 1.0 / (totalnum * 1.0);
-                    num = Math.rint(num * 10000.0) / 100.0;
+                    num = Math.floor(num * 10000.0) / 100.0;
                     chart.put("num", num);
                     chart.put("serviceDate", serviceDate);
+                    chart.put("seriesId", total.get("seriesId"));
+                    chart.put("seriesName", total.get("seriesName"));
                     rsList.add(chart);
                     flag = false;
                     break;
@@ -974,6 +1245,44 @@ public class AnalyseAction extends ActionSupport
             if (flag) {
                 chart.put("num", 0);
                 chart.put("serviceDate", serviceDate);
+                chart.put("seriesId", total.get("seriesId"));
+                chart.put("seriesName", total.get("seriesName"));
+                rsList.add(chart);
+            }
+        }
+        return rsList;
+    }
+
+    public List rate2(final List contentList, final List totalList) {
+        final List rsList = new ArrayList();
+        boolean flag = true;
+        for (int i = 0; i < totalList.size(); ++i) {
+            flag = true;
+            final Map chart = new HashMap();
+            final Map total = (Map) totalList.get(i);
+            final Integer totalnum = Integer.valueOf(total.get("num").toString());
+            final String serialId = total.get("seriesId").toString();
+            final String serviceDate = total.get("serviceDate").toString();
+            for (int j = 0; j < contentList.size(); ++j) {
+                final Map content = (Map) contentList.get(j);
+                if (serviceDate.equals(content.get("serviceDate").toString()) && serialId.equals(content.get("seriesId").toString())) {
+                    final Integer contentNum = Integer.valueOf(content.get("num").toString());
+                    double num = contentNum * 1.0 / (totalnum * 1.0);
+                    num = Math.floor(num * 10000.0) / 100.0;
+                    chart.put("num", num);
+                    chart.put("serviceDate", serviceDate);
+                    chart.put("seriesId", total.get("seriesId"));
+                    chart.put("seriesName", total.get("seriesName"));
+                    rsList.add(chart);
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                chart.put("num", 0);
+                chart.put("serviceDate", serviceDate);
+                chart.put("seriesId", total.get("seriesId"));
+                chart.put("seriesName", total.get("seriesName"));
                 rsList.add(chart);
             }
         }
@@ -1035,7 +1344,6 @@ public class AnalyseAction extends ActionSupport
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String ids = this.deptService.findChildALLStr123(deptIdGroup);
-        System.out.println("deptIdGroup:" + deptIdGroup);
         return ids;
     }
 

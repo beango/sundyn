@@ -10,9 +10,8 @@ import javax.servlet.http.*;
 import java.util.*;
 import java.io.*;
 
-public class WeburlAction extends ActionSupport
+public class WeburlAction extends MainAction
 {
-    private static final Integer pageSize;
     private WeburlVo weburl;
     private WeburlService weburlService;
     private String isDeal;
@@ -21,10 +20,6 @@ public class WeburlAction extends ActionSupport
     private InputStream xml;
     private String msg;
     private Pager pager;
-
-    static {
-        pageSize = 20;
-    }
 
     public String weburlToAdd() {
         return "weburlToAdd";
@@ -51,9 +46,6 @@ public class WeburlAction extends ActionSupport
         final String uri = request.getRequestURL().toString();
         final String key_title = request.getParameter("key_title");
         final int rowsCount = this.weburlService.getCount(key_title);
-        Integer pageSize = WeburlAction.pageSize;
-        if(request.getParameter("pageSize")!=null)
-        	pageSize = Integer.parseInt(request.getParameter("pageSize"));
         this.pager = new Pager("currentPage", pageSize, rowsCount, request, "weburlPage");
         this.weburls = this.weburlService.findWeburl(key_title,(this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.weburls);
@@ -239,9 +231,5 @@ public class WeburlAction extends ActionSupport
 
     public void setPager(final Pager pager) {
         this.pager = pager;
-    }
-
-    public static Integer getPagesize() {
-        return WeburlAction.pageSize;
     }
 }

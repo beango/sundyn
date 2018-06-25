@@ -40,9 +40,17 @@ public class DownVideo extends ActionSupport
         final String videofile = request.getParameter("videofile");
         InputStream in = null;
         String excelName = videofile;
-        String path = "/download/" + videofile;
+        String path = "/download/recorder/" + videofile;
         path = path.replace("\\", "/");
+        System.out.println("视频下载地址:" + path);
+
         in = ServletActionContext.getServletContext().getResourceAsStream(path);
+        if (in==null)
+        {
+            System.out.println("视频下载地址:" + path + "不存在");
+            request.setAttribute("json","文件不存在");
+            return "fail";
+        }
         response.reset();
         response.setCharacterEncoding("UTF-8");
         excelName = URLEncoder.encode(excelName, "UTF-8");
