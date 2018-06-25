@@ -5,19 +5,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
  	<head>
- 		<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" ></META>
-		<META HTTP-EQUIV="Expires" CONTENT="Mon， 04 Dec 1999 21：29：02 GMT" ></META>
-	 	 <STYLE type="text/css">
-			 v\:* { Behavior: url(#default#VML) }
-	         o\:* { behavior: url(#default#VML) }
-	         #PieDiv{
-		         font-family:arial;
- 		      	 line-height: normal;
-  	         }
-  	         #PieDiv div{
-  	            font-size: 9px;
-             }
-		 </STYLE>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
 		<link rel="stylesheet" href="css/dialog.css" type="text/css" />
@@ -31,23 +18,22 @@
         <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
         <script type="text/javascript" src="lib/layui/layui.js"></script>
         <script type="text/javascript" src="js/application.js?1"></script>
-
  	</head>
 	<body>
-		<div id="layui-main">
+		<div class="layui-main">
             <div><a href="m7OnlineExcel.action" target="_blank"><img src="<s:text name='sundyn.total.pic.excel'/>" /></a>&nbsp;&nbsp;&nbsp;&nbsp;</div>
             <table width="98%" class="layui-table" >
                 <tr>
-                    <td  class="tdtitle">
+                    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                         <s:text name="sundyn.system.checkM7Info.macAddress"/>
                     </td>
-                    <td  class="tdtitle">
+                    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                         <s:text name="sundyn.column.windowName"/>
                     </td>
-                    <td  class="tdtitle">
+                    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                         <s:text name="sundyn.system.checkOnlineM7.unitName"/>
                     </td>
-                    <td   class="tdtitle">
+                    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                         <s:text name="sundyn.system.checkOnlineM7.onlineOrNot"/>
                     </td>
                 </tr>

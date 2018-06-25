@@ -47,13 +47,13 @@
             </li>
         </ul>
     </div>
-    <div class='user-nav pull-right' style="background:#008080;padding:0 10px 0 10px;">
+    <%--<div class='user-nav pull-right' style="background:#008080;padding:0 10px 0 10px;">
         <ul class='list-inline list-user-info'>
             <li>
                 <i class='fa fa-medkit' style="margin-right:6px;"></i>查询统计
             </li>
         </ul>
-    </div>
+    </div>--%>
 </div>
 <div class='sidebar' data-options="region:'west', split:false, border:false, headerCls:'sidebar-header'">
     <ul class='sidebar-nav' id='mainSlideMenu'></ul>

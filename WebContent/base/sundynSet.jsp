@@ -53,7 +53,7 @@
 		</script>
 	</head>
 	<body>
-		<div class="layui-form" lay-filter="formTest">
+		<div class="layui-main layui-form" lay-filter="formTest">
             <div class="layui-tab layui-tab-brief">
                 <ul class="layui-tab-title">
                     <li class="layui-this"><s:text name='sundyn.softSetup.systemSetup' /></li>
@@ -67,8 +67,8 @@
                         <div style="display:none"><input type="checkbox" name="camera" id="camera" <c:if test="${system.camera == 'true' }"> checked="checked"</c:if>      />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.camera' /></b>&nbsp;&nbsp;&nbsp;&nbsp; <c> <s:text name='sundyn.softSetup.cameraInfo' /></c></div>
                         <div style="display:none"><input type="checkbox" name="k7" id="k7" <c:if test="${system.k7 == 'true' }"> checked="checked"</c:if>  />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.k7' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.k7Info' /></c></div>
                         <div><input type="checkbox" name="star" onclick="checkStar()" id="star" <c:if test="${system.star == 'true' }"> checked="checked"</c:if> lay-skin="switch" />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.starGrade' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.starGradeInfo' /></c></div>
-                        <div><input type="checkbox" name="bind" id="bind" <c:if test="${system.bind == 'true' }"> checked="checked"</c:if>  lay-skin="switch" />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.bind' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.bindInfo' /></c></div>
-                        <div><input type="checkbox" name="guide" id="guide" <c:if test="${system.guide == 'true' }"> checked="checked"</c:if> lay-skin="switch" />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.guide' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.guideInfo' /></c></div>
+                        <div style="display:none"><input type="checkbox" name="bind" id="bind" <c:if test="${system.bind == 'true' }"> checked="checked"</c:if>  lay-skin="switch" />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.bind' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.bindInfo' /></c></div>
+                        <div style="display:none"><input type="checkbox" name="guide" id="guide" <c:if test="${system.guide == 'true' }"> checked="checked"</c:if> lay-skin="switch" />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.guide' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.guideInfo' /></c></div>
                         <input type="hidden" name="tipLanguage" id="tipLanguage" value="${system.tipLanguage}"/>
                     </div>
                     <div class="layui-tab-item">

@@ -55,26 +55,20 @@
                     <input type="checkbox" id="isJoy${keyType.id}" <c:if test="${keyType.isJoy=='on'}">checked="checked"</c:if> lay-skin="switch" />
                 </td>
                 <td style="text-align: center;">
-                    <input type="checkbox" id="yes${keyType.id}" <c:if test="${keyType.yes=='1'  }">checked="checked"</c:if> lay-skin="switch" />
+                    <input type="checkbox" id="yes${keyType.id}" <c:if test="${keyType.yes=='1' }">checked="checked"</c:if> lay-skin="switch" />
                 </td>
             </tr>
         </c:forEach>
-        <tr>
-            <td colspan="5">
-                <div class="bottom">
-                    <img src="<s:text name='sundyn.pic.save' />" onclick="keyTypeEditAll()"
-                         class="hand" />
-                    <img src="<s:text name='sundyn.pic.close' />" onclick="closeDialog()"
-                         class="hand" />
-
-                </div>
-            </td>
-        </tr>
     </table>
-
+    <div style="text-align: left;margin-left:15px;" class="layui-form-item">
+        <div class="layui-input-inline">
+            <img src="<s:text name='sundyn.pic.save' />" onclick="keyTypeEditAll()" class="hand" />
+            <img src="<s:text name='sundyn.pic.close' />" onclick="closeDialog()" class="hand" />
+        </div>
+        <div class="layui-form-mid layui-word-aux">权值最大为10</div>
+    </div>
 </div>
 <script>
-    //Demo
     layui.use('form', function(){
         var form = layui.form;
     });

@@ -17,7 +17,6 @@ function showCitys(cb){
 				}
 				obj.style.display="";
                 var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                console.log(index+">>>>>>>>>>>>>>>>>>>>")
                 parent.layer.iframeAuto(index);
 				if(cb) cb();
 			}else{

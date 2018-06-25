@@ -18,14 +18,12 @@
         <script type="text/javascript" src="js/application.js?1"></script>
 	</head>
 	<body>
-    <div id="layui-main">
-        <div>
-            <table width="50%" border="0" cellspacing="0" cellpadding="0" style="border-color:#FFFFFF;">
-                <tr>
-                    <td style="border-color:#FFFFFF;" align="left"><img src="<s:text name='sundyn.pic.add' />" width="55" height="25" onclick="adviceToAdd('<s:text name="sundyn.advice.question.add1" />');" class="hand"/></td>
-                </tr>
-            </table>
-        </div>
+    <div class="layui-main">
+        <table width="50%" border="0" cellspacing="0" cellpadding="0" style="border-color:#FFFFFF;">
+            <tr>
+                <td style="border-color:#FFFFFF;" align="left"><img src="<s:text name='sundyn.pic.add' />" width="55" height="25" onclick="adviceToAdd('<s:text name="sundyn.advice.question.add1" />');" class="hand"/></td>
+            </tr>
+        </table>
         <table width="100%" class="layui-table">
             <tr>
                 <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.index' /></td>

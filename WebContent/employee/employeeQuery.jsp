@@ -23,7 +23,7 @@
 					<img src="<s:text name='sundyn.employee.pic.addEmployee' />" width="83" height="25"  onclick="employeeAddDialog('<s:text name="sundyn.employee.addEmployee" />')"   class="hand" />
 				</td>
 				<td style="border-color: #FFFFFF;" align="left">
-					<img src="<s:text name='sundyn.employee.pic.seeFreeEmployee' />" width="108" height="25" onclick="employeeOutView()"     class="hand" />
+					<img src="<s:text name='sundyn.employee.pic.seeFreeEmployee' />" width="108" height="25" onclick="employeeOutView()" class="hand" />
 				</td>
 			</tr>
 		</table>
@@ -36,17 +36,16 @@
             <td align="center" background="images/table_bg_03.jpg" bgcolor="#FFFFFF" class="px13_1"><s:text name="sundyn.column.name"/></td>
             <td align="center" background="images/table_bg_03.jpg" bgcolor="#FFFFFF" class="px13_1"><s:text name="sundyn.column.sex"/></td>
             <td align="center" background="images/table_bg_03.jpg" bgcolor="#FFFFFF" class="px13_1"><s:text name="sundyn.column.employeeCardNum"/></td>
+            <td align="center" background="images/table_bg_03.jpg" bgcolor="#FFFFFF" class="px13_1">在线</td>
             <td align="center" background="images/table_bg_03.jpg" bgcolor="#FFFFFF" class="px13_1"><s:text name="sundyn.column.operation"/></td>
         </tr>
 		      <tbody>
               <c:forEach items="${pager.pageList}" var="employee">
                   <tr>
-                      <td>${employee.Name}
-                          <c:if test="${employee.Name==null || employee.Name==''}">
-                              &nbsp;
-                          </c:if>
+                      <td align="center">
+                              ${employee.Name}
                       </td>
-                      <td>
+                      <td align="center">
                           <c:if test="${employee.Sex==1}">
                               <s:text name='sundyn.male'/>
                           </c:if>
@@ -54,13 +53,18 @@
                               <s:text name='sundyn.female'/>
                           </c:if>
                       </td>
-                      <td>
-                              ${employee.CardNum}
-                          <c:if test="${employee.CardNum==null || employee.CardNum==''}">
-                              &nbsp;
+                      <td align="center">${employee.CardNum}</td>
+                      <td align="center">
+                          <c:if test="${online!=null}">
+                              <c:forEach items="${online}" var="onlineitem">
+                                  <c:choose>
+                                      <c:when test="${onlineitem.key==employee.id}">在线</c:when>
+                                      <c:otherwise>不在线</c:otherwise>
+                                  </c:choose>
+                              </c:forEach>
                           </c:if>
                       </td>
-                      <td><a href="javascript:employeeEditDialog(${employee.Id},'<s:text name="sundyn.employee.editEmployee" />')"><s:text name="sundyn.modify"/></a> <s:text name="sundyn.separator"/>
+                      <td align="center"><a href="javascript:employeeEditDialog(${employee.Id},'<s:text name="sundyn.employee.editEmployee" />')"><s:text name="sundyn.modify"/></a> <s:text name="sundyn.separator"/>
                           <a href="javascript:employeeDel(${employee.Id})"><s:text name="sundyn.del"/></a><s:text name="sundyn.separator"/>
                           <a href="javascript:employeeOut(${employee.Id})"><s:text name="sundyn.employee.out"/></a><s:text name="sundyn.separator"/>
                           <a href="javascript:employeeReset(${employee.Id})"><s:text name="sundyn.employee.resetPassword"/></a></td>

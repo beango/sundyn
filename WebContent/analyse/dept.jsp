@@ -7,64 +7,67 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8"/>
     <title><s:text name='sundyn.title'/></title>
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
-    <link href="${ctx}/assets/stylesheets/vendor/fontawesome/fontawesome.css?1440992355" rel="stylesheet" />
-    <link href="${ctx}/assets/stylesheets/application.css?1442799557" rel="stylesheet" />
-    <link href="${ctx}/assets/stylesheets/vendor/fontawesome/fontawesome.css?1440992355" rel="stylesheet" />
-    <link href="${ctx}/assets/stylesheets/highlighting.css?1442373184" rel="stylesheet" />
-    <link href="${ctx}/assets/stylesheets/main.css?1514875963" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
     <script src="${ctx}/assets/javascripts/vendor/jquery-2.1.3.min.js?1440992355"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="js/line.js"></script>
     <script type="text/javascript" src="js/jscharts.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+    <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
+    <script type="text/javascript" src="js/application.js?1"></script>
 </head>
-<body class="theme-default easyui-layout">
-    <table width="100%" height="50" border="0" cellpadding="0" cellspacing="0" style="border-color:#FFFFFF;">
-        <tr>
-            <td align="left" style="border-color:#FFFFFF;">${detpJSON}
-                <div style="float:left;"><s:text name='sundyn.query.selectDept'/></div>
-                <div id="dept2" class="sundyn_content" style="float: left;">
-                    <a id="deptSelectMenu" class="easyui-menubutton l-btn-primary" data-options="menu:'#mm-deptSelectMenu'" href="javascript:void(0)">-- 请选择 --</a>
-                    <input type="hidden" id="deptId" name="deptId" value="${deptId}"/>
-                    <div data-options='itemHeight:32' id='mm-deptSelectMenu' style="display: none;">
-                        <jsp:include page="../control/recursive.jsp">
-                            <jsp:param name="objectid" value="deptSelectMenu,deptId"></jsp:param>
-                            <jsp:param name="fatherId" value="-1"></jsp:param>
-                            <jsp:param name="idPath" value='-1'></jsp:param>
-                            <jsp:param name="namePath" value=""></jsp:param>
-                            <jsp:param name="selected" value="${deptId}"></jsp:param>
-                        </jsp:include>
-                    </div>
-                </div>
-                <div style="float:left;">
-                    <s:text name='sundyn.total.startDate'/>
-                    <input type="text" id="startDate" class="input_comm" <s:text name="sundyn.language.calendar.setDay"/> onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-                    <s:text name='sundyn.total.endDate'/>
-                    <input type="text" id="endDate" class="input_comm"<s:text name="sundyn.language.calendar.setDay"/> onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-                    <label><input type="radio" name="type" checked="checked" value="day"/><s:text name='sundyn.analyse.day'/></label>
-                    <label><input type="radio" name="type" value="month"/><s:text name='sundyn.analyse.month'/></label>
-                    <label><input type="radio" name="type" value="year"/><s:text name='sundyn.analyse.year'/></label>
-                    <img src="<s:text name="sundyn.analyse.businessNumAnalyse" />" onclick="analyseDeptAjax()" style="cursor: pointer; vertical-align: middle;"/>
-                    <img src="<s:text name="sundyn.analyse.contentNumAnalyse" />" onclick="analyseDeptContentAjax()" style="cursor: pointer; vertical-align: middle;"/>
-                    <img src="<s:text name="sundyn.analyse.contentDegreeAnalyse" />" onclick="analyseDeptContentRateAjax()" style="cursor: pointer; vertical-align: middle;"/>
-                </div>
-            </td>
-        </tr>
-    </table>
+<body class="layui-form">
+<div class="layui-select-cus layui-inline">
+    <label class="layui-form-label" style="width:120px;"><s:text name='sundyn.query.selectDept'/></label>
+    <div class="layui-form-mid layui-word-aux">
+    </div>
+</div>
+<input type="hidden" id="deptId" name="deptId" value="${deptId}"/>
+<div class="layui-inline">
+    <label class="layui-form-label"><s:text name='sundyn.total.startDate'/></label>
+    <div class="layui-input-inline">
+        <input type="text" class="input_comm" id="startDate" value="${startDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+    </div>
+</div>
+<div class="layui-inline">
+    <label class="layui-form-label"><s:text name='sundyn.total.endDate'/></label>
+    <div class="layui-input-inline">
+        <input type="text" class="input_comm" id="endDate" value="${endDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+    </div>
+</div>
+<div class="layui-inline">
+    <div class="layui-input-inline">
+        <input type="radio" name="type" checked="checked" value="day" title="<s:text name='sundyn.analyse.day'/>"/>
+        <input type="radio" name="type" value="month" title="<s:text name='sundyn.analyse.month'/>"/>
+        <input type="radio" name="type" value="year" title="<s:text name='sundyn.analyse.year'/>"/>
+        <img src="<s:text name="sundyn.analyse.businessNumAnalyse" />" onclick="analyseDeptAjax(w)" style="cursor: pointer; vertical-align: middle;"/>
+        <img src="<s:text name="sundyn.analyse.contentNumAnalyse" />" onclick="analyseDeptContentAjax(w)" style="cursor: pointer; vertical-align: middle;"/>
+        <img src="<s:text name="sundyn.analyse.contentDegreeAnalyse" />" onclick="analyseDeptContentRateAjax(w)" style="cursor: pointer; vertical-align: middle;"/>
+    </div>
+</div>
+
+
 <div style="height:100%;width:100%;" id="chartcontainer">
 </div>
 
 </body>
-<script src="${ctx}/assets/javascripts/jquery.easyui.min.js"></script>
-<%--<script src="${ctx}/js/easyui-1.5.3/jquery.easyui.min.js"></script>--%>
-<script src="${ctx}/js/main.js"></script>
 <script type="text/javascript">
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+        var deptpath = '<%=request.getParameter("deptpath")==null?"":request.getParameter("deptpath")%>'.split(",");
+        renderchild(form, -1, -1, deptpath,'dept');
+    });
+
+    var w;
     $(function () {
-        analyseDeptAjax($("#chartcontainer").width());
+        w = $("#chartcontainer").width();
+        analyseDeptAjax(w);
     })
 </script>
 </html>

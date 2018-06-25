@@ -85,14 +85,8 @@ function delInput(data){
 }
 
 // 得到当前机构的下一个机构
-function querydept() {
-	//var deptids = document.getElementsByName("deptId");
-	/*var deptId = -1;
-	for (i = 0; i < deptids.length; i++) {
-		if (eval(deptId) < eval(deptids[i].value)) {
-			deptId = deptids[i].value;
-		}
-	}*/
+function querydept(exportexcel) {
+    initDeptValue();
     var deptId = "";
     var d = $("#deptId").val().split(",");
     if(d.length>0)
@@ -106,21 +100,21 @@ function querydept() {
     }
  	var startDate = getStartDate();
 	var endDate =  getEndDate();
-  	window.location.href = "queryDeptDeal.action?deptId=" + deptId + "&startDate=" + startDate + "&endDate=" + endDate+"&deptpath=" + $("#deptId").val();
+  	var u = "queryDeptDeal.action?deptId=" + deptId + "&startDate=" + startDate + "&endDate=" + endDate+"&deptpath=" + $("#deptId").val();
+  	if(exportexcel)
+     u += "&export="+exportexcel;
+    window.location.href = u;
 }
 // 删除选定范围内的视频文件
 function deleteVideoFileDeal() {
-	var deptids = document.getElementsByName("deptId");
 	var keyNo = document.getElementById("keyNo").value;
-	var deptId = -1;
-	for (i = 0; i < deptids.length; i++) {
-		if (eval(deptId) < eval(deptids[i].value)) {
-			deptId = deptids[i].value;
-		}
-	}
+	var deptId = getDeptSelect();
 	var startDate = getStartDate();
 	var endDate =  getEndDate();
-	window.location.href = "deleteVideoFileDeal.action?keyNo="+keyNo+"&deptId=" + deptId + "&startDate=" + startDate + "&endDate=" + endDate;
+	var href = "deleteVideoFileDeal.action?keyNo="+keyNo+"&deptId=" + deptId + "&startDate=" + startDate + "&endDate=" + endDate;
+    dojo.xhrPost({url:href, content:{}, load:function (resp, ioArgs) {
+            alert(resp);
+    }});
 }
 // 查看mac是否重复
 function deptExistMac(data){
@@ -186,13 +180,6 @@ function clearEmployee() {
 // 关闭弹窗口
 function closeDialog() {
 	try {
-        var dia = new dialog();
-        dia.close("dialog");
-    }
-    catch (e) {
-
-    }
-	try {
         layer.closeAll('iframe');
     }
     catch (e) {
@@ -223,18 +210,13 @@ function selectPeople(id, name) {
 	closeDialog();// 关闭弹窗口
 }
 // 显示按人员查询结果
-function queryEmployeeDeal() {
-	var id = document.getElementById("id").value;
-	if(id==""){
-		alert("请先查询,再选择人员");
-		return false;
-	}
+function queryEmployeeDeal(isExport) {
+    var id = getEmployeeSelect();
+
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
     var keyword = "";
-    //var keyword = encodeURI(encodeURI(document.getElementById("keyword").value));
-	//document.getElementById("keyword").value="";
-	window.location.href = "queryPeopleyDeal.action?id=" + id + "&keyword=" + keyword + "&startDate=" + startDate + "&endDate=" + endDate;
+	window.location.href = "queryPeopleyDeal.action?id=" + id + "&keyword=" + keyword + "&startDate=" + startDate + "&endDate=" + endDate + "&export=" + isExport + "&deptpath=" + $("#deptId").val();;
 }
 // 显示按工号查询结果
 function queryEmployeeByCardNumDeal() {
@@ -267,11 +249,11 @@ function queryEmployeeDealForDel() {
 	var endDate = document.getElementById("endDate").value;
 	window.location.href = "queryDealPeopleyForDel.action?id=" + id + "&startDate=" + startDate + "&endDate=" + endDate;
 }
-function queryResultDeal() {
+function queryResultDeal(isExport) {
 	var result = document.getElementById("result").value;
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-	window.location.href = "queryResultDeal.action?keys=" + result + "&startDate=" + startDate + "&endDate=" + endDate;
+	window.location.href = "queryResultDeal.action?keys=" + result + "&startDate=" + startDate + "&endDate=" + endDate + "&export=" + isExport;
 }
 function queryResultDealTel() {
 	var tel = document.getElementById("tel").value;
@@ -327,26 +309,38 @@ function queryZhDeal() {
 }
 
 function queryZhDeal1() {
-    var employeeId = document.getElementById("id").value;
+    initDeptValue();
+    var deptId = "";
+    var d = $("#deptId").val().split(",");
+    if(d.length>0)
+    {
+        for (var i=d.length-1; i--; i>-1){
+            if(d[i]!=''){
+                deptId = d[i];
+                break;
+            }
+        }
+    }
+    var employeeId = getEmployeeSelect();
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    var deptIds = getAllDept();
-    var keys = getAllKey();
+    var deptIds = getDeptSelect();
+    var keys = document.getElementById("result").value;
+    var myURL = parseURL(location.href);
+    var _newUrl = replaceUrlParams(myURL, { id: employeeId, startDate:startDate,endDate: endDate,deptIds: deptIds,keys:keys,deptpath:$("#deptId").val() });
     //document.location.href = "queryZhDeal.action?id=" + employeeId + "&startDate=" + startDate + "&endDate=" + endDate + "&deptIds=" + deptIds + "&keys=" + keys;
-    dojo.xhrPost({url:"queryZhDealAjax.action?id=" + employeeId + "&startDate=" + startDate + "&endDate=" + endDate + "&deptIds=" + deptIds + "&keys=" + keys, content:{num:0}, load:function (resp, ioArgs) {
-        $("#queryZhDealAjaxContent").html(resp);
-    }});
+    document.location.href = _newUrl; //"queryZhDealAjax.action?id=" + employeeId + "&startDate=" + startDate + "&endDate=" + endDate + "&deptIds=" + deptIds + "&keys=" + keys + "&deptpath=" + $("#deptId").val();
 }
 
 // 决策分析
 // 业务量
-function analyseTotalAjaxDay(data) {
+function analyseTotalAjaxDay(data,w) {
     var now = new Date();
     var nowStr = now.format("yyyy-MM-dd");
     $("#endDate").val(nowStr + " 23:59:59");
     now.setDate(now.getDate()-data);
     $("#startDate").val(now.format("yyyy-MM-dd") + " 00:00:00");
-    analyseTotalAjax();
+    analyseTotalAjax(w);
 }
 
 function analyseTotalAjax(w) {
@@ -358,13 +352,13 @@ function analyseTotalAjax(w) {
     }});
 }
 // 满意量
-function analyseContentAjaxDay(data) {
+function analyseContentAjaxDay(data,w) {
     var now = new Date();
     var nowStr = now.format("yyyy-MM-dd");
     $("#endDate").val(nowStr + " 23:59:59");
     now.setDate(now.getDate()-data);
     $("#startDate").val(now.format("yyyy-MM-dd") + " 00:00:00");
-    analyseContentAjax();
+    analyseContentAjax(w);
 }
 function analyseContentAjax(w) {
 	var startDate = document.getElementById("startDate").value;
@@ -433,13 +427,7 @@ function analyseContentDAjax(){
 // 机构分析
 // 业务量分析
 function analyseDeptAjax(w) {
-	var deptids = document.getElementsByName("deptId");
-	var deptId = -1;
-	for (i = 0; i < deptids.length; i++) {
-		if (eval(deptId) < eval(deptids[i].value)) {
-			deptId = deptids[i].value;
-		}
-	}
+	var deptId = getDeptSelect();
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var types = document.getElementsByName("type");
@@ -454,7 +442,7 @@ function analyseDeptAjax(w) {
 	}});
 }
 // 机构满意量
-function analyseDeptContentAjax() {
+function analyseDeptContentAjax(w) {
 	var deptids = document.getElementsByName("deptId");
 	var deptId = -1;
 	for (i = 0; i < deptids.length; i++) {
@@ -471,12 +459,12 @@ function analyseDeptContentAjax() {
 			type = types[i].value;
 		}
 	}
-	dojo.xhrPost({url:"analyseDeptContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type, deptId:deptId}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"analyseDeptContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type, deptId:deptId, w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
 	}});
 }
 // 机构满意度
-function analyseDeptContentRateAjax() {
+function analyseDeptContentRateAjax(w) {
 	var deptids = document.getElementsByName("deptId");
 	var deptId = -1;
 	for (i = 0; i < deptids.length; i++) {
@@ -493,7 +481,7 @@ function analyseDeptContentRateAjax() {
 			type = types[i].value;
 		}
 	}
-	dojo.xhrPost({url:"analyseDeptContentRateAjax.action", content:{startDate:startDate, endDate:endDate, type:type, deptId:deptId}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"analyseDeptContentRateAjax.action", content:{startDate:startDate, endDate:endDate, type:type, deptId:deptId, w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
 	}});
 }
@@ -572,7 +560,7 @@ function analyseEmployeeAjax(w) {
 			type = types[i].value;
 		}
 	}
-	var employeeId = document.getElementById("id").value;console.log("2123");
+	var employeeId = getEmployeeSelect();
 	/*if(employeeId == ""){
 	    alert("先查询，选择人员");
 	    return false;
@@ -592,10 +580,10 @@ function analyseEmployeeContentAjax(w) {
 			type = types[i].value;
 		}
 	}
-	var employeeId = document.getElementById("id").value;
+	var employeeId = getEmployeeSelect();
 	if(employeeId == ""){
-	 alert("先查询，选择人员");
-	 return false;
+	 //alert("先查询，选择人员");
+	 //return false;
 	}
 	dojo.xhrPost({url:"analyseEmployeeContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId, w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
@@ -612,10 +600,10 @@ function analyseEmployeeContentRateAjax(w) {
 			type = types[i].value;
 		}
 	}
-	var employeeId = document.getElementById("id").value;
+	var employeeId = getEmployeeSelect();
 	if(employeeId == ""){
-	 alert("先查询，选择人员");
-	 return false;
+	 //alert("先查询，选择人员");
+	 //return false;
 	}
 	dojo.xhrPost({url:"analyseEmployeeContentRateAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId, w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
@@ -770,6 +758,24 @@ function deptEditDialog(title) {
         }
     });
 }
+
+function deptGenCer(mac, batchname){
+    dojo.xhrPost({url:"deptGenCer.action", content:{mac:mac, batchname:batchname}, load:function (resp, ioArgs) {
+        var j = JSON.parse(resp)
+            if (j.rst)
+                layer.msg('生成成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                });
+        else
+                layer.msg('生成失败', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                });
+        }});
+}
 // 修改机构
 function deptEditItem(deptId) {
 // if (document.getElementById("deptId").value == "") {
@@ -850,13 +856,13 @@ function deptEditItem(deptId) {
 // 员工管理
 // 根据机构查询出来员工
 function employeeManage(data) {
-	document.getElementById("deptId").value = data;
-	dojo.xhrPost({url:"employeeManage.action", content:{deptId:data}, load:function (resp, ioArgs) {
-		document.getElementById("employeeView").innerHTML = resp;
-	}});
+    document.getElementById("deptId").value = data;
+    dojo.xhrPost({url:"employeeManage.action", content:{deptId:data}, load:function (resp, ioArgs) {
+        document.getElementById("employeeView").innerHTML = resp;
+    }});
 }
 function page(data) {
-	var deptId = document.getElementById("deptId").value;
+    var deptId = document.getElementById("deptId").value;
 	var currentPage = data;
 	dojo.xhrPost({url:"employeeManage.action", content:{deptId:deptId, currentPage:currentPage}, load:function (resp, ioArgs) {
 		document.getElementById("employeeView").innerHTML = resp;
@@ -865,23 +871,7 @@ function page(data) {
 // 添加员工对话框
 function employeeAddDialog(title) {
     var deptId = document.getElementById("deptId").value;
-    layer.open({
-        type: 2,
-        title: title?title:'提示页',
-        shadeClose: true,
-        shade: 0.8,
-        area: ['600px', '60%'],
-        content: 'employeeAddDialog.action?deptId='+deptId,
-        success:function(ly,index){
-            layer.iframeAuto(index);
-        }
-    });
-    return;
-	dojo.xhrPost({url:"employeeAddDialog.action", load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-	}});
+    new dialog().iframe('employeeAddDialog.action?deptId='+deptId, {title: title});
 }
 // 员工是否存在
  function employeeExsits(){
@@ -965,18 +955,7 @@ function employeeDel(data) {
 }
 // 修改员工
 function employeeEditDialog(data, title) {
-    layer.open({
-        type: 2,
-        title: title?title:'提示页',
-        shadeClose: true,
-        shade: 0.8,
-        area: 'auto',
-        area: ['600px', '60%'],
-        content: 'employeeEditDialog.action?employeeId='+data,
-        success:function(ly,index){
-            layer.iframeAuto(index);
-        }
-    });
+     new dialog().iframe('employeeEditDialog.action?employeeId='+data, {title: title});
 }
 
 // 导出人员
@@ -1045,9 +1024,8 @@ function employeeEdit() {
 		Sex = "\u7537";
 	}
 	dojo.xhrPost({url:"employeeEdit.action", content:{employeeId:employeeId, Name:Name, job_desc:job_desc, CardNum:CardNum, imgName:imgName, Sex:Sex, Phone:Phone,ext2:ext2,remark:remark,showDeptName:showDeptName,showWindowName:showWindowName,unitName:unitName}, load:function (resp, ioArgs) {
-		document.getElementById("dialog").innerHTML = resp;
-		closeDialog();
-		employeeManage(document.getElementById("deptId").value);
+        parent.employeeManage(parent.$("#deptId").val());
+		parent.closeDialog();
 	}});
 }
 function employeeOut(data) {
@@ -1132,7 +1110,7 @@ function keyTypeEdit(data) {
 		yes = 0;
 	}
 	dojo.xhrPost({url:"keyTypeEdit.action", content:{id:data, name:name, isJoy:isJoy,yes:yes,ext1:ext1}, load:function (resp, ioArgs) {
-
+        console.log(resp);
 	}});
 }
 
@@ -1147,6 +1125,11 @@ function keyTypeEditAll() {
 	var ext7=document.getElementById("ext17").value;
 
 	if(r.test(ext1)&&r.test(ext2)&&r.test(ext3)&&r.test(ext4)&&r.test(ext5)&&r.test(ext6)&&r.test(ext7)){
+	    if((ext1 && ext1>10) || (ext2 && ext2>10) || (ext3 && ext3>10) || (ext4 && ext4>10) || (ext5 && ext5>10) || (ext6 && ext6>10) || (ext7 && ext7>10))
+        {
+            alert("权值最大为10");
+            return;
+        }
 		 keyTypeEdit(1);
 		 keyTypeEdit(2);
 		 keyTypeEdit(3);
@@ -1156,12 +1139,9 @@ function keyTypeEditAll() {
 		 keyTypeEdit(7);
 		 alert("保存成功");
 	}else{
-		alert("权值非法，只能为整数");
+		alert("权值非法，只能为整数" + (ext1>1));
 	}
-
 }
-
-
 
 // 添加用户对话框
 function managerAddDialog() {
@@ -1447,30 +1427,26 @@ function powerEditDialog(data) {
 }
 // 汇总
 // 机构汇总
-function totalDeptDeal() {
+function totalDeptDeal(isExport) {
+    initDeptValue();
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-	window.location.href = "totalDeptDeal.action?startDate=" + startDate + "&endDate=" + endDate;
+	window.location.href = "totalDeptDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + getDeptSelect() + "&export=" + isExport + "&deptpath=" + $("#deptId").val();;
 }
 // 大厅汇总
-function totalDatingDeal() {
+function totalDatingDeal(isExport) {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-	window.location.href = "totalDatingDeal.action?startDate=" + startDate + "&endDate=" + endDate;
+    initDeptValue();
+	window.location.href = "totalDatingDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + getDeptSelect() + "&export=" + isExport + "&deptpath=" + $("#deptId").val();
 }
 // 窗口汇总
-function totalWindowDeal() {
+function totalWindowDeal(isExport) {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-	//var deptId = document.getElementById("deptId").value;
-	var deptids = document.getElementsByName("deptId");
-	var deptId = -1;
-	for (i = 0; i < deptids.length; i++) {
-		if (eval(deptId) < eval(deptids[i].value)) {
-			deptId = deptids[i].value;
-		}
-	}
-	window.location.href = "totalWindowDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId;
+	var deptId = getDeptSelect();
+    initDeptValue();
+	window.location.href = "totalWindowDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId + "&export=" + isExport + "&deptpath=" + $("#deptId").val();
 }
 // 个人汇总
 function totalPersonAjax(data) {
@@ -1484,17 +1460,14 @@ function totalSectionDeal() {
 	var endDate = document.getElementById("endDate").value;
 	window.location.href = "totalSectionDeal.action?startDate=" + startDate + "&endDate=" + endDate;
 }
-function totalPersonDeal() {
+function totalPersonDeal(isExport) {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var deptids = document.getElementsByName("deptId");
-	var deptId = -1;
-	for (i = 0; i < deptids.length; i++) {
-		if (eval(deptId) < eval(deptids[i].value)) {
-			deptId = deptids[i].value;
-		}
-	}
-	window.location.href = "totalPersonDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId;
+    initDeptValue();
+    var deptId = getDeptSelect();
+    var eid = getEmployeeSelect();
+	window.location.href = "totalPersonDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId + "&employeeId=" + eid + "&export=" + isExport +"&deptpath=" + $("#deptId").val();
 }
 function totalBusinessDeal() {
 	var startDate = document.getElementById("startDate").value;
@@ -1875,7 +1848,7 @@ function playListDelAndroid(data) {
 
 	if (confirm("确认要删除吗?")){
         dojo.xhrPost({url:"playListDelAndroid.action", content:{playListId:data}, load:function (resp, ioArgs) {
-                layer.msg('删除成功', {
+                layer.msg(resp, {
                     icon: 1,
                     time: 800
                 }, function(){
@@ -2116,12 +2089,34 @@ function quicklyAddDialog(){
 }
 
 function queryExcel(){
-  var deptIds=document.getElementById("deptIds").value;
+    initDeptValue();
+    var deptId = "";
+    var d = $("#deptId").val().split(",");
+    if(d.length>0)
+    {
+        for (var i=d.length-1; i--; i>-1){
+            if(d[i]!=''){
+                deptId = d[i];
+                break;
+            }
+        }
+    }
+    var employeeId = getEmployeeSelect();
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    var deptIds = getDeptSelect();
+    var keys = $("#result").val()?$("#result").val():"";
+    //var myURL = parseURL(location.href);
+    //var _newUrl = replaceUrlParams(myURL, { id: employeeId, startDate:startDate,endDate: endDate,deptIds: deptIds,keys:keys,deptpath:$("#deptId").val() });
+    //document.location.href = "queryZhDeal.action?id=" + employeeId + "&startDate=" + startDate + "&endDate=" + endDate + "&deptIds=" + deptIds + "&keys=" + keys;
+    //document.location.href = _newUrl;
+
+ /* var deptIds=document.getElementById("deptIds").value;
   var startDate=document.getElementById("startDate").value;
   var endDate=document.getElementById("endDate").value;
   var keys=document.getElementById("keys").value;
-  var id=document.getElementById("id").value;
-  window.location.href="queryExcel.action?deptIds="+deptIds+"&startDate="+startDate+"&endDate="+endDate+"&keys="+keys+"&id="+id
+  var id=document.getElementById("id").value;*/
+  window.location.href="queryExcel.action?deptIds="+deptIds+"&startDate="+startDate+"&endDate="+endDate+"&keys="+keys+"&id="+employeeId
 }
 // 导出M7在线信息为Excel
 function m7InfoExcel(){
@@ -3436,6 +3431,12 @@ function guideSimpleEmployeeReset(){
 
 
 }
+
+function downvideo(videofile){
+        dojo.xhrPost({url:"downloadVideo.action",content:{videofile:videofile},load:function (resp, ioArgs){
+            console.log(resp);
+            }});
+}
 function guideSimpleEmployeeAjax(){
      var deptId=document.getElementById("deptId").value;
 	dojo.xhrPost({url:"guideSimpleEmployeeAjax.action",content:{deptId:deptId},load:function (resp, ioArgs){
@@ -3765,9 +3766,8 @@ function weburlPage(data) {
 
 // ================================================================
 // notice 通知公告添加框
-function noticToAdd(data) {
-    // var name = document.getElementById("keyword").value;
-    new dialog().iframe("noticeToAdd.action?name=123");
+function noticToAdd(title) {
+    new dialog().iframe("noticeToAdd.action?name=123", {title: title});
 }
 
 // 添加 通知公告
@@ -3967,7 +3967,105 @@ function toshow(videofile,path1,id){
  	 		a.target="_bank";
  	 	}
 	  }
+// ================================================================
+// notice 通知公告添加框
+function batchToAdd(id,title) {
+    new dialog().iframe("batchToAdd.action?id="+id, {title: title});
+}
 
+// 添加 通知公告
+function batchAdd(){
+    var id = document.getElementById("id").value;
+    var batchid = document.getElementById("batchid").value;
+    var batchdate = document.getElementById("batchdate").value;
+    var batchname = document.getElementById("batchname").value;
+    dojo.xhrPost({url:"batchAdd.action", content:{id:id, batchid:batchid,batchdate:batchdate,batchname:batchname}, load:function (resp, ioArgs) {
+        var msg = JSON.parse(resp);
+        console.log(msg);
+        if(msg.succ){
+            layer.msg(msg.errmsg, {
+                icon: 1,
+                time: 800
+            }, function(){
+                parent.closeDialog();
+                parent.refreshTab();
+            });
+        }
+        else{
+            layer.msg(msg.errmsg, {
+                icon: 2,
+                time: 1500
+            }, function(){
+            });
+        }
+    }});
+}
+
+// 删除 通知公告
+function batchDelete(data){
+    if (confirm("确实要删除吗?")){
+        dojo.xhrPost({url:"batchDelete.action", content:{id:data}, load:function (resp, ioArgs) {
+                layer.msg('删除成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    refreshTab();
+                });
+            }});
+    }
+}
+
+// weburl 通知公告 更新框
+function batchToUpate(data, title) {
+    new dialog().iframe("batchToUpate.action?id="+data,{title:title});
+}
+
+function devicelist(){
+    location.href="deviceList.action";
+}
+
+function deviceToAdd(id,title) {
+    new dialog().iframe("deviceToAdd.action?id="+id, {title: title});
+}
+
+function deviceDelete(data){
+    if (confirm("确实要删除吗?")){
+        dojo.xhrPost({url:"deviceDelete.action", content:{id:data}, load:function (resp, ioArgs) {
+                layer.msg('删除成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    refreshTab();
+                });
+            }});
+    }
+}
+
+function deviceAdd(){
+    var id = document.getElementById("id").value;
+    var mac = document.getElementById("mac").value;
+    var batchid = document.getElementById("batchid").value;
+    var ctime = document.getElementById("ctime").value;
+    dojo.xhrPost({url:"deviceAdd.action", content:{id:id, mac:mac,batchid:batchid,ctime:ctime}, load:function (resp, ioArgs) {
+            var msg = JSON.parse(resp);
+            if(msg.succ){
+                layer.msg(msg.errmsg, {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    parent.closeDialog();
+                    parent.refreshTab();
+                });
+            }
+            else{
+                layer.msg(msg.errmsg, {
+                    icon: 2,
+                    time: 1500
+                }, function(){
+                });
+            }
+        }});
+}
 function showRemark(content){
 	  layer.alert(content, {
 	    skin: 'layui-layer-lan'
@@ -3982,8 +4080,6 @@ function refreshTab(param){
         myURL = parseURL(location.href);
         myURL = replaceUrlParams(myURL, param);
     }
-    console.log("刷新:" + myURL);
-    //myURL = replaceUrlParams(myURL, { pageSize: pageSize, currentPage:pageNumber });
     if(parent.qc && parent.qc.main.mainTabs){
         var currTab = parent.qc.main.mainTabs.tabs('getSelected');
         parent.qc.main.mainTabs.tabs('update', {
@@ -3994,7 +4090,7 @@ function refreshTab(param){
         });
     }
     else{
-        location.href = _newUrl;
+        location.href = myURL;
     }
 }
 
@@ -4010,11 +4106,6 @@ function initPager(_count, _curr, _limit){
             curr: _curr,
             limit: _limit,
             jump: function(obj, first){
-                //obj包含了当前分页的所有参数，比如：
-                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-                console.log(obj.limit); //得到每页显示的条数
-                console.log(first);
-                //首次不执行
                 if(!first){
                     var myURL = parseURL(location.href);
                     var _newUrl = replaceUrlParams(myURL, { pageSize: obj.limit, currentPage:obj.curr });

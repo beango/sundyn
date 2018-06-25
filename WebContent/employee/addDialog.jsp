@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
     <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
     <script type="text/javascript" src="js/dojo.js"></script>
-    <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
@@ -15,12 +14,12 @@
 </head>
 
 <body>
-<input type="hidden" id="deptId" value="<%=request.getParameter("deptId")%>" />
-
 <div class="layer-form">
-    <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-color: #e9f5fd;">
+
+    <table width="99%" border="0" cellpadding="0" cellspacing="0" style="border-color: #e9f5fd;">
         <tr>
-            <td rowspan="11" width="30%;" align="right;">
+            <td rowspan="11" width="20%;" align="right;">
+                <input type="hidden" id="deptId" value="<%=request.getParameter("deptId")%>" />
                 <div class="center_10_left kuang">
                     <img src="images/employee_head_photo.gif" id="img123"  style="width: 140px;height: 147px;"  border="0" />
                     <form id="pic" enctype="multipart/form-data" name="pic" action="employeeAdd.action" method="post" style="margin: 0px;padding: 0px;background-color:#e9f5fd;">
@@ -32,14 +31,14 @@
             </td>
         </tr>
         <tr>
-            <td style="border-color: #e9f5fd;" width="30%" align="right" class="ff">
+            <td style="border-color: #e9f5fd;" width="20%" align="right" class="ff">
                 <c:if test="${employeeJobNum == 'true'}">
                     <s:text name="sundyn.column.employeeJobNum" />
                 </c:if>
                 <c:if test="${employeeJobNum != 'true'}">
                     <s:text name="sundyn.column.userName" />
                 </c:if><s:text name="sundyn.colon" /></td>
-            <td style="border-color: #e9f5fd;" width="70%" align="left">
+            <td style="border-color: #e9f5fd;" width="80%" align="left">
                 <input type="text" name="ext2" id="ext2" class="input_comm" onblur="employeeExsits()" /><span style="color: red; font-size: 12px;" id="tip"></span>						</td>
         </tr>
         <tr>
@@ -68,7 +67,9 @@
             <td style="border-color: #e9f5fd;" align="right" class="ff">
                 <s:text name="sundyn.column.employeeCardNum" /><s:text name="sundyn.colon" /></td>
             <td style="border-color: #e9f5fd;" align="left">
-                <input type="text" name="CardNum" id="CardNum"  onblur="employeeCardNumExsits()" class="input_comm"  /><font color="#FF0000">*</font><span style="color: red; font-size: 12px;" id="tipcardnum"></span></td>
+                <input type="text" name="CardNum" id="CardNum"  onblur="employeeCardNumExsits()" class="input_comm"  /><font color="#FF0000">*</font><span style="color: red; font-size: 12px;" id="tipcardnum"></span>
+                <div style="color:red; text-align:left;"><s:text name="sundyn.employee.alertCardNum"></s:text></div>
+            </td>
         </tr>
 
         <tr>
@@ -78,7 +79,7 @@
                 </c:if>
                 <c:if test="${star != 'true'}">
                     <s:text name="sundyn.column.star" /><s:text name="sundyn.colon" />
-                </c:if>						</td>
+                </c:if>	</td>
             <td style="border-color: #e9f5fd;" align="left">
                 <input type="text" name="Phone" id="Phone"  class="input_comm" /></td>
         </tr>
@@ -101,27 +102,20 @@
             <td style="border-color: #e9f5fd;" align="left">
                 <input type="text" name="ext1" id="ext1"  class="input_comm"  /></td>
         </tr>
-        <%--<tr>
-            <td style="border-color: #e9f5fd;" align="right" class="ff">
-                备注：
-            </td>
-            <td style="border-color: #e9f5fd;" align="left">
-                 <textarea rows="2" cols="22" id="remark"></textarea>
-            </td>
-        </tr>
-     --%>
         <tr>
-            <td colspan="3" align="center">
-                <div class="bottom">
-                    <img src="<s:text name='sundyn.pic.ok' />" onclick="employeeAdd()" class="hand" />
-                    <img src="<s:text name='sundyn.pic.close' />" onclick="closeDialog()" class="hand" />
-                </div>
-                <div style="color:red; text-align:left;"><s:text name="sundyn.employee.alertCardNum"></s:text></div>
+            <td colspan="2" align="center">
+
+                <img src="<s:text name='sundyn.pic.ok' />" onclick="employeeAdd()" class="hand" />
+                <img src="<s:text name='sundyn.pic.close' />" onclick="closeDialog()" class="hand" />
             </td>
         </tr>
     </table>
-
-
 </div>
 </body>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+    });
+</script>
 </html>

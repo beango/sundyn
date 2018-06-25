@@ -24,10 +24,10 @@
     <script type="text/javascript" src="js/jscharts.js"></script>
     <script type="text/javascript" src="js/json.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+    <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
 </head>
 <body>
 <%@ include file="/JSClass/FusionCharts.jsp" %>
-<script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
 
 <form id="form1" name="form1" method="post" action="">
     <table width="100%" height="50" border="0" cellpadding="0" cellspacing="0"
@@ -54,10 +54,10 @@
                         <s:text name='sundyn.analyse.year'/>
                     </option>
                 </select>
-                <img src="<s:text name='sundyn.analyse.pic.dataAnalyse' />" width="94" height="25" onclick="analyseContentAjax()" style="cursor: pointer; vertical-align: middle;"/>
-                <img src="<s:text name='sundyn.analyse.pic.week' />" onclick="analyseContentAjaxDay(7)" style="cursor: pointer; vertical-align: middle;"/>
-                <img src="<s:text name='sundyn.analyse.pic.15' />" onclick="analyseContentAjaxDay(15)" style="cursor: pointer; vertical-align: middle;"/>
-                <img src="<s:text name='sundyn.analyse.pic.month' />" onclick="analyseContentAjaxDay(30)" style="cursor: pointer; vertical-align: middle;"/>
+                <img src="<s:text name='sundyn.analyse.pic.dataAnalyse' />" width="94" height="25" onclick="analyseContentAjax(w)" style="cursor: pointer; vertical-align: middle;"/>
+                <img src="<s:text name='sundyn.analyse.pic.week' />" onclick="analyseContentAjaxDay(7,w)" style="cursor: pointer; vertical-align: middle;"/>
+                <img src="<s:text name='sundyn.analyse.pic.15' />" onclick="analyseContentAjaxDay(15,w)" style="cursor: pointer; vertical-align: middle;"/>
+                <img src="<s:text name='sundyn.analyse.pic.month' />" onclick="analyseContentAjaxDay(30,w)" style="cursor: pointer; vertical-align: middle;"/>
             </td>
         </tr>
     </table>
@@ -67,8 +67,10 @@
 </div>
 
 <script language="javascript">
+    var w;
     $(function () {
-        analyseContentAjax($("#chartcontainer").width());
+        w = $("#chartcontainer").width();
+        analyseContentAjax(w);
     });
 </script>
 </body>

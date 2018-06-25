@@ -16,9 +16,8 @@
 
 <body>
 <div class="layer-form">
-    <table width="100%" border="0" cellpadding="0"
-           cellspacing="0" style="border-color:#FFFFFF;">
-        <tr><td rowspan="11" width="30%;" align="right;">
+    <table width="99%" border="0" cellpadding="0" cellspacing="0" style="border-color:#FFFFFF;">
+        <tr><td rowspan="11" width="20%;" align="right;">
             <img src="${m.picture}" id="img123"  style="width: 140px;height: 147px;" class="hand" onclick="closeDialog()"  border="0" />
             <form id="pic" enctype="multipart/form-data" name="pic" action="employeeAdd.action" method="post" style="margin: 0px;padding: 0px;background-color:#e9f5fd;">
                 <input type="hidden" name="imgName" id="imgName" value="${m.picture }" />
@@ -27,7 +26,7 @@
             </form>
         </td></tr>
         <tr>
-            <td width="30%" align="right">
+            <td width="20%" align="right">
                 <c:if test="${employeeJobNum == 'true'}">
                     <s:text name="sundyn.column.employeeJobNum" />
                 </c:if>
@@ -35,7 +34,7 @@
                     <s:text name="sundyn.column.userName" />
                 </c:if><s:text name="sundyn.colon" />
             </td>
-            <td width="70%" align="left">
+            <td align="left">
                 <input type="text" name="ext2" id="ext2" class="input_comm" value="${m.ext2}"  onblur="employeeExsits()" /><span style="color: red; font-size: 12px;" id="tip"></span>
             </td>
         </tr>
@@ -62,10 +61,10 @@
             </td>
             <td style="border-color: #e9f5fd;" align="left">
                 <input type="radio" name="Sex" id="Sex" value="1"
-                       <c:if test="${m.Sex=='1'}">checked="checked"  </c:if>>
+                       <c:if test="${m.Sex=='1'}">checked="checked" </c:if>>
                 <s:text name="sundyn.male" />
                 <input type="radio" name="Sex" id="Sex" value="0"
-                       <c:if test="${m.Sex=='0'}">checked="checked"  </c:if>>
+                       <c:if test="${m.Sex=='0'}">checked="checked" </c:if>>
                 <s:text name="sundyn.female" />
             </td>
         </tr>
@@ -74,8 +73,9 @@
                 <s:text name="sundyn.column.employeeCardNum" /><s:text name="sundyn.colon" />
             </td>
             <td style="border-color: #e9f5fd;" align="left">
-                <input type="text" name="CardNum" id="CardNum"  class="input_comm"  value="${m.CardNum}"  />
-                <font color="#FF0000">*</font>						</td>
+                <input type="text" name="CardNum" id="CardNum"  class="input_comm"  value="${m.CardNum}" /><font color="#FF0000">*</font>
+                <div style="color:red; text-align:left;"><s:text name="sundyn.employee.alertCardNum"></s:text> </div>
+            </td>
         </tr>
         <tr>
             <td style="border-color: #e9f5fd;" align="right" class="ff">
@@ -85,50 +85,35 @@
                 <c:if test="${star != 'true'}">
                     <s:text name="sundyn.column.star" /><s:text name="sundyn.colon" />
                 </c:if>
-
             </td>
             <td style="border-color: #e9f5fd;" align="left">
                 <input type="text" name="Phone" id="Phone"  class="input_comm" value="${m.Phone}" />
             </td>
         </tr>
-
         <tr >
             <td style="border-color: #e9f5fd;" align="right" class="ff">
-                <s:text name="sundyn.column.windowName" /><s:text name="sundyn.colon" />							</td>
+                <s:text name="sundyn.column.windowName" /><s:text name="sundyn.colon" /></td>
             <td style="border-color: #e9f5fd;" align="left">
-                <input type="text" name="showWindow" id="showWindow"  class="input_comm" value="${m.showWindowName }" />						</td>
-        </tr>
-        <tr >
-            <td style="border-color: #e9f5fd;" align="right" class="ff">
-                <s:text name="sundyn.column.deptname" /><s:text name="sundyn.colon" />						</td>
-            <td style="border-color: #e9f5fd;" align="left">
-                <input type="text" name="showDeptName" id="showDeptName"  class="input_comm" value="${m.showDeptName }"/>						</td>
+                <input type="text" name="showWindow" id="showWindow"  class="input_comm" value="${m.showWindowName }" /></td>
         </tr>
         <tr >
             <td style="border-color: #e9f5fd;" align="right" class="ff">
-                <s:text name="sundyn.column.unitName" /><s:text name="sundyn.colon" />							</td>
+                <s:text name="sundyn.column.deptname" /><s:text name="sundyn.colon" /></td>
             <td style="border-color: #e9f5fd;" align="left">
-                <input type="text" name="ext1" id="ext1"  class="input_comm"  value="${m.companyName }"/>						</td>
+                <input type="text" name="showDeptName" id="showDeptName"  class="input_comm" value="${m.showDeptName }"/></td>
         </tr>
-
-
-        <%--<tr>
+        <tr >
             <td style="border-color: #e9f5fd;" align="right" class="ff">
-                备注：
-            </td>
+                <s:text name="sundyn.column.unitName" /><s:text name="sundyn.colon" /></td>
             <td style="border-color: #e9f5fd;" align="left">
-                 <textarea rows="3" cols="22" id="remark">${m.remark}</textarea>
-            </td>
+                <input type="text" name="ext1" id="ext1"  class="input_comm"  value="${m.companyName }"/></td>
         </tr>
-
-    --%>
         <tr>
             <td colspan="3" align="center">
                 <div class="bottom">
                     <img src="<s:text name='sundyn.pic.ok' />"   onclick="employeeEdit()"  class="hand" />
                     <img src="<s:text name='sundyn.pic.close' />" onclick="parent.closeDialog()"	 class="hand" />
                 </div>
-                <div style="color:red; text-align:left;"><s:text name="sundyn.employee.alertCardNum"></s:text> </div>
             </td>
         </tr>
     </table>
@@ -139,7 +124,6 @@
                 ,layer = layui.layer
                 ,layedit = layui.layedit
                 ,laydate = layui.laydate;
-
         });
     </script>
 </div>

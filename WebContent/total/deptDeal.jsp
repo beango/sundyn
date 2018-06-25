@@ -24,106 +24,74 @@
     <script type="text/javascript" src="lib/lhgdialog/lhgdialog.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
+    <script type="text/javascript" src="js/application.js"></script>
 </head>
 <body>
-	<div id="layui-main">
-        <table width="100%" class="layui-table">
-            <tr>
-                <td align="left" style="border-color: #FFFFFF;">
-                    <div style="float: left; margin-right: 10px;">
-                        <s:text name='sundyn.total.startDate' />
-                        <input type="text" id="startDate" class="input_comm" value="${startDate}" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
-                        <s:text name='sundyn.total.endDate' />
-                        <input type="text" id="endDate" value="${endDate}" class="input_comm" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
-                    </div>
-                    <div style="float: left; height: 25px;" onclick="totalDeptDeal()">
-                        <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" />
-                    </div>
-                    <div style="padding-left: 20px; float: left;">
-                        <a href="totalDeptExcel.action?startDate=${startDate}&endDate=${endDate}" target="_blank">
-                            <img src="<s:text name='sundyn.total.pic.excel'/>" />
-                        </a>
-                        <a href="totalDeptPrint.action?startDate=${startDate}&endDate=${endDate}" target="_blank">
-                            <img src="<s:text name='sundyn.total.pic.print'/>" /></a>
-                        <a href="#" onclick="$.dialog({title:'数据分析',content:'url:duibiAction.action?startDate=${startDate}&endDate=${endDate}'});">
-                            <img src="<s:text name='sundyn.total.jigou.duibi'/>" />
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        </table>
+	<div class="layui-form">
+        <div class="layui-inline">
+            <label class="layui-form-label"><s:text name='sundyn.total.startDate'/></label>
+            <div class="layui-input-inline">
+                <input type="text" class="input_comm" id="startDate" value="${startDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label"><s:text name='sundyn.total.endDate'/></label>
+            <div class="layui-input-inline">
+                <input type="text" class="input_comm" id="endDate" value="${endDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+            </div>
+        </div>
+        <input type="hidden" id="deptId" name="deptId" value="${deptId}"/>
+        <div class="layui-select-cus layui-inline">
+            <label class="layui-form-label" style="width:100px;">请选择部门：</label>
+            <div class="layui-form-mid layui-word-aux">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <a href="#" onclick="totalDeptDeal()">
+                    <img src="<s:text name='sundyn.total.pic.query'/>" />
+                </a>
+                <a href="#" onclick="totalDeptDeal(true)">
+                    <img src="<s:text name='sundyn.total.pic.excel'/>" />
+                </a>
+            </div>
+        </div>
 		<div style="width: 100%; margin: 0 auto;">
 			<table width="100%" class="layui-table" id="table123">
 				<tr>
-					<td width="8%" rowspan="2" align="center" valign="middle"
-						background="images/03_02_07.jpg" class="px13_1"><s:text
-							name="sundyn.column.deptName" /></td>
-					<td width="7%" rowspan="2" align="center" valign="middle"
-						background="images/03_02_07.jpg" class="px13_1"><s:text
-							name="sundyn.column.star" /></td>
-					<td colspan="${fn:length(mls)+1}" align="center" valign="middle"
-						background="images/table_bg_03.jpg" class="px13_2"><s:text
-							name="sundyn.column.content" /></td>
-					<td colspan="${fn:length(bmls)+1}" align="center" valign="middle"
-						background="images/table_bg_03.jpg" class="px13_3"><s:text
-							name="sundyn.column.nocontent" /></td>
-					<td width="10%" rowspan="2" align="center" valign="middle"
-						background="images/03_02_07.jpg" class="px13_1"><s:text
-							name="sundyn.column.noappries" /></td><%--未评价--%>
+					<td width="8%" rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg" class="px13_1"><s:text name="sundyn.column.deptName" /></td>
+					<td width="7%" rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg" class="px13_1"><s:text name="sundyn.column.star" /></td>
+					<td colspan="${fn:length(mls)+1}" align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_2"><s:text name="sundyn.column.content" /></td>
+					<td colspan="${fn:length(bmls)+1}" align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_3"><s:text name="sundyn.column.nocontent" /></td>
+					<td width="10%" rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg" class="px13_1"><s:text name="sundyn.column.noappries" /></td><%--未评价--%>
 					<c:if test="${k7 == true}">
-						<td width="7%" rowspan="2" align="center" valign="middle"
-							background="images/03_02_07.jpg" class="px13_1"><s:text
-								name="sundyn.column.appriesNum" /></td><%--合计--%>
+						<td width="7%" rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg" class="px13_1"><s:text name="sundyn.column.appriesNum" /></td><%--合计--%>
 					</c:if>
 
-					<td width="5%" rowspan="2" align="center" valign="middle"
-						background="images/03_02_07.jpg" class="px13_1"><s:text
-							name="sundyn.column.sum" /></td>
-					<!--
-				    <c:if test="${k7 == true}">
-				    <td width="7%" rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg" class="px13_1"><s:text name="sundyn.column.appriesRate"/></td>
-				    </c:if>
-				    -->
-					<!--
-				    <td width="7%" rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg" class="px13_1"><s:text name="sundyn.column.workEffective"/></td>
-				    -->
-					<td width="8%" rowspan="2" align="center" valign="middle"
-						background="images/03_02_07.jpg" class="px13_1"><s:text
-							name="sundyn.column.contentRate" /></td>
-					<td width="8%" rowspan="2" align="center" valign="middle"
-						background="images/03_02_07.jpg" class="px13_1"><s:text
-							name="sundyn.column.contentDegree" /></td>
-
+					<td width="5%" rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg" class="px13_1"><s:text name="sundyn.column.sum" /></td>
+					<td width="8%" rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg" class="px13_1"><s:text name="sundyn.column.contentRate" /></td>
+					<td width="8%" rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg" class="px13_1"><s:text name="sundyn.column.contentDegree" /></td>
 				</tr>
 				<tr>
 					<c:forEach items="${mls}" var="key">
-						<%--				    <c:if test="${key.name}"></c:if>--%>
-						<%--				    <td width="5%" height="47" align="center" valign="middle" bgcolor="fef9f3"  class="px13_1">${key.name}</td>--%>
 						<s:if test='getText("sundyn.language") eq "en"'>
-							<td width="5%" height="42" align="center" valign="middle"
-								bgcolor="fef9f3" class="px13_1">${key.ext2}</td>
+							<td width="5%" height="42" align="center" valign="middle" bgcolor="fef9f3" class="px13_1">${key.ext2}</td>
 						</s:if>
 						<s:else>
-							<td width="5%" align="center" valign="middle" bgcolor="fef9f3"
-								class="px13_1">${key.name}</td>
+							<td width="5%" align="center" valign="middle" bgcolor="fef9f3" class="px13_1">${key.name}</td>
 						</s:else>
 					</c:forEach>
-					<td width="5%" align="center" valign="middle" bgcolor="fef9f3"
-						class="px13_1"><s:text name="sundyn.column.contentTotal" /></td>
-
+					<td width="5%" align="center" valign="middle" bgcolor="fef9f3" class="px13_1"><s:text name="sundyn.column.contentTotal" /></td>
 					<c:forEach items="${bmls}" var="key">
-						<%--				    <td width="5%" height="47" align="center" valign="middle" bgcolor="fef9f3"  class="px13_1">${key.name}</td>--%>
 						<s:if test='getText("sundyn.language") eq "en"'>
-							<td width="5%" align="center" valign="middle" bgcolor="fef9f3"
-								class="px13_1">${key.ext2}</td>
+							<td width="5%" align="center" valign="middle" bgcolor="fef9f3" class="px13_1">${key.ext2}</td>
 						</s:if>
 						<s:else>
-							<td width="5%" align="center" valign="middle" bgcolor="fef9f3"
-								class="px13_1">${key.name}</td>
+							<td width="5%" align="center" valign="middle" bgcolor="fef9f3" class="px13_1">${key.name}</td>
 						</s:else>
 					</c:forEach>
-					<td width="7%" align="center" valign="middle" bgcolor="fef9f3"
-						class="px13_1"><s:text name="sundyn.column.nocontentTotal" /></td>
+					<td width="7%" align="center" valign="middle" bgcolor="fef9f3" class="px13_1"><s:text name="sundyn.column.nocontentTotal" /></td>
 				</tr>
 				<c:forEach items="${list}" var="total">
 					<tr style="height: 28px;">
@@ -149,26 +117,17 @@
 						<td align="center" valign="middle">
 							${total.msum+total.bmsum+total.key6}
 						</td>
-						<!--
-									<c:if test="${k7 == true}">
-									<td align="center" valign="middle">
-										${total.prate}%
-									</td>
-									</c:if>
-									-->
-						<!--
-									<td align="center" valign="middle">
-										${total.erate}%
-									</td>
-									-->
 						<td align="center" valign="middle">${total.mrate}%</td>
 						<td align="center" valign="middle">${total.num}</td>
 					</tr>
 				</c:forEach>
 			</table>
 		</div>
-		<div class="sundyn_row">${pager.pageTextCn }</div>
-
+        <c:if test="${list.size() == 0}">
+            <div class="sundyn_rows">
+                <s:text name="sundyn.system.checkM7Info.noRecord" />
+            </div>
+        </c:if>
 		<div id="bt">
 				<%
 					String str = "";
@@ -217,73 +176,66 @@
 				</s:if>
 			</div>
 			<!-- 统计信息开始 -->
+        <c:if test="${list.size() > 0}">
 			<table id="table1" class="layui-table">
 				<tr>
-					<td colspan="7" align="center" valign="middle"
-						background="images/03_05_11.jpg" class="px12"><s:text
-							name="sundyn.total.toatlInfo" /></td>
+					<td colspan="7" align="center" valign="middle" background="images/03_05_11.jpg" class="px12"><s:text name="sundyn.total.toatlInfo" /></td>
 				</tr>
 				<c:forEach items="${mls}" var="key" varStatus="index">
 					<tr>
 						<c:if test="${index.index == 0}">
-							<td width="15%" rowspan="${fn:length(mls)}" align="center"
-								valign="middle" bgcolor="fef9f3"><s:text
-									name="sundyn.column.content" /></td>
+							<td width="15%" rowspan="${fn:length(mls)}" align="center" valign="middle" bgcolor="fef9f3"><s:text name="sundyn.column.content" /></td>
 						</c:if>
 						<td width="19%" align="center" valign="middle" bgcolor="fffcf9">${key.name}</td>
-						<td width="28%" align="left" valign="middle"><div
-								style="height:10px; width:${totalMap.keyr[key.keyNo]}%; background-color:#FF0000;">&nbsp;</div></td>
+						<td width="28%" align="left" valign="middle"><div style="height:10px; width:${totalMap.keyr[key.keyNo]}%; background-color:#FF0000;">&nbsp;</div></td>
 						<td width="19%" align="center" valign="middle">${totalMap.key[key.keyNo]}</td>
 						<c:if test="${index.index == 0}">
-							<td width="13%" rowspan="${fn:length(mls)}" align="center"
-								valign="middle">${totalMap.msum}</td>
+							<td width="13%" rowspan="${fn:length(mls)}" align="center" valign="middle">${totalMap.msum}</td>
 						</c:if>
 						<td width="6%" align="center" valign="middle">${totalMap.keyr[key.keyNo]}%</td>
 						<c:if test="${index.index == 0}">
-							<td width="13%" rowspan="${fn:length(mls)}" align="center"
-								valign="middle">${totalMap.mrate}%</td>
+							<td width="13%" rowspan="${fn:length(mls)}" align="center" valign="middle">${totalMap.mrate}%</td>
 						</c:if>
 					</tr>
 				</c:forEach>
 				<c:forEach items="${bmls}" var="key" varStatus="index">
 					<tr>
 						<c:if test="${index.index == 0}">
-							<td width="15%" rowspan="${fn:length(bmls)}" align="center"
-								valign="middle" bgcolor="fef9f3" class="px13_2"><s:text
-									name="sundyn.column.nocontent" /></td>
+							<td width="15%" rowspan="${fn:length(bmls)}" align="center" valign="middle" bgcolor="fef9f3" class="px13_2"><s:text name="sundyn.column.nocontent" /></td>
 						</c:if>
 						<td width="19%" align="center" valign="middle" bgcolor="fffcf9">${key.name}</td>
-						<td width="28%" align="left" valign="middle"><div
-								style="height:10px; width:${totalMap.keyr[key.keyNo]}%; background-color:#FF0000;">&nbsp;</div></td>
+						<td width="28%" align="left" valign="middle"><div style="height:10px; width:${totalMap.keyr[key.keyNo]}%; background-color:#FF0000;">&nbsp;</div></td>
 						<td width="19%" align="center" valign="middle">${totalMap.key[key.keyNo]}</td>
 						<c:if test="${index.index == 0}">
-							<td width="13%" rowspan="${fn:length(bmls)}" align="center"
-								valign="middle">${totalMap.bmsum}</td>
+							<td width="13%" rowspan="${fn:length(bmls)}" align="center" valign="middle">${totalMap.bmsum}</td>
 						</c:if>
 						<td width="6%" align="center" valign="middle">${totalMap.keyr[key.keyNo]}%</td>
 						<c:if test="${index.index == 0}">
-							<td width="13%" rowspan="${fn:length(bmls)}" align="center"
-								valign="middle">${totalMap.bmrate}%</td>
+							<td width="13%" rowspan="${fn:length(bmls)}" align="center" valign="middle">${totalMap.bmrate}%</td>
 						</c:if>
 					</tr>
 				</c:forEach>
 				<c:if test="${k7 == true}">
 					<tr>
 						<td width="15%" rowspan="${fn:length(bmls)}" align="center"
-							valign="middle" bgcolor="fef9f3" class="px13_2"><s:text
-								name="sundyn.column.noappries" /></td>
+							valign="middle" bgcolor="fef9f3" class="px13_2"><s:text name="sundyn.column.noappries" /></td>
 						<td width="19%" align="center" valign="middle" bgcolor="fffcf9">${totalMap.k7Name}</td>
-						<td width="28%" align="left" valign="middle"><div
-								style="height:10px; width:${totalMap.kr6}%; background-color:#FF0000;">&nbsp;</div></td>
+						<td width="28%" align="left" valign="middle"><div style="height:10px; width:${totalMap.kr6}%; background-color:#FF0000;">&nbsp;</div></td>
 						<td width="19%" align="center" valign="middle">${totalMap.key6}</td>
-						<td width="13%" rowspan="${fn:length(bmls)}" align="center"
-							valign="middle">${totalMap.key6}</td>
+						<td width="13%" rowspan="${fn:length(bmls)}" align="center" valign="middle">${totalMap.key6}</td>
 						<td width="6%" align="center" valign="middle">${totalMap.kr6}%</td>
-						<td width="13%" rowspan="${fn:length(bmls)}" align="center"
-							valign="middle">${totalMap.kr6}%</td>
+						<td width="13%" rowspan="${fn:length(bmls)}" align="center" valign="middle">${totalMap.kr6}%</td>
 					</tr>
 				</c:if>
 			</table>
+        </c:if>
 		</div>
 </body>
+<script type="text/javascript">
+    layui.use('form', function(){
+        var form = layui.form;
+        var deptpath = '<%=request.getParameter("deptpath")==null?"":request.getParameter("deptpath")%>'.split(",");
+        renderchild(form, -1, -1, deptpath,"dept");
+    });
+</script>
 </html>

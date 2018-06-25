@@ -22,37 +22,32 @@
 
 <body>
 <div class="layui-form">
-    <div class="content_main">
-        <div style="margin-top: 10px;width: 100%">
-            <table width="100%" height="121" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td width="32%" align="right" style="border-color: #e9f5fd;">
-                        <s:text name="sundyn.weburl.name"/><s:text name='sundyn.colon' />
-                    </td>
+    <table width="100%" height="121" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="right" width="15%" style="border-color: #e9f5fd;">
+                <s:text name="sundyn.weburl.name"/><s:text name='sundyn.colon' />
+            </td>
+            <td align="left" style="border-color: #e9f5fd;">
+                <input name="weburl.name" class="input_comm" id="webname" style="width:300px;" value="" />
+            </td>
+        </tr>
 
-                    <td width="50%" align="left" style="border-color: #e9f5fd;">
-                        <input name="weburl.name" class="input_comm" id="webname" style="width:300px;" value="" />
-                    </td>
-                </tr>
-
-                <tr>
-                    <td colspan="2" height="15px" style="border-color: #e9f5fd;">	 </td>
-                </tr>
-                <tr >
-                    <td align="right"  style="border-color: #e9f5fd;"><s:text name="sundyn.weburl.url"/><s:text name='sundyn.colon' /></td>
-                    <td align="left"  style="border-color: #e9f5fd;width:90%;">
-                        <textarea name="weburl.url"  id="weburl"></textarea>
-                    </td>
-                </tr>
-                <tr><td colspan="2" style="text-align:center;padding-top:10px;">
-                    <img src="<s:text name='sundyn.pic.ok' />" onclick="weburlAdd();"
-                         class="hand" />
-                    <img src="<s:text name='sundyn.pic.close' />" onclick="parent.closeDialog();"
-                         class="hand">
-                </td></tr>
-            </table>
-        </div>
-    </div>
+        <tr>
+            <td colspan="2" height="15px" style="border-color: #e9f5fd;">	 </td>
+        </tr>
+        <tr >
+            <td align="right"  style="border-color: #e9f5fd;"><s:text name="sundyn.weburl.url"/><s:text name='sundyn.colon' /></td>
+            <td align="left"  style="border-color: #e9f5fd;width:85%;">
+                <textarea name="weburl.url"  id="weburl" style="height:300px;"></textarea>
+            </td>
+        </tr>
+        <tr><td colspan="2" style="text-align:center;padding-top:10px;">
+            <img src="<s:text name='sundyn.pic.ok' />" onclick="weburlAdd();"
+                 class="hand" />
+            <img src="<s:text name='sundyn.pic.close' />" onclick="parent.closeDialog();"
+                 class="hand">
+        </td></tr>
+    </table>
 </div>
 <script type="text/javascript">
     UE.getEditor('weburl');

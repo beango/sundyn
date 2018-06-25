@@ -153,3 +153,78 @@ function replaceUrlParams(myUrl, newParams) {
 }
 
 
+function renderchild(form, value, level, deptpath, type){
+    var def = "";
+    if(deptpath){
+        def = deptpath[0];
+        deptpath.remove(def);
+    }
+
+    dojo.xhrGet({url:"queryDeptAjax2.action", content:{id: value, level: level, type:type}, load:function (resp, ioArgs) {
+            var i=level+1;
+            var d = $("#deptitem" + i);
+            while(d && d.length>0){
+                d.remove();
+                i++;
+                d = $("#deptitem" + i);
+            }
+            if(resp.trim().length==0)
+                return;
+            $(".layui-select-cus").find("div:last").before(resp);
+            if(def) {
+                $("select[name=deptId"+(level+1)+"]").val(def);
+            }
+            form.render('select');
+            form.on("select(queryDept"+(level+1)+")",function(data2){
+                renderchild(form, data2.value, level+1, deptpath, type);
+                initDeptValue();
+            });
+
+            if(def!=null && def!="") {
+                renderchild(form, def, level+1, deptpath, type);
+                initDeptValue();
+            }
+        }});
+}
+
+function initDeptValue(){
+    var i=0;
+    var d = $("#deptitem" + i);
+    var v = "";
+    while(d.length>0){
+        v += "," + d.find("select").val();
+        i++;
+        d = $("#deptitem" + i);
+    }
+    if(v.length>0 && v[0]==",")
+        v=v.substr(1);
+    $("#deptId").val(v);
+}
+
+function getDeptSelect(){
+    var v = "";
+    var i=0;
+    var d = $("#deptitem" + i);
+    while(d.length>0){
+        var sele = d.find("select");
+        if(sele.attr("datatype")=="dept" && sele.val()!="")
+            v = sele.val();
+        i++;
+        d = $("#deptitem" + i);
+    }
+    return v;
+}
+
+function getEmployeeSelect(){
+    var v = "";
+    var i=0;
+    var d = $("#deptitem" + i);
+    while(d.length>0){
+        var sele = d.find("select");
+        if(sele.attr("datatype")=="employee")
+            v = sele.val();
+        i++;
+        d = $("#deptitem" + i);
+    }
+    return v;
+}

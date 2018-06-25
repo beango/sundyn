@@ -19,47 +19,35 @@
         <script type="text/javascript" src="js/application.js?1"></script>
 	</head>
 	<body>
-		<div id="layui-main">
+		<div class="layui-main">
 			<div style="width:638px; height:290px;">
 				    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-color:#FFFFFF;">
 				       <tr>
-                           <td style="border-color:#FFFFFF;" align="left"><img src="<s:text name='sundyn.pic.add' />" width="55" height="25" onclick="noticToAdd();" class="hand"/></td>
+                           <td style="border-color:#FFFFFF;" align="left"><img src="<s:text name='sundyn.pic.add' />" width="55" height="25" onclick="noticToAdd('<s:text name='sundyn.notice.add' />');" class="hand"/></td>
                        </tr>
                     </table>
 				<table class="layui-table">
 				  <tr>
-				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.index' /></td>
-				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.notice.title' /></td>
-				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.notice.content' /></td>
-				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.operation' /></td>
-				    </tr>
-				    <c:if test="${notices==null}"><s:text name='sundyn.nodate' /> </c:if>
+                      <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.index' /></td>
+                      <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.notice.title' /></td>
+                      <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.operation' /></td>
+                  </tr>
+                    <c:if test="${notices==null}"><s:text name='sundyn.nodate' /> </c:if>
 				    <c:if test="${notices!=null}">
-				   <c:forEach items="${notices}" var="notice" varStatus="index">
+                        <c:forEach items="${notices}" var="notice" varStatus="index">
 						<tr>
 							<td style="text-align: center;text-overflow:ellipsis;overflow:hidden;">
 							      ${index.index+1}
 							</td>
 							<td style="text-align: left;text-overflow:ellipsis;overflow:hidden;">
-									<div style="width:96px;height:20px;text-align: center;text-overflow:ellipsis;overflow:hidden;" >
-									       ${notice.title}
-									</div>
-							</td>
-							<td style="text-align: left;overflow:visible;">
-<%--								<c:if test="${manager.remark==0}"><s:text name='sundyn.user.select1' />  </c:if>--%>
-<%--								<c:if test="${manager.remark==1}"><s:text name='sundyn.user.select2' /><s:text name='sundyn.colon' />${manager.ext1}</c:if>--%>
-<%--								<c:if test="${manager.remark==2}"><s:text name='sundyn.user.select3' /><s:text name='sundyn.colon' />${manager.ext2}</c:if>--%>
-<%--								<c:if test="${manager.remark==3}"><s:text name='sundyn.user.select2' /><s:text name='sundyn.colon' />${manager.ext1}<s:text name='sundyn.comma' /><s:text name='sundyn.user.select3' /><s:text name='sundyn.colon' />${manager.ext2}</c:if>--%>
-								 <div style="width:100px;height:20px;text-align: center;text-overflow:ellipsis;overflow:hidden;" >
-								        ${notice.content}
-								 </div>
+                                    ${notice.title}
 							</td>
 							<td style="text-align: center;">
 								<a href="javascript:noticToUpate('${notice.id}','<s:text name='sundyn.notice.update' />');"><s:text name='sundyn.modifyOrupdate' /></a>
 								<a href="javascript:noticDelete('${notice.id}');"><s:text name='sundyn.del' /></a>
 							</td>
 						</tr>
-				 </c:forEach>
+				        </c:forEach>
 				 </c:if>
 				</table>
 				<div id="pp"></div>

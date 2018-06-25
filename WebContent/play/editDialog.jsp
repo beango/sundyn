@@ -33,6 +33,7 @@
                 <s:text name='sundyn.play.playType' />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
+                <div class="layui-input-inline">
                 <select id="playType" onchange="playTypeChange(this.value)">
                     <option value="img" <c:if test="${p.playType=='img'}">selected="selected"</c:if> ><s:text name='sundyn.play.pic' /></option>
                     <option value="text" <c:if test="${p.playType=='text'}">selected="selected"</c:if> ><s:text name='sundyn.play.txt' /></option>
@@ -40,7 +41,7 @@
                     <option value="video" <c:if test="${p.playType=='video'}">selected="selected"</c:if> ><s:text name='sundyn.play.vio' /></option>
                     <option value="doc" <c:if test="${p.playType=='doc'}">selected="selected"</c:if> ><s:text name='sundyn.play.doc' /></option>
                 </select>
-
+                </div>
             </td>
         </tr>
         <tr id="other"  <c:if test="${p.playType == 'text'}">  style="display:none;" </c:if> >

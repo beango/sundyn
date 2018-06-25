@@ -50,5 +50,5 @@
       <!--    设置最多页数工具类-->
     <bean id="pageUtils" class="com.sundyn.utils.PageUtils" parent="superDao"></bean>
     <bean id="citysUtils" class="com.sundyn.utils.CitysUtils" parent="superDao"></bean>
-
+    <bean id="deviceService" class="com.sundyn.service.DeviceService" parent="superDao"></bean>
 </beans>

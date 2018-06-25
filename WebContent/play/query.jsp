@@ -18,7 +18,7 @@
         <script type="text/javascript" src="lib/layui/layui.js"></script>
         <script type="text/javascript" src="js/application.js?1"></script>
 	</head>
-	<body>
+	<body class="layui-main">
     <div>
         <table width="50%" border="0" cellspacing="0" cellpadding="0" style="border-color:#FFFFFF;">
             <tr>

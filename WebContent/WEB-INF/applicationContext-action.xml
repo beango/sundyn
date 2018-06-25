@@ -83,6 +83,7 @@
 		<property name="cPic" ref="cPic"></property>
 		<property name="playListService" ref="playListService"></property>
         <property name="clientService" ref="clientService"></property>
+        <property name="deviceService" ref="deviceService"></property>
 	</bean>
 	<bean id="apprieserAction" class="com.sundyn.action.ApprieserAction"
 		scope="prototype">
@@ -221,4 +222,8 @@
 	<bean id="adviceSurveyAction" class="com.sundyn.action.AdviceSurveyAction" scope="prototype" >
 		<property name="adviceService" ref="adviceService"></property>
 	</bean>
+    <bean id="deviceAction" class="com.sundyn.action.DeviceAction" scope="prototype" >
+        <property name="deviceService" ref="deviceService"></property>
+    </bean>
+
 </beans>

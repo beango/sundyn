@@ -22,31 +22,26 @@
     <script src="${ctx}/js/application.js"></script>
 </head>
 <body>
-<div id="layui-main">
+<div class="layui-main">
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <input type="text" name="txtTitle" id="txtTitle" value="<%=request.getParameter("key_title")==null?"":request.getParameter("key_title")%>" class="input_comm" />
+        </div>
+    </div>
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <img src="images/04_03_10.jpg" width="55" height="25" onclick="query()" class="hand">
+            <img src="<s:text name='sundyn.pic.add' />" width="55" height="25" onclick="weburToAdd();" class="hand" />
+        </div>
+    </div>
     <input type="hidden" name="managerId" id="managerId" value="${managerId}" />
     <div style="width: 100%;">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0"
-               style="border-color: #FFFFFF;">
-            <tr>
-                <td style="border-color: #FFFFFF;" align="left">
-                    <div style="float:left;margin-right:10px;"><input type="text" name="txtTitle" id="txtTitle" value="<%=request.getParameter("key_title")==null?"":request.getParameter("key_title")%>" class="input_comm" /></div>
-                    <img src="images/04_03_10.jpg" width="55" height="25" onclick="query()" class="hand" style="margin-top:3px;">
-                    <img src="<s:text name='sundyn.pic.add' />" width="55" height="25" onclick="weburToAdd();" class="hand" />
-                </td>
-            </tr>
-        </table>
         <table id="tbl" width="100%" class="layui-table">
             <thead>
             <tr>
-                <td align="center" valign="middle"
-                    background="images/table_bg_03.jpg" class="px13_1"><s:text
-                        name='sundyn.column.index' /></td>
-                <td align="center" valign="middle"
-                    background="images/table_bg_03.jpg" class="px13_1"><s:text
-                        name='sundyn.weburl.name' /></td>
-                <td align="center" valign="middle"
-                    background="images/table_bg_03.jpg" class="px13_1"><s:text
-                        name='sundyn.column.operation' /></td>
+                <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.index' /></td>
+                <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.weburl.name' /></td>
+                <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.operation' /></td>
             </tr>
             </thead>
             <tbody>
@@ -54,12 +49,12 @@
                 <tr>
                     <td style="text-align: center;">${index.index+1}</td>
                     <td style="text-align: center;">
-                        <div
-                                style="width: 170px; height: 20px; text-align: center; text-overflow: ellipsis; overflow: hidden;">
-                                ${webUrl.name}</div>
+                        <div style="width: 170px; height: 20px; text-align: center; text-overflow: ellipsis; overflow: hidden;">${webUrl.name}</div>
                     </td>
-                    <td style="text-align: center;"><a href="javascript:weburlToUpate('${webUrl.id}');"><s:text name='sundyn.modifyOrupdate' /></a>
-                        <a href="javascript:weburlDelete('${webUrl.id}');"><s:text name='sundyn.del' /></a></td>
+                    <td style="text-align: center;">
+                        <a href="javascript:weburlToUpate('${webUrl.id}');"><s:text name='sundyn.modifyOrupdate' /></a>
+                        <a href="javascript:weburlDelete('${webUrl.id}');"><s:text name='sundyn.del' /></a>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>

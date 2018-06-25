@@ -52,7 +52,7 @@
 <input type="hidden" name="CardNum" id="CardNum" value="${CardNum}"/>
 <div class="layui-form" lay-filter="f">
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label" style="width:120px;"><s:text name='sundyn.query.selectDept'/></label>
+        <label class="layui-form-label"><s:text name='sundyn.query.selectDept'/></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
     </div>
@@ -73,8 +73,8 @@
         <div class="layui-input-inline">
             <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" class="hand"
                  onclick="querydept()"/>
-            <img src="<s:text name='sundyn.query.pic.exportExcel'/>" width="80" height="25" class="hand"
-                 onclick="queryExcel()"/>
+            <img src="<s:text name='sundyn.query.pic.exportExcel'/>" class="hand"
+                 onclick="querydept(true)"/>
         </div>
     </div>
     <table width="100%" class="layui-table">
@@ -95,17 +95,11 @@
             <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                 <s:text name='sundyn.column.appriesTime'/>
             </td>
-            <!-- 录像 -->
             <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
-                <%--						<s:text name="sundyn.inquiry.result.video"/>--%>
                 <s:text name="sundyn.inquiry.result.obtainEvidence"/>
             </td>
-
             <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                 <s:text name="sundyn.inquiry.result.businessTime"></s:text></td>
-            <%--						<td width="6%" >--%>
-            <%--						    <s:text name='sundyn.column.demo'/>--%>
-            <%--						</td> --%>
             <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                 客户姓名
             </td>
@@ -115,7 +109,6 @@
             <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                 意见反馈
             </td>
-
         </tr>
         </thead>
         <c:forEach items="${pager.pageList}" var="query">
@@ -136,20 +129,18 @@
                         ${query.JieshouTime}
                 </td>
                 <td align="center">
+                    <c:if test="${not empty query.imgfile}">
+                        <a class="layui-btn layui-btn-sm" href="${pageContext.request.contextPath }/download/recorder/${query.imgfile}" target="_blank" >截图</a>
+                    </c:if>
                     <c:if test="${empty query.videofile}">
                         <s:text name="sundyn.inquiry.result.noVideo"/>
                     </c:if>
                     <c:if test="${!empty query.videofile}">
-                        <%-- 							    <a  href="query/videoPlay2.jsp?videofile=${query.videofile}"  target="_blank"><img src="images/lx.jpg"/></a>--%>
-                        <a href="#" id="${query.id }"><img src="images/lx.jpg"
-                                                           onclick="toshow('${query.videofile}','${pageContext.request.contextPath }','${query.id}');"/></a>
-                        <%-- 							 <a  href="/download/${query.videofile}"  target="_blank"> <s:text name="sundyn.inquiry.result.download"></s:text></a>--%>
-                        <a href="downloadVideo.action?videofile=${query.videofile}"><s:text
+                        <a href="#" id="${query.id }"><img src="images/lx.jpg" onclick="toshow('${query.videofile}','${pageContext.request.contextPath }','${query.id}');"/></a>
+                        <a href="downloadVideo.action?videofile=${query.videofile}" target="_blank"><s:text
                                 name="sundyn.inquiry.result.download"></s:text></a>
                     </c:if>
                 </td>
-
-
                 <td align="center">
                     <c:if test="${!empty query.businessMin}">
                         ${query.businessMin}<s:text
@@ -160,11 +151,6 @@
                         <s:text name="sundyn.inquiry.result.noRecord"/>
                     </c:if>
                 </td>
-
-                    <%--							 <td width="6%">--%>
-                    <%--							  <a href="#" onclick="queryDemo(${query.id})" ><s:text name='sundyn.column.detail'/></a>--%>
-                    <%--							</td>--%>
-
                 <td align="center">
                         ${query.ext1}
                 </td>
@@ -173,7 +159,6 @@
                 </td>
                 <td align="center">
                     <c:if test="${query.remark != null && query.remark != ''}"><a href="#" onclick="showRemark('${query.remark}')">查看</a></c:if>
-
                 </td>
             </tr>
         </c:forEach>
@@ -207,52 +192,9 @@
 
     layui.use('form', function(){
         var form = layui.form;
-        var deptpath = '<%=request.getParameter("deptpath")%>'.split(",");
-        renderchild(form, -1, -1, deptpath);
+        var deptpath = '<%=request.getParameter("deptpath")==null?"":request.getParameter("deptpath")%>'.split(",");
+        renderchild(form, -1, -1, deptpath,'dept');
     });
 
-    function renderchild(form, value, level, deptpath){
-        var def = "";
-        if(deptpath){
-            def = deptpath[0];
-            deptpath.remove(def);
-        }
-
-        dojo.xhrGet({url:"queryDeptAjax2.action", content:{id: value, level: level}, load:function (resp, ioArgs) {
-            var i=level+1;
-            var d = $("#deptitem" + i);
-            while(d.length>0){
-                d.remove();
-                i++;
-                d = $("#deptitem" + i);
-            }
-            $(".layui-select-cus").find("div:last").before(resp);
-            if(def) {
-                $("select[name=deptId"+(level+1)+"]").val(def);
-            }
-            form.render('select');
-            form.on("select(queryDept"+(level+1)+")",function(data2){
-                renderchild(form, data2.value, level+1);
-            });
-            initDeptValue();
-            if(def) {
-                renderchild(form, def, level+1, deptpath);
-            }
-        }});
-    }
-
-    function initDeptValue(){
-        var i=0;
-        var d = $("#deptitem" + i);
-        var v = "";
-        while(d.length>0){
-            v += "," + d.find("select").val();
-            i++;
-            d = $("#deptitem" + i);
-        }
-        if(v.length>0 && v[0]==",")
-            v=v.substr(1);
-        $("#deptId").val(v);
-    }
 </script>
 </html>

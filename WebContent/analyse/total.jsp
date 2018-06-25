@@ -22,7 +22,6 @@
     <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="js/line.js"></script>
     <script type="text/javascript" src="js/jscharts.js"></script>
-    <script type="text/javascript" src="JSClass/FunsionCharts.js"></script>
     <script type="text/javascript" src="js/json.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?3"></script>
 </head>
@@ -49,10 +48,10 @@
                         <s:text name='sundyn.analyse.year'/>
                     </option>
                 </select>
-                <img src="<s:text name='sundyn.analyse.pic.dataAnalyse' />" width="94" height="25" onclick="analyseTotalAjax()" style="cursor: pointer; vertical-align: middle;"/>
-                <img src="<s:text name='sundyn.analyse.pic.week' />" onclick="analyseTotalAjaxDay(7)" style="cursor: pointer; vertical-align: middle;"/>
-                <img src="<s:text name='sundyn.analyse.pic.15' />" onclick="analyseTotalAjaxDay(15)" style="cursor: pointer; vertical-align: middle;"/>
-                <img src="<s:text name='sundyn.analyse.pic.month' />" onclick="analyseTotalAjaxDay(30)" style="cursor: pointer; vertical-align: middle;"/>
+                <img src="<s:text name='sundyn.analyse.pic.dataAnalyse' />" width="94" height="25" onclick="analyseTotalAjax(w)" style="cursor: pointer; vertical-align: middle;"/>
+                <img src="<s:text name='sundyn.analyse.pic.week' />" onclick="analyseTotalAjaxDay(7,w)" style="cursor: pointer; vertical-align: middle;"/>
+                <img src="<s:text name='sundyn.analyse.pic.15' />" onclick="analyseTotalAjaxDay(15,w)" style="cursor: pointer; vertical-align: middle;"/>
+                <img src="<s:text name='sundyn.analyse.pic.month' />" onclick="analyseTotalAjaxDay(30,w)" style="cursor: pointer; vertical-align: middle;"/>
             </td>
         </tr>
     </table>
@@ -60,8 +59,10 @@
     </div>
 </div>
 <script type="text/javascript" language="javascript">
+    var w;
     $(function () {
-        analyseTotalAjax($("#chartcontainer").width());
+        w = $("#chartcontainer").width();
+        analyseTotalAjax(w);
     });
 </script>
 </body>

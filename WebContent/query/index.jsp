@@ -28,6 +28,10 @@
     <script type="text/javascript" src="js/Pie3D.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language'/>.js?11"></script>
     <script type="text/javascript" src="js/jscharts.js"></script>
+    <style type="text/css">
+        table thead tr{size: 16pt;}
+        table td {border:1px solid #bad6ec;padding5px;}
+    </style>
 </head>
 <body class="theme-default">
 <div data-options="region:'center', border:false">
@@ -36,6 +40,7 @@
          title='<s:text name="sundyn.main.title1"/>'>
         <table width="100%" cellpadding="0" cellspacing="0"
                style="border-right: 1px solid #bad6ec;">
+            <thead>
             <tr>
                 <td align="center" valign="middle" class="px13_1"><s:text name="sundyn.column.time"/></td>
                 <td align="center" valign="middle" class="px13_1"><c:if test="${bind==true}">
@@ -47,6 +52,8 @@
                 </c:if> <c:if test="${bind==false}"><s:text name='sundyn.column.name'/></c:if></td>
                 <td align="center" valign="middle" class="px13_1"><s:text name="sundyn.column.appries"/></td>
             </tr>
+            </thead>
+            <tbody>
             <c:forEach items="${l1}" var="p">
                 <tr style="height: 28px;">
                     <td align="center" valign="middle">${p.JieshouTime}</td>
@@ -55,6 +62,7 @@
                     <td align="center" valign="middle">${p.keyName}</td>
                 </tr>
             </c:forEach>
+            </tbody>
         </table>
     </div>
 </div>
@@ -67,7 +75,7 @@
             <tr>
                 <td align="center" valign="middle" class="px13_1"><s:text
                         name="sundyn.column.time"/></td>
-                <td align="center" valign="middle"><c:if
+                <td align="center" valign="middle" class="px13_1"><c:if
                         test="${bind==true}">
                     <s:text name='sundyn.column.deviceInfo'/>
                 </c:if> <c:if test="${bind==false}">
