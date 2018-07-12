@@ -149,7 +149,6 @@ public class GuideAction extends ActionSupport
         final String ids = request.getParameter("id");
         final String name = request.getParameter("name");
         final String remark = request.getParameter("remark");
-        System.out.println("guideSimpleThree-id=" + ids);
         if (ids == null || ids == "") {
             final DeptVo dept = new DeptVo();
             dept.setName(name);
@@ -160,7 +159,6 @@ public class GuideAction extends ActionSupport
             this.deptService.addDept(dept, 1);
             this.m = this.deptService.findDeptByName(name);
             request.setAttribute("fatherId", (Object)Integer.valueOf(this.m.get("id").toString()));
-            System.out.println("\u5df2\u6dfb\u52a0\u65b0\u5927\u5385-name=" + name);
         }
         else {
             final Integer id = Integer.valueOf(ids);
@@ -168,7 +166,6 @@ public class GuideAction extends ActionSupport
             this.m = this.deptService.findDeptById(id);
             this.ls = this.deptService.findchild(id);
             request.setAttribute("fatherId", (Object)id);
-            System.out.println("\u4fee\u6539\u73b0\u6709\u5927\u5385-name=" + name);
         }
         return "success";
     }
@@ -178,7 +175,6 @@ public class GuideAction extends ActionSupport
         final String ids = request.getParameter("id");
         final String name = request.getParameter("name");
         final String remark = request.getParameter("remark");
-        System.out.println("guideSimpleThree-id=" + ids);
         if (ids == null || ids == "") {
             final DeptVo dept = new DeptVo();
             dept.setName(name);
@@ -189,15 +185,12 @@ public class GuideAction extends ActionSupport
             //this.deptService.addDept(dept, 1);
             this.m = this.deptService.findDeptByName(name);
             request.setAttribute("fatherId", (Object)Integer.valueOf(this.m.get("id").toString()));
-            System.out.println("\u5df2\u6dfb\u52a0\u65b0\u5927\u5385-name=" + name);
         }
         else {
             final Integer id = Integer.valueOf(ids);
-            //this.deptService.update(id, name, remark);
             this.m = this.deptService.findDeptById(id);
             this.ls = this.deptService.findchild(id);
             request.setAttribute("fatherId", (Object)id);
-            System.out.println("\u4fee\u6539\u73b0\u6709\u5927\u5385-name=" + name);
         }
         return "success";
     }

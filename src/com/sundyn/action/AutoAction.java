@@ -239,10 +239,6 @@ public class AutoAction extends ActionSupport
         System.out.println("groupid=" + groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
         this.deptList = this.deptService.findChildALL(deptIdGroup);
-        System.out.println("WindowNum=" + this.deptList.size());
-        for (final Object o : this.deptList) {
-            System.out.println(o);
-        }
         Map m = null;
         int i;
         int j;
@@ -261,9 +257,6 @@ public class AutoAction extends ActionSupport
         System.out.println("deptList.size=" + this.deptList.size());
         final List keyList = this.keyTypeService.findByApprieserId(1, 1);
         request.setAttribute("keyList", (Object)keyList);
-        for (final Object o2 : this.deptList) {
-            System.out.println(o2);
-        }
         request.setAttribute("deptList", (Object)this.deptList);
         return "success";
     }
@@ -363,7 +356,6 @@ public class AutoAction extends ActionSupport
                     System.out.println("deptList.get(" + i + ")=" + this.deptList.get(i));
                     final Map m2 = (Map) this.deptList.get(i);
                     if (m2.get("remark") != null) {
-                        System.out.println(m2.get("remark").toString());
                         remark[i] = m2.get("remark").toString();
                     }
                 }
@@ -372,9 +364,6 @@ public class AutoAction extends ActionSupport
                 cal_start.setTime(d_startDate);
                 cal_end.setTime(d_endDate);
                 final long n = cal_end.getTimeInMillis() - cal_start.getTimeInMillis();
-                System.out.println("cal_start=" + cal_start);
-                System.out.println("cal_end=" + cal_end);
-                System.out.println("n=" + n);
                 int j = 0;
                 final List l_pj = new ArrayList();
                 while (j < i_num) {

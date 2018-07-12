@@ -56,7 +56,6 @@
 			method="playListAddDialogAndroid">
 			<result name="success">/playList/addDialogAndroid.jsp</result>
 		</action>
-		
 		<action name="playListAdd" class="playListAction"
 			method="playListAdd">
 			<result name="success">/playList/success.jsp</result>

@@ -59,6 +59,7 @@
 		<action name="managerAdd" class="managerAction"
 			method="managerAdd">
 			<result name="success">manager/success.jsp</result>
+            <result name="error">manager/msg.jsp</result>
 		</action>
 		<action name="managerEditDialog" class="managerAction"
 			method="managerEditDialog">

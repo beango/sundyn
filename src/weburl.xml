@@ -25,6 +25,7 @@
 		<action name="weburlAdd" class="weburlAction" method="weburlAdd">
 			<result name="addOk" type="redirect">weburlListAjax</result>
 			<result name="inputs">/weburl/weburl.jsp</result>
+            <result name="msg">/weburl/msg.jsp</result>
 		</action>
 		<action name="weburlToUpdate" class="weburlAction" method="weburlToUpdate">
 			<result name="weburlToUpdate" >/weburl/weburlUpdateDialog.jsp</result>
@@ -33,6 +34,7 @@
 		<action name="weburlUpdate" class="weburlAction" method="weburlUpdate">
 			<result name="weburlUpdateOk" type="redirect">weburlListAjax</result>
 			<result name="inputs">/weburl/weburl.jsp</result>
+            <result name="msg">/weburl/msg.jsp</result>
 		</action>
 		<action name="weburlDelete" class="weburlAction" method="weburlDelete">
 			<result name="weburlDeleteOk" type="redirect">weburlListAjax</result>

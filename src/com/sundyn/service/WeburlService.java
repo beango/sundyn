@@ -11,7 +11,6 @@ public class WeburlService extends SuperDao
         final Object[] arg = { weburl.getName(), weburl.getUrl() };
         try {
             final int id = this.getJdbcTemplate().update(sql, arg);
-            System.out.println(id);
             return true;
         }
         catch (Exception e) {
@@ -178,5 +177,18 @@ public class WeburlService extends SuperDao
         final Object[] args = { name };
         final int num = this.getJdbcTemplate().update(sql, args);
         return num > 0;
+    }
+
+    public boolean existsByName(String id, String name) {
+        String sql = "select count(*) from appries_weburl  where name=? ";
+        if (id!=null)
+            sql += "and id!=" + id;
+        final Object[] arg = { name };
+        try {
+            return this.getJdbcTemplate().queryForInt(sql, arg)>0;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 }

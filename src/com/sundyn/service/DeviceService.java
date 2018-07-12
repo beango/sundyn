@@ -73,11 +73,9 @@ public class DeviceService extends SuperDao
         final String sql = "select * from appries_devicebatch  where id=?";
         final Object[] arg = { id };
         try {
-            final Map map = this.getJdbcTemplate().queryForMap(sql, arg);
-            return map;
+            return this.getJdbcTemplate().queryForMap(sql, arg);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -146,9 +144,18 @@ public class DeviceService extends SuperDao
         }
     }
 
-    public List findDevice(final int startrow, final int pageSize, int[] total) {
+    public List findDevice(final String batchno, final String mac, final String startDate, final String endDate, final int startrow, final int pageSize, int[] total) {
         String sql = "";
-        sql = "select row_number() over(order by t1.id desc) as rows, t1.*,t2.batchid batchid2,t2.batchname from appries_device t1 left join appries_devicebatch t2 on t1.batchid=t2.id";
+        sql = "select row_number() over(order by t1.id desc) as rows, t1.*,t2.batchid batchid2,t2.batchname " +
+                "from appries_device t1 left join appries_devicebatch t2 on t1.batchid=t2.id where 1=1 ";
+        if (startDate!=null && !startDate.equals(""))
+            sql += "and ctime>='" + startDate+"' ";
+        if (endDate!=null && !endDate.equals(""))
+            sql += "and ctime<'" + endDate+"' ";
+        if (batchno!=null && !batchno.equals(""))
+            sql += "and t2.batchid='" + batchno+"' ";
+        if (mac!=null && !mac.equals(""))
+            sql += "and t1.mac='" + mac+"' ";
         sql = "select * from ("+sql+") t2 where t2.rows>" + startrow + " and t2.rows<=" + (startrow+pageSize);
         String totalsql = "select max(rows) c from ("+sql+") t2";
         total[0] =this.getJdbcTemplate().queryForInt(totalsql);
@@ -158,7 +165,6 @@ public class DeviceService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -172,7 +178,18 @@ public class DeviceService extends SuperDao
             return map;
         }
         catch (Exception e) {
-            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List findDeviceByBatchId(String batchid) {
+        final AdviceVo ad = new AdviceVo();
+        final String sql = "select * from appries_device where batchid=?";
+        final Object[] arg = { batchid };
+        try {
+            return this.getJdbcTemplate().queryForList(sql, arg);
+        }
+        catch (Exception e) {
             return null;
         }
     }

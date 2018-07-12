@@ -111,4 +111,17 @@ public class PlayListService extends SuperDao
             return 0;
         }
     }
+
+    public boolean existsByName(Object id, String name) {
+        String sql = "select count(*) from appries_playlist  where playListName=? ";
+        if (id!=null)
+            sql += "and playListId!=" + id;
+        final Object[] arg = { name };
+        try {
+            return this.getJdbcTemplate().queryForInt(sql, arg)>0;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
 }

@@ -89,7 +89,7 @@ public class JavaXML
         file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
         XMLOut.output(Doc, (OutputStream)new FileOutputStream(String.valueOf(file) + "notice.xml"));
     }
-    
+
     public static void main(final String[] args) {
     }
 }

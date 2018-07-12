@@ -1,4 +1,4 @@
-package com.sundyn.util;
+package com.sundyn.cache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,14 @@ import java.util.Iterator;
 import java.util.*;
 
 public class CacheManager {
+    public static HashMap<String, String> CacheKey = new HashMap();
+    public static String CitysUtils_getProvincesOnly = "com.sundyn.utils.CitysUtils.getProvincesOnly";
+    public static String DeptService_findchild = "com.sundyn.service.DeptService.findchild_";
+    public synchronized static void AddKey(String key){
+        if (!CacheKey.containsKey(key))
+            CacheKey.put(key,key);
+    }
+
     private static HashMap cacheMap = new HashMap();
 
     //单实例构造方法

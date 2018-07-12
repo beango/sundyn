@@ -7,6 +7,7 @@ import com.sundyn.util.DateHelper;
 import com.sundyn.util.SundynSet;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -261,95 +262,16 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='满意率走势分析' xAxisName='日期' yAxisName='满意率' rotateYAxisName='1' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
+        strXML1.append("<graph caption='满意率走势分析' xAxisName='日期' yAxisName='满意率' baseFontSize='12' rotateYAxisName='1' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
-            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-            Date start = df.parse(startDate);
-            Date end = df.parse(endDate);
-            Calendar s = Calendar.getInstance();
-            s.setTime(df.parse(startDate));
-            Calendar e = Calendar.getInstance();
-            e.setTime(df.parse(endDate));
-
-            while(start.getTime()<=end.getTime()){
-                boolean iscontain = false;
-                for (int i = 0; i < this.chartList.size(); ++i) {
-                    final Map chartM = (Map) this.chartList.get(i);
-                    String day = chartM.get("serviceDate").toString();
-                    if (df.format(start).equals(day)){
-                        strXML1.append("<set name='" + day + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-                        iscontain = true;
-                    }
-
-                }
-                if(!iscontain){
-                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
-                }
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(start);
-                cal.add(Calendar.DATE,1);
-
-                start = cal.getTime();
-            }
+            strXML1.append(mergeData(1));
         }
         else if (type.equals("month")) {
-            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM");
-            Date start = df.parse(startDate);
-            Date end = df.parse(endDate);
-            Calendar s = Calendar.getInstance();
-            s.setTime(df.parse(startDate));
-            Calendar e = Calendar.getInstance();
-            e.setTime(df.parse(endDate));
-            while(start.getTime()<=end.getTime()) {
-                boolean iscontain = false;
-                for (int i = 0; i < this.chartList.size(); ++i) {
-                    final Map chartM = (Map) this.chartList.get(i);
-                    String day = chartM.get("serviceDate").toString();
-                    //day = day.substring(5, 7);
-                    chartM.put("serviceDate", String.valueOf(day) + "月");
-                    if (df.format(start).equals(day)) {
-                        strXML1.append("<set name='" + String.valueOf(day) + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-                        iscontain = true;
-                    }
-                }
-                if (!iscontain) {
-                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
-                }
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(start);
-                cal.add(Calendar.MONTH, 1);
-                start = cal.getTime();
-            }
+            strXML1.append(mergeData(2));
         }
         else {
-
-            SimpleDateFormat df=new SimpleDateFormat("yyyy");
-            Date start = df.parse(startDate);
-            Date end = df.parse(endDate);
-            Calendar s = Calendar.getInstance();
-            s.setTime(df.parse(startDate));
-            Calendar e = Calendar.getInstance();
-            e.setTime(df.parse(endDate));
-            while(start.getTime()<=end.getTime()) {
-                boolean iscontain = false;
-                for (int i = 0; i < this.chartList.size(); ++i) {
-                    final Map chartM = (Map) this.chartList.get(i);
-                    String day = chartM.get("serviceDate").toString();
-                    day = day.substring(0, 4);
-                    if (df.format(start).equals(day)) {
-                        strXML1.append("<set name='" + String.valueOf(day) + "年" + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-                        iscontain = true;
-                    }
-                }
-                if (!iscontain) {
-                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
-                }
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(start);
-                cal.add(Calendar.YEAR, 1);
-                start = cal.getTime();
-            }
+            strXML1.append(mergeData(3));
         }
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
@@ -362,13 +284,20 @@ public class AnalyseAction extends ActionSupport
         final String num = request.getParameter("num");
         final Integer numI = Integer.valueOf(num);
         final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        final DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
-        c.set(Calendar.DATE, c.get(Calendar.DATE) + 1);
-        this.endDate = df.format(c.getTime());
+        c.set(Calendar.DATE, c.get(Calendar.DATE));
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        this.endDate = df2.format(c.getTime());
         final Calendar cal = Calendar.getInstance();
         cal.set(6, cal.get(6) - numI);
-        this.startDate = df.format(cal.getTime());
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        this.startDate = df2.format(cal.getTime());
         final String allId = this.getAllId();
         final List totalList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, "day", this.getDeptIds());
         final String contentId = this.getContentId();
@@ -416,14 +345,21 @@ public class AnalyseAction extends ActionSupport
         final String num = request.getParameter("num");
         final Integer numI = Integer.valueOf(num);
         final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        this.endDate = df.format(new Date());
+        final DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.endDate = df2.format(new Date());
         final Calendar cal = Calendar.getInstance();
         cal.set(6, cal.get(6) - numI);
-        this.startDate = df.format(cal.getTime());
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        this.startDate = df2.format(cal.getTime());
 
         cal.setTime(new Date());
-        cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
-        this.endDate = df.format(cal.getTime());
+        cal.set(Calendar.DATE, cal.get(Calendar.DATE));
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        this.endDate = df2.format(cal.getTime());
 
         final String allId = this.getAllId();
         final List totalList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, "day", this.getDeptIds());
@@ -465,8 +401,11 @@ public class AnalyseAction extends ActionSupport
 
     public String analyseDeptAjax123() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        final String deptId = request.getParameter("deptId");
+        String deptId = request.getParameter("deptId");
+        /*if(deptId.equals(""))
+            deptId = "-1";*/
         final String deptIds = this.deptService.findChildALLStr123(deptId);
+
         String type = request.getParameter("type");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null || startDate.equals("")) {
@@ -479,10 +418,47 @@ public class AnalyseAction extends ActionSupport
             type = "day";
         }
         final String allId = this.getAllId();
-        this.chartList = this.analyseService.AnalyseDeptTotal(deptIds, this.startDate, this.endDate, allId, type);
+        /*
+        List l = this.deptService.findchild(Integer.valueOf(deptId));
+        String deptIds2 = "";
+        this.chartList = new ArrayList();
+        SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        for (Object m : l){
+            Map d = (Map)m;
+            final Object obj = d.get("id");
+            if (obj != null) {
+                final String id = obj.toString();
+                deptIds2 += id + ",";
+                Calendar c = Calendar.getInstance();
+                Date s =df.parse(this.startDate);
+                Date e =df.parse(this.endDate);
+                final String _deptIds = this.deptService.findChildALLStr123(id);
+                List _chartList = this.analyseService.AnalyseDeptTotal(_deptIds, null, this.startDate, this.endDate, allId, type);
+                while (s.getTime()<e.getTime()){
+                    Map mm = new HashMap();
+                    mm.put("seriesId", id);
+                    mm.put("seriesName", d.get("name"));
+                    mm.put("num", 0);
+                    mm.put("serviceDate", df.format(s));
+                    for (Object m2 : _chartList){
+                        if (df.format(s).equals(((Map)m2).get("serviceDate").toString())){
+                            mm.put("num", Integer.valueOf(mm.get("num").toString()) + Integer.valueOf(((Map)m2).get("num").toString()));
+                        }
+                    }
+                    this.chartList.add(mm);
+                    c.setTime(s);
+                    c.add(Calendar.DATE,1);
+                    s = c.getTime();
+                }
+            }
+        }
+        if (deptIds.endsWith(",")) {
+            deptIds2 = deptIds.substring(0, deptIds.length() - 1);
+        }*/
+        this.chartList = this.analyseService.AnalyseDeptTotal(deptIds, null, this.startDate, this.endDate, allId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='单位(机构)业务量分析' xAxisName='日期' yAxisName='业务量' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
+        strXML1.append("<graph caption='窗口业务量分析' xAxisName='日期' yAxisName='业务量' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
             strXML1.append(mergeCategory(1));
@@ -522,7 +498,7 @@ public class AnalyseAction extends ActionSupport
         this.chartList = this.analyseService.AnalyseDeptContent(deptIds, this.startDate, this.endDate, contentId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='满意额分析' xAxisName='日期' yAxisName='满意额'  rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
+        strXML1.append("<graph caption='窗口满意额分析' xAxisName='日期' yAxisName='满意额'  rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
             strXML1.append(mergeCategory(1));
@@ -559,20 +535,18 @@ public class AnalyseAction extends ActionSupport
             type = "day";
         }
         final String allId = this.getAllId();
-        final List totalList = this.analyseService.AnalyseDeptTotal(deptIds, this.startDate, this.endDate, allId, type);
+        final List totalList = this.analyseService.AnalyseDeptTotal(deptIds,null, this.startDate, this.endDate, allId, type);
         final String contentId = this.getContentId();
         final List contentList = this.analyseService.AnalyseDeptContent(deptIds, this.startDate, this.endDate, contentId, type);
         this.chartList = totalList;//this.rate(contentList, totalList);
         for (Object item: chartList)
         {
             Map m = (Map)item;
-            logger.info(">>>>>>>>>>>>>>>>>" + m.get("d"));
             m.put("num", Math.floor(Double.valueOf(m.get("d").toString())));
-
         }
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='满意度分析' xAxisName='日期' yAxisName='满意度' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
+        strXML1.append("<graph caption='窗口满意度分析' xAxisName='日期' yAxisName='满意度' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
             strXML1.append(mergeCategory(1));
@@ -803,7 +777,7 @@ public class AnalyseAction extends ActionSupport
                 for (int i = 0; i < this.chartList.size(); ++i) {
                     final Map chartM = (Map) this.chartList.get(i);
                     String seriesId = chartM.get("seriesId").toString();
-                    String day = chartM.get("serviceDate").toString();
+                    String day = String.valueOf(chartM.get("serviceDate"));
                     if (df.format(start).equals(day) && item.getKey().equals(seriesId)){
                         strXML1.append("<set value='" + chartM.get("num") + "' />");
                         iscontain = true;
@@ -825,7 +799,6 @@ public class AnalyseAction extends ActionSupport
             }
             strXML1.append("</dataset>");
         }
-        logger.info(strXML1);
         return strXML1;
     }
 
@@ -851,9 +824,7 @@ public class AnalyseAction extends ActionSupport
         for (Object item: chartList)
         {
             Map m = (Map)item;
-            logger.info(">>>>>>>>>>>>>>>>>" + m.get("d"));
-            m.put("num", Math.floor(Double.valueOf(m.get("d").toString())));
-
+            m.put("num", Math.floor(Double.valueOf(String.valueOf(m.get("d")))));
         }
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");

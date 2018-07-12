@@ -34,6 +34,19 @@ public class NoticeAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String title = request.getParameter("title");
         final String content = request.getParameter("content");
+        if (title.equals("")){
+            this.msg = "标题不能为空!";
+            return "msg";
+        }
+        if (content.equals("")){
+            this.msg = "内容不能为空!";
+            return "msg";
+        }
+        if (noticeService.existsByName(null, title)){
+            this.msg = "添加失败:已经存在相同标题的记录";
+            return "msg";
+        }
+
         if (this.notice == null) {
             this.notice = new NoticeVo();
         }
@@ -41,7 +54,7 @@ public class NoticeAction extends ActionSupport
         this.notice.setContent(content);
         if (this.noticeService.noticeAdd(this.notice)) {
             this.creatXml();
-            return "addOk";
+            return "msg";
         }
         this.isDeal = "\u6dfb\u52a0\u5931\u8d25\u8bf7\u91cd\u65b0\u6dfb\u52a0";
         return "inputs";
@@ -74,6 +87,19 @@ public class NoticeAction extends ActionSupport
         final String title = request.getParameter("title");
         final String content = request.getParameter("content");
         final String id = request.getParameter("id");
+        if (title.equals("")){
+            this.msg = "标题不能为空!";
+            return "msg";
+        }
+        if (content.equals("")){
+            this.msg = "内容不能为空!";
+            return "msg";
+        }
+        if (noticeService.existsByName(id, title)){
+            this.msg = "添加失败:已经存在相同标题的记录";
+            return "msg";
+        }
+
         if (this.notice == null) {
             this.notice = new NoticeVo();
         }
@@ -82,7 +108,7 @@ public class NoticeAction extends ActionSupport
         this.notice.setId(Integer.parseInt(id));
         this.noticeService.noticeUpdate(this.notice);
         this.creatXml();
-        return "noticeUpdateOk";
+        return "msg";
     }
     
     public String noticeDelete() {
@@ -104,7 +130,6 @@ public class NoticeAction extends ActionSupport
             for (final Object map1 : list) {
             	Map map = (Map)map1;
                 final NoticeVo notice = new NoticeVo();
-                System.out.println(map.get("id").toString());
                 notice.setId(Integer.parseInt(map.get("id").toString()));
                 notice.setTitle((String) map.get("title"));
                 notice.setContent((String) map.get("content"));

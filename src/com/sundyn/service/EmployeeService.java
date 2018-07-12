@@ -252,19 +252,16 @@ public class EmployeeService extends SuperDao
             return this.getJdbcTemplate().queryForMap(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
 
     public Map employeeLogin2(final String name, final String psw) {
         final String sql = "select top 1 * from appries_employee where ext2='" + name + "' and PassWord='" + psw + "'";
-        System.out.println("employeeLogin2-sql=" + sql);
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -275,7 +272,6 @@ public class EmployeeService extends SuperDao
             return this.getJdbcTemplate().queryForMap(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -287,7 +283,6 @@ public class EmployeeService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -296,12 +291,10 @@ public class EmployeeService extends SuperDao
         final String sql = "select top 1 appries_employee.*,appries_dept.name as deptName " +
                 "from appries_employee,appries_dept where CardNum='" + cardnum + "' " +
                 "and appries_employee.deptid=appries_dept.id";
-        logger.debug("employeeFindByCardnum-sql=" + sql);
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -313,7 +306,6 @@ public class EmployeeService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return true;
         }
     }
@@ -325,7 +317,6 @@ public class EmployeeService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return true;
         }
     }
@@ -338,7 +329,6 @@ public class EmployeeService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -349,7 +339,6 @@ public class EmployeeService extends SuperDao
             return this.getJdbcTemplate().queryForMap(sql);
         }
         catch (Exception e) {
-            System.out.println("\ufffd\ufffd\ufffd\ufffd\ufffd\ucce3-findByCardnum-sql=" + sql);
             return null;
         }
     }
@@ -360,7 +349,6 @@ public class EmployeeService extends SuperDao
             return this.getJdbcTemplate().queryForMap(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -371,7 +359,6 @@ public class EmployeeService extends SuperDao
             return this.getJdbcTemplate().queryForMap(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -382,7 +369,6 @@ public class EmployeeService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -393,7 +379,6 @@ public class EmployeeService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -411,11 +396,9 @@ public class EmployeeService extends SuperDao
         sql = "select row_number() over(order by Name) as rows, * from ("+sql+") t";
         sql = "select * from ("+sql+") t2 where t2.rows>" + start + " and t2.rows<=" + (num+start);
         try {
-            System.out.println("employeeOnline:" + sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -426,11 +409,9 @@ public class EmployeeService extends SuperDao
                 " select appries_employee.Name as employeeName, appries_employee.Sex ,appries_employee.CardNum, appries_dept.name as deptName  ,'\u4e0d\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id not  in(" + employeeIds + ")";
         sql = "select count(*) from (" + sql + ") as temp";
         try {
-            logger.debug("countEmployeeOnline:" + sql);
             return this.getJdbcTemplate().queryForInt(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return 0;
         }
     }
@@ -439,11 +420,9 @@ public class EmployeeService extends SuperDao
         String sql = " select appries_employee.Name as employeeName,  appries_employee.Sex ,appries_employee.CardNum, appries_dept.name as deptName ,'\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id in(" + employeeIds + ")";
         sql = "select count(*) from (" + sql + ") as temp";
         try {
-            System.out.println("countEmployeeOnline2:" + sql);
             return this.getJdbcTemplate().queryForInt(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return 0;
         }
     }
@@ -454,7 +433,6 @@ public class EmployeeService extends SuperDao
             this.getJdbcTemplate().update(sql, new Object[] { employeeId, name, cardnum });
         }
         catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -464,7 +442,6 @@ public class EmployeeService extends SuperDao
             this.getJdbcTemplate().update(sql, new Object[] { mac });
         }
         catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -475,7 +452,6 @@ public class EmployeeService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -487,7 +463,6 @@ public class EmployeeService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -525,7 +500,6 @@ public class EmployeeService extends SuperDao
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
         }
         return false;
     }
@@ -537,12 +511,9 @@ public class EmployeeService extends SuperDao
             if (num > 0) {
                 return true;
             }
-            System.err.println("\u5458\u5de5\u5361\u53f7" + cardnum + "\u6ca1\u6709\u627e\u5230\uff01");
             return false;
         }
         catch (Exception e) {
-            System.err.println("\u5458\u5de5\u5361\u53f7" + cardnum + "\u7684\u5458\u5de5\u66f4\u65b0\u5931\u8d25\uff01");
-            e.printStackTrace();
             return false;
         }
     }
@@ -557,7 +528,6 @@ public class EmployeeService extends SuperDao
             return false;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }

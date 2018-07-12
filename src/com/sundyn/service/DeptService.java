@@ -1,8 +1,8 @@
 package com.sundyn.service;
 
+import com.sundyn.cache.Cache;
+import com.sundyn.cache.CacheManager;
 import com.sundyn.dao.SuperDao;
-import com.sundyn.entity.Province;
-import com.sundyn.util.EhCacheHelper;
 import com.sundyn.utils.StringUtils;
 import com.sundyn.vo.DeptVo;
 
@@ -28,10 +28,18 @@ public class DeptService extends SuperDao
         this.temp = temp;
     }
 
+    public void ClearCache(){
+        for (String item : CacheManager.getCacheAllkey()){
+            if (item.startsWith(CacheManager.DeptService_findchild)){
+                CacheManager.clearOnly(item);
+            }
+        }
+    }
     public void updateUseVideo(final String ids, final String video) {
         final String sql = "update appries_dept set useVideo ='" + video + "' where id in(" + ids + ")";
         try {
             this.getJdbcTemplate().update(sql);
+            ClearCache();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -80,7 +88,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForMap(sql, arg);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -98,6 +105,7 @@ public class DeptService extends SuperDao
         try {
             this.getJdbcTemplate().update(sql, arg);
             this.getJdbcTemplate().update(sql2, arg2);
+            ClearCache();
             return true;
         }
         catch (Exception e) {
@@ -111,6 +119,7 @@ public class DeptService extends SuperDao
         final Object[] arg = { dept.getName(), dept.getRemark(), dept.getClient_type(), dept.getProduct_Type(), dept.getDept_camera_url(), dept.getDept_businessId(), dept.getDept_playListId(), dept.getDeptPause(), dept.getDeptPic(), dept.getDeptLogoPic(), dept.getUseVideo(), dept.getNotice(), dept.getId() };
         try {
             final int num = this.getJdbcTemplate().update(sql, arg);
+            ClearCache();
             return num > 0;
         }
         catch (Exception e) {
@@ -123,6 +132,7 @@ public class DeptService extends SuperDao
         final String sql = "UPDATE `appries_dept` SET notice='" + notice + "' where id IN (" + deptIds + ")";
         try {
             final int num = this.getJdbcTemplate().update(sql);
+            ClearCache();
             return num > 0;
         }
         catch (Exception e) {
@@ -135,6 +145,7 @@ public class DeptService extends SuperDao
         final String sql = "Update appries_dept set dept_playListId= " + dept_playListId + "  where id in (" + ids + ")";
         try {
             final int num = this.getJdbcTemplate().update(sql);
+            ClearCache();
             return num > 0;
         }
         catch (Exception e) {
@@ -159,6 +170,7 @@ public class DeptService extends SuperDao
             this.getJdbcTemplate().update(sql2);
             this.getJdbcTemplate().update(sql3);
             this.getJdbcTemplate().update(sql4);
+            ClearCache();
             return true;
         }
         catch (Exception e) {
@@ -218,13 +230,23 @@ public class DeptService extends SuperDao
     }
 
     public List findchild(final Integer id, boolean isCountChild) {
+        String Key = CacheManager.DeptService_findchild + id + "_" + isCountChild;
+
+        Cache data = CacheManager.getCacheInfo(Key);
+        if(data!=null){
+            return (List)data.getValue();
+        }
         String sql = "select * ";
         if(isCountChild)
             sql += ",(select count(*) from appries_dept t1 where t1.fatherid=t2.id) as childs ";
         sql += "from appries_dept t2 where fatherId =" + id;
         try {
-            logger.info(sql);
-            return this.getJdbcTemplate().queryForList(sql);
+            List l = this.getJdbcTemplate().queryForList(sql);
+            Cache c = new Cache();
+            c.setValue(l);
+            CacheManager.AddKey(Key);
+            CacheManager.putCache(Key, c);
+            return l;
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -289,11 +311,6 @@ public class DeptService extends SuperDao
     public List findChildALL(final String ids, int deep) throws SQLException {
         if(ids == null)
             return null;
-        String Key = "com.sundyn.service.DeptService.findChildALL_" + ids + "_" + deep;
-        Object data = EhCacheHelper.getCache(Key);
-        if(data!=null){
-            return (List)data;
-        }
         final List temp = new ArrayList();
         List idAll = findAll(ids);
         if(null!=idAll)
@@ -305,7 +322,6 @@ public class DeptService extends SuperDao
             temp.addAll(this.findChildALL(Integer.valueOf(idarray[i]),deep-1));
             this.setTemp(new ArrayList());
         }
-        EhCacheHelper.putCache(Key, temp);
         return temp;
     }
 
@@ -313,11 +329,6 @@ public class DeptService extends SuperDao
         final List temp = this.findChildALL(ids);
         if(temp == null)
             return null;
-        String Key = "com.sundyn.service.DeptService.findChildALLStr123_" + ids;
-        Object data = EhCacheHelper.getCache(Key);
-        if(data!=null){
-            return (String)data;
-        }
         String resl = "";
         for (int i = 0; i < temp.size(); ++i) {
             final Map m = (Map) temp.get(i);
@@ -332,7 +343,6 @@ public class DeptService extends SuperDao
         if (resl.endsWith(",")) {
             resl = resl.substring(0, resl.length() - 1);
         }
-        EhCacheHelper.putCache(Key, resl);
         return resl;
     }
 
@@ -436,7 +446,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForObject(sql, args, (Class)String.class).toString();
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -515,6 +524,7 @@ public class DeptService extends SuperDao
             final String sql = "update appries_dept set name=? where id=? ";
             final Object[] args = { name, id };
             this.getJdbcTemplate().update(sql, args);
+            ClearCache();
             return true;
         }
         catch (Exception e) {
@@ -528,6 +538,7 @@ public class DeptService extends SuperDao
             final String sql = "update appries_dept set name=?,remark=? where id=?";
             final Object[] args = { name, remark, id };
             this.getJdbcTemplate().update(sql, args);
+            ClearCache();
             return true;
         }
         catch (Exception e) {
@@ -541,6 +552,7 @@ public class DeptService extends SuperDao
             final String sql = "update appries_dept set name=?,remark=? ,client_type=? where id=?";
             final Object[] args = { name, remark, client_type, id };
             this.getJdbcTemplate().update(sql, args);
+            ClearCache();
             return true;
         }
         catch (Exception e) {
@@ -607,11 +619,6 @@ public class DeptService extends SuperDao
     public List findOnlineMacNotNull(final String mac, final int start, final int num) {
         final String sql1 = "select * from  (  (select name,remark ,'\u5728\u7ebf' as online from appries_dept where remark in(" + mac + ")  and depttype=0 order by fatherId ,name ) union   (select name,remark ,'\u4e0d\u5728\u7ebf' as online from appries_dept where      remark not in(" + mac + ")  and depttype=0  order by fatherId ,name)) as t1  limit " + start + "," + num + "   ";
         final String sql2 = "select * from  (  (select name,remark ,'\u5728\u7ebf' as online from appries_dept where remark in(" + mac + ")  and depttype=0 and remark <>'' order by fatherId ,name )" + " union   (select name,remark ,'\u4e0d\u5728\u7ebf' as online from appries_dept where remark not in(" + mac + ")  and depttype=0  order by fatherId ,name) union" + "(select name,remark ,'\u4e0d\u5728\u7ebf' as online from appries_dept where remark in(" + mac + ")  and depttype=0 and remark='' order by fatherId ,name )" + ") as t1  limit " + start + "," + num + "   ";
-        System.out.println("findOnlineMacNotNull-mac=" + mac);
-        System.out.println("findOnlineMacNotNull-start=" + start);
-        System.out.println("findOnlineMacNotNull-num=" + num);
-        System.out.println("findOnlineMacNotNull-sql=" + sql2);
-        System.out.println("findOnlineMacNotNull-sql1=" + sql1);
         try {
             return this.getJdbcTemplate().queryForList(sql2);
         }
@@ -657,6 +664,7 @@ public class DeptService extends SuperDao
         }
         try {
             final int num = this.getJdbcTemplate().update(sql);
+            ClearCache();
             if (num > 0) {
                 return true;
             }
@@ -696,6 +704,7 @@ public class DeptService extends SuperDao
         }
         try {
             final int num = this.getJdbcTemplate().update(sql);
+            ClearCache();
             return num > 0;
         }
         catch (Exception e) {

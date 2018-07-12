@@ -8,7 +8,7 @@ import javax.servlet.http.*;
 import java.text.*;
 import java.util.*;
 
-public class ErrorInfoAction extends ActionSupport
+public class ErrorInfoAction extends MainAction
 {
     private String endDate;
     private ErrorInfoService errorInfoService;
@@ -26,7 +26,7 @@ public class ErrorInfoAction extends ActionSupport
             this.endDate = curdate;
         }
         final int rowsCount = this.errorInfoService.query(this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 20, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         final List templist = this.errorInfoService.query(this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(templist);
         return "success";

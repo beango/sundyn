@@ -4,7 +4,6 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.DeptService;
 import com.sundyn.service.PowerService;
 import com.sundyn.util.ConfigHelper;
-import com.sundyn.util.EhCacheHelper;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
@@ -26,21 +25,11 @@ public class MainAction extends ActionSupport {
     protected int pageSize = 20;
 
     public String getUserDeptIds() {
-        String KEY_FINDMANAGERBY= "com.sundyn.action.MainAction:getUserDeptIds";
-        KEY_FINDMANAGERBY = KEY_FINDMANAGERBY + "_" + UserName;
-        Object data = EhCacheHelper.getCache(KEY_FINDMANAGERBY);
-        if (data != null ){
-            logger.info("getUserDeptIds获取登录用户部门列表");
-            return (String)data;
-        }
-        logger.info("getUserDeptIds获取登录用户部门列表失败,从数据库获取");
         final Integer groupid = Integer.valueOf(UserManager.get("userGroupId").toString());
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
         try {
             UserDeptIds = this.deptService.findChildALLStr123(deptIdGroup);//low
-            if(null!=UserDeptIds)
-                EhCacheHelper.putCache(KEY_FINDMANAGERBY, UserDeptIds);
         } catch (SQLException e) {
             e.printStackTrace();
         }

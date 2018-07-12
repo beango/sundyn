@@ -1,21 +1,20 @@
 package com.sundyn.action;
 
-import com.sundyn.service.AdviceService;
 import com.sundyn.service.DeviceService;
-import com.sundyn.statistics.AdviceStatistics;
+import com.sundyn.util.DateHelper;
 import com.sundyn.util.Pager;
-import com.sundyn.utils.*;
-import com.sundyn.vo.AdviceVo;
-import com.sundyn.vo.AnswerVo;
-import com.sundyn.vo.CheckVo;
-import com.sundyn.vo.QuestionVo;
+import com.sundyn.utils.JavaXML;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
+import org.jdom.Content;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.output.XMLOutputter;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.InputStream;
-import java.sql.SQLException;
+import java.io.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +48,14 @@ public class DeviceAction extends MainAction
         this.pager = new Pager("currentPage", pageSize, total[0], request);
         this.pager.setPageList(list);
 
+        return "success";
+    }
+
+    public String androidAddDeviceByMac(){
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String mac = request.getParameter("mac");
+        if(mac!=null && !"".equals(mac))
+            this.deviceService.findAndAddByMac(mac);
         return "success";
     }
 
@@ -125,11 +132,14 @@ public class DeviceAction extends MainAction
     public String batchDelete() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String id = request.getParameter("id");
+        List list = this.deviceService.findDeviceByBatchId(id);
+        if (list!=null && list.size()>0){
+            request.setAttribute("msg","该批次下存在未删除的设备!");
+            return "error";
+        }
+
         this.deviceService.batchDelete(id);
-        JSONObject jo = new JSONObject();
-        jo.put("succ", true);
-        jo.put("errmsg", "删除成功");
-        request.setAttribute("msg", jo);
+        request.setAttribute("msg","删除成功!");
         return "success";
     }
 
@@ -145,7 +155,12 @@ public class DeviceAction extends MainAction
         //final int rowsCount = this.deviceService.getCount1();
         this.pager = new Pager("currentPage", pageSize, 0, request);
         int[] total = new int[1];
-        List list = this.deviceService.findDevice((this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), total);
+        String startDate = request.getParameter("startDate"),
+                endDate = request.getParameter("endDate"),
+                batchno = request.getParameter("batchno"),
+                keymac = request.getParameter("mac");
+
+        List list = this.deviceService.findDevice(batchno, keymac, startDate, endDate,(this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), total);
         this.pager = new Pager("currentPage", pageSize, total[0], request);
         this.pager.setPageList(list);
         String spath = ServletActionContext.getServletContext().getRealPath("/");
@@ -154,20 +169,30 @@ public class DeviceAction extends MainAction
 
             String mac = m.get("mac").toString();
             File macfile = new File(spath+"cer\\" + mac + ".cer");
-            System.out.println("权限文件地址:" + spath+"cer\\" + mac + ".cer");
             if (macfile.exists()){
                 m.put("cerfile", spath+"cer\\" + mac + ".cer");
             }
             else
                 m.put("cerfile", "");
         }
+
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+        request.setAttribute("mac", keymac);
+        request.setAttribute("batchno", batchno);
         return "success";
     }
 
     public String deviceToAdd(){
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String id = request.getParameter("id");
-        request.setAttribute("vo",this.deviceService.findDeviceById(id));
+        if (id != null && !id.equals("")) {
+            request.setAttribute("vo",this.deviceService.findDeviceById(id));
+        }
+        else{
+            System.out.println("????");
+            request.setAttribute("ctime", DateHelper.getInstance().getDataString_1(new Date()));
+        }
         request.setAttribute("batchList",this.deviceService.findBatch());
         return "success";
     }
@@ -224,11 +249,89 @@ public class DeviceAction extends MainAction
     public String deviceDelete() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String id = request.getParameter("id");
-        this.deviceService.deviceDelete(id);
+        List list = this.deviceService.findDeviceByBatchId(id);
+        if (list!=null && list.size()>0){
+            request.setAttribute("msg","该批次下存在未删除的设备!");
+            return "error";
+        }
+        request.setAttribute("msg","该批次下存在未删除的设备!");
+        return "error";
+
+        /*this.deviceService.deviceDelete(id);
         JSONObject jo = new JSONObject();
         jo.put("succ", true);
         jo.put("errmsg", "删除成功");
         request.setAttribute("msg", jo);
+        return "success";*/
+    }
+
+    public String CheckLivingUrl() throws JDOMException, IOException {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String mac = request.getParameter("mac");
+        final Element root = new Element("check");
+        final Document Doc = new Document(root);
+        List employInfoSet = deviceService.findBatchByBatchId("", "");
+        if (employInfoSet != null) {
+            final Element playlistversion = new Element("playlistversion").setText("0");
+            root.addContent((Content)playlistversion);
+
+            final Element applicationversion = new Element("applicationversion").setText("1");
+            root.addContent((Content)applicationversion);
+
+            final Element menulistversion = new Element("menulistversion").setText("0");
+            root.addContent((Content)menulistversion);
+
+            final Element installtable = new Element("installtable").setText("");
+            root.addContent((Content)installtable);
+
+            final Element welcome = new Element("welcome").setText("");
+            root.addContent((Content)welcome);
+        }
+        final XMLOutputter XMLOut = new XMLOutputter();
+        String file = JavaXML.class.getClassLoader().getResource("").getPath();
+        file = file.replaceAll("%20", " ");
+        file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
+        XMLOut.output(Doc, (OutputStream)new FileOutputStream(String.valueOf(file) + "DeviceLivingData.xml"));
+
+        File f = new File(String.valueOf(file) + "DeviceLivingData.xml");
+        BufferedReader reader = null;
+        StringBuilder sb = new StringBuilder();
+        try {
+            reader = new BufferedReader(new FileReader(f));
+            String tempString = null;
+            while ((tempString = reader.readLine()) != null) {
+                sb.append(tempString);
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e1) {
+                }
+            }
+        }
+        request.setAttribute("msg", sb.toString());
+        return "success";
+    }
+
+    /*
+
+     */
+    public String ApplicationUrl(){
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String mac = request.getParameter("mac");
+
+        JSONObject jo = new JSONObject();
+        jo.put("versionCode", 2);
+        jo.put("versionName", "1.1.1");
+        jo.put("content", "1.新增抢单功能#2.性能优化");
+        jo.put("minSupport", 1);
+        jo.put("url", "http://111.230.14.84:8080/update/ZXEval-1.0.apk");
+
+        request.setAttribute("msg", jo.toString());
         return "success";
     }
 }

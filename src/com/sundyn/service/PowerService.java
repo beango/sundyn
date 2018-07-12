@@ -153,8 +153,10 @@ public class PowerService extends SuperDao
         }
     }
     
-    public boolean powerExist(final String name) {
-        final String sql = "select count(*) from appries_power where name ='" + name + "'";
+    public boolean powerExist(final String id, final String name) {
+        String sql = "select count(*) from appries_power where name ='" + name + "' ";
+        if (id!=null)
+            sql += "and id!=" + id;
         try {
             final int num = this.getJdbcTemplate().queryForInt(sql);
             return num > 0;

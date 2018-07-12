@@ -16,7 +16,8 @@ public class EhCacheHelper {
     private static CacheManager cacheManager = null;
 
     static{
-        enableCache =  ConfigHelper.getValue("enableCache").toLowerCase() == "true";
+        logger.info("java.io.tmpdir:" + ConfigHelper.getValue("enableCache"));
+        enableCache =  ConfigHelper.getValue("enableCache").toLowerCase().equals("true");
         if(enableCache)
             cacheManager = CacheManager.create();
     }

@@ -342,7 +342,6 @@ public class TotalAction extends MainAction
             final List temp = new ArrayList();
             for (int i = 0; i < this.list.size(); ++i) {
                 final Map m = (Map) this.list.get(i);
-                System.out.println("getD-m=" + m);
                 final Integer key0 = Integer.valueOf(m.get("key0").toString());
                 final Integer key2 = Integer.valueOf(m.get("key1").toString());
                 final Integer key3 = Integer.valueOf(m.get("key2").toString());
@@ -580,7 +579,7 @@ public class TotalAction extends MainAction
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String deptId = this.deptService.findChildALLStr123(deptIdGroup);
         final int rowsCount = this.totalService.countTotalBusiness(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         this.list = this.totalService.totalBusiness(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -750,7 +749,7 @@ public class TotalAction extends MainAction
         String deptId = request.getParameter("deptId");
         deptId = this.deptService.findChildALLStr123(deptId);
         final int rowsCount = this.totalService.countTotalBusiness(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         this.list = this.totalService.totalBusiness(deptId, this.startDate, this.endDate, null, null);
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -1269,7 +1268,6 @@ public class TotalAction extends MainAction
                             this.bmls.remove(j);
                         }
                     }
-                    System.out.println("k7=true，bmsum=" + bmsum);
                     mrate = Math.rint(msum * 1.0D / (msum * 1.0D + bmsum * 1.0D) * 10000.0D) * 1.0D / 100.0D;
 
                     for (int j = 0; j < key.length - 1; j++) {
@@ -1291,7 +1289,6 @@ public class TotalAction extends MainAction
                         bmsum = bmsum + key[Integer.parseInt(k.get("keyNo").toString())].intValue();
                         kbm.add(key[Integer.parseInt(k.get("keyNo").toString())]);
                     }
-                    System.out.println("k7=false，bmsum=" + bmsum);
                     mrate = Math.rint(msum * 1.0D / (msum * 1.0D + bmsum * 1.0D) * 10000.0D) * 1.0D / 100.0D;
                     for (int j = 0; j < key.length; j++) {
                         p += key[j].intValue();
@@ -1307,7 +1304,7 @@ public class TotalAction extends MainAction
                 m.put("kbm", kbm);
                 m.put("msum", Integer.valueOf(msum));
                 m.put("bmsum", Integer.valueOf(bmsum));
-                m.put("p", Integer.valueOf(p)); System.out.println("k7=false，sum=" + sum);
+                m.put("p", Integer.valueOf(p));
                 m.put("sum", Integer.valueOf(sum));
                 res.add(m);
             }
@@ -1536,7 +1533,6 @@ public class TotalAction extends MainAction
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
-        System.out.println("机构ID:" + deptIdGroup);
         final List temp = this.deptService.findchild(Integer.valueOf(deptIdGroup));
         final List res = new ArrayList();
         for (int j = 0; j < temp.size(); ++j) {
@@ -1576,7 +1572,6 @@ public class TotalAction extends MainAction
                             this.mls.remove(l);
                         }
                     }
-                    System.out.println("k7=true\uff0cmsum=" + msum);
                     for (int l = 0; l < this.bmls.size(); ++l) {
                         final Map k2 = (Map) this.bmls.get(l);
                         if (!k2.get("keyNo").toString().equals("6")) {
@@ -1587,7 +1582,6 @@ public class TotalAction extends MainAction
                             this.bmls.remove(l);
                         }
                     }
-                    System.out.println("k7=true\uff0cbmsum=" + bmsum);
                     mrate = Math.rint(msum * 1.0 / (msum * 1.0 + bmsum * 1.0) * 10000.0) * 1.0 / 100.0;
                     for (int l = 0; l < key8.length - 1; ++l) {
                         p += key8[l];
@@ -1602,13 +1596,12 @@ public class TotalAction extends MainAction
                         msum += key8[Integer.parseInt(k2.get("keyNo").toString())];
                         km.add(key8[Integer.parseInt(k2.get("keyNo").toString())]);
                     }
-                    System.out.println("k7=false\uff0cmsum=" + msum);
+
                     for (int l = 0; l < this.bmls.size(); ++l) {
                         final Map k2 = (Map) this.bmls.get(l);
                         bmsum += key8[Integer.parseInt(k2.get("keyNo").toString())];
                         kbm.add(key8[Integer.parseInt(k2.get("keyNo").toString())]);
                     }
-                    System.out.println("k7=false\uff0cbmsum=" + bmsum);
                     mrate = Math.rint(msum * 1.0 / (msum * 1.0 + bmsum * 1.0) * 10000.0) * 1.0 / 100.0;
                     for (int l = 0; l < key8.length; ++l) {
                         p += key8[l];
@@ -2184,8 +2177,7 @@ public class TotalAction extends MainAction
         String deptId = request.getParameter("deptId");
         deptId = this.deptService.findChildALLStr123(deptId);
         final int rowsCount = this.totalService.countEmployeeAll();
-        System.out.println("totalPersonDeal2-rowsCount=" + rowsCount);
-        this.pager = new Pager("currentPage", 10, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         this.list = this.totalService.totalPerson3(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -2381,7 +2373,7 @@ public class TotalAction extends MainAction
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
         final int rowsCount = this.totalService.countTotalPerson(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         this.list = this.totalService.totalPerson(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -2426,7 +2418,7 @@ public class TotalAction extends MainAction
         this.deptJSON = this.deptService.findChildALL(deptIdGroup2);
 
         final int rowsCount = this.totalService.counttotalWindow(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         final String ids2 = this.deptService.findChildALLStr123(deptId);
         this.list = this.totalService.totalWindow(ids2, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.list = this.getPandM(this.list);
@@ -2898,7 +2890,7 @@ public class TotalAction extends MainAction
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String ids = this.deptService.findChildALLStr123(deptIdGroup);
         final int rowsCount = this.totalService.countTotalSection(ids, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         this.list = this.totalService.totalSection(ids, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -3106,7 +3098,7 @@ public class TotalAction extends MainAction
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final String deptId = request.getParameter("deptId");
         final int rowsCount = this.totalService.counttotalWindow(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         final List videolist = this.totalService.totalWindowVideo(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         ServletActionContext.getRequest().setAttribute("videolist", (Object)videolist);
         return "success";

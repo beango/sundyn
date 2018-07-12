@@ -1,5 +1,7 @@
 package com.sundyn.util;
 
+import org.jfree.util.Log;
+
 import java.io.Serializable;
 import java.util.Properties;
 
@@ -20,6 +22,7 @@ public class ConfigHelper implements Serializable {
 
     public static String getValue(String key)
     {
+        Log.debug("?>>>>>>>>>>>>>>>>" + key);
         return props.getProperty(key);
     }
 

@@ -47,11 +47,6 @@ public class DeptAction extends MainAction
     private List<WeburlVo> haveList;
     private List<WeburlVo> noList;
 
-    /*public DeptAction(){
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<DeptAction");
-        super.setPowerService(powerService);
-        super.setDeptService(this.deptService);
-    }*/
     public String getDeptLogoPic() {
         return this.deptLogoPic;
     }
@@ -82,7 +77,6 @@ public class DeptAction extends MainAction
         else {
             msg = "mac\u4e3a\u7a7a\uff0c\u8bf7\u91cd\u65b0\u8f93\u5165";
         }
-        System.out.println("useVideo-msg=" + msg);
         request.setAttribute("json", (Object)msg);
         return "success";
     }
@@ -93,7 +87,6 @@ public class DeptAction extends MainAction
         String provinceId = request.getParameter("provinceid");
         final Integer client_type = Integer.valueOf(request.getParameter("client_type"));
         final String product_Type = request.getParameter("product_type");
-        System.out.println("product_type=" + product_Type);
         final Integer deptType = Integer.valueOf(request.getParameter("deptType"));
         String dept_businessId = request.getParameter("dept_businessId");
         final String deptPause = request.getParameter("deptPause");
@@ -272,13 +265,10 @@ public class DeptAction extends MainAction
         final String deptLogoPic = request.getParameter("deptLogoPic");
         final String useVideo = request.getParameter("useVideo");
         final String notice = request.getParameter("notice");
-        System.out.println("deptEditItem-notice=" + notice);
-        System.out.println("deptEditItem-deptId=" + this.deptId);
         final String deptIds = this.deptService.findChildALLStr123(this.deptId.toString());
         this.deptService.updateUseVideo(deptIds, useVideo);
         if (!this.deptService.isLeafage(this.deptId)) {
             final String sonDeptIds = this.deptService.findChildALLStr123(this.deptId.toString());
-            System.out.println("\u4fee\u6539\u6240\u6709\u5b50\u5b59\u8282\u70b9\uff1a" + sonDeptIds);
             this.deptService.updateDeptNotice(sonDeptIds, notice);
         }
         try {
@@ -330,7 +320,6 @@ public class DeptAction extends MainAction
         }
         final DeptVo d = new DeptVo();
         d.setCityid(1);
-        System.out.println(d.getCityid());
         final JSONArray json = JSONArray.fromObject((Object)this.list);
         request.setAttribute("json", (Object)json);
         return "success";
@@ -395,7 +384,6 @@ public class DeptAction extends MainAction
         if (this.list != null && this.list.size() > 0) {
         	for(final Object m : list){
         		Map dept = (Map) m;
-        		System.out.println(dept.get("name"));
         	}
             final Map dept = (Map) this.list.get(0);
             if (dept.get("fatherId").toString() != "-1") {

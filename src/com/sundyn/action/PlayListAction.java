@@ -203,7 +203,17 @@ public class PlayListAction extends MainAction
     public String playListAdd() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final PlayListVo playListVo = new PlayListVo();
-        playListVo.setPlayListName(request.getParameter("playListName"));
+        String name = request.getParameter("playListName");
+        if (name.equals("")){
+            this.msg = "标题不能为空!";
+            return "success";
+        }
+        if (playListService.existsByName(null, name)){
+            this.msg = "添加失败:已经存在相同的播放列表";
+            return "success";
+        }
+
+        playListVo.setPlayListName(name);
         playListVo.setPlayListDescription(request.getParameter("playListDescription"));
         playListVo.setPlayIds(request.getParameter("playIds"));
         this.playListService.playListAdd(playListVo);
@@ -212,8 +222,6 @@ public class PlayListAction extends MainAction
             final String basePath = ServletActionContext.getServletContext().getRealPath("/");
             final String m7path = String.valueOf(basePath) + "m7app" + File.separator + id;
             final String m7binpath = String.valueOf(basePath) + "update" + File.separator + id;
-            System.out.println("playListAdd-m7path=" + m7path);
-            System.out.println("playListAdd-m7binpath=" + m7binpath);
             final String oldPath = String.valueOf(basePath) + "UpdateFile";
             MyFile.copyDirectory(oldPath, m7path);
             final File m7bin = new File(m7binpath);

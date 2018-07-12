@@ -39,12 +39,10 @@
             </result>
             <result name="fail">/base/msg2.jsp</result>
 		</action>
-
         <action name="appriesFileupload" class="appriesAction"
                 method="appriesFileupload">
             <result name="success">/appries/msg.jsp</result>
         </action>
-		
 	<!-- 
 	<action name="videoList" class="appriesAction" method="videoList">
 	   <result name="success">/appries/videolist.jsp</result>

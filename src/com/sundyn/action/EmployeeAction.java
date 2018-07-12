@@ -26,7 +26,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class EmployeeAction extends ActionSupport
+public class EmployeeAction extends MainAction
 {
     private static final long serialVersionUID = 1L;
     private static final int BUFFER_SIZE = 16384;
@@ -261,7 +261,6 @@ public class EmployeeAction extends ActionSupport
         //File f = new File(imgName);
 
         String filename = String.valueOf(ServletActionContext.getServletContext().getRealPath("/")) + imgName;
-        System.out.println("用户信息保存1:"+filename);
         if (imgName != null && !imgName.equals("") && new File(filename).exists()) {
             final MD5toPic md5 = new MD5toPic();
             final String md5Str = md5.MD5(filename);
@@ -355,14 +354,12 @@ public class EmployeeAction extends ActionSupport
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final SundynSet sundynSet = SundynSet.getInstance(path);
         String star = sundynSet.getM_system().get("star").toString();
-        System.out.println("employeeGetInfo-star1=" + star);
         this.m = this.employeeService.employeeFindByCardnum(cardnum);
         if (this.m == null) {
             this.msg = "getInfoError";
         }
         else {
             if (session.getAttribute("employee") != null) {
-                System.out.println("已有员工登陆-cardnum=" + ((Map)session.getAttribute("employee")).get("cardnum"));
             }
             else {
                 session = request.getSession();
@@ -383,10 +380,8 @@ public class EmployeeAction extends ActionSupport
                 }
             }
             else {
-                System.out.println("Phone=" + this.m.get("Phone").toString());
                 star = this.m.get("Phone").toString();
             }
-            System.out.println("employeeGetInfo-star=" + star);
             json.put((Object)"star", (Object)star);
             this.msg = json.toString();
         }
@@ -490,19 +485,16 @@ public class EmployeeAction extends ActionSupport
         final HttpSession session = request.getSession();
         final String cardNum = request.getParameter("cardNum");
         final String dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        System.out.println("employeeHeart------cardNum=" + cardNum);
         if (cardNum != null && cardNum != "") {
             final Map employee = this.employeeService.findByCardnum(cardNum);
 
-            Iterator<String> iter = employee.keySet().iterator();
+            /*Iterator<String> iter = employee.keySet().iterator();
 
             while (iter.hasNext()) {
                 String key = iter.next();
                 Object valuevv = employee.get(key);
-                System.out.println("employee.keyand value: " + key + " value:" + valuevv);
-            }
+            }*/
             if (employee != null) {
-                System.out.println("employeeHeart---添加员工---name=" + employee.get("name").toString());
                 session.setAttribute("employee", (Object)employee);
                 employeeService.updateOnline(cardNum,1);
             }
@@ -510,7 +502,6 @@ public class EmployeeAction extends ActionSupport
         final String mac = request.getParameter("mac");
         String clientVer = request.getParameter("clientVer");
         if (mac != null && !mac.equals("")) {
-            System.out.println("employeeHeart---添加M7---mac=" + mac);
             final Map m = this.deptService.findDeptByMac(mac);
             if (m != null && !"".equals(m.get("id"))) {
                 if (clientVer == null) {
@@ -519,11 +510,9 @@ public class EmployeeAction extends ActionSupport
                 this.deptService.updateDeptMacTime(mac, dt, clientVer);
             }
             else {
-                System.out.println("MAC\u5730\u5740\u4e3a" + mac + "\u7684\u90e8\u95e8\u6ca1\u6dfb\u52a0\u5230\u673a\u6784\u4e2d\uff01");
                 this.deptService.addErrorMac(mac);
             }
         }
-        EmployeeAction.logger.debug((Object)("\u5458\u5de5\u5361\u53f7\uff1a" + cardNum));
         this.msg = "online";
         return "success";
     }
@@ -542,9 +531,14 @@ public class EmployeeAction extends ActionSupport
         String psw = request.getParameter("psw");
         cardnum = Mysql.mysql(cardnum);
         psw = Mysql.mysql(psw);
-        final Map employee = this.employeeService.employeeLogin(cardnum, psw);
+        Map employee = this.employeeService.findByCardnum(cardnum);
         if (employee == null) {
-            this.msg = "loginError";
+            this.msg = "卡号不存在";
+            return "success";
+        }
+        employee = this.employeeService.employeeLogin(cardnum, psw);
+        if (employee == null) {
+            this.msg = "密码错误";
         }
         else {
             this.msg = "loginSuccess";
@@ -573,7 +567,6 @@ public class EmployeeAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpSession session = request.getSession();
         String name = request.getParameter("name");
-        System.out.println("\u89e3\u7801\u524dname=" + name);
         String psw = request.getParameter("psw");
         name = Mysql.mysql(name);
         psw = Mysql.mysql(psw);
@@ -619,13 +612,11 @@ public class EmployeeAction extends ActionSupport
         final String cardnum = request.getParameter("cardnum");
         final Object abc = session.getAttribute("employee");
         final Map e = (Map)session.getAttribute("employee");
-        System.out.println("employee.loginout:e==nul " + (e == null));
         /*while (iter.hasNext()) {
             String key = iter.next();
             Object valuevv = employee.get(key);
             System.out.println("employee.keyand value: " + key + " value:" + valuevv);
         }*/
-        System.out.println("employeeLogout:" + e.get("id")+"," + e.keySet().size());
         final String userId = e.get("id").toString();
         final String d = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         final String t = new SimpleDateFormat("HH:mm:ss").format(new Date());
@@ -678,7 +669,7 @@ public class EmployeeAction extends ActionSupport
         if (flag) {
             final HttpServletRequest request = ServletActionContext.getRequest();
             final int num = this.employeeService.countEmployeeByDeptid(this.deptId);
-            this.pager = new Pager("currentPage", 10, num, request);
+            this.pager = new Pager("currentPage", pageSize, num, request);
             this.list = this.employeeService.findEmployeeByDeptid(this.deptId, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(this.list);
             final Map m = EmployeeList.getList();
@@ -698,7 +689,7 @@ public class EmployeeAction extends ActionSupport
     public String employeeOutView() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int num = this.employeeService.countMovedEmployee();
-        this.pager = new Pager("currentPage", 10, num, request, "employeeOutPage");
+        this.pager = new Pager("currentPage", pageSize, num, request, "employeeOutPage");
         this.list = this.employeeService.findMovedEmployee((this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.list);
         return "success";
@@ -712,7 +703,7 @@ public class EmployeeAction extends ActionSupport
         }
         keyword = keyword.trim();
         final int num = this.employeeService.countEmployeeByName(keyword);
-        this.pager = new Pager("currentPage", 10, num, request, "keywordpage");
+        this.pager = new Pager("currentPage", pageSize, num, request, "keywordpage");
         this.list = this.employeeService.findEmployeeByName(this.deptId, keyword, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.list);
         request.setAttribute("keyword", (Object)keyword);
@@ -922,23 +913,16 @@ public class EmployeeAction extends ActionSupport
         }
         final String m7binpath = String.valueOf(basepath) + "update" + File.separator + playListId;
         if (config != null && config.equals("true")) {
-            System.out.println("config=ture返回版本号");
             final Map dept = this.deptService.findByMac(mac);
-            System.out.println("config=ture返回客户端版本号:" + newestClient!=null);
             if (newestClient!=null && newestClient.size()==1){
                 int newestClientNo = Integer.valueOf(((Map)newestClient.get(0)).get("ClientNo").toString());
-                System.out.println("config=ture返回客户端版本号:" + newestClientNo);
-                System.out.println("Version=" + newestClientNo);
                 this.msg = "Version=" + newestClientNo;
                 return "success";
             }
         } else if (config != null && config.equals("false")) {
-            System.out.println("config=false下载客户端升级包.");
             if (newestClient!=null && newestClient.size()==1){
                 int newestClientNo = Integer.valueOf(((Map)newestClient.get(0)).get("ClientNo").toString());
                 String newestClientPath = ((Map)newestClient.get(0)).get("FilePath").toString();
-                System.out.println("config=ture返回客户端版本号:" + newestClientNo);
-                System.out.println("Filepath=" + newestClientPath);
                 this.filename = "client.7z";
                 this.url = newestClientPath;
                 return "url";
@@ -972,12 +956,10 @@ public class EmployeeAction extends ActionSupport
         }
         final String m7binpath = String.valueOf(basepath) + "update" + File.separator + playListId;
         if (mac != null && config != null && config.equals("true")) {
-            System.out.println("config=ture返回版本号2");
             this.deviceService.findAndAddByMac(mac);
             final Map dept = this.deptService.findByMac(mac);
             if (dept != null) {
                 playListId = dept.get("dept_playListId").toString();
-                System.out.println("m7binpath= " + m7binpath);
                 final File f = new File(String.valueOf(m7binpath) + File.separator + "CONFIG.XML");
                 if (f.exists()) {
                     this.excel = new FileInputStream(f);
@@ -992,23 +974,21 @@ public class EmployeeAction extends ActionSupport
                     final Element root = doc.getRootElement();
                     final Element Software = root.getChild("Software");
                     final String version2 = Software.getChild("Version").getText();
-                    System.out.println("Version=" + version2);
                     this.msg = "Version=" + version2;
                     return "success";
                 }
-                this.msg = String.valueOf(f.getAbsolutePath()) + "\u627e\u4e0d\u5230";
+                this.msg = String.valueOf(f.getAbsolutePath()) + "找不到";
                 this.excel = new ByteArrayInputStream(this.msg.getBytes());
                 this.filename = "error.txt";
             }
             else {
-                this.msg = String.valueOf(mac) + "\u6240\u5728\u7684\u90e8\u95e8\u4e0d\u5b58";
+                this.msg = String.valueOf(mac) + "部门不存在";
                 this.excel = new ByteArrayInputStream(this.msg.getBytes());
                 this.filename = "error.txt";
                 mac = null;
             }
         }
         else if (mac != null && config != null && config.equals("false")) {
-            System.out.println("config=false下载升级包.");
             final Map dept = this.deptService.findByMac(mac);
             if (dept != null) {
 
@@ -1032,7 +1012,7 @@ public class EmployeeAction extends ActionSupport
                     if (fd.exists()) {
                         this.excel = new FileInputStream(fd);
                         this.url = "update/" + playListId + "/M7Update"+version+".zip";
-                        System.out.println("getUpdateVersion-完整升级-url=" + this.url);
+                        logger.info("getUpdateVersion-完整升级-url=" + this.url);
                         this.filename = "M7Update"+version+".zip";
                     }
                     else {
@@ -1043,13 +1023,13 @@ public class EmployeeAction extends ActionSupport
                 }
             }
             else {
-                this.msg = String.valueOf(mac) + "\u6240\u5728\u7684\u90e8\u95e8\u4e0d\u5b58";
+                this.msg = String.valueOf(mac) + "不存在";
                 this.excel = new ByteArrayInputStream(this.msg.getBytes());
                 this.filename = "error.txt";
             }
         }
         else if (mac != null && version != null) {
-            System.out.println("3\u4e24\u4e2a\u53c2\u6570\u90fd\u4f20\uff0c \u4e0b\u8f7d\u589e\u91cf\u5347\u7ea7\u5305");
+            System.out.println("3两个参数都传， 下载增量升级包");
             final Map dept = this.deptService.findByMac(mac);
             if (dept != null) {
                 playListId = dept.get("dept_playListId").toString();
@@ -1058,23 +1038,22 @@ public class EmployeeAction extends ActionSupport
                     this.excel = new FileInputStream(f);
                     this.filename = "M7Update" + version + ".zip";
                     this.url = "update/" + playListId + "/M7Update" + version + ".zip";
-                    System.out.println("getUpdateVersion-\u589e\u91cf\u5347\u7ea7-url=" + this.url);
                 }
                 else {
-                    this.msg = String.valueOf(f.getAbsolutePath()) + "\u627e\u4e0d\u5230";
+                    this.msg = String.valueOf(f.getAbsolutePath()) + "找不到";
                     this.filename = "error.txt";
                     this.excel = new ByteArrayInputStream(this.msg.getBytes());
                     version = null;
                 }
             }
             else {
-                this.msg = String.valueOf(mac) + "\u6240\u5728\u7684\u90e8\u95e8\u4e0d\u5b58\u5728";
+                this.msg = String.valueOf(mac) + "部门不存在";
                 this.excel = new ByteArrayInputStream(this.msg.getBytes());
                 mac = null;
             }
         }
         if (this.msg != null && this.msg.equals("")) {
-            this.msg = "\u4f60\u4f20\u7684\u53c2\u6570\u6709\u95ee\u9898";
+            this.msg = "参数有问题";
             this.excel = new ByteArrayInputStream(this.msg.getBytes());
             this.filename = "error.txt";
             mac = null;
@@ -1082,7 +1061,7 @@ public class EmployeeAction extends ActionSupport
         final Map m = new HashMap();
         m.put("mac", mac);
         if (version == null || version.equals("")) {
-            System.out.println("没有发送版本号，是请求配置文件，去配置文件读取版本号");
+            logger.info("没有发送版本号，是请求配置文件，去配置文件读取版本号");
             final String filePath = String.valueOf(basepath) + "update" + File.separator + playListId + File.separator + "CONFIG.XML";
             SAXBuilder sb2 = new SAXBuilder();
             try {
@@ -1094,13 +1073,13 @@ public class EmployeeAction extends ActionSupport
                 sb2 = null;
             }
             catch (JDOMException e) {
-                m.put("version", "\u672a\u77e5");
+                m.put("version", "未知");
                 e.printStackTrace();
             }
         }
         else {
             m.put("version", version);
-            System.out.println("getUpdateVersin-version=" + version);
+            logger.info("getUpdateVersin-version=" + version);
         }
         m.put("windowName", windowName);
         m.put("date", dd);

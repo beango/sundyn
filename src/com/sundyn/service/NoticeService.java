@@ -15,7 +15,6 @@ public class NoticeService extends SuperDao
             return true;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -26,7 +25,6 @@ public class NoticeService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -38,7 +36,6 @@ public class NoticeService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql, new Object[] { });
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -92,5 +89,18 @@ public class NoticeService extends SuperDao
     public int getCount() {
         final String sql = "select count(id) from appries_notice";
         return this.getJdbcTemplate().queryForInt(sql);
+    }
+
+    public boolean existsByName(String id, String title) {
+        String sql = "select count(*) from appries_notice  where title=? ";
+        if (id!=null)
+            sql += "and id!=" + id;
+        final Object[] arg = { title };
+        try {
+            return this.getJdbcTemplate().queryForInt(sql, arg)>0;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 }

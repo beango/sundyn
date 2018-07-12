@@ -13,34 +13,36 @@ import java.util.*;
 import java.io.*;
 import com.sundyn.util.*;
 
-public class PlayAction extends ActionSupport
+public class PlayAction extends MainAction
 {
+    public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
+
     private static final String playSource = "playSource";
     private File img;
     private Pager pager;
     private PlayService playService;
     private CompressPicDemo cPic;
-    
+    private String msg;
+
+    public String getMsg() { return this.msg; }
+    public void setMsg(final String msg) {
+        this.msg = msg;
+    }
     public CompressPicDemo getcPic() {
         return this.cPic;
     }
-    
     public void setcPic(final CompressPicDemo cPic) {
         this.cPic = cPic;
     }
-    
     private String getExtFileName(final String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
     }
-    
     public File getImg() {
         return this.img;
     }
-    
     public Pager getPager() {
         return this.pager;
     }
-    
     public PlayService getPlayService() {
         return this.playService;
     }
@@ -53,6 +55,15 @@ public class PlayAction extends ActionSupport
         if (playType.equals("text")) {
             final String playTitle = request.getParameter("playTitle");
             String playContent = request.getParameter("playContent");
+            if (playTitle.equals("")){
+                this.msg = "资源标题不能为空!";
+                return "msg";
+            }
+            if (playContent.equals("")){
+                this.msg = "资源内容不能为空!";
+                return "msg";
+            }
+
             final String ip = InetAddress.getLocalHost().getHostAddress();
             int i_index2;
             for (int i_index = 0; (i_index = playContent.indexOf("src", i_index)) > -1; playContent = String.valueOf(playContent.substring(0, i_index2 + 1)) + "http://" + ip + playContent.substring(i_index2 + 1), i_index = i_index2) {
@@ -73,6 +84,7 @@ public class PlayAction extends ActionSupport
             format.setEncoding("gb2312");
             XMLOutputter XMLOut = new XMLOutputter(format);
             XMLOut.output(doc, (OutputStream)new FileOutputStream(String.valueOf(basepath) + "playSource" + File.separator + playSource));
+            logger.info("add生成资源路径：" + String.valueOf(basepath) + "playSource" + File.separator + playSource);
             XMLOut = null;
         }
         if (playTimes == null || playTimes.equals("")) {
@@ -80,13 +92,23 @@ public class PlayAction extends ActionSupport
         }
         final int i_times = Integer.parseInt(playTimes);
         final PlayVo playVo = new PlayVo();
-        playVo.setPlayName(request.getParameter("playName"));
+        String playName = request.getParameter("playName");
+        if (playName.equals("")){
+            this.msg = "播放名不能为空!";
+            return "msg";
+        }
+        if (playService.existsByName(null, playName)){
+            this.msg = "添加失败:已经存在相同的名称";
+            return "msg";
+        }
+
+        playVo.setPlayName(playName);
         playVo.setPlayType(playType);
         playVo.setPlaySource(playSource);
         playVo.setPlayIndex(request.getParameter("playIndex"));
         playVo.setPlayTimes(new StringBuilder(String.valueOf(i_times)).toString());
         this.playService.playAdd(playVo);
-        return "success";
+        return "msg";
     }
     
     public String playAddDialog() throws Exception {
@@ -105,10 +127,18 @@ public class PlayAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         String playTimes = request.getParameter("playTimes");
         final String playType = request.getParameter("playType");
-        final String playSource = request.getParameter("playSource");
+        String playSource = request.getParameter("playSource");
         if (playType.equals("text")) {
             final String playTitle = request.getParameter("playTitle");
             String playContent = request.getParameter("playContent");
+            if (playTitle.equals("")){
+                this.msg = "资源标题不能为空!";
+                return "msg";
+            }
+            if (playContent.equals("")){
+                this.msg = "资源内容不能为空!";
+                return "msg";
+            }
             final String ip = InetAddress.getLocalHost().getHostAddress();
             int i_index = 0;
             while ((i_index = playContent.indexOf("src", i_index)) > -1) {
@@ -135,7 +165,14 @@ public class PlayAction extends ActionSupport
             format.setIndent("    ");
             format.setEncoding("gb2312");
             XMLOutputter XMLOut = new XMLOutputter(format);
+            File f = new File(String.valueOf(basepath) + "playSource" + File.separator + playSource);
+            logger.info("edit生成资源路径：" + String.valueOf(basepath) + "playSource" + File.separator + playSource);
+            if (!f.exists() || f.isDirectory()){
+                playSource = String.valueOf(System.currentTimeMillis()) + ".xml";
+            }
+            logger.info("edit生成资源路径：" + String.valueOf(basepath) + "playSource" + File.separator + playSource);
             XMLOut.output(doc, (OutputStream)new FileOutputStream(String.valueOf(basepath) + "playSource" + File.separator + playSource));
+
             XMLOut = null;
         }
         if (playTimes == null || playTimes.equals("")) {
@@ -143,14 +180,24 @@ public class PlayAction extends ActionSupport
         }
         final int i_times = Integer.parseInt(playTimes);
         final PlayVo playVo = new PlayVo();
-        playVo.setPlayId(Integer.parseInt(request.getParameter("playId")));
-        playVo.setPlayName(request.getParameter("playName"));
+        String playId = request.getParameter("playId");
+        String playName = request.getParameter("playName");
+        if (playName.equals("")){
+            this.msg = "播放名不能为空!";
+            return "msg";
+        }
+        if (playService.existsByName(playId, playName)){
+            this.msg = "添加失败:已经存在相同的名称";
+            return "msg";
+        }
+        playVo.setPlayId(Integer.parseInt(playId));
+        playVo.setPlayName(playName);
         playVo.setPlayType(playType);
         playVo.setPlaySource(playSource);
         playVo.setPlayIndex(request.getParameter("playIndex"));
         playVo.setPlayTimes(new StringBuilder(String.valueOf(i_times)).toString());
         this.playService.playEdit(playVo);
-        return "success";
+        return "msg";
     }
     
     public String playEditDialog() throws Exception {
@@ -172,7 +219,7 @@ public class PlayAction extends ActionSupport
     public String playQuery() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.playService.countPlayQuery("");
-        this.pager = new Pager("currentPage", 6, rowsCount, request, "playPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playPage");
         final List list = this.playService.playQuery(request.getParameter("keyword"), (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         return "success";
@@ -187,7 +234,7 @@ public class PlayAction extends ActionSupport
         keyword = keyword.trim();
         keyword = Mysql.mysql(keyword);
         final int rowsCount = this.playService.countPlayQuery(keyword);
-        this.pager = new Pager("currentPage", 6, rowsCount, request, "playPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playPage");
         final List list = this.playService.playQuery(keyword, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         request.setAttribute("keyword", (Object)keyword);

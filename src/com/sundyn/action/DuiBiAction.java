@@ -391,7 +391,7 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final String deptId = this.request.getParameter("deptId");
         final int rowsCount = this.totalService.counttotalWindow(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, this.request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, this.request);
         this.list = this.totalService.totalWindow(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
@@ -432,7 +432,7 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
             deptId = "-1";
         deptId = this.deptService.findChildALLStr123(deptId);
         final int rowsCount = this.totalService.countTotalPerson(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, this.request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, this.request);
         this.list = this.totalService.totalPerson(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");

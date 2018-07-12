@@ -1,4 +1,4 @@
-package com.sundyn.util;
+package com.sundyn.cache;
 
 public class Cache {
     private String key;//缓存ID

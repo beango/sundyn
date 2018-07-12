@@ -435,7 +435,7 @@ public class QueryAction extends MainAction
         final int rowsCount = this.queryService.countQueryDept2(deptIds, this.startDate, this.endDate, allKeyInUse);
         this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         List list = this.queryService.queryDept2(deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), allKeyInUse);
-        //list = this.handleEmptyFile(list);
+        list = this.handleEmptyFile(list);
         this.pager.setPageList(list);
         JSONObject gson = new JSONObject(pager);
         this.pagerJSON = gson;
@@ -674,7 +674,7 @@ public class QueryAction extends MainAction
         List l1 = null;
         List l2 = null;
         if (bind) {
-            l1 = this.queryService.queryTypeByDoor(deptIdGroup, mk, 5);
+            l1 = this.queryService.queryTypeByDoor(deptIdGroup, mk, 2);
             l2 = this.queryService.queryTypeByDoor(deptIdGroup, bmk, 5);
         }
         else {
@@ -822,7 +822,7 @@ public class QueryAction extends MainAction
         this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         List querylist = this.queryService.queryEmployee2(this.id, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), allKeyInUse);
         if (querylist != null) {
-            //querylist = this.handleEmptyFile(querylist);
+            querylist = this.handleEmptyFile(querylist);
         }
         this.pager.setPageList(querylist);
         final List chatList = this.queryService.QueryEmployeeChat2(this.id, this.startDate, this.endDate);
@@ -913,7 +913,7 @@ public class QueryAction extends MainAction
         }
         final Integer employeeId = Integer.valueOf(emp.get("Id").toString());
         final int rowsCount = this.queryService.countQueryEmployee(employeeId, this.startDate, this.endDate);
-        final Pager pager = new Pager("currentPage", 24, rowsCount, request);
+        final Pager pager = new Pager("currentPage", pageSize, rowsCount, request);
         this.pager = pager;
         this.pager = pager;
         final List querylist = this.queryService.queryEmployee(employeeId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
@@ -949,9 +949,9 @@ public class QueryAction extends MainAction
         if(request.getParameter("keys")!=null && !request.getParameter("keys").equals(""))
             keys =Integer.parseInt(request.getParameter("keys"));
         final int rowsCount = this.queryService.countQueryResult(deptIds, keys, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         List querylist = this.queryService.queryResult(deptIds, keys, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
-        //querylist = this.handleEmptyFile(querylist);
+        querylist = this.handleEmptyFile(querylist);
         this.pager.setPageList(querylist);
         this.keys = new StringBuilder(String.valueOf(keys)).toString();
         final List chatList = this.queryService.QueryResultChat(keys, this.startDate, this.endDate);
@@ -972,7 +972,7 @@ public class QueryAction extends MainAction
         String exportExcel = request.getParameter("export");
         if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
             List list2 = this.queryService.queryResult(deptIds, keys, this.startDate, this.endDate, 0, 0);
-            //querylist = this.handleEmptyFile(querylist);
+            querylist = this.handleEmptyFile(querylist);
 
             final List ls = new ArrayList();
             for (int i = 0; i < list2.size(); ++i) {
@@ -1024,7 +1024,7 @@ public class QueryAction extends MainAction
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
         final String tel = request.getParameter("tel");
         final int rowsCount = this.queryService.countQueryResultTel(deptIds, tel, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         List querylist = this.queryService.queryResultTel(deptIds, tel, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         querylist = this.handleEmptyFile(querylist);
         this.pager.setPageList(querylist);
@@ -1059,7 +1059,7 @@ public class QueryAction extends MainAction
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
         final String tel = request.getParameter("tel");
         final int rowsCount = this.queryService.countQueryResultIdCard(deptIds, tel, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 10, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         List querylist = this.queryService.queryResultIdCard(deptIds, tel, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         querylist = this.handleEmptyFile(querylist);
         this.pager.setPageList(querylist);
@@ -1216,7 +1216,7 @@ public class QueryAction extends MainAction
         this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         List tempList = this.queryService.queryZh2(this.id, keys, deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         if (tempList != null) {
-            //tempList = this.handleEmptyFile(tempList);
+            tempList = this.handleEmptyFile(tempList);
         }
         this.pager.setPageList(tempList);
 
@@ -1394,10 +1394,6 @@ public class QueryAction extends MainAction
                 this.queryService.updateAppriesById(id);
                 if (result) {
                     ++num;
-                    System.out.println("\u5220\u9664\u6210\u529f--" + path);
-                }
-                else {
-                    System.out.println("\u5220\u9664\u5931\u8d25--" + path);
                 }
             }
         }
@@ -1425,39 +1421,32 @@ public class QueryAction extends MainAction
                 this.queryService.updateAppriesById(id);
                 if (result) {
                     ++num;
-                    System.out.println("\u5220\u9664\u6210\u529f--" + path);
-                }
-                else {
-                    System.out.println("\u5220\u9664\u5931\u8d25--" + path);
                 }
             }
         }
-        request.setAttribute("msg", (Object)("\u64cd\u4f5c\u5b8c\u6210\u5171\u5220\u9664\u6587\u4ef6" + num + "\u4e2a"));
+        request.setAttribute("msg", (Object)("共删除文件" + num + "个"));
         return "success";
     }
 
     public List handleEmptyFile(final List temp) {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String spath = ServletActionContext.getServletContext().getRealPath("/");
-        spath = String.valueOf(spath) + "download\\";
+        spath = String.valueOf(spath) + "download\\recorder\\";
         String fileName = "";
         final List temp2 = new ArrayList();
         Map m = new HashMap();
         if (temp != null) {
-            System.out.println("handleEmptyFile-temp.size=" + temp.size());
             for (final Object o : temp) {
                 m = (Map)o;
-                if (m.get("videofile") != null) {
-                    fileName = m.get("videofile").toString();
+                if (m.get("imgfile") != null) {
+                    fileName = m.get("imgfile").toString();
                 }
                 final File file = new File(String.valueOf(spath) + fileName);
                 if (!file.exists()) {
-                    System.out.println("\u6587\u4ef6\u4e0d\u5b58\u5728:" + spath + fileName);
-                    m.put("videofile", "");
+                    m.put("imgfile", "");
                 }
                 else if (file.length() == 0L) {
-                    System.out.println("\u6587\u4ef6\u5927\u5c0f\u4e3a0fileName=" + fileName);
-                    m.put("videofile", "");
+                    m.put("imgfile", "");
                 }
                 temp2.add(m);
             }

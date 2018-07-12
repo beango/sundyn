@@ -17,7 +17,6 @@ public class PlayService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -32,7 +31,6 @@ public class PlayService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -45,7 +43,6 @@ public class PlayService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -71,7 +68,6 @@ public class PlayService extends SuperDao
             return this.getJdbcTemplate().queryForInt(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return 0;
         }
     }
@@ -83,20 +79,31 @@ public class PlayService extends SuperDao
             return this.getJdbcTemplate().queryForMap(sql, args);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
     
     public List findByIds(final String playIds) {
         final String sql = "select * from appries_play where playId in(" + playIds + ") order by playIndex,playId desc ";
-        System.out.println("findByIds-sql=" + sql);
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public boolean existsByName(Object id, String playTitle) {
+        String sql = "select count(*) from appries_play  where playname=? ";
+        if (id!=null)
+            sql += "and playid!=" + id;
+        final Object[] arg = { playTitle };
+        try {
+            return this.getJdbcTemplate().queryForInt(sql, arg)>0;
+        }
+        catch (Exception e) {
+            return false;
         }
     }
 }

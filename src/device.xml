@@ -29,6 +29,7 @@
             <result name="success">/device/msg.jsp</result>
         </action>
         <action name="batchDelete" class="deviceAction" method="batchDelete">
+            <result name="error">/device/msg.jsp</result>
             <result name="success">/device/msg.jsp</result>
         </action>
         <action name="deviceList" class="deviceAction" method="deviceList">
@@ -41,6 +42,21 @@
             <result name="success">/device/msg.jsp</result>
         </action>
         <action name="deviceDelete" class="deviceAction" method="deviceDelete">
+            <result name="error">/device/msg.jsp</result>
+            <result name="success">/device/msg.jsp</result>
+        </action>
+    </package>
+    <package name="device2" extends="json-default">
+        <action name="CheckLivingUrl" class="deviceAction" method="CheckLivingUrl">
+            <result name="error">/device/msg.jsp</result>
+            <result name="success">/device/msg.jsp</result>
+        </action>
+        <action name="ApplicationUrl" class="deviceAction" method="ApplicationUrl">
+            <result name="error">/device/msg.jsp</result>
+            <result name="success">/device/msg.jsp</result>
+        </action>
+        <action name="androidAddDeviceByMac" class="deviceAction" method="androidAddDeviceByMac">
+            <result name="error">/device/msg.jsp</result>
             <result name="success">/device/msg.jsp</result>
         </action>
     </package>

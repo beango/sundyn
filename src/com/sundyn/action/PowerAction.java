@@ -8,7 +8,7 @@ import java.util.*;
 import com.sundyn.util.*;
 import com.sundyn.vo.*;
 
-public class PowerAction extends ActionSupport
+public class PowerAction extends MainAction
 {
     private Pager pager;
     private PowerService powerService;
@@ -59,8 +59,7 @@ public class PowerAction extends ActionSupport
     public String powerQuery() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.powerService.countByName("");
-        this.pager = new Pager("currentPage", 10, rowsCount, request, "lowerPowerPage");
-        this.pager = new Pager("currentPage", 10, rowsCount, request, "lowerPowerPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage");
         final List list = this.powerService.findByName("", (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         return "success";
@@ -80,7 +79,7 @@ public class PowerAction extends ActionSupport
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String deptGroups = this.deptService.findChildALLStr123(deptIdGroup);
         final int rowsCount = this.powerService.countLowerPowerByName(name, deptGroups);
-        this.pager = new Pager("currentPage", 10, rowsCount, request, "lowerPowerPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage");
         final List list = this.powerService.findLowerPowerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         return "success";
@@ -101,7 +100,7 @@ public class PowerAction extends ActionSupport
         final String deptGroups = this.deptService.findChildALLStr123(deptIdGroup);
         final int rowsCount = this.powerService.countLowerPowerByName(name, deptGroups);
         System.out.println("rowsCount2=" + rowsCount);
-        this.pager = new Pager("currentPage", 10, rowsCount, request, "lowerPowerPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage");
         final List list = this.powerService.findLowerPowerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         request.setAttribute("keyword", (Object)name);
@@ -117,8 +116,7 @@ public class PowerAction extends ActionSupport
         keyword = keyword.trim();
         keyword = Mysql.mysql(keyword);
         final int rowsCount = this.powerService.countByName(keyword);
-        this.pager = new Pager("currentPage", 10, rowsCount, request, "lowerPowerPage");
-        this.pager = new Pager("currentPage", 10, rowsCount, request, "lowerPsowerPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage");
         final List list = this.powerService.findByName(keyword, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         request.setAttribute("keyword", (Object)keyword);
@@ -157,6 +155,13 @@ public class PowerAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         request.setCharacterEncoding("GBK");
         final String name = request.getParameter("name");
+        if (this.powerService.powerExist(null, name)) {
+            this.msg = "该角色名存在";
+        }
+        else {
+            this.msg = "";
+        }
+
         final Integer baseSet = Integer.valueOf(request.getParameter("baseSet"));
         final Integer dataManage = Integer.valueOf(request.getParameter("dataManage"));
         final Integer deptId = Integer.valueOf(request.getParameter("deptId"));
@@ -192,6 +197,12 @@ public class PowerAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String name = request.getParameter("name");
         final Integer id = Integer.valueOf(request.getParameter("id"));
+        if (this.powerService.powerExist(String.valueOf(id), name)) {
+            this.msg = "该角色名存在";
+        }
+        else {
+            this.msg = "";
+        }
         final Integer baseSet = Integer.valueOf(request.getParameter("baseSet"));
         final Integer dataManage = Integer.valueOf(request.getParameter("dataManage"));
         final Integer deptId = Integer.valueOf(request.getParameter("deptId"));
@@ -208,8 +219,9 @@ public class PowerAction extends ActionSupport
     public String powerExist() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String name = request.getParameter("name");
-        if (this.powerService.powerExist(name)) {
-            this.msg = "\ufffd\u00fd\ufffd\u026b\ufffd\ufffd\ufffd\ufffd\ufffd";
+        final String id = request.getParameter("id");
+        if (this.powerService.powerExist(id, name)) {
+            this.msg = "该角色名存在";
         }
         else {
             this.msg = "";

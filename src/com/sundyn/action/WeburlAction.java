@@ -28,6 +28,15 @@ public class WeburlAction extends MainAction
     public String weburlAdd() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String name = request.getParameter("name");
+        final String id = request.getParameter("id");
+        if (name.equals("")){
+            this.msg = "标题不能为空!";
+            return "msg";
+        }
+        if (weburlService.existsByName(id, name)){
+            this.msg = "添加失败:已经存在相同标题的记录";
+            return "msg";
+        }
         final String url = request.getParameter("url");
         if (this.weburl == null) {
             this.weburl = new WeburlVo();
@@ -35,10 +44,10 @@ public class WeburlAction extends MainAction
         this.weburl.setName(name);
         this.weburl.setUrl(url);
         if (this.weburlService.addWeburl(this.weburl)) {
-            return "addOk";
+            return "msg";
         }
-        this.isDeal = "\u6dfb\u52a0\u5931\u8d25\u8bf7\u91cd\u65b0\u6dfb\u52a0";
-        return "inputs";
+        this.msg = "添加失败";
+        return "msg";
     }
 
     public String weburlList() {
@@ -70,6 +79,15 @@ public class WeburlAction extends MainAction
         final String name = request.getParameter("name");
         final String url = request.getParameter("url");
         final String id = request.getParameter("id");
+
+        if (name.equals("")){
+            this.msg = "标题不能为空!";
+            return "msg";
+        }
+        if (weburlService.existsByName(id, name)){
+            this.msg = "添加失败:已经存在相同标题的记录";
+            return "msg";
+        }
         if (this.weburl == null) {
             this.weburl = new WeburlVo();
         }
@@ -77,7 +95,7 @@ public class WeburlAction extends MainAction
         this.weburl.setUrl(url);
         this.weburl.setId(Integer.parseInt(id));
         this.weburlService.weburlUpdate(this.weburl);
-        return "weburlUpdateOk";
+        return "msg";
     }
 
     public String weburlDelete() {
@@ -94,11 +112,9 @@ public class WeburlAction extends MainAction
         String file = JavaXML.class.getClassLoader().getResource("").getPath();
         file = file.replaceAll("%20", " ");
         file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
-        System.out.println(file+".....................2");
         final String filename = String.valueOf(mac) + ".xml";
         String url = String.valueOf(file) + filename;
         File f = new File(url);
-        System.out.println("weburlDownload:" + url);
         if (!f.exists()) {
             f.createNewFile();
         }
@@ -217,9 +233,7 @@ public class WeburlAction extends MainAction
         this.xml = xml;
     }
 
-    public String getMsg() {
-        return this.msg;
-    }
+    public String getMsg() { return this.msg; }
 
     public void setMsg(final String msg) {
         this.msg = msg;

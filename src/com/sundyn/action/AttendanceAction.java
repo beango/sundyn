@@ -9,7 +9,7 @@ import javax.servlet.http.*;
 import java.util.*;
 import java.io.*;
 
-public class AttendanceAction extends ActionSupport
+public class AttendanceAction extends MainAction
 {
     private AttendanceService attendanceService;
     private String endDate;
@@ -41,7 +41,7 @@ public class AttendanceAction extends ActionSupport
             this.endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         }
         final int rowsCount = this.attendanceService.count(this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", 8, rowsCount, request, "attendancePage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "attendancePage");
         final List pageList = this.attendanceService.query(this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(pageList);
         String filepath = ServletActionContext.getServletContext().getRealPath("/update");

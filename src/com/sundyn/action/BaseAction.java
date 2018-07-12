@@ -21,7 +21,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class BaseAction extends ActionSupport
+public class BaseAction extends MainAction
 {
     private static final int BUFFER_SIZE = 16384;
     private static final long serialVersionUID = 1L;
@@ -223,7 +223,7 @@ public class BaseAction extends ActionSupport
         final String deptId = request.getParameter("deptId").toString();
         final String deptIds = this.deptService.findChildALLStr123(deptId);
         num = this.employeeService.countEmployeeOnline(deptIds, employeeIds);
-        this.pager = new Pager("currentPage", 10, num, request, "onLinePage");
+        this.pager = new Pager("currentPage", pageSize, num, request, "onLinePage");
         final List list = this.employeeService.employeeOnline(deptIds, employeeIds, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         request.setAttribute("allNum", (Object)num);
@@ -319,7 +319,6 @@ public class BaseAction extends ActionSupport
                 in.close();
             }
             catch (IOException e) {
-                System.out.println("\u5728\u8bfb\u53d6apprise\u914d\u7f6e\u6587\u4ef6\u65f6\u51fa\u9519\uff01");
                 e.printStackTrace();
                 try {
                     in.close();

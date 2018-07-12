@@ -1,16 +1,15 @@
 package com.sundyn.utils;
 
+import com.sundyn.cache.Cache;
+import com.sundyn.cache.CacheManager;
 import com.sundyn.dao.SuperDao;
 import com.sundyn.entity.City;
 import com.sundyn.entity.Province;
-import com.sundyn.util.CacheManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import com.sundyn.util.Cache;
-import com.sundyn.util.EhCacheHelper;
 
 public class CitysUtils extends SuperDao
 {
@@ -36,13 +35,11 @@ public class CitysUtils extends SuperDao
     }
     
     public List<Province> getProvincesOnly() throws SQLException {
-        String Key = "com.sundyn.utils.CitysUtils.getProvincesOnly";
-        Object data = EhCacheHelper.getCache(Key);
+        String Key = CacheManager.CitysUtils_getProvincesOnly;
+        Cache data = CacheManager.getCacheInfo(Key);
         if(data!=null){
-            logger.info("获取省数据缓存");
-            return (List<Province>)data;
+            return (List<Province>)data.getValue();
         }
-        logger.info("获取省数据缓存为空,取数据库数据并写入缓存");
         final List<Province> provinces = new ArrayList<Province>();
         final String sql = "select * from provinces";
         try {
@@ -54,7 +51,10 @@ public class CitysUtils extends SuperDao
                 p.setName((String)m.get("name"));
                 provinces.add(p);
             }
-            EhCacheHelper.putCache(Key, provinces);
+            data = new Cache();
+            data.setValue(provinces);
+            CacheManager.AddKey(Key);
+            CacheManager.putCache(Key, data);
         }
         catch (Exception e) {
             e.printStackTrace();

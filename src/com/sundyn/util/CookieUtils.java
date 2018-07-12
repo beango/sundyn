@@ -14,18 +14,14 @@ import java.util.Map;
 public class CookieUtils {
     public static final String USER_COOKIE = "user.cookie";
 
-    // 添加一个cookie
     public Cookie addCookie(Map user) {
-        Cookie cookie = new Cookie(USER_COOKIE, user.get("name") + ","
-                + user.get("password"));
-        System.out.println("添加cookie");
-        cookie.setMaxAge(60 * 60 * 24 * 14);// cookie保存两周
+        Cookie cookie = new Cookie(USER_COOKIE, user.get("name") + "," + user.get("password"));
+        cookie.setMaxAge(60 * 60 * 24 * 14);
         return cookie;
     }
 
     // 得到cookie
     public boolean getCookie(HttpServletRequest request) {
-        //ApplicationContext ac = new ClassPathXmlApplicationContext("/WEB-INF/applicationContext-service.xml");
         ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
         ManagerService managerService = (ManagerService)ctx.getBean("managerService");
         Cookie[] cookies = request.getCookies();
@@ -37,28 +33,19 @@ public class CookieUtils {
                         String[] split = value.split(",");
                         String username = split[0];
                         String password = split[1];
-                        System.out.println("cookie: ////////////////////\\" + username + ", " + password);
                         try {
                             Map user = managerService.findManageBy(username, password);
-                            System.out.println("添加用户到session中：" + (user == null));
                             HttpSession session = request.getSession();
                             if(user == null)
                                 return false;
                             else {
                                 session.setAttribute("manager", user);// 添加用户到session中
-                                System.out.println("成功添加用户到session中");
                             }
                             return true;
                         } catch (SQLException e) {
                             e.printStackTrace();
                             return false;
                         }
-                        /*User user = userDAO.checkUser(username, password);
-                        if (user != null) {
-                            HttpSession session = request.getSession();
-                            session.setAttribute(LoginAction.USER_SESSION, user);// 添加用户到session中
-                            return true;
-                        }*/
                     }
                 }
             }

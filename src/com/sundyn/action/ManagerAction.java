@@ -27,7 +27,7 @@ import java.net.InetAddress;
 import java.util.List;
 import java.util.Map;
 
-public class ManagerAction extends ActionSupport
+public class ManagerAction extends MainAction
 {
     private List list;
     private ManagerService managerService;
@@ -73,16 +73,31 @@ public class ManagerAction extends ActionSupport
         final HttpServletRequest request = ServletActionContext.getRequest();
         (this.managerVo = new ManagerVo()).setSkinid(0);
         this.managerVo.setName(request.getParameter("name"));
+        String name = request.getParameter("name");
+        name = Mysql.mysql(name);
+        if (this.managerService.manageExist(null, name)) {
+            this.msg = "";
+        }
+        else {
+            this.msg = "该用户已经存在";
+            return "error";
+        }
+
         this.managerVo.setRealname(request.getParameter("realname"));
         this.managerVo.setPassword("123456");
         final int id = Integer.valueOf(request.getParameter("userGroupId"));
-        System.out.println("userGroupId=" + id);
         this.managerVo.setUserGroupId(id);
         this.managerVo.setRemark(request.getParameter("remark"));
         this.managerVo.setExt1(request.getParameter("ext1"));
         this.managerVo.setExt2(request.getParameter("ext2"));
-        this.managerService.AddManager(this.managerVo);
-        return "success";
+        boolean addsucc = this.managerService.AddManager(this.managerVo);
+        if (addsucc)
+            return "success";
+        else{
+            request.setAttribute("msg","添加失败!");
+            return "error";
+        }
+
     }
 
     public String managerAddDialog() throws Exception {
@@ -218,8 +233,16 @@ public class ManagerAction extends ActionSupport
     public String managerEdit() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         (this.managerVo = new ManagerVo()).setId(Integer.valueOf(request.getParameter("id")));
+        String name = request.getParameter("name");
+        if (this.managerService.manageExist(request.getParameter("id"), name)) {
+            this.msg = "";
+        }
+        else {
+            this.msg = "该用户已经存在";
+            return "success";
+        }
         this.managerVo.setSkinid(0);
-        this.managerVo.setName(request.getParameter("name"));
+        this.managerVo.setName(name);
         this.managerVo.setRealname(request.getParameter("realname"));
         this.managerVo.setPassword("123456");
         this.managerVo.setUserGroupId(Integer.valueOf(request.getParameter("userGroupId")));
@@ -246,12 +269,13 @@ public class ManagerAction extends ActionSupport
     public String managerExist() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String name = request.getParameter("name");
+        String id = request.getParameter("id");
         name = Mysql.mysql(name);
-        if (this.managerService.manageExist(name)) {
+        if (this.managerService.manageExist(id, name)) {
             this.msg = "";
         }
         else {
-            this.msg = "the user  is existed";
+            this.msg = "该用户已经存在";
         }
         return "success";
     }
@@ -344,7 +368,7 @@ public class ManagerAction extends ActionSupport
         }
         name = name.trim();
         final int rowsCount = this.managerService.countByName(name);
-        this.pager = new Pager("currentPage", 5, rowsCount, request, "lowerManagerPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerManagerPage");
         this.list = this.managerService.findByName(name, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.list);
         return "success";
@@ -356,21 +380,16 @@ public class ManagerAction extends ActionSupport
         if (name == null) {
             name = "";
         }
-        System.out.println("name=" + name);
         name = name.trim();
         final Map manager = (Map)request.getSession().getAttribute("manager");
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final String managerId = manager.get("id").toString();
-        System.out.println("managerId=" + managerId);
         request.setAttribute("managerId", (Object)managerId);
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
-        System.out.println("LowerManagerQuery-deptIdGroup=" + deptIdGroup);
         final String deptGroups = this.deptService.findChildALLStr123(deptIdGroup);
-        System.out.println("LowerManagerQuery-deptGroups=" + deptGroups);
         final int rowsCount = this.managerService.countLowerManagerByName(name, deptGroups);
-        System.out.println("rowsCount=" + rowsCount);
-        this.pager = new Pager("currentPage", 5, rowsCount, request, "lowerManagerPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerManagerPage");
         this.list = this.managerService.findLowerManagerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.list);
         return "success";
@@ -384,7 +403,7 @@ public class ManagerAction extends ActionSupport
         }
         name = name.trim();
         final int rowsCount = this.managerService.countByName(name);
-        this.pager = new Pager("currentPage", 5, rowsCount, request, "lowerManagerPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerManagerPage");
         this.list = this.managerService.findByName(name, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.list);
         request.setAttribute("name", (Object)name);
@@ -397,7 +416,6 @@ public class ManagerAction extends ActionSupport
         if (name == null) {
             name = "";
         }
-        System.out.println("name=" + name);
         name = name.trim();
         final Map manager = (Map)request.getSession().getAttribute("manager");
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
@@ -405,8 +423,7 @@ public class ManagerAction extends ActionSupport
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String deptGroups = this.deptService.findChildALLStr123(deptIdGroup);
         final int rowsCount = this.managerService.countLowerManagerByName(name, deptGroups);
-        System.out.println("rowsCount2=" + rowsCount);
-        this.pager = new Pager("currentPage", 5, rowsCount, request, "lowerManagerPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerManagerPage");
         this.list = this.managerService.findLowerManagerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.list);
         request.setAttribute("name", (Object)name);
@@ -457,11 +474,9 @@ public class ManagerAction extends ActionSupport
         boolean flag = false;
         final File file = new File(sPath);
         if (file.isFile() && file.exists()) {
-            System.out.println("\u8be5\u6587\u4ef6\u5df2\u5b58\u5728----" + sPath);
         }
         else {
             file.createNewFile();
-            System.out.println("\u6587\u4ef6\u521b\u5efa\u6210\u529f----" + sPath);
             flag = true;
         }
         return "success";

@@ -31,7 +31,7 @@ public class AnalyseService extends SuperDao
             sql = String.valueOf(sql) + " group by left(CONVERT(varchar(30),JieshouTime,23),4)";
         }
         try {
-            logger.debug("满意率柱状图AnalyseTotal-SQL:" + sql);
+            logger.debug(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
@@ -101,7 +101,7 @@ public class AnalyseService extends SuperDao
         }
     }
 
-    public List AnalyseDeptTotal(final String deptId, final String startDate, final String endDate, final String allId, final String analyseType) {
+    public List AnalyseDeptTotal(final String deptId, final String deptId2, final String startDate, final String endDate, final String allId, final String analyseType) {
         String sql = "select deptid seriesId,t2.name seriesName,count(*) as num, ";
         if (analyseType.equals("day")) {
             sql += "CONVERT(varchar(30),JieshouTime,23) as serviceDate ";
@@ -125,8 +125,12 @@ public class AnalyseService extends SuperDao
         else if (analyseType.equals("year")) {
             sql = String.valueOf(sql) + " group by t1.deptid,t2.name, left(CONVERT(varchar(30),JieshouTime,23),4)";
         }
+        sql = "select * from ("+sql+") t where 1=1 ";
+        if (deptId!=null && !"".equals(deptId))
+            sql += "and seriesId in("+deptId+") ";
+        sql += " order by seriesId";
         try {
-            logger.debug("AnalyseDeptTotal.sql="+sql);
+            logger.debug(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
@@ -333,7 +337,12 @@ public class AnalyseService extends SuperDao
             sql = String.valueOf(sql) + " group by EmployeeId,t2.name,left(CONVERT(varchar(30),JieshouTime,23),4)";
         }
         try {
-            logger.debug("AnalyseEmployeeTotal.sql = " + sql);
+            sql = "select t1.id seriesId, t1.name seriesName, t2.num,t2.serviceDate, ISNULL(t2.d,0) as d from appries_employee t1 left join ("
+            + sql + ") t2 on t1.id=t2.seriesId where 1=1";
+            if(employeeId!=null && !"".equals(employeeId))
+                sql += "and t1.id in (" + employeeId + ") ";
+            sql += " order by t1.id";
+            logger.debug(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
@@ -399,6 +408,11 @@ public class AnalyseService extends SuperDao
             sql = String.valueOf(sql) + " group by employeeid,t2.name, left(CONVERT(varchar(30),JieshouTime,23),4)";
         }
         try {
+            sql = "select t1.id seriesId, t1.name seriesName, ISNULL(t2.num,0) num,t2.serviceDate from appries_employee t1 left join ("+
+                    sql + ") t2 on t1.id=t2.seriesId where 1=1 ";
+            if(employeeId!=null && !"".equals(employeeId))
+                sql += "and t1.id in (" + employeeId + ") ";
+            sql += " order by t1.id";
             logger.debug(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }

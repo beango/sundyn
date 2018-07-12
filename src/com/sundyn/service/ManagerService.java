@@ -1,57 +1,45 @@
 package com.sundyn.service;
 
 import com.sundyn.dao.SuperDao;
-import com.sundyn.util.Cache;
-import com.sundyn.util.CacheManager;
-import com.sundyn.util.EhCacheHelper;
 import com.sundyn.vo.ManagerVo;
 import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class ManagerService extends SuperDao
 {
-    private static Logger logger = Logger.getLogger("ManagerService");
+    public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
 
     public Map findManageBy(final String userName, final String pwd) throws SQLException {
         if(userName==null || userName.equals(""))
             return null;
-        String KEY_FINDMANAGERBY= "com.sundyn.service.ManagerService:KEY_FINDMANAGERBY";
-        KEY_FINDMANAGERBY = KEY_FINDMANAGERBY + "_" + userName;
-        Object data = EhCacheHelper.getCache(KEY_FINDMANAGERBY);
-        if (data != null ){
-            logger.info("findManageBy获取到缓存数据");
-            return (Map)data;
-        }
-        logger.info("findManageBy获取不到缓存数据");
         final String sql = "select * from appries_manager where name= ? and password= ?";
-        System.out.println("findManageBy-sql=" + sql);
-        System.out.println("findManageBy-userName=" + userName);
-        System.out.println("findManageBy-password=" + pwd);
+
         final Object[] arg = { userName, pwd };
         try {
-            Map d = this.getJdbcTemplate().queryForMap(sql, arg);
-            if(d!=null && d.size()>0){
-                EhCacheHelper.putCache(KEY_FINDMANAGERBY, d);
-            }
-            return d;
+            return this.getJdbcTemplate().queryForMap(sql, arg);
         }
         catch (Exception e) {
             return null;
         }
     }
 
-    public boolean manageExist(final String userName) throws SQLException {
-        final String sql = "select count(*) from appries_manager where name= ?";
-        final Object[] arg = { userName };
+    public boolean manageExist(final String id, final String userName) throws SQLException {
+        String sql = "select count(*) from appries_manager where name= ? ";
+        if (id!=null)
+            sql += " and id!=?";
+        List<Object> arg = new ArrayList<>();
+        arg.add(userName);
+        if (id!=null)
+            arg.add(id);
         try {
-            final int num = this.getJdbcTemplate().queryForInt(sql, arg);
+            final int num = this.getJdbcTemplate().queryForInt(sql, arg.toArray());
             return num <= 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -75,7 +63,6 @@ public class ManagerService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -88,7 +75,6 @@ public class ManagerService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
