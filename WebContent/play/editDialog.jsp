@@ -34,7 +34,7 @@
             </td>
             <td align="left" style="border-color: #e9f5fd;">
                 <div class="layui-input-inline">
-                <select id="playType" onchange="playTypeChange(this.value)">
+                <select id="playType" lay-filter="playType">
                     <option value="img" <c:if test="${p.playType=='img'}">selected="selected"</c:if> ><s:text name='sundyn.play.pic' /></option>
                     <option value="text" <c:if test="${p.playType=='text'}">selected="selected"</c:if> ><s:text name='sundyn.play.txt' /></option>
                     <option value="html" <c:if test="${p.playType=='html'}">selected="selected"</c:if> ><s:text name='sundyn.play.html' /></option>
@@ -49,26 +49,34 @@
                 <s:text name='sundyn.play.playSource' />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
-                <a href="playSource/${p.playSource}" target="_blank" class="layui-btn">下载</a>
-                <br />
                 <input type="text" name="playSource" id="playSource" readonly="readonly" style="background-color: #c3c3c3;" value="${p.playSource}" class="input_comm" />
-                <form id="pic" enctype="multipart/form-data" name="pic"
-                      action="employeeAdd.action" method="post">
+                <form id="pic" enctype="multipart/form-data" name="pic" action="employeeAdd.action" method="post">
                     <input type="hidden" name="imgName" id="imgName" />
                     <input type="file" name="img" id="img" onblur="getFileName()" style="width: 180px;" />
-                    <input type="button" class="layui-btn" value="<s:text name='sundyn.upload' />" onclick="playupload();"/>
+                    <input type="button" class="layui-btn layui-btn-sm" value="<s:text name='sundyn.upload' />" onclick="playupload();"/>
+                    <c:if test="${p.playType=='doc'}">
+                        <a href="playSource/${p.playSource}/index.html" target="_blank" class="layui-btn layui-btn-sm">下载doc</a>
+                    </c:if>
+                    <c:if test="${p.playType!='doc'}">
+                        <a href="playSource/${p.playSource}" target="_blank" class="layui-btn layui-btn-sm">下载</a>
+                    </c:if>
                 </form>
             </td>
         </tr>
-        <tr id="txt"  <c:if test="${p.playType != 'text'}">  style="display:none;" </c:if>>
+        <tr id="txt1" <c:if test="${p.playType != 'text'}">  style="display:none;" </c:if>>
+            <td style="border-color: #e9f5fd;" align="right">
+                <s:text name='sundyn.play.biaoti' />
+            </td>
+            <td align="left" style="border-color: #e9f5fd;">
+                <input type="text" id="playTitle" name="playTitle" value="${p.playTitle}" class="input_comm"></input>
+            </td>
+        </tr>
+        <tr id="txt2" <c:if test="${p.playType != 'text'}">  style="display:none;" </c:if>>
             <td style="border-color: #e9f5fd;" align="right">
                 <s:text name='sundyn.play.playSource' />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
-                <s:text name='sundyn.play.biaoti' /><input type="text" id="playTitle" name="playTitle" value="${p.playTitle}"></input><br/>
-                <%-- 							<FCK:editor instanceName="playContent"  toolbarSet="sundyn" basePath="fckeditor/" value="${p.playContent }" >--%>
-                <%-- 							</FCK:editor>--%>
-                <textarea rows="10" cols="30" id="playContent" name="playContent">${p.playContent }</textarea>
+                <textarea rows="10" cols="50" id="playContent" name="playContent">${p.playContent }</textarea>
             </td>
         </tr>
         <tr>
@@ -98,9 +106,11 @@
 </div>
 </body>
 <script>
-    //Demo
     layui.use('form', function(){
         var form = layui.form;
+        form.on('select(playType)', function(data){
+            playTypeChange(data.value);
+        });
     });
 </script>
 </html>

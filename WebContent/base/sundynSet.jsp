@@ -57,7 +57,7 @@
             <div class="layui-tab layui-tab-brief">
                 <ul class="layui-tab-title">
                     <li class="layui-this"><s:text name='sundyn.softSetup.systemSetup' /></li>
-                    <li><s:text name='sundyn.softSetup.infoSetup' /></li>
+                    <%--<li><s:text name='sundyn.softSetup.infoSetup' /></li>--%>
                     <li><s:text name='sundyn.softSetup.timeSetup' /></li>
                     <li><s:text name='sundyn.softSetup.starSetup' /></li>
                     <li><s:text name='sundyn.softSetup.employeeInfoSetup' /></li>
@@ -70,15 +70,15 @@
                         <div style="display:none"><input type="checkbox" name="bind" id="bind" <c:if test="${system.bind == 'true' }"> checked="checked"</c:if>  lay-skin="switch" />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.bind' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.bindInfo' /></c></div>
                         <div style="display:none"><input type="checkbox" name="guide" id="guide" <c:if test="${system.guide == 'true' }"> checked="checked"</c:if> lay-skin="switch" />&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.guide' /></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text name='sundyn.softSetup.guideInfo' /></c></div>
                         <input type="hidden" name="tipLanguage" id="tipLanguage" value="${system.tipLanguage}"/>
-                    </div>
-                    <div class="layui-tab-item">
-                        <div><b><s:text name='sundyn.softSetup.danweiName'/></b><input type="text" name="title" id="title" class="input_comm" value="${content.title}" />  </div>
-                        <div style="display:none;"><b><s:text name='sundyn.softSetup.m7BottomInfo'/></b><input type="text" name="buttom" id="buttom" class="input_comm" value="${content.buttom}" />  </div>
-                        <div style="display: none;"><b><s:text name='sundyn.softSetup.tipServerUrl'/></b><input type="text" name="requestAddress" id="requestAddress" class="input_comm" value="${content.requestAddress}" />  </div>
-                        <div style="margin-top:5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.logo'/></b><input type="text" name="logo" id="logo" class="input_comm" value="${content.logo}" /><input value="<s:text name='sundyn.softSetup.upload'/>" type="button" onclick="baseUploadPic()"  /><input type="button" value="清空" onclick="$('#logo').val('');$('#picLogo').attr('src','');$('#picLogo').parent().hide();" />  </div>
-                        <div class="left"><b><s:text name='sundyn.softSetup.require'/></b></div>
-                        <div class="left" style="display:none;"><img src="${content.logo}" id="picLogo" style="width: 133px;height: 37px;" /></div>
-                        <div style="display: none;"><b><s:text name='sundyn.softSetup.contentDegreeStandard'/></b><input type="text" name="standard" id="standard" class="input_comm" value="${content.standard}" />  </div>
+                        <div style="display: none;">
+                            <div><b><s:text name='sundyn.softSetup.danweiName'/></b><input type="text" name="title" id="title" class="input_comm" value="${content.title}" />  </div>
+                            <div style="display:none;"><b><s:text name='sundyn.softSetup.m7BottomInfo'/></b><input type="text" name="buttom" id="buttom" class="input_comm" value="${content.buttom}" />  </div>
+                            <div style="display: none;"><b><s:text name='sundyn.softSetup.tipServerUrl'/></b><input type="text" name="requestAddress" id="requestAddress" class="input_comm" value="${content.requestAddress}" />  </div>
+                            <div style="margin-top:5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.logo'/></b><input type="text" name="logo" id="logo" class="input_comm" value="${content.logo}" /><input value="<s:text name='sundyn.softSetup.upload'/>" type="button" onclick="baseUploadPic()"  /><input type="button" value="清空" onclick="$('#logo').val('');$('#picLogo').attr('src','');$('#picLogo').parent().hide();" />  </div>
+                            <div class="left"><b><s:text name='sundyn.softSetup.require'/></b></div>
+                            <div class="left" style="display:none;"><img src="${content.logo}" id="picLogo" style="width: 133px;height: 37px;" /></div>
+                            <div style="display: none;"><b><s:text name='sundyn.softSetup.contentDegreeStandard'/></b><input type="text" name="standard" id="standard" class="input_comm" value="100" />  </div>
+                        </div>
                     </div>
                     <div class="layui-tab-item">
                         <div><s:text name='sundyn.softSetup.moningUpTime'/><input type="text" value="${work2.sam}" size="50"	name="sam" id="sam" class="input_comm"/></div>
@@ -90,22 +90,25 @@
                         <ul id="stars">
                         <c:forEach var="star" items="${stars}">
                             <li style="margin-bottom:5px;">
-                                <b><s:text name='sundyn.softSetup.contentRate'/></b><input type="text" value="${star.star100}" class="input_comm" name="prate" /><b><s:text name='sundyn.softSetup.up'/></b><input type="text" value="${star.star10}"  class="input_comm" name="pgrade"/><b><s:text name='sundyn.softSetup.mark'/></b><input type="text" value="${star.star}" class="input_comm" name="pstar" /><b><s:text name='sundyn.softSetup.star'/></b>  <img src="images/tp_add.gif"  onclick="starAdd()"/> <img src="images/tp_del.gif" onclick="starDel(this)" />
+                                <b><s:text name='sundyn.softSetup.contentRate'/></b><input type="text" value="${star.star100}" class="input_comm" name="prate" /><b><s:text name='sundyn.softSetup.up'/></b><input style="display:none;" type="text" value="${star.star10}" class="input_comm" name="pgrade"/><b style="display:none;"><s:text name='sundyn.softSetup.mark'/></b><input type="text" value="${star.star}" class="input_comm" name="pstar" /><b><s:text name='sundyn.softSetup.star'/></b>  <img src="images/tp_add.gif"  onclick="starAdd()"/> <img src="images/tp_del.gif" onclick="starDel(this)" />
                             </li>
                         </c:forEach>
                         </ul>
                     </div>
                     <div class="layui-tab-item">
                         <span style="color:red;">*&nbsp;&nbsp;<s:text name="sundyn.can.write"/></span>
-                        <div align="left" style="width:200px;">
-                            <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet" name="employeeInfoSet1" value="1" id="est1" <c:if test="${employeeInfoSet.employeeName== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;<s:text name='sundyn.column.employeeName'/><br/>
+                        <div align="left">
+                            <ul>
+                                <li style="line-height:32px;height:32px;">
+                                    <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet" name="employeeInfoSet1" value="1" id="est1" <c:if test="${employeeInfoSet.employeeName== 'true'}">checked="checked"</c:if> /><span>&nbsp;&nbsp;<s:text name='sundyn.column.employeeName'/></span><br/>
+                                </li>
+                            </ul>
+
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet" name="employeeInfoSet2" value="2" id="est2" <c:if test="${employeeInfoSet.job_desc== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;<s:text name='sundyn.column.post'/><br/>
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet" name="employeeInfoSet3" value="3" id="est3" <c:if test="${employeeInfoSet.employeeJobNum== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;<s:text name='sundyn.column.employeeJobNum'/><br/>
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet" name="employeeInfoSet4" value="4" id="est4" <c:if test="${employeeInfoSet.employeeCardNum== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;<s:text name='sundyn.column.employeeCardNum'/><br/>
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet" name="employeeInfoSet5" value="5" id="est5" <c:if test="${employeeInfoSet.star== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;<s:text name='sundyn.column.star'/><br/>
-                            <div id="est66">
-                                <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet" name="employeeInfoSet6" value="6" id="est6" <c:if test="${employeeInfoSet.phone== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;<s:text name='sundyn.employee.contact'/><br/>
-                            </div>
+                            <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet" name="employeeInfoSet6" value="6" id="est6" <c:if test="${employeeInfoSet.phone== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;联系方式<br/>
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet" name="employeeInfoSet7" value="7" id="est7" <c:if test="${employeeInfoSet.windowName== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;<s:text name='sundyn.column.windowName'/><br/>
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet" name="employeeInfoSet8" value="8" id="est8" <c:if test="${employeeInfoSet.deptname== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;<s:text name='sundyn.column.deptname'/><br/>
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet" name="employeeInfoSet9" value="9" id="est9" <c:if test="${employeeInfoSet.unitName== 'true'}">checked="checked"</c:if> />&nbsp;&nbsp;<s:text name='sundyn.column.unitName'/><br/>

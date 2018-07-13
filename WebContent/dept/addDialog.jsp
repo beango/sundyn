@@ -169,15 +169,15 @@
                     </s:else>
                     <td align="right" style="border-color:#FFFFFF;">所属地区：</td>
                     <td align="left" style="border-color:#FFFFFF;" class="layui-form-item">
-                        <div class="layui-input-inline">
+                        <div class="layui-input-inline" style="width:100px;">
                         <select name="provinceid" value="${province.id}" id="provinces" lay-filter="provinces">
                             <s:iterator value="provinces">
                                 <option value="${id}" <s:if test="province.id==id">selected</s:if>>${ name }</option>
                             </s:iterator>
                         </select>
                         </div>
-                        <div class="layui-input-inline">
-                        <select  value="${cityid}" name="cityid" id="citys" >
+                        <div class="layui-input-inline" style="width:100px;">
+                        <select  value="${cityid}" name="cityid" id="citys">
                             <s:iterator value="citys" >
                                 <option value="${id}" <s:if test="cityid==id">selected</s:if> >${name }</option>
                             </s:iterator>
@@ -198,8 +198,6 @@
     </div>
 		</div>
 <script>
-
-
     $(function(){
         layui.use(['form'], function(){
             var form = layui.form

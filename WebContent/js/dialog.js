@@ -19,20 +19,45 @@ function dialog()
             }
         });
     }
+
     this.iframe=function(url, args, cb){
         layer.open({
             type: 2,
-            title: args && args.title ? args.title : '提示页',
+            title: args && args.title ? args.title : '',
             shadeClose: true,
-            shade: 0.8,
-            area: ['600px', '60%'],
+            shade: [0.8, '#393D49'],//遮罩层
+            area: [(args && args.w) ? args.w : '600px', (args && args.h) ? args.h : '80%'],
             content: url,
-            success:function(ly,index){
+            success:function(ly, index){
                 if(cb)cb();
-                layer.iframeAuto(index);
+                if(args && args.full){
+                    console.log("全屏吧");
+                    layer.full(index);
+                }
+                else if(args && (args.resize!=undefined || args.resize===false)){
+                    console.log("不用重新调整大小");
+                }
+                else{
+                    console.log("还是调整一下吧");
+                    layer.iframeAuto(index);
+                }
             }
         });
     }
+
+    this.warn = function(msg, close){
+        layer.msg(msg, {
+            icon: 2,
+            time: 800
+        }, function(){
+            console.log("msg:" + msg);
+            if(close){
+                console.log("弹完了就关吧:" + close);
+                closeDialog();
+            }
+        });
+    }
+
     this.show1=function(o)
     {
         var sWidth,sHeight;

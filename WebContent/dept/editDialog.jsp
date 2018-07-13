@@ -35,42 +35,6 @@
                     <c:if test="${dept.deptType==0}"><s:text name="sundyn.dept.xxWindow" /></c:if>
                 </td>
             </tr>
-            <%--					  <tr <c:if test="${dept.deptType==2 || dept.deptType==1}">style="display: none;"</c:if>>--%>
-            <%--					    <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.dept.clientConnectType" /></td>--%>
-            <%--					    <td align="left" style="border-color:#FFFFFF;"> --%>
-            <%--					       <select name="client_type" id="client_type"  onchange="clientTypeChange(this.value)">--%>
-            <%--								<option value="1" <c:if test="${dept.client_type==1}"> selected="selected" </c:if>>--%>
-            <%--									<s:text name="sundyn.guide.comServer" />--%>
-            <%--								</option>--%>
-            <%--								<option value="2" <c:if test="${dept.client_type==2}"> selected="selected" </c:if>>--%>
-            <%--									<s:text name="sundyn.guide.clientProgram" />--%>
-            <%--								</option>--%>
-            <%--							</select>--%>
-            <%--							<select name="product_type" id="product_type" onchange="productTypeChange(this.value)"  <c:if test="${dept.client_type==1}"> style="display: none;" </c:if>  >--%>
-            <%--								<option value="-1" <c:if test="${dept.product_type==-1}">selected="selected" </c:if>>--%>
-            <%--									U<s:text name="sundyn.dept.type" />--%>
-            <%--								</option>--%>
-            <%--								<option value="-2" <c:if test="${dept.product_type==-2}">selected="selected" </c:if>>--%>
-            <%--									D<s:text name="sundyn.dept.type" />--%>
-            <%--								</option>--%>
-            <%--								<option value="-3" <c:if test="${dept.product_type==-3}">selected="selected" </c:if>>--%>
-            <%--									T01U<s:text name="sundyn.dept.type" />--%>
-            <%--								</option>--%>
-            <%--								<option value="-4" <c:if test="${dept.product_type==-4}">selected="selected" </c:if>>--%>
-            <%--									M7<s:text name="sundyn.dept.type" />--%>
-            <%--								</option>--%>
-            <%--								<option value="1" <c:if test="${dept.product_type==1}">selected="selected" </c:if>>--%>
-            <%--									S<s:text name="sundyn.dept.type" />--%>
-            <%--								</option>--%>
-            <%--								<option value="2" <c:if test="${dept.product_type==2}">selected="selected" </c:if>>--%>
-            <%--									W<s:text name="sundyn.dept.type" />--%>
-            <%--								</option>--%>
-            <%--								<option value="3" <c:if test="${dept.product_type==3}">selected="selected" </c:if>>--%>
-            <%--									T01<s:text name="sundyn.dept.type" />--%>
-            <%--								</option>--%>
-            <%-- 							</select>--%>
-            <%--					    </td>--%>
-            <%--					  </tr>--%>
             <c:if test="${dept.deptType==0 }">
             <tr>
                 <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.guide.deviceInfo" /></td>
@@ -171,14 +135,14 @@
                 </s:else>
                 <td align="right" style="border-color:#FFFFFF;">所属地区:</td>
                 <td align="left" style="border-color:#FFFFFF;" class="layui-form-item">
-                    <div class="layui-input-inline">
+                    <div class="layui-input-inline" style="width:100px;">
                     <select name="provinceid" value="${province.id}" id="provinces" lay-filter="provinces">
                         <s:iterator value="provinces">
                             <option value="${id}" <s:if test="province.id==id">selected</s:if>  >${name }</option>
                         </s:iterator>
                     </select>
                     </div>
-                    <div class="layui-input-inline">
+                    <div class="layui-input-inline" style="width:100px;">
                     <select  value="${cityid}" name="cityid" id="citys" >
                         <s:iterator value="citys" >
                             <option value="${id}" <s:if test="cityid==id">selected</s:if> >${name }</option>

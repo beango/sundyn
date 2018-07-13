@@ -17,19 +17,42 @@
         <script type="text/javascript" src="lib/layui/layui.js"></script>
         <script type="text/javascript" src="js/myAjax.js"></script>
         <script type="text/javascript" src="js/application.js?1"></script>
+        <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
 	</head>
 	<body>
-		<div class="layui-main">
+
+		<div class="layui-form">
+            <div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">MAC地址：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="input_comm" id="mac" name="mac" value="${mac}" />
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">批次：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="input_comm" id="batchno" name="batchno" value="${batchno}" />
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">开始时间:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="input_comm" id="startDate" value="${startDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                        至
+                        <input type="text" class="input_comm" id="endDate" value="${endDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <a class=" layui-btn" href="#" onclick="deviceQuery()">查询</a>
+                        <a class=" layui-btn" href="#" onclick="deviceToAdd('','添加')">添加</a>
+                        <a class=" layui-btn" href="#" onclick="batchCert()">批量授权</a>
+                        <a class=" layui-btn" href="#" onclick="toBatch()">批次管理</a>
+                    </div>
+                </div>
+            </div>
 			<div>
-				    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-color:#FFFFFF;">
-				       <tr>
-                           <td style="border-color:#FFFFFF;" align="left">
-                               <a class=" layui-btn" href="#" onclick="deviceToAdd('','添加')">添加</a>
-                               <a class=" layui-btn" href="#" onclick="batchCert()">批量授权</a>
-                               <a class=" layui-btn" href="#" onclick="toBatch()">批次管理</a>
-                           </td>
-                       </tr>
-                    </table>
 				<table class="layui-table" lay-filter="demo" id="demo">
                     <thead>
                     <tr>
@@ -67,12 +90,11 @@
                                     ${data.lastonlinetime}
                             </td>
                             <td style="text-align: center;">
-                                <c:if test="${data.cerfile!=''}">已授权</c:if>
+                                <c:if test="${data.cerfile!=''}"><a style="color:dodgerblue;" href="cer/${data.mac}.cer" onclick="event.stopPropagation();">已授权</a></c:if>
                                 <a href="#" class="layui-btn layui-btn-sm layui-btn-warm" onclick="deptGenCer('${data.mac}','${data.batchname}')">授权</a>
                             </td>
 							<td style="text-align: center;">
-								<a href="javascript:deviceToAdd('${data.id}','<s:text name='sundyn.notice.update' />');"><s:text name='sundyn.modifyOrupdate' /></a>
-								<a href="javascript:deviceDelete('${data.id}');"><s:text name='sundyn.del' /></a>
+								<a href="#" onclick="event.stopPropagation();deviceToAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><s:text name='sundyn.modifyOrupdate' /></a>
 							</td>
 						</tr>
 				        </c:forEach>
@@ -98,12 +120,21 @@
             }
         });
 
+        //批量授权
         function batchCert(){
             $("#demo").find("tbody>tr").each(function(){
                 var check = $(this).attr("check");
+                var c = 0;
                 if(check==="true"){
-                    console.log($(this).attr("id"));
-                    deptGenCer($(this).attr("mac"), $(this).attr("batchname"))
+                    deptGenCer($(this).attr("mac"), $(this).attr("batchname"));
+                    c++;
+                }
+                if (c==0){
+                    layer.msg('没有选中任何记录!', {
+                        icon: 2,
+                        time: 800
+                    }, function(){
+                    });
                 }
             });
         }

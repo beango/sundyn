@@ -28,7 +28,7 @@
 				       <tr>
 				         <td style="border-color:#FFFFFF;width:120px;" align="center"><input name="keyword" id="keyword" value="<%=request.getParameter("name")==null?"":request.getParameter("name")%>" class="input_comm" /></td>
 				         <td style="border-color:#FFFFFF;width:60px;" align="left"><img src="<s:text name='sundyn.pic.query' />" width="55" height="25" onclick="lowerManagerQueryAjax()" class="hand"/></td>
-				         <td style="border-color:#FFFFFF;" align="left"><img src="<s:text name='sundyn.pic.add' />" width="63" height="25" onclick="lowerManagerAddDialog()" class="hand"/></td>
+				         <td style="border-color:#FFFFFF;" align="left"><img src="<s:text name='sundyn.pic.add' />" width="63" height="25" onclick="lowerManagerAddDialog('<s:text name="sundyn.user.addUser" />')" class="hand"/></td>
 				      </tr>
 				     </table>
 			    </div>
@@ -48,7 +48,7 @@
 								${manager.realname}
 							</td>
 							<td style="text-align: center;">
-								<a href="javascript:managerEditDialog(${manager.id});"><s:text name='sundyn.modify' /></a>
+								<a href="javascript:managerEditDialog(${manager.id},'<s:text name="sundyn.user.editUser" />');"><s:text name='sundyn.modify' /></a>
 								<a href="javascript:managerDel(${manager.id});"><s:text name='sundyn.del' /></a>
 								<a href="javascript:managerReset(${manager.id});"><s:text name='sundyn.employee.resetPassword' /></a>
 							</td>

@@ -28,7 +28,7 @@
 				       <tr>
 				         <td style="border-color:#FFFFFF;width:120px;" align="center">	<input name="keyword" id="keyword" class="input_comm"  value="<%=request.getParameter("name")==null?"":request.getParameter("name")%>"/></td>
 				         <td style="border-color:#FFFFFF;width:60px;" align="left"><img src="<s:text name='sundyn.pic.query' />" width="55" height="25" onclick="lowerPowerQueryAjax()" class="hand"/></td>
-				         <td style="border-color:#FFFFFF;" align="left"><img src="<s:text name='sundyn.pic.add' />" width="63" height="25" onclick="powerAddDialog()" class="hand"/></td>
+				         <td style="border-color:#FFFFFF;" align="left"><img src="<s:text name='sundyn.pic.add' />" width="63" height="25" onclick="powerAddDialog('<s:text name="sundyn.role.addRole" />')" class="hand"/></td>
 				      </tr>
 				     </table>
 			    </div>
@@ -65,7 +65,7 @@
 								${power.deptname}
 							</td>
 								<td style="text-align: center;">
-								<a href="javascript:powerEditDialog(${power.id});"><s:text name='sundyn.modify' /></a>
+								<a href="javascript:powerEditDialog(${power.id},'<s:text name="sundyn.role.editRole" />');"><s:text name='sundyn.modify' /></a>
 								<a href="javascript:powerDel(${power.id});"><s:text name='sundyn.del' /></a>
 							</td>
 						</tr>

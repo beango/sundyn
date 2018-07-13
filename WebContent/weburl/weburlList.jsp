@@ -31,7 +31,7 @@
     <div class="layui-inline">
         <div class="layui-input-inline">
             <img src="images/04_03_10.jpg" width="55" height="25" onclick="query()" class="hand">
-            <img src="<s:text name='sundyn.pic.add' />" width="55" height="25" onclick="weburToAdd();" class="hand" />
+            <img src="<s:text name='sundyn.pic.add' />" width="55" height="25" onclick="weburToAdd(null,'<s:text name="sundyn.add.weburl" />');" class="hand" />
         </div>
     </div>
     <input type="hidden" name="managerId" id="managerId" value="${managerId}" />
@@ -52,7 +52,7 @@
                         <div style="width: 170px; height: 20px; text-align: center; text-overflow: ellipsis; overflow: hidden;">${webUrl.name}</div>
                     </td>
                     <td style="text-align: center;">
-                        <a href="javascript:weburlToUpate('${webUrl.id}');"><s:text name='sundyn.modifyOrupdate' /></a>
+                        <a href="javascript:weburlToUpate('${webUrl.id}','<s:text name="sundyn.weburl.update" />');"><s:text name='sundyn.modifyOrupdate' /></a>
                         <a href="javascript:weburlDelete('${webUrl.id}');"><s:text name='sundyn.del' /></a>
                     </td>
                 </tr>

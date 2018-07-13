@@ -49,7 +49,7 @@
                 </div>
             </td>
         </tr>
-        <tr>
+        <tr style="display: none;">
             <td style="border-color: #e9f5fd;" align="right">
                 <s:text name="sundyn.user.tipType" />
             </td>
@@ -64,7 +64,7 @@
                 </div>
             </td>
         </tr>
-        <tr>
+        <tr style="display: none;">
             <td style="border-color: #e9f5fd;" align="right">
                 <s:text name="sundyn.user.tipMobile" />
             </td>
@@ -72,7 +72,7 @@
                 <input name="ext1" id="ext1" value="${manager.ext1}" class="input_comm" />
             </td>
         </tr>
-        <tr>
+        <tr style="display: none;">
             <td style="border-color: #e9f5fd;" align="right">
                 <s:text name="sundyn.user.tipPc" />
             </td>

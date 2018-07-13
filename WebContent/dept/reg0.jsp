@@ -27,7 +27,7 @@
  	  <tr>
 	    <td align="center" style="border-color:#FFFFFF;" colspan="2">
 	    <div style="width: 270px;margin: 0px auto;">
-	    <div class="button left" onclick="deptEditDialog()" ><s:text name="sundyn.dept.modifyWindow" /></div>
+	    <div class="button left" onclick="deptEditDialog('<s:text name="sundyn.dept.modifyWindow" />')" ><s:text name="sundyn.dept.modifyWindow" /></div>
 	    <div class="button left" onclick="bindWeburlDialog('<s:text name="sundyn.weburl.bind" />')" style="margin-left: 4px;" ><s:text name="sundyn.weburl.bind" /></div>
 	    <div class="button left" onclick="del()" style="margin-left: 4px;"><s:text name="sundyn.del" /> </div>
 	    </div>

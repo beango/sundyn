@@ -16,14 +16,14 @@
     <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="js/line.js"></script>
     <script type="text/javascript" src="js/jscharts.js"></script>
-    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?1"></script>
     <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/application.js?1"></script>
 </head>
 <body class="layui-form">
 <div class="layui-select-cus layui-inline">
-    <label class="layui-form-label" style="width:120px;"><s:text name='sundyn.query.selectDept'/></label>
+    <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.query.selectDept'/></label>
     <div class="layui-form-mid layui-word-aux">
     </div>
 </div>
@@ -61,7 +61,7 @@
     layui.use('form', function(){
         var form = layui.form;
         var deptpath = '<%=request.getParameter("deptpath")==null?"":request.getParameter("deptpath")%>'.split(",");
-        renderchild(form, -1, -1, deptpath,'dept');
+        renderchild(form, -1, -1, deptpath,'window');
     });
 
     var w;

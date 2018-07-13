@@ -444,12 +444,12 @@ function analyseDeptAjax(w) {
 // 机构满意量
 function analyseDeptContentAjax(w) {
 	var deptids = document.getElementsByName("deptId");
-	var deptId = -1;
-	for (i = 0; i < deptids.length; i++) {
+	var deptId = getDeptSelect();
+	/*for (i = 0; i < deptids.length; i++) {
 		if (eval(deptId) < eval(deptids[i].value)) {
 			deptId = deptids[i].value;
 		}
-	}
+	}*/
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var types = document.getElementsByName("type");
@@ -466,12 +466,12 @@ function analyseDeptContentAjax(w) {
 // 机构满意度
 function analyseDeptContentRateAjax(w) {
 	var deptids = document.getElementsByName("deptId");
-	var deptId = -1;
-	for (i = 0; i < deptids.length; i++) {
+	var deptId = getDeptSelect();
+	/*for (i = 0; i < deptids.length; i++) {
 		if (eval(deptId) < eval(deptids[i].value)) {
 			deptId = deptids[i].value;
 		}
-	}
+	}*/
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var types = document.getElementsByName("type");
@@ -626,11 +626,11 @@ function addChildItem(deptId) {
 	}
 
 	if (!deptId) {
-		alert("\u8bf7\u9009\u62e9\u90e8\u95e8");
+		alert("请选择部门");
 		return false;
 	}
 	if (document.getElementById("deptName").value == "") {
-		alert("\u8bf7\u8f93\u5165\u673a\u6784\u540d\u79f0");
+		alert("请输入名称");
 		return false;
 	}
 	var deptName = document.getElementById("deptName").value;
@@ -684,7 +684,6 @@ function addChildItem(deptId) {
 	if(document.getElementById("product_type")!=null){
 		var product_type = document.getElementById("product_type").value;
 	}
-// alert("product_type="+product_type);
 	dojo.xhrPost({url:"deptAddChildItem.action", content:{deptId:deptId, deptName:deptName, reMark:reMark, client_type:client_type, product_type:product_type, deptType:deptType,dept_camera_url:dept_camera_url,dept_businessId:dept_businessId,dept_playListId:dept_playListId,deptPause:deptPause,deptPic:deptPic,deptLogoPic:deptLogoPic,useVideo:useVideo,notice:notice,provinceid:provinceid,cityid:cityid}, load:function (resp, ioArgs) {
 	    var _newUrl = parent.location.href;
 	    if(parent.parent.qc){
@@ -746,17 +745,7 @@ function deptAddDialog(data, deptid, title) {
 // 修改机构对话框
 function deptEditDialog(title) {
 	var deptId = document.getElementById("deptId").value;
-    layer.open({
-        type: 2,
-        title: title?title:'提示页',
-        shadeClose: true,
-        shade: 0.8,
-        area: ['600px', '60%'],
-        content: 'deptEditDialog.action?deptId='+deptId,
-        success:function(ly,index){
-            //layer.iframeAuto(index);
-        }
-    });
+	new dialog().iframe('deptEditDialog.action?deptId='+deptId, {title: title, resize:false, h:"600px"});
 }
 
 function deptGenCer(mac, batchname){
@@ -1152,9 +1141,9 @@ function managerAddDialog() {
 	}});
 }
 // 添加低等级用户对话框
-function lowerManagerAddDialog() {
+function lowerManagerAddDialog(title) {
     var dia = new dialog();
-    dia.iframe("lowerManagerAddDialog.action");
+    dia.iframe("lowerManagerAddDialog.action",{title:title,h:"300px",resize:false});
 }
 // 验证用户不为空
 function managerCheck(){
@@ -1172,7 +1161,8 @@ function managerCheck(){
 }
 function managerExist(){
 	var name = document.getElementById("name").value;
-	dojo.xhrPost({url:"managerExist.action",content:{name:name},load:function (resp, ioArgs) {
+    var id = $("#id").val();
+	dojo.xhrPost({url:"managerExist.action",content:{id:id, name:name},load:function (resp, ioArgs) {
  		document.getElementById("tip").innerHTML = resp;
 	}});
 
@@ -1194,14 +1184,29 @@ function managerAdd() {
 	var ext2 = document.getElementById("ext2").value;
 	var userGroupId = document.getElementById("userGroupId").value;
 	dojo.xhrPost({url:"managerAdd.action", content:{name:name, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId}, load:function (resp, ioArgs) {
-		parent.closeDialog();
-		parent.lowerManagerQueryAjax();
+		if (resp.trim() == "") {
+            layer.msg('添加成功', {
+                icon: 1,
+                time: 800
+            }, function(){
+                parent.closeDialog();
+                parent.lowerManagerQueryAjax();
+            });
+        }
+        else{
+            layer.msg(resp, {
+                icon: 2,
+                time: 800
+            }, function(){
+
+            });
+        }
 	}});
 }
 // 修改用户对话框
-function managerEditDialog(data) {
+function managerEditDialog(data, title) {
     var dia = new dialog();
-    dia.iframe("managerEditDialog.action?id="+data);
+    dia.iframe("managerEditDialog.action?id="+data, {title: title, resize: false, h: "300px"});
 }
 // 修改用户
 function managerEdit() {
@@ -1221,14 +1226,23 @@ function managerEdit() {
 	var ext2 = document.getElementById("ext2").value;
 	var userGroupId = document.getElementById("userGroupId").value;
 	dojo.xhrPost({url:"managerEdit.action", content:{id:id, name:name, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId}, load:function (resp, ioArgs) {
+            if(resp.trim()==""){
+                layer.msg('修改成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    parent.closeDialog();
+                    parent.lowerManagerQueryAjax();
+                });
+            }
+            else{
+                layer.msg(resp, {
+                    icon: 2,
+                    time: 800
+                }, function(){
 
-            layer.msg('修改成功', {
-                icon: 1,
-                time: 800
-            }, function(){
-                parent.closeDialog();
-                parent.lowerManagerQueryAjax();
-            });
+                });
+            }
 	}});
 }
 function managerQueryAjax() {
@@ -1347,13 +1361,14 @@ function powerDel(data) {
     }
 }
 // 添加角色对话框
-function powerAddDialog() {
-    new dialog().iframe("powerAddDialog.action");
+function powerAddDialog(title) {
+    new dialog().iframe("powerAddDialog.action", {title: title, h:"500px",resize:false});
 }
 // 判断该角色名是否存在
 function powerExist(){
 	var name = document.getElementById("name").value;
-	dojo.xhrPost({url:"powerExist.action",content:{name:name},load:function (resp, ioArgs) {
+    var id = document.getElementById("id").value;
+	dojo.xhrPost({url:"powerExist.action",content:{id:id, name:name},load:function (resp, ioArgs) {
 		document.getElementById("tip").innerHTML = resp;
 	}});
 }
@@ -1361,7 +1376,7 @@ function powerExist(){
 function powerAdd() {
 	var name = document.getElementById("name").value;
 	if(name==""){
-		alert("用户名不能为空");
+		alert("角色名不能为空");
 		return false;
 	}
 	if (document.getElementById("tip").innerHTML=="该角色名存在") {
@@ -1382,19 +1397,27 @@ function powerAdd() {
 	}
 	var deptId = document.getElementById("deptId").value;
 	dojo.xhrPost({url:"powerAdd.action", content:{name:name, baseSet:baseSet, dataManage:dataManage, deptId:deptId}, load:function (resp, ioArgs) {
-            layer.msg('角色添加成功', {
-                icon: 1,
-                time: 800
-            }, function(){
-                parent.closeDialog();
-                parent.refreshTab();
-            });
-
+            if (resp.trim()==""){
+                layer.msg('角色添加成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    parent.closeDialog();
+                    parent.refreshTab();
+                });
+            }
+            else{
+                layer.msg(resp, {
+                    icon: 2,
+                    time: 800
+                }, function(){
+                });
+            }
 	}});
 }
 // 修改角色对话框
-function powerEditDialog(data) {
-    new dialog().iframe("powerEditDialog.action?id="+data);
+function powerEditDialog(data, title) {
+    new dialog().iframe("powerEditDialog.action?id="+data, {title: title, h:"500px",resize:false});
 }
  function powerEdit() {
 	var id = document.getElementById("id").value;
@@ -1421,8 +1444,22 @@ function powerEditDialog(data) {
 	}
 	var deptId = document.getElementById("deptId").value;
 	dojo.xhrPost({url:"powerEdit.action", content:{id:id, name:name, baseSet:baseSet, dataManage:dataManage, deptId:deptId}, load:function (resp, ioArgs) {
-		parent.closeDialog();
-		parent.refreshTab();
+		if(resp.trim()==""){
+            layer.msg('修改成功', {
+                icon: 1,
+                time: 800
+            }, function(){
+                parent.closeDialog();
+                parent.refreshTab();
+            });
+        }
+        else{
+            layer.msg(resp, {
+                icon: 2,
+                time: 800
+            }, function(){
+            });
+        }
 	}});
 }
 // 汇总
@@ -1431,7 +1468,7 @@ function totalDeptDeal(isExport) {
     initDeptValue();
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-	window.location.href = "totalDeptDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + getDeptSelect() + "&export=" + isExport + "&deptpath=" + $("#deptId").val();;
+	window.location.href = "totalDeptDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + getDeptSelect() + "&export=" + isExport + "&deptpath=" + $("#deptId").val();
 }
 // 大厅汇总
 function totalDatingDeal(isExport) {
@@ -1633,11 +1670,13 @@ function playupload() {
 
 function playTypeChange(data) {
     if(data=="text"){
-         document.getElementById("txt").style.display="block";
-         document.getElementById("other").style.display="none";
+        document.getElementById("txt1").style.display="";
+        document.getElementById("txt2").style.display="";
+        document.getElementById("other").style.display="none";
     }else{
-         document.getElementById("txt").style.display="none";
-         document.getElementById("other").style.display="block";
+        document.getElementById("txt1").style.display="none";
+        document.getElementById("txt2").style.display="none";
+        document.getElementById("other").style.display="";
     }
 }
 // 添加播放
@@ -1653,8 +1692,22 @@ function playAdd() {
 	var patrn=/^[0-9]{1,20}$/;
 	if (!patrn.exec(playIndex)){alert("序列只能为数字");document.getElementById("playIndex").focus();return false;}
  	dojo.xhrPost({url:"playAdd.action", content:{playName:playName, playType:playType, playSource:playSource,playTimes:playTimes,playIndex:playIndex,playTitle:playTitle,playContent:playContent}, load:function (resp, ioArgs) {
- 	    parent.closeDialog();
-		parent.refreshTab();
+            if (resp.trim() == "") {
+                layer.msg('添加成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    parent.closeDialog();
+                    parent.refreshTab();
+                });
+            }
+            else{
+                layer.msg(resp, {
+                    icon: 2,
+                    time: 800
+                }, function(){
+                });
+            }
 	}});
 }
 // 播放修改对话框
@@ -1675,8 +1728,22 @@ function playEdit(data) {
 	var patrn=/^[0-9]{1,20}$/;
 	if (!patrn.exec(playIndex)){alert("序列只能为数字");document.getElementById("playIndex").focus();return false;}
 	dojo.xhrPost({url:"playEdit.action", content:{playName:playName, playType:playType, playSource:playSource, playId:playId,playTimes:playTimes,playIndex:playIndex,playTitle:playTitle,playContent:playContent}, load:function (resp, ioArgs) {
-		parent.closeDialog();
-		parent.refreshTab();
+            if (resp.trim() == "") {
+                layer.msg('修改成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    parent.closeDialog();
+                    parent.refreshTab();
+                });
+            }
+            else{
+                layer.msg(resp, {
+                    icon: 2,
+                    time: 800
+                }, function(){
+                });
+            }
 	}});
 }
 // 播放删除
@@ -1739,9 +1806,23 @@ function playListAddAndroid() {
 	var playListDescription = document.getElementById("playListDescription").value;
 	var playIds = getAllKey();
 	dojo.xhrPost({url:"playListAddAndroid.action", content:{playListName:playListName, playListDescription:playListDescription, playIds:playIds}, load:function (resp, ioArgs) {
-	    parent.closeDialog();
-		parent.refreshTab();
-	}});
+            if (resp.trim() == "") {
+                layer.msg('添加成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    parent.closeDialog();
+                    parent.refreshTab();
+                });
+            }
+            else{
+                layer.msg(resp, {
+                    icon: 2,
+                    time: 800
+                }, function(){
+                });
+            }
+        }});
 }
 
 // 播放列表修改
@@ -2562,13 +2643,12 @@ function starDel(data){
 // 增加星级
 function starAdd(){
 	 var stars=$("#stars");
-	 console.log(stars.find("li").length);
 	 if(stars.find("li").length>=10){
 		   alert("最多10个");
 		   return 0;
 	 }
  	 var star=document.createElement("li");
-	 star.innerHTML ="<b>满意率：</b><input type='text'   class='input_comm' name='prate' /><b>以上</b><input type='text'    class='input_comm' name='pgrade'/><b>分</b><input type='text'   class='input_comm' name='pstar' /><b>星</b>  <img src='images/tp_add.gif'  onclick='starAdd()'/> <img src='images/tp_del.gif' onclick='starDel(this)' />"
+	 star.innerHTML ="<b>满意率：</b><input type='text'   class='input_comm' name='prate' /><b>以上</b><input type='text' style=\"display:none;\" class='input_comm' value='0' name='pgrade'/><b style=\"display:none;\">分</b><input type='text'   class='input_comm' name='pstar' /><b>星</b>  <img src='images/tp_add.gif'  onclick='starAdd()'/> <img src='images/tp_del.gif' onclick='starDel(this)' />"
  	 stars[0].appendChild(star);
 }
 // 保存设置
@@ -2701,18 +2781,26 @@ function sundynSetSave(){
 	var pgradeN = document.getElementsByName("pgrade");
 	var pstarN = document.getElementsByName("pstar")
 	for(var i=0;i<prateN.length;i++){
-//	    alert(prateN[i].value);
-
-	    if( eval(prateN[i].value)<=eval(prate)){
+	    if(prateN[i].value=="")
+        {
+            alert("满意率不能为空");
+            return 0;
+        }
+        if(pstarN[i].value=="")
+        {
+            alert("星级不能为空");
+            return 0;
+        }
+	    if(eval(prateN[i].value)<=eval(prate)){
 	     	prate=prateN[i].value;
 	     	prates=prates+prate+",";
 	    }else{
-	        document.getElementById("content1").style.display="none";
+	        /*document.getElementById("content1").style.display="none";
 	        document.getElementById("content2").style.display="none";
 	        document.getElementById("content3").style.display="none";
 	        document.getElementById("content4").style.display="none";
-	        document.getElementById("content5").style.display="block";
-	        pgradeN[i].value.focus();
+	        document.getElementById("content5").style.display="block";*/
+	        pgradeN[i].focus();
 	        alert("下面的数据，只能小于等于上面的数据");
 	        return 0;
  	    }
@@ -3664,31 +3752,8 @@ function autoDeal2() {
 }
 // ================================================================
 // weburl 信息查询添加框
-function weburToAdd(data) {
-    new dialog().iframe("weburlToAdd.action");
-    return;
-	$('#dialog-window').load("weburlToAdd.action",function(html){
-		$('#dialog-window').html(html);
-        UE.getEditor('weburl');
-		var $win;
-		$win = $('#dialog-window').window({
-		    title: '添加信息查询',border:false,
-		    width: '80%',
-		    height:'80%',
-		    shadow: true,
-		    modal: true,
-		    iconCls: 'icon-add',
-		    closed: true,
-		    minimizable: false,
-		    maximizable: false,
-		    collapsible: false,
-		    onBeforeClose: function () { //当面板关闭之前触发的事件
-		    	UE.getEditor('weburl').destroy();
-            }
-		    //content: '<iframe name="first" scrolling="auto" frameborder="0" src="weburlToAdd.action" style="width:100%;height:100%;"></iframe>'
-		});
-		$win.window('open');
-	});
+function weburToAdd(data, title) {
+    new dialog().iframe("weburlToAdd.action", {title:title, full:true,w:'100%',h:'100%'});
 }
 
 // 添加信息查询
@@ -3697,37 +3762,19 @@ function weburlAdd(){
 	var webname = document.getElementById("webname").value;
 	var weburl = ue.getContent();//document.getElementById("weburl").value;
 	dojo.xhrPost({url:"weburlAdd.action", content:{name:webname,url:weburl}, load:function (resp, ioArgs) {
-		parent.closeDialog();
-		parent.refreshTab();
+            if (resp.trim() == "") {
+                alert('添加成功');
+                parent.closeDialog();
+                parent.refreshTab();
+            }
+            else{
+                alert(resp);
+            }
 	}});
 }
 // weburl 信息查询更新框
-function weburlToUpate(data) {
-    new dialog().iframe("weburlToUpdate.action?id=" + data);
-    return;
-
-	$('#dialog-window').load("weburlToUpdate.action",
-		{id: data},
-		function(html){
-			UE.getEditor('weburl');
-			var $win;
-			$win = $('#dialog-window').window({
-			    title: '修改信息查询',
-			    width: '80%',
-			    height: '80%',
-			    shadow: true,
-			    modal: true,
-			    iconCls: 'icon-edit',
-			    closed: true,
-			    minimizable: false,
-			    maximizable: false,
-			    collapsible: false,
-			    onBeforeClose: function () { //当面板关闭之前触发的事件
-			    	UE.getEditor('weburl').destroy();
-	            }
-			});
-			$win.window('open');
-	});
+function weburlToUpate(data, title) {
+    new dialog().iframe("weburlToUpdate.action?id=" + data, {title:title, full:true,w:'100%',h:'100%'});
 }
 // 更新信息查询
 function weburlUpate(){
@@ -3736,10 +3783,17 @@ function weburlUpate(){
 	var weburl = ue.getContent();
 	var id = document.getElementById("uid").value;
 	dojo.xhrPost({url:"weburlUpdate.action", content:{name:webname,url:weburl,id:id}, load:function (resp, ioArgs) {
-	    parent.closeDialog();
-		parent.refreshTab();
+	    if (resp.trim() == "") {
+            alert('修改成功');
+            parent.closeDialog();
+            parent.refreshTab();
+        }
+        else{
+            alert(resp);
+        }
 	}});
 }
+
 // 删除 信息查询
 function weburlDelete(data){
     if (confirm("确认要删除吗?")){
@@ -3767,30 +3821,79 @@ function weburlPage(data) {
 // ================================================================
 // notice 通知公告添加框
 function noticToAdd(title) {
-    new dialog().iframe("noticeToAdd.action?name=123", {title: title});
+    new dialog().iframe("noticeToAdd.action", {title: title,w:'100%',h:"100%",full:true});
 }
 
 // 添加 通知公告
 function noticAdd(){
 	var noticeTitle = document.getElementById("noticeTitle").value;
 	var noticeContent = document.getElementById("noticeContent").value;
+	if (noticeTitle.length==0){
+	    new dialog().warn("标题不能为空!");
+	    return;
+    }
+    if (noticeContent.length==0){
+        new dialog().warn("内容不能为空!");
+        return;
+    }
 	dojo.xhrPost({url:"noticeAdd.action", content:{title:noticeTitle,content:noticeContent}, load:function (resp, ioArgs) {
-		parent.closeDialog();
-		parent.refreshTab();
+            if (resp.trim() == "") {
+                layer.msg('添加成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    parent.closeDialog();
+                    parent.refreshTab();
+                });
+            }
+            else{
+                layer.msg(resp, {
+                    icon: 2,
+                    time: 800
+                }, function(){
+                });
+            }
 	}});
 }
 // weburl 通知公告 更新框
 function noticToUpate(data, title) {
-    new dialog().iframe("noticeToUpdate.action?id="+data,{title:title});
+    new dialog().iframe("noticeToUpdate.action?id="+data,{title:title,w:'100%',h:"100%",full:true});
 }
 // 更新通知公告
 function noticUpate(){
 	var noticeTitle = document.getElementById("noticeTitle").value;
 	var noticeContent = document.getElementById("noticeContent").value;
 	var id = document.getElementById("nid").value;
+    if (!id){
+        new dialog().warn("系统错误,请重试!");
+        return;
+    }
+    if (noticeTitle.length==0){
+        new dialog().warn("标题不能为空!");
+        return;
+    }
+    if (noticeContent.length==0){
+        new dialog().warn("内容不能为空!");
+        return;
+    }
+
 	dojo.xhrPost({url:"noticeUpdate.action", content:{title:noticeTitle,content:noticeContent,id:id}, load:function (resp, ioArgs) {
-		parent.closeDialog();
-		parent.refreshTab();
+            if (resp.trim() == "") {
+                layer.msg('更新成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    parent.closeDialog();
+                    parent.refreshTab();
+                });
+            }
+            else{
+                layer.msg(resp, {
+                    icon: 2,
+                    time: 800
+                }, function(){
+                });
+            }
 	}});
 }
 
@@ -3906,33 +4009,21 @@ function noData(id){
 }
 function bindWeburlDialog(title){
 	var deptId = document.getElementById("deptId").value;
-    /*layer.open({
-        type: 2,
-        title: title?title:'提示页',
-        shadeClose: true,
-        shade: 0.8,
-        area: ['600px', '60%'],
-        content: 'toBindWeburl.action?deptId='+deptId,
-        success:function(ly,index){
-            layer.iframeAuto(index);
-        }
-    });
-    return;*/
+	//new dialog().iframe("toBindWeburl.action?deptId="+deptId, {title:title});
+	//return;
 	dojo.xhrPost({url:"toBindWeburl.action", content:{deptId:deptId}, load:function (resp, ioArgs) {
             layer.open({
                 type: 1,
-                title: title?title:'提示页',
+                title: title,
                 shadeClose: true,
                 shade: 0.8,
-                area: '500px',
+                //width:500,height:500,
+                area:'800px',
                 content: resp,
                 success:function(ly,index){
                     //layer.iframeAuto(index);
                 }
             });
-		//dojo.byId("dialog").innerHTML = resp;
-		//var dia = new dialog();
-		//dia.show("dialog");
 	}});
 }
 function deptWeburlAdd(){
@@ -3945,12 +4036,22 @@ function deptWeburlAdd(){
    	}
     var ids = retVal.toString();
 	dojo.xhrPost({url:"deptWeburlAdd.action", content:{deptId:deptId,retVal:ids}, load:function (resp, ioArgs) {
-            layer.msg('修改成功', {
-                icon: 1,
-                time: 800
-            }, function(){
-                closeDialog();
-            });
+            if (resp.trim() == "") {
+                layer.msg('添加成功', {
+                    icon: 1,
+                    time: 800
+                }, function(){
+                    parent.closeDialog();
+                    parent.refreshTab();
+                });
+            }
+            else{
+                layer.msg(resp, {
+                    icon: 2,
+                    time: 800
+                }, function(){
+                });
+            }
 	}});
 }
 //图片或者视频预览
@@ -3970,7 +4071,7 @@ function toshow(videofile,path1,id){
 // ================================================================
 // notice 通知公告添加框
 function batchToAdd(id,title) {
-    new dialog().iframe("batchToAdd.action?id="+id, {title: title});
+    new dialog().iframe("batchToAdd.action?id="+id, {title: title, h:"120px"});
 }
 
 // 添加 通知公告
@@ -4005,7 +4106,7 @@ function batchAdd(){
 function batchDelete(data){
     if (confirm("确实要删除吗?")){
         dojo.xhrPost({url:"batchDelete.action", content:{id:data}, load:function (resp, ioArgs) {
-                layer.msg('删除成功', {
+                layer.msg(resp, {
                     icon: 1,
                     time: 800
                 }, function(){
@@ -4024,13 +4125,22 @@ function devicelist(){
     location.href="deviceList.action";
 }
 
+function deviceQuery(){
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    var batchno = document.getElementById("batchno").value;
+    var mac = document.getElementById("mac").value;
+    window.location.href = "deviceList.action?startDate=" + startDate + "&endDate=" + endDate + "&batchno=" + batchno + "&mac=" + mac;
+}
+
 function deviceToAdd(id,title) {
-    new dialog().iframe("deviceToAdd.action?id="+id, {title: title});
+    new dialog().iframe("deviceToAdd.action?id="+id, {title: title, resize:false, h:"300px"});
 }
 
 function deviceDelete(data){
     if (confirm("确实要删除吗?")){
         dojo.xhrPost({url:"deviceDelete.action", content:{id:data}, load:function (resp, ioArgs) {
+            console.log("批次删除"+resp);
                 layer.msg('删除成功', {
                     icon: 1,
                     time: 800

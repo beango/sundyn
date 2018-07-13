@@ -1302,7 +1302,8 @@ qc.main.addTab = function(subtitle, url, icon, iframe) {
 
 
 qc.main.createFrame = function(url) {
-	var s = '<iframe class="iframe-fluid" src="' + url + '"></iframe>';
+    return '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+    var s = '<iframe class="iframe-fluid" src="' + url + '"></iframe>';//style="width: 100%; height: 100%;min-height:1000px;" frameborder="0"
 	return s;
 };
 

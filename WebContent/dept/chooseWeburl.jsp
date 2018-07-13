@@ -50,7 +50,7 @@
             <td height="100%" width="40%" class="alt" align="center">
             <s:text name="sundyn.weburl.bind.noChoiced" />
             <div align="left">
-                <select multiple="multiple" name="menuNames" id="menuNames" style="width: 180px; height: 190px; background-color: #F5FAFA; border-style: none;">
+                <select multiple="multiple" name="menuNames" id="menuNames" style="width: 340px; height: 290px; background-color: #F5FAFA; border-style: none;">
                     <s:iterator value="noList">
                         <option value="${id }">
                                 ${name }
@@ -70,7 +70,7 @@
             <td height="100%" width="40%" class="alt" align="center">
                 <s:text name="sundyn.weburl.bind.choiced" />
                 <div align="center">
-                    <select multiple="multiple" name="CmenuNames" id="CmenuNames" style="width: 180px; height: 190px; background-color: #F5FAFA; border-style: none;">
+                    <select multiple="multiple" name="CmenuNames" id="CmenuNames" style="width: 340px; height: 290px; background-color: #F5FAFA; border-style: none;">
                         <s:iterator value="haveList">
                             <option value="${id }">
                                     ${name }

@@ -16,14 +16,6 @@
 </head>
 <body>
 <div class="layui-form">
-	<%--<div class="title">
-		<div class="text">
-			<s:text name="sundyn.user.addUser" />
-		</div>
-		<div class="close">
-			<img border="0" src="images/dialog_close.gif" class="hand" onclick="closeDialog()" />
-		</div>
-	</div>--%>
     <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-color: #e9f5fd;">
             <tr>
                 <td width="32%" align="right">
@@ -55,7 +47,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr style="display: none;">
                 <td style="border-color: #e9f5fd;" align="right">
                     <s:text name="sundyn.user.tipType" />
                 </td>
@@ -70,7 +62,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr style="display: none;">
                 <td style="border-color: #e9f5fd;" align="right">
                     <s:text name="sundyn.user.tipMobile" />
                 </td>
@@ -78,7 +70,7 @@
                     <input name="ext1" id="ext1" class="input_comm" />
                 </td>
             </tr>
-            <tr>
+            <tr style="display: none;">
                 <td style="border-color: #e9f5fd;" align="right">
                     <s:text name="sundyn.user.tipPc" />
                 </td>

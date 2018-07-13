@@ -56,7 +56,7 @@
                                     ${data.batchdate}
                             </td>
                             <td style="text-align: center;">
-                                <a href="javascript:batchToAdd('${data.id}','<s:text name='sundyn.notice.update' />');"><s:text name='sundyn.modifyOrupdate' /></a>
+                                <a href="javascript:batchToAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><s:text name='sundyn.modifyOrupdate' /></a>
                                 <a href="javascript:batchDelete('${data.id}');"><s:text name='sundyn.del' /></a>
                             </td>
                         </tr>

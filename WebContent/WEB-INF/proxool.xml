@@ -8,7 +8,7 @@
 		<driver-class>com.microsoft.jdbc.sqlserver.SQLServerDriver</driver-class>
 		<driver-properties>
 			<property name="user" value="sa" />
-			<property name="password" value="sa123456." />
+			<property name="password" value="sa123456789" />
 		</driver-properties>
 		<minimum-connection-count>5</minimum-connection-count>
 		<maximum-connection-count>100</maximum-connection-count>

@@ -9,8 +9,8 @@
         <ShowEmployeePage>1</ShowEmployeePage>
     </Software>
     <Server>
-        <IP>192.168.239.1</IP>
-        <Port>80</Port>
+        <IP>192.168.1.100</IP>
+        <Port>8080</Port>
     </Server>
     <Network>
         <Type>0</Type>

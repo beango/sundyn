@@ -22,30 +22,27 @@
 
 <body>
 <div class="layui-form">
-    <table width="100%" height="121" border="0" cellpadding="0" cellspacing="0">
+    <table border="0" cellpadding="0" cellspacing="0" style="width:100%;height:100%;">
         <tr>
-            <td align="right" width="15%" style="border-color: #e9f5fd;">
+            <td align="right" style="width:120px;">
                 <s:text name="sundyn.weburl.name"/><s:text name='sundyn.colon' />
             </td>
-            <td align="left" style="border-color: #e9f5fd;">
-                <input name="weburl.name" class="input_comm" id="webname" style="width:300px;" value="" />
+            <td align="left">
+                <input name="weburl.name" class="input_comm" id="webname" style="width:500px;" value="" />
             </td>
-        </tr>
-
-        <tr>
-            <td colspan="2" height="15px" style="border-color: #e9f5fd;">	 </td>
         </tr>
         <tr >
-            <td align="right"  style="border-color: #e9f5fd;"><s:text name="sundyn.weburl.url"/><s:text name='sundyn.colon' /></td>
-            <td align="left"  style="border-color: #e9f5fd;width:85%;">
-                <textarea name="weburl.url"  id="weburl" style="height:300px;"></textarea>
+            <td align="right">
+                <s:text name="sundyn.weburl.url"/><s:text name='sundyn.colon' />
+            </td>
+            <td align="left">
+                <textarea name="weburl.url" id="weburl" style="width:94%;height:500px;"></textarea>
             </td>
         </tr>
-        <tr><td colspan="2" style="text-align:center;padding-top:10px;">
-            <img src="<s:text name='sundyn.pic.ok' />" onclick="weburlAdd();"
-                 class="hand" />
-            <img src="<s:text name='sundyn.pic.close' />" onclick="parent.closeDialog();"
-                 class="hand">
+        <tr>
+            <td colspan="2" style="text-align:center;padding-top:10px;">
+                <img src="<s:text name='sundyn.pic.ok' />" onclick="weburlAdd();" class="hand" />
+                <img src="<s:text name='sundyn.pic.close' />" onclick="parent.closeDialog();" class="hand">
         </td></tr>
     </table>
 </div>

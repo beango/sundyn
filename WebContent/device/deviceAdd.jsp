@@ -1,3 +1,4 @@
+<%@ page import="java.util.Date" %>
 <%@ page pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
@@ -46,7 +47,7 @@
         <tr >
             <td align="right"  style="border-color: #e9f5fd;">添加时间<s:text name='sundyn.colon' /></td>
             <td align="left"  style="border-color: #e9f5fd;">
-                <input name="ctime" class="input_comm" id="ctime" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="${vo.ctime}" />
+                <input name="ctime" class="input_comm" id="ctime" value="${vo==null?ctime:vo.ctime}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
             </td>
         </tr>
         <tr>

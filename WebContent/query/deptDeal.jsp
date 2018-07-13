@@ -136,7 +136,7 @@
                         <s:text name="sundyn.inquiry.result.noVideo"/>
                     </c:if>
                     <c:if test="${!empty query.videofile}">
-                        <a href="#" id="${query.id }"><img src="images/lx.jpg" onclick="toshow('${query.videofile}','${pageContext.request.contextPath }','${query.id}');"/></a>
+                        <a href="#" id="${query.id}"><img src="images/lx.jpg" onclick="toshow('${query.videofile}','${pageContext.request.contextPath }','${query.id}');"/></a>
                         <a href="downloadVideo.action?videofile=${query.videofile}" target="_blank"><s:text
                                 name="sundyn.inquiry.result.download"></s:text></a>
                     </c:if>

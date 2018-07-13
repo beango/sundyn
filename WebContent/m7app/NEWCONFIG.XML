@@ -7,8 +7,8 @@
     <NetDelay>1</NetDelay>
     <version>1</version>
     <server>
-        <ip>192.168.239.1</ip>
-        <port>80</port>
+        <ip>192.168.1.100</ip>
+        <port>8080</port>
     </server>
     <basic>
         <approvertime>30</approvertime>

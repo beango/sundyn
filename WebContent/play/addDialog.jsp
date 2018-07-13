@@ -31,7 +31,7 @@
             </td>
             <td align="left" style="border-color: #e9f5fd;">
                 <div class="layui-input-inline">
-                <select id="playType" onchange="playTypeChange(this.value)">
+                <select id="playType" lay-filter="playType">
                     <option value="img" selected="selected"><s:text name='sundyn.play.pic' /></option>
                     <option value="text"><s:text name='sundyn.play.txt' /></option>
                     <option value="video"><s:text name='sundyn.play.vio' /></option>
@@ -40,7 +40,7 @@
                 </div>
             </td>
         </tr>
-        <tr id="other" >
+        <tr id="other">
             <td style="border-color: #e9f5fd;" align="right">
                 <s:text name='sundyn.play.playSource' />
             </td>
@@ -49,20 +49,26 @@
                 <form id="pic" enctype="multipart/form-data" name="pic" action="playUpload.action" method="post">
                     <input type="hidden" name="imgName" id="imgName" />
                     <input type="file" name="img" id="img" onchange="getFileName()" />
-                    <input type="button" value=" <s:text name='sundyn.upload' />" onclick="playupload();" class="layui-btn"/>
+                    <input type="button" value=" <s:text name='sundyn.upload' />" onclick="playupload();" class="layui-btn layui-btn-sm"/>
                 </form>
             </td>
         </tr>
-        <tr id="txt"  style="display:none;">
+        <tr id="txt1" style="display:none;">
+            <td style="border-color: #e9f5fd;" align="right">
+                <s:text name='sundyn.play.biaoti' />
+            </td>
+            <td align="left" style="border-color: #e9f5fd;">
+                <input type="text" id="playTitle" name="title" class="input_comm"></input>
+            </td>
+        </tr>
+        <tr id="txt2"  style="display:none;">
             <td style="border-color: #e9f5fd;" align="right">
                 <s:text name='sundyn.play.playSource' />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
-                <s:text name='sundyn.play.biaoti' /><input type="text" id="playTitle" name="title"></input><br/>
-                <textarea rows="10" cols="30" id="playContent" name="playContent"></textarea>
+                <textarea rows="10" cols="50" id="playContent" name="playContent"></textarea>
             </td>
         </tr>
-
         <tr>
             <td style="border-color: #e9f5fd;" align="right">
                 <s:text name='sundyn.play.playTime' />
@@ -93,6 +99,9 @@
     //Demo
     layui.use('form', function(){
         var form = layui.form;
+        form.on('select(playType)', function(data){
+            playTypeChange(data.value);
+        });
     });
 </script>
 </html>

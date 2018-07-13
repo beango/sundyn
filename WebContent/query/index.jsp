@@ -30,7 +30,7 @@
     <script type="text/javascript" src="js/jscharts.js"></script>
     <style type="text/css">
         table thead tr{size: 16pt;}
-        table td {border:1px solid #bad6ec;padding5px;}
+        table td {border:1px solid #bad6ec;padding:5px;}
     </style>
 </head>
 <body class="theme-default">

@@ -22,7 +22,7 @@
 </head>
 <body class="layui-form">
 <div class="layui-select-cus layui-inline">
-    <label class="layui-form-label" style="width:120px;"><s:text name='sundyn.query.selectEmployee'/></label>
+    <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.query.selectEmployee'/></label>
     <div class="layui-form-mid layui-word-aux">
     </div>
 </div>
@@ -40,7 +40,7 @@
     </div>
 </div>
 <div class="layui-inline">
-    <label class="layui-form-label"><s:text name="sundyn.analyse.danwei"/></label>
+    <label class="layui-form-label" style="width:45px;"><s:text name="sundyn.analyse.danwei"/></label>
     <div class="layui-input-inline">
         <input type="radio" name="type" checked="checked" value="day" title="<s:text name='sundyn.analyse.day'/>"/>
         <input type="radio" name="type" value="month" title="<s:text name='sundyn.analyse.month'/>"/>

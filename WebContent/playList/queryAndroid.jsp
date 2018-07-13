@@ -42,14 +42,12 @@
                                 ${playList.playListId}
                         </td>
                         <td style="text-align: center;">
-                            <div style="width:70px;height:20px;text-align: center;text-overflow:ellipsis;overflow:hidden;" >
-                                    ${playList.playListName}
-                            </div>
+                                ${playList.playListName}
                         </td>
                         <td style="text-align: center;">
                             <a href="javascript:playListEditDialogAndroid(${playList.playListId},'<s:text name='sundyn.playList.editTitle' />');"><s:text name='sundyn.playList.editTitle' /></a><s:text name="sundyn.separator"/>
                             <a href="#" onclick="javascript:playListDelAndroid(${playList.playListId});"><s:text name='sundyn.del' /></a><s:text name="sundyn.separator"/>
-                            <a href="javascript:playListUpdateDialogAndroid(${playList.playListId},'<s:text name='sudnyn.playList.updateM7' />');"><s:text name='sudnyn.playList.updateM7' /></a><s:text name="sundyn.separator"/>
+                            <%--<a href="javascript:playListUpdateDialogAndroid(${playList.playListId},'<s:text name='sudnyn.playList.updateM7' />');"><s:text name='sudnyn.playList.updateM7' /></a><s:text name="sundyn.separator"/>--%>
                             <a href="javascript:playListConfigDialogAndroid(${playList.playListId},'<s:text name='sudnyn.playList.editConfigFile' />');"><s:text name="sudnyn.playList.editConfigFile"></s:text></a>
                         </td>
                     </tr>

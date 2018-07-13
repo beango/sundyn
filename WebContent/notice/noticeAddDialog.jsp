@@ -10,26 +10,27 @@
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+    <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
 </head>
 
 <body>
 <div class="layui-form">
-    <table width="100%" height="101" border="0" cellpadding="0" cellspacing="0" style="border-color: #e9f5fd;">
+    <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" style="border-color: #e9f5fd;">
         <tr>
-            <td width="32%" align="right" style="border-color: #e9f5fd;">
+            <td width="12%" align="right" style="border-color: #e9f5fd;">
                 <s:text name="sundyn.notice.title"/><s:text name='sundyn.colon' />
             </td>
 
             <td align="left" style="border-color: #e9f5fd;">
-                <input name="notice.title" class="input_comm" id="noticeTitle"  value="" />
+                <input style="width:600px;" name="notice.title" class="input_comm" id="noticeTitle"  value="" />
             </td>
         </tr>
         <tr >
             <td align="right"  style="border-color: #e9f5fd;"><s:text name="sundyn.notice.content"/><s:text name='sundyn.colon' /></td>
             <td align="left"  style="border-color: #e9f5fd;">
-                <textarea name="notice.content"  id="noticeContent" rows="5" cols="60"></textarea>
+                <textarea name="notice.content"  id="noticeContent"  style="height:400px; width:100%;"></textarea>
             </td>
         </tr>
         <tr>

@@ -30,7 +30,7 @@
 <div class="layui-form" lay-filter="f">
     <input type="hidden" id="deptId" name="deptId" value="${deptId}"/>
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label" style="width:120px;"><s:text name='sundyn.query.selectEmployee'/></label>
+        <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.query.selectEmployee'/></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
     </div>
