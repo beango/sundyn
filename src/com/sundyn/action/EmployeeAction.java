@@ -957,6 +957,7 @@ public class EmployeeAction extends MainAction
         final String m7binpath = String.valueOf(basepath) + "update" + File.separator + playListId;
         if (mac != null && config != null && config.equals("true")) {
             this.deviceService.findAndAddByMac(mac);
+            deptService.hasAdnAddDeptByMac(mac);
             final Map dept = this.deptService.findByMac(mac);
             if (dept != null) {
                 playListId = dept.get("dept_playListId").toString();

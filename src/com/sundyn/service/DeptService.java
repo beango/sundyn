@@ -58,6 +58,26 @@ public class DeptService extends SuperDao
         }
     }
 
+    public void hasAdnAddDeptByMac(final String mac) {
+        String sql = "select count(*) c from appries_dept t2 where remark=? and deptType=0";
+        Object[] arg = { mac };
+        try {
+            boolean has = this.getJdbcTemplate().queryForInt(sql, arg)>0;
+            System.out.println(">>>>>>>>>>>>>>>>>>>>" + has);
+            if  (!has){
+                sql = "Insert into appries_dept (name, fatherId, remark, child,lenvel,client_type,product_type,deptType,dept_camera_url,dept_businessId," +
+                        "dept_playListId,ext1,ext2,ext3,useVideo,notice,cityid,provinceid,ext5) " +
+                        "values(?,isnull((select top 1 id from appries_dept where depttype=1),(select top 1 id from appries_dept)),?,?,?,?,?,?,?,?,?,?,?,?,?,?,(SELECT _id FROM [citys] where name='广州'),(SELECT _id FROM provinces where name='广东'),getdate())";
+                arg = new Object[]{mac, mac, "0", "3", "0", "", "0", "", "-1", "1", "", "", "", "", ""};
+                this.getJdbcTemplate().update(sql, arg);
+                ClearCache();
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public Map findDeptByFatherid(final int id) {
         final String sql = "select * from appries_dept where id=?";
         final Object[] arg = { id };
@@ -379,7 +399,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForInt(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return 0;
         }
     }

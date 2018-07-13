@@ -272,13 +272,13 @@ public class DeviceAction extends MainAction
         final Document Doc = new Document(root);
         List employInfoSet = deviceService.findBatchByBatchId("", "");
         if (employInfoSet != null) {
-            final Element playlistversion = new Element("playlistversion").setText("0");
+            final Element playlistversion = new Element("name").setText("ZXEval-1.0.apk");
             root.addContent((Content)playlistversion);
 
-            final Element applicationversion = new Element("applicationversion").setText("1");
+            final Element applicationversion = new Element("version").setText("2");
             root.addContent((Content)applicationversion);
 
-            final Element menulistversion = new Element("menulistversion").setText("0");
+            final Element menulistversion = new Element("url").setText("http://111.230.14.84:8080/update/ZXEval-1.0.apk");
             root.addContent((Content)menulistversion);
 
             final Element installtable = new Element("installtable").setText("");
