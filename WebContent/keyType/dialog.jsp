@@ -13,30 +13,24 @@
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
-
 </head>
 <body>
 <div class="layui-form">
     <table class="layui-table">
         <tr>
-            <td align="center" valign="middle"
-                background="images/table_bg_03.jpg" class="px13_1">
+            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                 <s:text name="sundyn.column.keyValue" />
             </td>
-            <td align="center" valign="middle"
-                background="images/table_bg_03.jpg" class="px13_1">
+            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                 <s:text name="sundyn.column.keyDescription" />
             </td>
-            <td align="center" valign="middle"
-                background="images/table_bg_03.jpg" class="px13_1">
+            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                 <s:text name="sundyn.column.quanValue" />
             </td>
-            <td align="center" valign="middle"
-                background="images/table_bg_03.jpg" class="px13_1">
+            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                 <s:text name="sundyn.column.isContent" />
             </td>
-            <td align="center" valign="middle"
-                background="images/table_bg_03.jpg" class="px13_1">
+            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
                 <s:text name="sundyn.column.isUse" />
             </td>
         </tr>
@@ -63,7 +57,6 @@
     <div style="text-align: left;margin-left:15px;" class="layui-form-item">
         <div class="layui-input-inline">
             <img src="<s:text name='sundyn.pic.save' />" onclick="keyTypeEditAll()" class="hand" />
-            <img src="<s:text name='sundyn.pic.close' />" onclick="closeDialog()" class="hand" />
         </div>
         <div class="layui-form-mid layui-word-aux">权值最大为10</div>
     </div>

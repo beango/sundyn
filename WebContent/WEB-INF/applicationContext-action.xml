@@ -224,6 +224,7 @@
 	</bean>
     <bean id="deviceAction" class="com.sundyn.action.DeviceAction" scope="prototype" >
         <property name="deviceService" ref="deviceService"></property>
+        <property name="appService" ref="appService"></property>
     </bean>
 
 </beans>

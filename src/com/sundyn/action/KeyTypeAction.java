@@ -6,6 +6,7 @@ import org.apache.struts2.*;
 import javax.servlet.http.*;
 import java.util.*;
 import net.sf.json.*;
+import org.jfree.util.Log;
 
 public class KeyTypeAction extends ActionSupport
 {
@@ -27,47 +28,60 @@ public class KeyTypeAction extends ActionSupport
     
     public String keyTypeEdit() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        final String name = request.getParameter("name");
-        final String isJoy = request.getParameter("isJoy");
-        final String yes = request.getParameter("yes");
-        final String ext1 = request.getParameter("ext1");
-        int extInt;
-        if (ext1 == null || ext1.equals("")){
-            request.setAttribute("msg", "权值不能为空!");
+        final String ids = request.getParameter("ids");
+        final String[] names = request.getParameter("names").split(",");
+        final String[] isJoys = request.getParameter("isJoys").split(",");
+        final String[] yess = request.getParameter("yess").split(",");
+        final String[] ext1s = request.getParameter("ext1s").split(",");
+        String[] idArray = ids.split(",");
+        if (idArray == null || idArray.length==0){
+            request.setAttribute("msg", "系统错误!");
             return "success";
         }
-        try {
-            extInt = Integer.valueOf(ext1);
-            if(extInt>10){
-                request.setAttribute("msg", "权值不能大于10!");
+        for (int idx =0; idx < idArray.length; idx++){
+            if (idArray[idx].equals(""))
+                continue;
+
+            int extInt;
+            String ext1 = ext1s[idx];
+            if (ext1 == null || ext1.equals("")){
+                request.setAttribute("msg", "权值不能为空!");
                 return "success";
             }
-        }
-        catch (Exception e){
-            request.setAttribute("msg", "权值只能为整数!");
-            return "success";
-        }
-        String ext2 = name;
-        if (this.getText("sundyn.language").equals("en")) {
-            name.replace(" ", " ");
-            final String[] names = name.split(" ");
-            String shortName = "";
-            if (names.length > 1) {
-                for (int j = 0; j < names.length; ++j) {
-                    if (j == 0) {
-                        shortName = String.valueOf(shortName) + names[j].toCharArray()[0];
-                    }
-                    else {
-                        shortName = String.valueOf(shortName) + "." + names[j].toCharArray()[0];
-                    }
+            try {
+                extInt = Integer.valueOf(ext1);
+                if(extInt>10){
+                    request.setAttribute("msg", "权值不能大于10!");
+                    return "success";
                 }
             }
-            else {
-                shortName = new StringBuilder(String.valueOf(names[0].toCharArray()[0])).toString();
+            catch (Exception e){
+                request.setAttribute("msg", "权值只能为整数!");
+                return "success";
             }
-            ext2 = shortName.toUpperCase();
+            String ext2 = names[idx];
+            if (this.getText("sundyn.language").equals("en")) {
+                ext2.replace(" ", " ");
+                final String[] names2 = names[idx].split(" ");
+                String shortName = "";
+                if (names2.length > 1) {
+                    for (int j = 0; j < names2.length; ++j) {
+                        if (j == 0) {
+                            shortName = String.valueOf(shortName) + names2[j].toCharArray()[0];
+                        }
+                        else {
+                            shortName = String.valueOf(shortName) + "." + names2[j].toCharArray()[0];
+                        }
+                    }
+                }
+                else {
+                    shortName = new StringBuilder(String.valueOf(names2[0].toCharArray()[0])).toString();
+                }
+                ext2 = shortName.toUpperCase();
+            }
+            this.keyTypeService.update(Integer.valueOf(idArray[idx]), names[idx], (isJoys.length>idx?isJoys[idx]:""), yess[idx], ext1, ext2);
         }
-        this.keyTypeService.update(this.id, name, isJoy, yes, ext1, ext2);
+        request.setAttribute("msg", "保存成功!");
         return "success";
     }
     

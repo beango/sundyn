@@ -22,6 +22,7 @@
     <bean id="voteService" class="com.sundyn.service.VoteService" parent="superDao"></bean>
     <bean id="businessService" class="com.sundyn.service.BusinessService" parent="superDao"></bean>
     <bean id="clientService" class="com.sundyn.service.ClientService" parent="superDao"></bean>
+    <bean id="appService" class="com.sundyn.service.AppService" parent="superDao"></bean>
     <!--
     <bean id="loginService" class="com.sundyn.service.LoginService" parent="superDao"></bean>
     -->

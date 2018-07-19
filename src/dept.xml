@@ -28,7 +28,7 @@
 			<result name="ok">/dept/chooseWeburl.jsp</result>
 		</action>
 		<action name="deptWeburlAdd" class="deptAction" method="deptWeburlAdd">
-			<result name="ok">/dept/chooseWeburl.jsp</result>
+			<result name="ok">/msg.jsp</result>
 		</action>
 		<action name="deptAddChildItem" class="deptAction"
 			method="deptAddChildItem">

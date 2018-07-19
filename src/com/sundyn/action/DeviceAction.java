@@ -1,5 +1,6 @@
 package com.sundyn.action;
 
+import com.sundyn.service.AppService;
 import com.sundyn.service.DeviceService;
 import com.sundyn.util.DateHelper;
 import com.sundyn.util.Pager;
@@ -37,6 +38,16 @@ public class DeviceAction extends MainAction
     }
 
     public DeviceService deviceService;
+
+    public AppService getAppService() {
+        return appService;
+    }
+
+    public void setAppService(AppService appService) {
+        this.appService = appService;
+    }
+
+    public AppService appService;
     private Pager pager;
     
     public String batchquery() {
@@ -256,29 +267,22 @@ public class DeviceAction extends MainAction
         }
         request.setAttribute("msg","该批次下存在未删除的设备!");
         return "error";
-
-        /*this.deviceService.deviceDelete(id);
-        JSONObject jo = new JSONObject();
-        jo.put("succ", true);
-        jo.put("errmsg", "删除成功");
-        request.setAttribute("msg", jo);
-        return "success";*/
     }
 
     public String CheckLivingUrl() throws JDOMException, IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String mac = request.getParameter("mac");
         final Element root = new Element("check");
+        Map newestApp = appService.getNewestApp();
         final Document Doc = new Document(root);
-        List employInfoSet = deviceService.findBatchByBatchId("", "");
-        if (employInfoSet != null) {
-            final Element playlistversion = new Element("name").setText("ZXEval-1.0.apk");
+        if (newestApp != null) {
+            final Element playlistversion = new Element("name").setText(String.valueOf(newestApp.get("appname")));
             root.addContent((Content)playlistversion);
 
-            final Element applicationversion = new Element("version").setText("2");
+            final Element applicationversion = new Element("version").setText(String.valueOf(newestApp.get("versionCode")));
             root.addContent((Content)applicationversion);
 
-            final Element menulistversion = new Element("url").setText("http://111.230.14.84:8080/update/ZXEval-1.0.apk");
+            final Element menulistversion = new Element("url").setText(String.valueOf(newestApp.get("appurl")));
             root.addContent((Content)menulistversion);
 
             final Element installtable = new Element("installtable").setText("");

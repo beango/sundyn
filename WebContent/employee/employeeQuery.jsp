@@ -1,6 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <div style="width: 100%;">
 	<img src="<s:text name='sundyn.employee.pic.employeeManager'/>" width="480" height="29" />
@@ -56,12 +57,12 @@
                       <td align="center">${employee.CardNum}</td>
                       <td align="center">
                           <c:if test="${online!=null}">
-                              <c:forEach items="${online}" var="onlineitem">
-                                  <c:choose>
-                                      <c:when test="${onlineitem.key==employee.id}">在线</c:when>
-                                      <c:otherwise>不在线</c:otherwise>
-                                  </c:choose>
-                              </c:forEach>
+                              <c:if test="${fn:contains(online, employee.id)}">
+                                  在线
+                              </c:if>
+                              <c:if test="${!fn:contains(online, employee.id)}">
+                                  不在线
+                              </c:if>
                           </c:if>
                       </td>
                       <td align="center"><a href="javascript:employeeEditDialog(${employee.Id},'<s:text name="sundyn.employee.editEmployee" />')"><s:text name="sundyn.modify"/></a> <s:text name="sundyn.separator"/>

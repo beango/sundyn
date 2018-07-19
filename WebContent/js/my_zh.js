@@ -1099,7 +1099,7 @@ function keyTypeEdit(data) {
 		yes = 0;
 	}
 	dojo.xhrPost({url:"keyTypeEdit.action", content:{id:data, name:name, isJoy:isJoy,yes:yes,ext1:ext1}, load:function (resp, ioArgs) {
-        console.log(resp);
+
 	}});
 }
 
@@ -1119,14 +1119,46 @@ function keyTypeEditAll() {
             alert("权值最大为10");
             return;
         }
-		 keyTypeEdit(1);
+        var idx = 1;
+	    var ids = "", names = "", isJoys="", yess = "", ext1s = "";
+	    while (idx<=7){
+            var name = document.getElementById("name" + idx).value;
+            var isJoy = document.getElementById("isJoy" + idx);
+            var yes=document.getElementById("yes"+idx);
+            var ext1=document.getElementById("ext1"+idx).value;
+            if (isJoy.checked) {
+                isJoy = "on";
+            } else {
+                isJoy = "";
+            }
+            if (yes.checked) {
+                yes = 1;
+            } else {
+                yes = 0;
+            }
+            ids += idx+",";
+            names += name + ",";
+            isJoys += isJoy + ",";
+            yess += yes + ",";
+            ext1s += ext1 + ",";
+	        idx++;
+        }
+        if(("," + yess).indexOf(",1,")==-1)
+        {
+            alert("至少选择一个评价按键！");
+            return;
+        }
+        dojo.xhrPost({url:"keyTypeEdit.action", content:{ids:ids, names:names, isJoys:isJoys,yess:yess,ext1s:ext1s}, load:function (resp, ioArgs) {
+                alert(resp);
+            }});
+		/* keyTypeEdit(1);
 		 keyTypeEdit(2);
 		 keyTypeEdit(3);
 		 keyTypeEdit(4);
 		 keyTypeEdit(5);
 		 keyTypeEdit(6);
 		 keyTypeEdit(7);
-		 alert("保存成功");
+		 */
 	}else{
 		alert("权值非法，只能为整数" + (ext1>1));
 	}
@@ -4041,8 +4073,8 @@ function deptWeburlAdd(){
                     icon: 1,
                     time: 800
                 }, function(){
-                    parent.closeDialog();
-                    parent.refreshTab();
+                    closeDialog();
+                    refreshTab();
                 });
             }
             else{

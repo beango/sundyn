@@ -63,7 +63,6 @@ public class DeptService extends SuperDao
         Object[] arg = { mac };
         try {
             boolean has = this.getJdbcTemplate().queryForInt(sql, arg)>0;
-            System.out.println(">>>>>>>>>>>>>>>>>>>>" + has);
             if  (!has){
                 sql = "Insert into appries_dept (name, fatherId, remark, child,lenvel,client_type,product_type,deptType,dept_camera_url,dept_businessId," +
                         "dept_playListId,ext1,ext2,ext3,useVideo,notice,cityid,provinceid,ext5) " +
