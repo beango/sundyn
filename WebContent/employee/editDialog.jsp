@@ -17,13 +17,16 @@
 <body>
 <div class="layer-form">
     <table width="99%" border="0" cellpadding="0" cellspacing="0" style="border-color:#FFFFFF;">
-        <tr><td rowspan="11" width="20%;" align="right;">
-            <img src="${m.picture}" id="img123"  style="width: 140px;height: 147px;" class="hand" onclick="closeDialog()"  border="0" />
-            <form id="pic" enctype="multipart/form-data" name="pic" action="employeeAdd.action" method="post" style="margin: 0px;padding: 0px;background-color:#e9f5fd;">
+        <tr><td rowspan="11" width="20%;" style="text-align:center;">
+            <img src="${m.picture}" id="img123" style="width: 250px;height: 280px;" border="0" />
+            <div class="layui-upload">
                 <input type="hidden" name="imgName" id="imgName" value="${m.picture }" />
-                <input type="file" name="img" id="img" onblur="getFileName()" style="width: 140px;" />
-                <img src="<s:text name='sundyn.pic.upload' />" width="60" height="25" onclick="employeeUpload()" class="hand" />
-            </form>
+                <button type="button" class="layui-btn" id="test1">选择图片</button>
+                <div class="layui-upload-list">
+                    <img style="width: 140px;height: 147px;" class="layui-upload-img" name="img123" id="img123" value="${m.picture }">
+                    <p id="demoText"></p>
+                </div>
+            </div>
         </td></tr>
         <tr>
             <td width="20%" align="right">
@@ -119,11 +122,35 @@
     </table>
 
     <script>
-        layui.use(['form', 'layedit', 'laydate'], function(){
+        layui.use(['form', 'layedit', 'laydate', 'upload'], function(){
             var form = layui.form
                 ,layer = layui.layer
                 ,layedit = layui.layedit
-                ,laydate = layui.laydate;
+                ,laydate = layui.laydate
+                ,upload = layui.upload;
+
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test1'
+                ,url: 'employeeUpload.action'
+                ,before: function(obj){
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function(index, file, result){
+                        //$('#imgName').attr('src', result); //图片链接（base64）
+                    });
+                }
+                ,done: function(res){
+                    if(res.rst == "success" && res.path && res.path.length>0){
+                        $('#imgName').val(res.path[0]); //图片链接（base64）
+                        $('#img123').attr('src', res.path[0]);
+                        return layer.msg('上传成功！');
+                    }
+                    alert(res.msg);
+                }
+                ,error: function(){
+                    layer.msg('上传失败！');
+                }
+            });
         });
     </script>
 </div>

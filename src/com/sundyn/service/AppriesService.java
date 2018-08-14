@@ -21,7 +21,6 @@ public class AppriesService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -34,8 +33,6 @@ public class AppriesService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            AppriesService.logger.debug((Object)e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
@@ -48,8 +45,6 @@ public class AppriesService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            AppriesService.logger.debug((Object)e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
@@ -62,8 +57,6 @@ public class AppriesService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            AppriesService.logger.debug((Object)e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
@@ -91,22 +84,39 @@ public class AppriesService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            AppriesService.logger.debug((Object)e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean addAppriesContact(final String mac, final String tt, final String name, final String phone, final String remark){
+        logger.info("mac:"+ mac + ", name:"+ name + ", phone:" + phone + ", remark:"+remark + ", tt:" + tt);
+        if (tt==null || tt.equals("") || mac==null || mac.equals("")){
+            return false;
+        }
+        final String sql = "update appries_appries set ext1=?, ext2=?, remark=? where JieshouTime=? and deptid in(select id from appries_dept where remark=?)";
+        final Object[] args = {
+                name==null?"":name,
+                phone==null?"":phone,remark==null?"":remark,
+                tt, mac
+        };
+        try {
+            int r =  this.getJdbcTemplate().update(sql, args);
+            logger.info("r:"+ r);
+            return r>0;
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-    
+
     public boolean addArrires2(final String mac, final String tt, final String cardnum, final String pj, final String demo, final String videofile, final String businessTime) {
         final String sql = "{call appriesAdd(?,?,?,?,?,?,?,?)}";
         final Object[] args = { mac, tt, cardnum, pj, demo, 1, videofile, businessTime };
         try {
-            final int num = this.getJdbcTemplate().update(sql, args);
-            return num > 0;
+            return this.getJdbcTemplate().update(sql, args)>0;
         }
         catch (Exception e) {
-            AppriesService.logger.debug((Object)e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
@@ -115,12 +125,9 @@ public class AppriesService extends SuperDao
         final String sql = "{call appriesAdd(?,?,?,?,?,?,?,?,?,?)}";
         final Object[] args = { mac, tt, cardnum, pj, demo, 1, videofile, businessTime, min, sec };
         try {
-            final int num = this.getJdbcTemplate().update(sql, args);
-            return num > 0;
+            return this.getJdbcTemplate().update(sql, args)>0;
         }
         catch (Exception e) {
-            AppriesService.logger.debug((Object)e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
@@ -129,12 +136,9 @@ public class AppriesService extends SuperDao
         final String sql = "{call appriesAdd(?,?,?,?,?,?)}";
         final Object[] args = { mac, tt, cardnum, pj, demo, businessTypeId };
         try {
-            final int num = this.getJdbcTemplate().update(sql, args);
-            return num > 0;
+            return this.getJdbcTemplate().update(sql, args)>0;
         }
         catch (Exception e) {
-            AppriesService.logger.debug((Object)e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
@@ -158,7 +162,6 @@ public class AppriesService extends SuperDao
             m.put("keyname", temp.get("name"));
         }
         catch (Exception e) {
-            e.printStackTrace();
             m = null;
         }
         return m;
@@ -185,7 +188,6 @@ public class AppriesService extends SuperDao
             return this.getJdbcTemplate().update(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return 0;
         }
     }
@@ -199,7 +201,6 @@ public class AppriesService extends SuperDao
             return this.getJdbcTemplate().update(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return 0;
         }
     }

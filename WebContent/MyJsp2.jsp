@@ -1,18 +1,17 @@
-<%@ page pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="s" uri="/struts-tags" %>
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html>
 <head>
-    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
-    <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
-    <script type="text/javascript" src="js/dojo.js"></script>
-    <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layui/layui.js"></script>
-    <script type="text/javascript" src="js/myAjax.js"></script>
+    <meta charset="utf-8">
+    <title>固定div层拖动</title>
+    <script src="js/interact.js"></script>
+
+    <script src="js/jquery-2.1.3.min.js"></script>
     <style>
         * {
             padding: 0px;
@@ -20,6 +19,8 @@
         }
 
         .draggable {
+            width: 100px;
+            height: 100px;
             line-height: 50px;
             min-height: 10px;
             min-width: 10px;
@@ -36,76 +37,55 @@
             margin: 0px;
             overflow: hidden;
             opacity: 0.8;
-            border:1px solid #d5d5d5;
         }
 
-        div.h4 {
+        h4 {
             text-align: center;
-            position: absolute;
-            bottom: 0px;
-            left: 0px;
-            right: 0px;
-            color:black;
+            vertical-align: middle;
         }
 
         p.wh {
-            font-size: 10px;
+            font-size: 8px;
             position: absolute;
             bottom: 0px;
             right: 0px;
-            line-height: 10px;
+            line-height: 8px;
             padding: 2px;
-            color:black;
         }
 
         p.lt {
-            font-size: 10px;
+            font-size: 8px;
             position: absolute;
             top: 0px;
             left: 0px;
-            line-height: 10px;
+            line-height: 8px;
             padding: 2px;
-            color:black;
         }
 
         p.close {
-            font-size: 10px;
+            font-size: 8px;
             position: absolute;
             top: 0px;
             right: 0px;
-            line-height: 10px;
+            line-height: 8px;
             padding: 2px;
             cursor: pointer;
             display: none;
-            color:black;
         }
 
         p.c {
-            font-size: 10px;
+            font-size: 12px;
             position: absolute;
             bottom: 50%;
             right: 50%;
-            line-height: 10px;
+            line-height: 12px;
             padding: 2px;
-            color:black;
         }
 
-        div.e button {
-            font-size: 10px;
-            position: absolute;
-            bottom: 2px;
-            left: 0px;
-            line-height: 10px;
-            padding: 2px;
-            height:10px;
-            background: none;
-            color:black;
-
-        }
         .content {
             border: 1px solid #ccc;
-            width: 985px;
-            height: 490px;
+            width: 1000px;
+            height: 600px;
             position: relative;
             margin: 0px auto;
         }
@@ -160,177 +140,52 @@
     </style>
 </head>
 <body>
-<div class="layui-form">
-    <table style="border:0px;">
-        <tr>
-            <td style="width:600px;" valign="top">
-                <table class="layui-table">
-                    <tr>
-                        <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
-                            <s:text name="sundyn.column.keyValue" />
-                        </td>
-                        <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
-                            <s:text name="sundyn.column.keyDescription" />
-                        </td>
-                        <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
-                            <s:text name="sundyn.column.quanValue" />
-                        </td>
-                        <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
-                            <s:text name="sundyn.column.isContent" />
-                        </td>
-                        <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
-                            <s:text name="sundyn.column.isUse" />
-                        </td>
-                    </tr>
-                    <c:forEach items="${list}" var="keyType">
-                        <tr>
-                            <td style="text-align: center;">
-                                <s:text name="sundyn.apprieser.key" />${keyType.id}
-                            </td>
-                            <td style="text-align: center;">
-                                <input type="text" value="${keyType.name}" id="name${keyType.id}" data-id="${keyType.id}" class="input_comm eval_name"/>
-                            </td>
-                            <td style="text-align: center;">
-                                <input type="text" value="${keyType.ext1}" id="ext1${keyType.id}" style="width: 30px;" class="input_comm"/>
-                            </td>
-                            <td style="text-align: center;">
-                                <input type="checkbox" id="isJoy${keyType.id}" <c:if test="${keyType.isJoy=='on'}">checked="checked"</c:if> lay-skin="switch" />
-                            </td>
-                            <td style="text-align: center;">
-                                <input type="checkbox" id="yes${keyType.id}" <c:if test="${keyType.yes=='1' }">checked="checked"</c:if> lay-skin="switch" lay-filter="layfilter" data-text="${keyType.name}" />
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </table>
-            </td>
-            <td valign="top">
-                <div style="text-align: left;margin-left:15px;" class="layui-form-item">
-                    <div class="layui-form-mid layui-word-aux">
-                        <div id="content" class="content">
-                        </div>
-                        <div>
-                            字体：<input id="evalSize" type="text" value="30"/>
-                        </div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
+<div id="content" class="content">
+    <div class="left">
+        <div style="padding-top: 8px;"></div>
+    </div>
+    <div class="right">
+    </div>
+    <button onclick="getlayout()">获取布局</button>
 </div>
-<div class="layui-input-inline">
-    <img src="<s:text name='sundyn.pic.save' />" onclick="keyTypeEditAll()" class="hand" />（权值最大为10）
-</div>
-<script src="js/interact.js"></script>
-<script src="js/json2.js"></script>
+
 <script>
-    var dh = 220, dw=165;
-    function getRandomColor() {
-        /*return '#' +
-            (function (color) {
-                return (color += '0123456789abcdef'[Math.floor(Math.random() * 16)])
-                && (color.length == 6) ? color : arguments.callee(color);
-            })('');*/
-        return "#ffffff";
-    }
-    layui.use(['form', 'upload'], function(){
-        var form = layui.form,upload = layui.upload;
-        form.on('switch(layfilter)', function(data){
-            var id = data.elem.id.replace("yes","");
-            if(data.elem.checked && $("#e"+id).length==0){
-                var text = data.elem.getAttribute('data-text');
-                var t = {"id":id,"text":text,"width":dw,"height":dh,"b":"0","g":"0","img":"eval_0.png","lx":0,"ly":0,"r":"0","size":$("#evalSize").val(),"x":"0","y":"0"}
-                addEvalBtn(t);
-            }
-            if(!data.elem.checked) {
-                $("#e"+id).remove();
-            }
-        });
-        //普通图片上传
-        evalbutton(1, upload);
-        evalbutton(2, upload);
-        evalbutton(3, upload);
-        evalbutton(4, upload);
-        evalbutton(5, upload);
-        evalbutton(6, upload);
-        evalbutton(7, upload);
-        var reg =/(^[1-9]\d*$)/;
-
-        $("#evalSize").change(function(){
-            if(!reg.test($(this).val()))
-            {
-                alert("字体大小必须是正整数！");
-                return;
-            }
-            $(".content .draggable div.h4").css("font-size", parseInt($(this).val()));
-        });
-
-        $("input.eval_name").change(function(){
-            var id = $(this).attr("data-id");
-            $("#e" + id).find(".h4").html($(this).val());
-        });
-    });
-
-    function evalbutton(id, upload){
-        var uploadInst = upload.render({
-            elem: '#evalbutton' + id
-            ,url: 'employeeUpload.action'
-            ,before: function(obj){
-                obj.preview(function(index, file, result){
-                    //$('#imgName').attr('src', result); //图片链接（base64）
-                });
-            },done: function(res){
-                if(res.rst == "success" && res.path && res.path.length>0){
-                    $('#e' + id).css("background-image", "url(" + res.path[0] + ")"); //图片链接（base64）
-                    $('#e' + id).attr('data-img', res.path[0].substr(res.path[0].indexOf('/')+1));
-                    return layer.msg('上传成功！');
-                }
-                alert(res.msg);
-            }
-            ,error: function(){
-                layer.msg('上传失败！');
-            }
-        });
-    }
-
-    function addEvalBtn(t, i, r){
-        $('.content').append('<div class="draggable" id="e' + t.id + '" style="width:'+t.width+'px;height:'+t.height+'px;background:'
-            + getRandomColor() + ';transform: translate('+t.lx+'px, '+t.ly+'px);" data-x="'+t.lx+'" data-y="'+t.ly+'" data-img="'+t.img+'">\n' +
-            '            <div class="h4" style="font-size:'+t.size+'px;">' + t.text + '</div>\n' +
-            '            <p class="lt">左'+t.lx+'上'+t.ly+'px</p>\n' +
-            '            <p class="wh">'+t.width+'\u00D7'+t.height+'px</p>\n' +
-            '            <div class="layui-upload e"><button type="button" class="layui-btn" id="evalbutton'+t.id+'">选择图片</button></div>\n' +
-            '        </div>');
-        if (t.img!=null && t.img !=''){
-            $("#e" + t.id).css("background-image", "url(/upload/" + t.img + ")"); //图片链接（base64）;
-        }
-        $("#e" + t.id + " .close").click(function(){
-            $(this).parent().remove();
-        });
-    }
-
     (function () {
-        var arr = [];
-        var evalbuttons1 = ${evalbuttons};
-        for(var idx=0; idx<evalbuttons1.length;idx++){
-            arr.push(evalbuttons1[idx]);
-        }
-        var size = 4;//每行默认4个
-        var s = arr.length-size;
-        var data = [];
-        while (s>=0){
-            data.push(arr.slice(s, s+size));
-            s -= size;
-        }
-        if(s+size>0)
-            data.push(arr.slice(0, s+size));
-        data.reverse();
+        var data = [
+            '001',
+            '002',
+            '003',
+            '004',
+            '005',
+            '006',
+            '007',
+            '008'
+        ];
+        var dh = 100;
+        data.map(function (t, i) {
+            $('.left').append('<div class="drag_l" id="' + i + '" >' + t + '</div>')
+        });
 
         $(function () {
-            data.map(function (t1, i1) {
-                t1.map(function (t, i) {
-                    addEvalBtn(t, i, i1);
-
-                });
+            $('.drag_l').click(function () {
+                $('.right').append('<div class="draggable" id="' + $(this).attr('id') + '"  style="background:' + getRandomColor() + ';transform: translate(100px, 100px);" data-x="100" data-y="100">\n' +
+                    '            <h4>' + $(this).text() + '</h4>\n' +
+                    '            <p class="lt">左0上0px</p>\n' +
+                    '            <p class="wh">153,,,,×163px</p>\n' +
+                    '            <p class="close">关闭</p>\n' +
+                    '        </div>')
+                $(this).css("display", "none");
+            });
+            data.map(function (t, i) {
+                var x = i*100;
+                var y = 0;
+                console.log(x, y);
+                $('.right').append('<div class="draggable" id="' + i + '"  style="background:' + getRandomColor() + ';transform: translate('+x+'px, '+y+'px);" data-x="'+x+'" data-y="'+y+'">\n' +
+                    '            <h4>' + t + '</h4>\n' +
+                    '            <p class="lt">左'+x+'上'+y+'px</p>\n' +
+                    '            <p class="wh">100\u00D7100px</p>\n' +
+                    '            <p class="close">关闭</p>\n' +
+                    '        </div>')
             });
             mydrag();
         });
@@ -351,7 +206,13 @@
         Array.prototype.insert = function (index, item) {
             this.splice(index, 1, item);
         };
-
+        var getRandomColor = function () {
+            return '#' +
+                (function (color) {
+                    return (color += '0123456789abcdef'[Math.floor(Math.random() * 16)])
+                    && (color.length == 6) ? color : arguments.callee(color);
+                })('');
+        }
 
         var mydrag = function () {
             interact('.draggable')
@@ -368,6 +229,8 @@
                         var textEl = event.target.querySelector('p.lt');
                         textEl && (textEl.textContent =
                             position(event));
+                        var closeEl = event.target.querySelector('p.close');
+                        closeEl.style.display = 'block';
                         drag_s(event);
                         myclose(event);
                     }
@@ -504,8 +367,10 @@
 
             function myclose(event) {
                 $(event.target).find(".close").click(function () {
+                    $('.left').find('#' + $(this).parent().attr('id')).css('display', 'block');
                     $(this).parent().remove();
                     drag_c(event)
+                    // removeByValue(every_x, parseFloat(event.target.getAttribute('data-x')));
                 })
             }
 
@@ -537,27 +402,16 @@
     })()
 
     function getlayout(){
-        var items = $(".content .draggable");
-        var data = [];
+        var items = $(".right .draggable");
         for (var i=0; i<items.length; i++){
             var x = $(items[i]).attr("data-x"),
                 y = $(items[i]).attr("data-y"),
                 w = $(items[i]).width(),
-                h = $(items[i]).height(),
-                id = $(items[i]).attr("id").replace('e',''),
-                text = $(items[i]).find("div.h4").html().trim(),
-                img = $(items[i]).attr("data-img"),
-                size = $("#evalSize").val();
-            if (img==null) img = "";
-            data.push({'id': id, 'text': text, 'size':size, 'r': 0, 'g': 0, 'b': 0, 'lx': x, "ly": y, 'x': i, "y": 0, "width": w, "height": h, "img": img});
-            console.log('id:', id, 'x:', x, " y:", y, " width:", w, " height:", h);
-            console.log();
-
+                h = $(items[i]).height();
+            console.log('x:', x, " y:", y, " width:", w, " height:", h);
+            console.log()
         }
-        console.log(JSON.stringify(data))
-        $.post("keyTypeLayoutEdit.action", {data: JSON.stringify(data)},function(result){
-            console.log(result);
-        })
     }
 </script>
-</body></html>
+</body>
+</html>

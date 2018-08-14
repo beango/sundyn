@@ -731,6 +731,20 @@ public class DeptService extends SuperDao
         }
     }
 
+    public boolean updateIpAdd(String mac, String ipadd) {
+        final String sql = "update appries_dept set ipadd='" + ipadd + "' where remark ='" + mac + "'";
+        try {
+            final int num = this.getJdbcTemplate().update(sql);
+            if (num > 0) {
+                return true;
+            }
+            return false;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
     public boolean addErrorMac(final String mac) {
         final String sql = "insert into appries_onlinemac (mac) values(?)";
         final Map tempMap = null;
@@ -745,25 +759,23 @@ public class DeptService extends SuperDao
     }
 
     public List getAllleafesAll3(final String deptIds, final String dt) {
-        final String sql = "select * from ((select t1.id,t1.ext5,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.depttype=0  and t1.ext5 >= '" + dt + "') union (select t1.id,t1.ext5,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u4e0d\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5<'" + dt + "' and t1.depttype=0) union(select t1.id,t1.ext5,t1.name,t2.name as fatherName,t1.remark ,t1.ext3,'\u4e0d\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5<'" + dt + "' and t1.depttype=0)) as t3 where t3.id in(" + deptIds + ") order by name";
+        final String sql = "select * from ((select t1.id,t1.ext5,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.depttype=0  and t1.ext5 >= '" + dt + "') union (select t1.id,t1.ext5,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u4e0d\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5<'" + dt + "' and t1.depttype=0) union(select t1.id,t1.ext5,t1.name,t2.name as fatherName,t1.remark ,t1.ext3,'不在线' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5<'" + dt + "' and t1.depttype=0)) as t3 where t3.id in(" + deptIds + ") order by name";
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
 
     public List findOnlineMacNotNull3(final String dt, final int start, final int num, final String deptIds) {
-        String sql = "select row_number() over(order by ext5 desc,fatherId ,name) as rows, * from  ((select b.name as fatherNames , a.* from(select t1.id,t1.ext5, t2.fatherId as fatherId, t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'在线' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5 >= '" + dt + "'  and t1.depttype=0) as a left join appries_dept as b on a.fatherId = b.id)" + " union   (select b.name as fatherNames , a.* from( select t1.id,t1.ext5, t2.fatherId as fatherId,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'\u4e0d\u5728\u7ebf' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5 < '" + dt + "'  and t1.depttype=0) as a left join appries_dept as b on a.fatherId = b.id) union" + "(select b.name as fatherNames , a.* from( select t1.id,t1.ext5, t2.fatherId as fatherId,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'不在线' as online from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5 < '" + dt + "' and t1.depttype=0) as a left join appries_dept as b on a.fatherId = b.id)" + ") as t3 where t3.id in(" + deptIds + ")";
+        String sql = "select row_number() over(order by ext5 desc,fatherId ,name) as rows, * from  ((select b.name as fatherNames , a.* from(select t1.id,t1.ext5, t2.fatherId as fatherId, t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'在线' as online,t1.ipadd from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5 >= '" + dt + "'  and t1.depttype=0) as a left join appries_dept as b on a.fatherId = b.id)" + " union   (select b.name as fatherNames , a.* from( select t1.id,t1.ext5, t2.fatherId as fatherId,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'不在线' as online,t1.ipadd from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5 < '" + dt + "'  and t1.depttype=0) as a left join appries_dept as b on a.fatherId = b.id) union" + "(select b.name as fatherNames , a.* from( select t1.id,t1.ext5, t2.fatherId as fatherId,t1.name,t2.name as fatherName,t1.remark,t1.ext3 ,'不在线' as online,t1.ipadd from appries_dept as t1 left join appries_dept as t2 on t1.fatherId=t2.id where t1.ext5 < '" + dt + "' and t1.depttype=0) as a left join appries_dept as b on a.fatherId = b.id)" + ") as t3 where t3.id in(" + deptIds + ")";
         try {
             sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
-            logger.info("findOnlineMacNotNull3: " + sql);
+            logger.info(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

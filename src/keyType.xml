@@ -32,6 +32,8 @@
 		<action name="keyTypeEdit" class="keyTypeAction" method="keyTypeEdit">
 			<result name="success">/keyType/msg.jsp</result>
 		</action>
-	
+        <action name="keyTypeLayoutEdit" class="keyTypeAction" method="keyTypeLayoutEdit">
+            <result name="success">/keyType/msg.jsp</result>
+        </action>
 	</package>
 </struts>

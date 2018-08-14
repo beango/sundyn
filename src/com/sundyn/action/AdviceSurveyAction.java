@@ -86,7 +86,7 @@ public class AdviceSurveyAction extends MainAction
         final String question = request.getParameter("aq");
         final String id = request.getParameter("id");
         if (this.answerString == null || this.answerString.equals("")) {
-            this.answerString = "\u6682\u65f6\u6ca1\u6709\u6dfb\u52a0\u4efb\u4f55\u9009\u9879";
+            this.answerString = "暂时没有添加任何选项";
         }
         if (this.advice == null) {
             this.advice = new AdviceVo();
@@ -96,7 +96,7 @@ public class AdviceSurveyAction extends MainAction
         q.setId(Integer.parseInt(id));
         this.advice.setQuestion(q);
         if (this.answerString == null || this.answerString.equals("")) {
-            this.answerString = "\u60a8\u6ca1\u6709\u8f93\u5165\u4efb\u4f55\u9009\u9879";
+            this.answerString = "您没有输入任何选项";
         }
         this.advice.setAnswers(StringUtils.getListAnswers(this.answerString));
         this.adviceService.adviceUpdate(this.advice);
@@ -135,29 +135,8 @@ public class AdviceSurveyAction extends MainAction
         return "adviceListOk";
     }
     
-    public String advicesaveAnswer() {
-        final HttpServletRequest request = ServletActionContext.getRequest();
-        final String answerss = request.getParameter("answer");
-        if (answerss != null) {
-            if (NumberUtils.isInteger(answerss)) {
-                try {
-                    this.adviceService.saveAnswers(answerss, this.sh);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-                this.msg = "\u6dfb\u52a0\u6210\u529f";
-            }
-            else {
-                this.msg = "\u6dfb\u52a0\u5931\u8d25\uff0c\u6240\u4f20\u53c2\u6570\u4e0d\u662f\u6570\u5b57\u4e32";
-            }
-            return "advicesaveAnswerOk";
-        }
-        this.msg = "\u6dfb\u52a0\u5931\u8d25";
-        return "input";
-    }
-    
     public String showAnserTable() {
+        System.out.println("showAnserTableshowAnserTable>>..");
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.adviceService.getCount1();
         this.pager = new Pager("currentPage", pageSize, rowsCount, request);

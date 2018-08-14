@@ -274,7 +274,6 @@ public class QueryService extends SuperDao
 
     public List QueryResultChatTel(final String tel, final String startDate, final String endDate) {
         final String sql = "select  appries_keytype.name ,count(*) as num from appries_appries ,appries_keytype where   appries_appries.keyno=appries_keytype.keyNo and appries_appries.ext1 =" + tel + " " + "and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' " + " group by  appries_keytype.name";
-        System.out.println("QueryResultChatTel-sql=" + sql);
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }

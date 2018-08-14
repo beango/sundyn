@@ -1,6 +1,5 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.*;
 import com.sundyn.util.*;
 import com.sundyn.vo.AttendanceVo;
@@ -9,6 +8,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.LinkedMap;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -16,6 +16,10 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +29,8 @@ import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static org.apache.struts2.ServletActionContext.getServletContext;
 
 public class EmployeeAction extends MainAction
 {
@@ -193,7 +199,7 @@ public class EmployeeAction extends MainAction
         employeeVo.setRemark(remark);
         if (imgName != null && !imgName.equals("")) {
             final MD5toPic md5 = new MD5toPic();
-            final String md5Str = md5.MD5(String.valueOf(ServletActionContext.getServletContext().getRealPath("/")) + imgName);
+            final String md5Str = md5.MD5(String.valueOf(getServletContext().getRealPath("/")) + imgName);
             employeeVo.setExt4(md5Str);
         }
         this.employeeService.addEmployee(employeeVo);
@@ -260,7 +266,7 @@ public class EmployeeAction extends MainAction
         employeeVo.setShowWindowName(showWindowName);
         //File f = new File(imgName);
 
-        String filename = String.valueOf(ServletActionContext.getServletContext().getRealPath("/")) + imgName;
+        String filename = String.valueOf(getServletContext().getRealPath("/")) + imgName;
         if (imgName != null && !imgName.equals("") && new File(filename).exists()) {
             final MD5toPic md5 = new MD5toPic();
             final String md5Str = md5.MD5(filename);
@@ -321,7 +327,7 @@ public class EmployeeAction extends MainAction
     }
 
     private String getStar(final Double mrate) {
-        final String path = ServletActionContext.getServletContext().getRealPath("/");
+        final String path = getServletContext().getRealPath("/");
         String star = "";
         if (mrate != null) {
             try {
@@ -351,7 +357,7 @@ public class EmployeeAction extends MainAction
         String cardnum = request.getParameter("cardnum");
         cardnum = Mysql.mysql(cardnum);
         HttpSession session = request.getSession();
-        final String path = ServletActionContext.getServletContext().getRealPath("/");
+        final String path = getServletContext().getRealPath("/");
         final SundynSet sundynSet = SundynSet.getInstance(path);
         String star = sundynSet.getM_system().get("star").toString();
         this.m = this.employeeService.employeeFindByCardnum(cardnum);
@@ -408,7 +414,7 @@ public class EmployeeAction extends MainAction
 
     public String employeeGetPicAndInfo_back() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        final String path = ServletActionContext.getServletContext().getRealPath("/");
+        final String path = getServletContext().getRealPath("/");
         HttpSession session = request.getSession();
         final SundynSet sundynSet = SundynSet.getInstance(path);
         final String star = sundynSet.getM_system().get("star").toString();
@@ -484,16 +490,10 @@ public class EmployeeAction extends MainAction
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpSession session = request.getSession();
         final String cardNum = request.getParameter("cardNum");
+        final String ipadd=request.getParameter("ipadd");
         final String dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         if (cardNum != null && cardNum != "") {
             final Map employee = this.employeeService.findByCardnum(cardNum);
-
-            /*Iterator<String> iter = employee.keySet().iterator();
-
-            while (iter.hasNext()) {
-                String key = iter.next();
-                Object valuevv = employee.get(key);
-            }*/
             if (employee != null) {
                 session.setAttribute("employee", (Object)employee);
                 employeeService.updateOnline(cardNum,1);
@@ -508,6 +508,8 @@ public class EmployeeAction extends MainAction
                     clientVer = "";
                 }
                 this.deptService.updateDeptMacTime(mac, dt, clientVer);
+                if(null!=ipadd)
+                    this.deptService.updateIpAdd(mac, ipadd);
             }
             else {
                 this.deptService.addErrorMac(mac);
@@ -736,7 +738,7 @@ public class EmployeeAction extends MainAction
         String version = request.getParameter("version");
         final String config = request.getParameter("config");
         final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        final String basepath = ServletActionContext.getServletContext().getRealPath("\\");
+        final String basepath = getServletContext().getRealPath("\\");
         String playListId = "";
         final String dd = df.format(new Date());
         if (mac != null) {
@@ -869,7 +871,7 @@ public class EmployeeAction extends MainAction
             final Map dept = this.deptService.findByMac(mac);
             if (dept != null) {
                 final String id = dept.get("dept_playListId").toString();
-                final String basepath = ServletActionContext.getServletContext().getRealPath("\\");
+                final String basepath = getServletContext().getRealPath("\\");
                 final String m7binpath = String.valueOf(basepath) + "update" + File.separator + id;
                 final File f = new File(String.valueOf(m7binpath) + File.separator + "CONFIG.XML");
                 if (f.exists()) {
@@ -897,7 +899,7 @@ public class EmployeeAction extends MainAction
         String version = request.getParameter("version");
         final String config = request.getParameter("config");
         final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        final String basepath = ServletActionContext.getServletContext().getRealPath("\\");
+        final String basepath = getServletContext().getRealPath("\\");
         String playListId = "";
         final String dd = df.format(new Date());
         List newestClient = this.clientService.getNewest();
@@ -942,7 +944,7 @@ public class EmployeeAction extends MainAction
         String version = request.getParameter("version");
         final String config = request.getParameter("config");
         final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        final String basepath = ServletActionContext.getServletContext().getRealPath("\\");
+        final String basepath = getServletContext().getRealPath("\\");
         String playListId = "";
         final String dd = df.format(new Date());
         if (mac != null) {
@@ -1177,13 +1179,14 @@ public class EmployeeAction extends MainAction
 
     public String employeeUpload() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
+        final HttpServletResponse response = ServletActionContext.getResponse();
         String imgName = null;
         String impPath = "";
         final String stype = request.getParameter("tt");
         if ("c".equals(stype)) {
             imgName = request.getParameter("imgName2");
             if (this.img2 != null) {
-                String dstPath = ServletActionContext.getServletContext().getRealPath("\\");
+                String dstPath = getServletContext().getRealPath("\\");
                 dstPath = dstPath.replaceAll("%20", " ");
                 final long curTime = System.currentTimeMillis();
                 final String filename = "upload/" + curTime + Math.round(Math.random() * 100.0) + this.getExtFileName(imgName);
@@ -1198,8 +1201,8 @@ public class EmployeeAction extends MainAction
         }
         else {
             imgName = request.getParameter("imgName");
+            String dstPath = getServletContext().getRealPath("\\");
             if (this.img != null) {
-                String dstPath = ServletActionContext.getServletContext().getRealPath("\\");
                 dstPath = dstPath.replaceAll("%20", " ");
                 final long curTime = System.currentTimeMillis();
                 final String filename = "upload/" + curTime + Math.round(Math.random() * 100.0) + this.getExtFileName(imgName);
@@ -1209,7 +1212,10 @@ public class EmployeeAction extends MainAction
                 impPath = filename;
             }
             else {
-                impPath = "";
+                String _fileType = this.getText("sundyn.parameters.userimgext");
+                JSONObject jo = uploadFile(_fileType, "upload");
+                request.setAttribute("msg", jo.toString());
+                return "uploadsucc";
             }
         }
         request.setAttribute("imgPath", (Object)impPath);
@@ -1308,7 +1314,7 @@ public class EmployeeAction extends MainAction
     }
 
     public List getPandM(final List list) throws Exception {
-        final String path = ServletActionContext.getServletContext().getRealPath("/");
+        final String path = getServletContext().getRealPath("/");
         boolean k7 = true;
         try {
             final SundynSet sundynSet = SundynSet.getInstance(path);
@@ -1407,7 +1413,7 @@ public class EmployeeAction extends MainAction
     }
 
     public String getStar() {
-        final String path = ServletActionContext.getServletContext().getRealPath("/");
+        final String path = getServletContext().getRealPath("/");
         try {
             final SundynSet sundynSet = SundynSet.getInstance(path);
             this.star = sundynSet.getM_system().get("star").toString();
@@ -1467,7 +1473,7 @@ public class EmployeeAction extends MainAction
     }
 
     public void setStar(final String star) {
-        final String path = ServletActionContext.getServletContext().getRealPath("/");
+        final String path = getServletContext().getRealPath("/");
         try {
             final SundynSet sundynSet = SundynSet.getInstance(path);
             this.star = sundynSet.getM_system().get("star").toString();
@@ -1490,7 +1496,7 @@ public class EmployeeAction extends MainAction
     }
 
     public String employeeGetAllNameAndCardNum() throws JDOMException, IOException {
-        final String path = ServletActionContext.getServletContext().getRealPath("/");
+        final String path = getServletContext().getRealPath("/");
         final List ls = this.employeeService.findAllEmployee();
         Element root = new Element("employeeList");
         final Document doc = new Document(root);
@@ -1530,7 +1536,7 @@ public class EmployeeAction extends MainAction
     }
 
     public String employeeExcel() throws Exception {
-        final String path = ServletActionContext.getServletContext().getRealPath("/");
+        final String path = getServletContext().getRealPath("/");
         List ls = this.employeeService.employeeExcel();
         final Poi poi = new Poi();
         String[] args = null;
@@ -1580,7 +1586,7 @@ public class EmployeeAction extends MainAction
             final Map m = this.deptService.findByMac(mac);
             final Integer deptId = Integer.valueOf(m.get("fatherId").toString());
             this.list = this.employeeService.findEmployeeByDeptId(deptId);
-            final String path = ServletActionContext.getServletContext().getRealPath("/");
+            final String path = getServletContext().getRealPath("/");
             final SundynSet sundynSet = SundynSet.getInstance(path);
             String star = sundynSet.getM_system().get("star").toString();
             if (star.equals("true")) {
@@ -1676,7 +1682,7 @@ public class EmployeeAction extends MainAction
     }
 
     public String getEmployeeJobNum() {
-        final String path = ServletActionContext.getServletContext().getRealPath("/");
+        final String path = getServletContext().getRealPath("/");
         try {
             final SundynSet sundynSet = SundynSet.getInstance(path);
             final Map<String, String> employeeInfoSet = sundynSet.getM_employee();

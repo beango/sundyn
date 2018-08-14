@@ -89,7 +89,6 @@ public class WordToHtmlUtil
             final int i = src.lastIndexOf("/word/");
             System.out.println(i);
             final String imgpath = src.substring(i + 1);
-            System.out.println(imgpath);
             e.attr("src", imgpath);
         }
         IOUtils.write(doc.toString().getBytes("utf-8"), (OutputStream)new FileOutputStream(index));

@@ -2,8 +2,10 @@ package com.sundyn.action;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import com.sundyn.service.DeptService;
+import com.sundyn.service.AdviceService;
 import com.sundyn.service.PowerService;
+import com.sundyn.utils.NumberUtils;
+import com.sundyn.utils.StringHql;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
 
@@ -11,12 +13,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.Map;
 
 public class DefaultAction extends ActionSupport
 {
 	private PowerService powerService;
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    private String msg;
+
+    public AdviceService getAdviceService() {
+        return adviceService;
+    }
+
+    public void setAdviceService(AdviceService adviceService) {
+        this.adviceService = adviceService;
+    }
+
+    public AdviceService adviceService;
 
 	public String TopFrame() {
 		final HttpServletRequest request = ServletActionContext.getRequest();
@@ -93,5 +113,27 @@ public class DefaultAction extends ActionSupport
         return this.powerService;
     }
 
-
+    public String advicesaveAnswer() {
+        StringHql sh = new StringHql();
+        System.out.println("advicesaveAnsweradvicesaveAnswer..");
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String answerss = request.getParameter("answer");
+        if (answerss != null) {
+            if (NumberUtils.isInteger(answerss)) {
+                try {
+                    this.adviceService.saveAnswers(answerss, sh);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                this.msg = "添加成功";
+            }
+            else {
+                this.msg = "添加失败，所传参数不是数字串";
+            }
+            return "advicesaveAnswerOk";
+        }
+        this.msg = "添加失败";
+        return "input";
+    }
 }

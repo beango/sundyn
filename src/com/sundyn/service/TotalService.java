@@ -38,8 +38,6 @@ public class TotalService extends SuperDao
         if(null!=endDate && !"".equals(endDate))
         	sql = String.valueOf(sql) + " and serviceDate <='" + endDate + "'";
         sql = String.valueOf(sql) + ") as temp  group by g";
-
-        System.out.println("totalDept-sql=" + sql);
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }
@@ -78,8 +76,6 @@ public class TotalService extends SuperDao
         if(null!=endDate && !"".equals(endDate))
             sql = String.valueOf(sql) + " and serviceDate <='" + endDate + "'";
         sql = String.valueOf(sql) + ") as temp  group by g";
-
-        System.out.println("totalDept-sql=" + sql);
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }

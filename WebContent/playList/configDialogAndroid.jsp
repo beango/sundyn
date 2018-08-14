@@ -242,6 +242,13 @@
             </td>
         </tr>
         <tr>
+            <td>评价后填写联系方式</td>
+            <td>
+                <input type="radio" name="customerInfo"  title="<s:text name="sundyn.system.unit.Yes"></s:text>" value="1" <c:if test="${config.customerInfo == '1' }"> checked="checked" </c:if> />
+                <input type="radio" name="customerInfo" title="<s:text name="sundyn.system.unit.No"></s:text>"  value="0" <c:if test="${config.customerInfo == '0' }"> checked="checked" </c:if> />
+            </td>
+        </tr>
+        <tr>
             <td><s:text name='sundyn.playList.serverIp' /></td>
             <td>
                 <input type="text" name="IP" id="IP" onblur="isIP(this.value)" class="input_comm" value="${config.IP }"/>

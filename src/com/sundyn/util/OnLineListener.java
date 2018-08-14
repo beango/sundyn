@@ -46,14 +46,12 @@ public class OnLineListener implements HttpSessionListener, HttpSessionAttribute
         if (m != null) {
             final EmployeeList employeeList = EmployeeList.getInstance();
             EmployeeList.add(m);
-            System.out.println("attributeReplaced-name=" + m.get("name").toString() + "-\u52a0\u5165employeeLsit");
         }
         final Object o = se.getSession().getAttribute("mac");
         if (o != null) {
             final String mac = o.toString();
             final M7List mList = M7List.getInstance();
             M7List.add(mac);
-            System.out.println("attributeReplaced-mac=" + mac + "-\u52a0\u5165M7List");
         }
     }
 }

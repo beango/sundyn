@@ -253,7 +253,6 @@ public class WeatherAction extends ActionSupport
         }
         object.put("state", (Object)state);
         this.msg = object.toString();
-        System.out.println("msg========" + this.msg);
         return "success";
     }
 }

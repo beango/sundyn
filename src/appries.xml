@@ -21,6 +21,10 @@
 			method="appriesAddSpByPantryn">
 			<result name="success">/appries/msg.jsp</result>
 		</action>
+        <action name="appriesAddContact" class="appriesAction"
+                method="appriesAddContact">
+            <result name="success">/appries/msg.jsp</result>
+        </action>
 		<action name="debug" class="appriesAction"
 			method="appriesDebug">
 			<result name="success">/appries/debug.jsp</result>

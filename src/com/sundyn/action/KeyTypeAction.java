@@ -1,12 +1,24 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.service.*;
-import org.apache.struts2.*;
-import javax.servlet.http.*;
-import java.util.*;
-import net.sf.json.*;
-import org.jfree.util.Log;
+import com.opensymphony.xwork2.ActionSupport;
+import com.sundyn.service.KeyTypeService;
+import com.sundyn.util.XmlUtil;
+import com.sundyn.utils.JavaXML;
+import com.sundyn.vo.button;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.struts2.ServletActionContext;
+import org.jdom.Content;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class KeyTypeAction extends ActionSupport
 {
@@ -25,7 +37,69 @@ public class KeyTypeAction extends ActionSupport
     public List getList() {
         return this.list;
     }
-    
+
+    public String keyTypeLayoutEdit() throws IOException {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        JSONArray ja = JSONArray.fromObject(request.getParameter("data"));
+
+        final Element root = new Element("root");
+        final Document Doc = new Document(root);
+        Doc.setRootElement(root);
+
+        if (ja != null) {
+            for (Object object : ja){
+                JSONObject jo = (JSONObject)object;
+                Element button = new Element("button");
+                Element e = new Element("text").setText(String.valueOf(jo.get("text")));
+                button.addContent((Content)e);
+
+                e = new Element("size").setText(String.valueOf(jo.get("size")));
+                button.addContent((Content)e);
+
+                e = new Element("r").setText(String.valueOf(jo.get("r")));
+                button.addContent((Content)e);
+
+                e = new Element("g").setText(String.valueOf(jo.get("g")));
+                button.addContent((Content)e);
+
+                e = new Element("b").setText(String.valueOf(jo.get("b")));
+                button.addContent((Content)e);
+
+                e = new Element("x").setText(String.valueOf(jo.get("x")));
+                button.addContent((Content)e);
+
+                e = new Element("y").setText(String.valueOf(jo.get("y")));
+                button.addContent((Content)e);
+
+                e = new Element("img").setText(String.valueOf(jo.get("img")));
+                button.addContent((Content)e);
+
+                e = new Element("width").setText(String.valueOf(jo.get("width")));
+                button.addContent((Content)e);
+
+                e = new Element("height").setText(String.valueOf(jo.get("height")));
+                button.addContent((Content)e);
+
+                e = new Element("lx").setText(String.valueOf(jo.get("lx")));
+                button.addContent((Content)e);
+
+                e = new Element("ly").setText(String.valueOf(jo.get("ly")));
+                button.addContent((Content)e);
+
+                e = new Element("id").setText(String.valueOf(jo.get("id")));
+                button.addContent((Content)e);
+
+                root.addContent(button);
+            }
+        }
+        final XMLOutputter XMLOut = new XMLOutputter();
+        String file = JavaXML.class.getClassLoader().getResource("").getPath();
+        file = file.replaceAll("%20", " ");
+        file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
+        XMLOut.output(Doc, (OutputStream)new FileOutputStream(String.valueOf(file) + "evalbuttons.xml"));
+        return "success";
+    }
+
     public String keyTypeEdit() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String ids = request.getParameter("ids");
@@ -59,7 +133,7 @@ public class KeyTypeAction extends ActionSupport
                 request.setAttribute("msg", "权值只能为整数!");
                 return "success";
             }
-            String ext2 = names[idx];
+            String ext2 = names.length > idx ? names[idx] : "";
             if (this.getText("sundyn.language").equals("en")) {
                 ext2.replace(" ", " ");
                 final String[] names2 = names[idx].split(" ");
@@ -79,17 +153,43 @@ public class KeyTypeAction extends ActionSupport
                 }
                 ext2 = shortName.toUpperCase();
             }
-            this.keyTypeService.update(Integer.valueOf(idArray[idx]), names[idx], (isJoys.length>idx?isJoys[idx]:""), yess[idx], ext1, ext2);
+            String _p_name = names.length > idx ? names[idx] : "";
+            this.keyTypeService.update(Integer.valueOf(idArray[idx]), _p_name, (isJoys.length>idx?isJoys[idx]:""), yess[idx], ext1, ext2);
         }
         request.setAttribute("msg", "保存成功!");
         return "success";
     }
     
     public String keyTypeQueryDialog() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
         this.list = this.keyTypeService.findByApprieserId(this.id);
+
+        JSONArray ja = ConvertXMLtoJSON();
+        request.setAttribute("evalbuttons", ja.toString());
         return "success";
     }
-    
+
+    public JSONArray ConvertXMLtoJSON() throws IOException {
+        String file = JavaXML.class.getClassLoader().getResource("").getPath();
+        file = file.replaceAll("%20", " ");
+        file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
+        File f = new File(String.valueOf(file) + "evalbuttons.xml");
+
+        InputStream is = new FileInputStream(f);
+        // 声明一个字节数组
+        byte[] b = new byte[1024];
+        StringBuffer str = new StringBuffer();
+        int len ;
+        // 循环读取
+        while ((len = is.read(b)) != -1) {
+            str.append(new String(b, 0, len, "utf-8"));
+        }
+        System.out.println(str.toString());
+        List<button> o= (List<button>) XmlUtil.xmlToList(str.toString(), button.class);
+        JSONArray ja = JSONArray.fromObject(o);
+        return ja;
+    }
+
     public void setId(final Integer id) {
         this.id = id;
     }
@@ -221,7 +321,6 @@ public class KeyTypeAction extends ActionSupport
         catch (Exception e) {
             this.list = null;
             request.setAttribute("json", (Object)"");
-            e.printStackTrace();
         }
         return "success";
     }

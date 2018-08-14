@@ -10,6 +10,7 @@
     <bean id="defaultAction" class="com.sundyn.action.DefaultAction"
           scope="prototype">
         <property name="powerService" ref="powerService"></property>
+        <property name="adviceService" ref="adviceService"></property>
     </bean>
 	<bean id="managerAction" class="com.sundyn.action.ManagerAction"
 		scope="prototype">

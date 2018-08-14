@@ -28,7 +28,7 @@
             </td>
         </tr>
         <tr >
-            <td align="right"  style="border-color: #e9f5fd;"><s:text name="sundyn.notice.content"/><s:text name='sundyn.colon' /></td>
+            <td align="right"  style="border-color: #e9f5fd;"><s:text name="sundyn.notice.content"/><s:text name='sundyn.colon' /><div style="color:red;">(不能超过4000字)</div></td>
             <td align="left"  style="border-color: #e9f5fd;">
                 <textarea name="notice.content"  id="noticeContent" style="height:400px; width:100%;">${notice.content }</textarea>
             </td>

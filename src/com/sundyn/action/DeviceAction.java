@@ -5,6 +5,7 @@ import com.sundyn.service.DeviceService;
 import com.sundyn.util.DateHelper;
 import com.sundyn.util.Pager;
 import com.sundyn.utils.JavaXML;
+import freemarker.template.utility.DateUtil;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
 import org.jdom.Content;
@@ -15,12 +16,15 @@ import org.jdom.output.XMLOutputter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class DeviceAction extends MainAction
 {
+    public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
+
     public DeviceService getDeviceService() {
         return deviceService;
     }
@@ -49,7 +53,22 @@ public class DeviceAction extends MainAction
 
     public AppService appService;
     private Pager pager;
-    
+
+    public InputStream getEvalbutton() {
+        String file = JavaXML.class.getClassLoader().getResource("").getPath();
+        file = file.replaceAll("%20", " ");
+        file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
+        final String filename = "evalbuttons.xml";
+        final String url = String.valueOf(file) + filename;
+        return ServletActionContext.getServletContext().getResourceAsStream("/WEB-INF/source/" + filename);
+    }
+
+    public void setEvalbutton(InputStream evalbutton) {
+        this.evalbutton = evalbutton;
+    }
+
+    private InputStream evalbutton;
+
     public String batchquery() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         //final int rowsCount = this.deviceService.getCount1();
@@ -74,25 +93,69 @@ public class DeviceAction extends MainAction
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String id = request.getParameter("id");
         request.setAttribute("vo",this.deviceService.findBatchById(id));
+        Calendar now = Calendar.getInstance();
+        request.setAttribute("curyear", now.get(Calendar.YEAR));
+        request.setAttribute("curmonth", String.format("%02d", now.get(Calendar.MONTH) + 1));
         return "success";
     }
 
     public String batchAdd(){
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String id = request.getParameter("id");
-        final String batchid = request.getParameter("batchid");
+        //final String batchid = request.getParameter("batchid");
+        final String batchid_deviceclass_1 = request.getParameter("batchid_deviceclass_1");
+        final String batchid_deviceclass_2 = request.getParameter("batchid_deviceclass_2");
+        final String batchid_year = request.getParameter("batchid_year");
+        final String batchid_month = request.getParameter("batchid_month");
+        final String batchid_no = request.getParameter("batchid_no");
+
         final String batchname = request.getParameter("batchname");
         final String batchdate = request.getParameter("batchdate");
         String errmsg = "";
         JSONObject jo = new JSONObject();
-        if (batchid == null || batchid.equals("")) {
-            errmsg = "批次号不能为空!";
+        if (batchid_deviceclass_1 == null || batchid_deviceclass_1.equals("")) {
+            errmsg = "设备类型码不能为空!";
             jo.put("succ", false);
             jo.put("errmsg", errmsg);
             request.setAttribute("msg", jo);
             return "success";
         }
-
+        if (batchid_deviceclass_2 == null || batchid_deviceclass_2.equals("")) {
+            errmsg = "设备类型码不能为空!";
+            jo.put("succ", false);
+            jo.put("errmsg", errmsg);
+            request.setAttribute("msg", jo);
+            return "success";
+        }
+        if (batchid_year == null || batchid_year.equals("")) {
+            errmsg = "年不能为空!";
+            jo.put("succ", false);
+            jo.put("errmsg", errmsg);
+            request.setAttribute("msg", jo);
+            return "success";
+        }
+        if (batchid_month == null || batchid_month.equals("")) {
+            errmsg = "月不能为空!";
+            jo.put("succ", false);
+            jo.put("errmsg", errmsg);
+            request.setAttribute("msg", jo);
+            return "success";
+        }
+        int m = Integer.valueOf(batchid_month);
+        if (m>12 && m<1){
+            errmsg = "不是正确的月份!";
+            jo.put("succ", false);
+            jo.put("errmsg", errmsg);
+            request.setAttribute("msg", jo);
+            return "success";
+        }
+        if (batchid_no == null || batchid_no.equals("")) {
+            errmsg = "批次不能为空!";
+            jo.put("succ", false);
+            jo.put("errmsg", errmsg);
+            request.setAttribute("msg", jo);
+            return "success";
+        }
         if (batchname == null || batchname.equals("")) {
             errmsg = "批次名不能为空!";
             jo.put("succ", false);
@@ -107,6 +170,7 @@ public class DeviceAction extends MainAction
             request.setAttribute("msg", jo);
             return "success";
         }
+        String batchid = batchid_deviceclass_1+batchid_deviceclass_2 + batchid_year + String.format("%02d", m) + batchid_no;
         if (id == null || id.equals("")){
             List exist = deviceService.findBatchByBatchId(batchid, null);
             if (exist!=null && exist.size()>0){
@@ -117,7 +181,7 @@ public class DeviceAction extends MainAction
                 return "success";
             }
 
-            this.deviceService.addBatch(batchid, batchname, batchdate);
+            this.deviceService.addBatch(batchid, batchname, batchdate, batchid_deviceclass_1,batchid_deviceclass_2,batchid_year, String.format("%02d", m),batchid_no);
             jo.put("succ", true);
             jo.put("errmsg", "添加成功");
             request.setAttribute("msg", jo);
@@ -131,7 +195,7 @@ public class DeviceAction extends MainAction
                 request.setAttribute("msg", jo);
                 return "success";
             }
-            this.deviceService.batchUpdate(id, batchid, batchname, batchdate);
+            this.deviceService.batchUpdate(id, batchid, batchname, batchdate, batchid_deviceclass_1,batchid_deviceclass_2,batchid_year, String.format("%02d", m),batchid_no);
 
             jo.put("succ", true);
             jo.put("errmsg", "修改成功");
@@ -163,7 +227,6 @@ public class DeviceAction extends MainAction
 
     public String deviceList() {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        //final int rowsCount = this.deviceService.getCount1();
         this.pager = new Pager("currentPage", pageSize, 0, request);
         int[] total = new int[1];
         String startDate = request.getParameter("startDate"),
@@ -201,7 +264,6 @@ public class DeviceAction extends MainAction
             request.setAttribute("vo",this.deviceService.findDeviceById(id));
         }
         else{
-            System.out.println("????");
             request.setAttribute("ctime", DateHelper.getInstance().getDataString_1(new Date()));
         }
         request.setAttribute("batchList",this.deviceService.findBatch());
@@ -319,6 +381,10 @@ public class DeviceAction extends MainAction
         }
         request.setAttribute("msg", sb.toString());
         return "success";
+    }
+
+    public String getevalbuttons(){
+        return "downloadOk";
     }
 
     /*

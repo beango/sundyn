@@ -978,7 +978,6 @@ function employeeUpload() {
 	dojo.io.iframe.send({url:"employeeUpload.action", method:"post", handleAs:"text", form:dojo.byId("pic"), handle:function (data, ioArgs) {
 		if (data != "") {
 			document.getElementById("imgName").value = "" + data;
-            console.log('upload.img: ' + data);
 			var img123 = document.getElementById("img123");
 			img123.src = data;
 		}
@@ -1148,17 +1147,26 @@ function keyTypeEditAll() {
             alert("至少选择一个评价按键！");
             return;
         }
+        var items = $(".content .draggable");
+        var data = [];
+        for (var i=0; i<items.length; i++){
+            var x = $(items[i]).attr("data-x"),
+                y = $(items[i]).attr("data-y"),
+                w = $(items[i]).width(),
+                h = $(items[i]).height(),
+                id = $(items[i]).attr("id").replace('e',''),
+                text = document.getElementById("name" + id).value,//$(items[i]).find(".h4").html().trim(),
+                img = $(items[i]).attr("data-img"),
+                size = $("#evalSize").val();
+            if (img==null) img = "";
+            data.push({'id': id, 'text': text, 'size':size, 'r': 0, 'g': 0, 'b': 0, 'lx': x, "ly": y, 'x': i, "y": 0, "width": w, "height": h, "img": img});
+        }
+        $.post("keyTypeLayoutEdit.action", {data: JSON.stringify(data)},function(result){
+            console.log(result);
+        })
         dojo.xhrPost({url:"keyTypeEdit.action", content:{ids:ids, names:names, isJoys:isJoys,yess:yess,ext1s:ext1s}, load:function (resp, ioArgs) {
                 alert(resp);
-            }});
-		/* keyTypeEdit(1);
-		 keyTypeEdit(2);
-		 keyTypeEdit(3);
-		 keyTypeEdit(4);
-		 keyTypeEdit(5);
-		 keyTypeEdit(6);
-		 keyTypeEdit(7);
-		 */
+        }});
 	}else{
 		alert("权值非法，只能为整数" + (ext1>1));
 	}
@@ -1719,11 +1727,13 @@ function playAdd() {
 	var playTimes=document.getElementById("playTimes").value;
 	var playIndex=document.getElementById("playIndex").value;
 	var playTitle=document.getElementById("playTitle").value;
+    var orgname=document.getElementById("orgname").value;
 
 	var playContent = document.getElementById("playContent").value;
 	var patrn=/^[0-9]{1,20}$/;
 	if (!patrn.exec(playIndex)){alert("序列只能为数字");document.getElementById("playIndex").focus();return false;}
- 	dojo.xhrPost({url:"playAdd.action", content:{playName:playName, playType:playType, playSource:playSource,playTimes:playTimes,playIndex:playIndex,playTitle:playTitle,playContent:playContent}, load:function (resp, ioArgs) {
+ 	dojo.xhrPost({url:"playAdd.action", content:{playName:playName, playType:playType, playSource:playSource,playTimes:playTimes,playIndex:playIndex,
+            playTitle:playTitle,playContent:playContent,orgname:orgname}, load:function (resp, ioArgs) {
             if (resp.trim() == "") {
                 layer.msg('添加成功', {
                     icon: 1,
@@ -1755,11 +1765,13 @@ function playEdit(data) {
 	var playTimes=document.getElementById("playTimes").value;
 	var playIndex=document.getElementById("playIndex").value;
 	var playTitle=document.getElementById("playTitle").value;
+	var orgname=document.getElementById("orgname").value;
 // var playContent=FCKeditorAPI.GetInstance("playContent").GetXHTML(true);
 	var playContent = document.getElementById("playContent").value;
 	var patrn=/^[0-9]{1,20}$/;
 	if (!patrn.exec(playIndex)){alert("序列只能为数字");document.getElementById("playIndex").focus();return false;}
-	dojo.xhrPost({url:"playEdit.action", content:{playName:playName, playType:playType, playSource:playSource, playId:playId,playTimes:playTimes,playIndex:playIndex,playTitle:playTitle,playContent:playContent}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"playEdit.action", content:{playName:playName, playType:playType, playSource:playSource, playId:playId,playTimes:playTimes,
+            playIndex:playIndex,playTitle:playTitle,playContent:playContent,orgname:orgname}, load:function (resp, ioArgs) {
             if (resp.trim() == "") {
                 layer.msg('修改成功', {
                     icon: 1,
@@ -2067,6 +2079,7 @@ function playListConfigSaveAndroid2(){
 //保存m7 Config.xml 文件 Android版
 function playListConfigSaveAndroid(){
  var ShowEmployeePage=1;
+ var customerInfo = 0;
  var Type=0;
  var Version=document.getElementById("Version").value;
  var Welcometime=document.getElementById("Welcometime").value;
@@ -2079,6 +2092,9 @@ function playListConfigSaveAndroid(){
  var temp=document.getElementsByName("ShowEmployeePage");
  if(temp[0].checked){ShowEmployeePage=temp[0].value }
  if(temp[1].checked){ShowEmployeePage=temp[1].value }
+    temp=document.getElementsByName("customerInfo");
+    if(temp[0].checked){customerInfo=temp[0].value }
+    if(temp[1].checked){customerInfo=temp[1].value }
 // alert("ShowEmployeePage="+ShowEmployeePage);
  var IP=document.getElementById("IP").value;
  var Port=document.getElementById("Port").value;
@@ -2092,7 +2108,8 @@ function playListConfigSaveAndroid(){
  var playListId=document.getElementById("playListId").value;
 
  dojo.xhrPost({url:"playListConfigSaveAndroid.action",
-	 content:{playListId:playListId,Version:Version,Approvertime:Approvertime,Welcometime:Welcometime,Shutdownhh:Shutdownhh,Shutdownmm:Shutdownmm,Boothh:Boothh,Bootmm:Bootmm,ShowEmployeePage:ShowEmployeePage,IP:IP,Port:Port,Type:Type},
+	 content:{playListId:playListId,Version:Version,Approvertime:Approvertime,Welcometime:Welcometime,Shutdownhh:Shutdownhh,Shutdownmm:Shutdownmm,Boothh:Boothh,
+         Bootmm:Bootmm,ShowEmployeePage:ShowEmployeePage,customerInfo:customerInfo,IP:IP,Port:Port,Type:Type},
 	 load:function (resp, ioArgs) {
          layer.msg('修改成功', {
              icon: 1,
@@ -4109,10 +4126,16 @@ function batchToAdd(id,title) {
 // 添加 通知公告
 function batchAdd(){
     var id = document.getElementById("id").value;
-    var batchid = document.getElementById("batchid").value;
+    var batchid_deviceclass_1 = document.getElementById("batchid_deviceclass_1").value;
+    var batchid_deviceclass_2 = document.getElementById("batchid_deviceclass_2").value;
+    var batchid_year = document.getElementById("batchid_year").value;
+    var batchid_month = document.getElementById("batchid_month").value;
+    var batchid_no = document.getElementById("batchid_no").value;
     var batchdate = document.getElementById("batchdate").value;
     var batchname = document.getElementById("batchname").value;
-    dojo.xhrPost({url:"batchAdd.action", content:{id:id, batchid:batchid,batchdate:batchdate,batchname:batchname}, load:function (resp, ioArgs) {
+    dojo.xhrPost({url:"batchAdd.action", content:{id:id, batchid_deviceclass_1:batchid_deviceclass_1,
+            batchid_deviceclass_2:batchid_deviceclass_2,batchid_year:batchid_year,batchid_month:batchid_month,batchid_no:batchid_no,
+            batchdate:batchdate,batchname:batchname}, load:function (resp, ioArgs) {
         var msg = JSON.parse(resp);
         console.log(msg);
         if(msg.succ){
@@ -4158,8 +4181,8 @@ function devicelist(){
 }
 
 function deviceQuery(){
-    var startDate = document.getElementById("startDate").value;
-    var endDate = document.getElementById("endDate").value;
+    var startDate = document.getElementById("startDate1").value;
+    var endDate = document.getElementById("endDate1").value;
     var batchno = document.getElementById("batchno").value;
     var mac = document.getElementById("mac").value;
     window.location.href = "deviceList.action?startDate=" + startDate + "&endDate=" + endDate + "&batchno=" + batchno + "&mac=" + mac;

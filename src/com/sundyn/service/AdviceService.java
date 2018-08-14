@@ -270,7 +270,7 @@ public class AdviceService extends SuperDao
         }
         final List list = this.getAllQuestions();
         if (list.size() != aids.length) {
-            str.setStr("\u6dfb\u52a0\u5931\u8d25");
+            str.setStr("添加失败");
             return false;
         }
         final Iterator it = list.iterator();

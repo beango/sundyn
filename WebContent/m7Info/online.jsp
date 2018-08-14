@@ -49,7 +49,7 @@
                                 ${query.fatherName}
                         </td>
                         <td   class="td"  <c:if test="${query.online ==  '在线'}">  style="color:green;" </c:if>  <c:if test="${query.online ==  '不在线'}">  style="color:gray;" </c:if> >
-                            <c:if test="${query.online ==  '在线'}">  <s:text name="sundyn.system.m7Online.online"/> </c:if>  <c:if test="${query.online ==  '不在线'}"> <s:text name="sundyn.system.m7Online.offline"/></c:if>
+                            <c:if test="${query.online ==  '在线'}">  <s:text name="sundyn.system.m7Online.online"/> ${(query.ipadd==null||query.ipadd.equals(""))?"":"(".concat(query.ipadd).concat(")")} </c:if>  <c:if test="${query.online ==  '不在线'}"> <s:text name="sundyn.system.m7Online.offline"/></c:if>
                         </td>
                     </tr>
                 </c:forEach>

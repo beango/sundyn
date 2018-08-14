@@ -524,7 +524,24 @@ public class AppriesAction extends ActionSupport
         socket.close();
         return true;
     }
-    
+
+    public String appriesAddContact()
+    {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String tt = request.getParameter("tt").replace("%20"," ");
+        final String name = request.getParameter("name");
+        final String phone = request.getParameter("phone");
+        String remark = request.getParameter("remark");
+        if(remark!=null){
+            remark = remark.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
+        }
+        System.out.println("remark::"+remark);
+        final String mac = request.getParameter("mac");
+        boolean bool = appriesService.addAppriesContact(mac, tt, name, phone, remark);
+        this.msg = bool ? "提交成功":"提交失败";
+        return "success";
+    }
+
     public String appriesAddSpByPantryn() throws Exception {
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         String sam = "";
@@ -539,10 +556,8 @@ public class AppriesAction extends ActionSupport
             spm = sundynSet.getM_work2().get("spm").toString();
             epm = sundynSet.getM_work2().get("epm").toString();
             tipLanguage = sundynSet.getM_system().get("tipLanguage");
-            AppriesAction.logger.debug((Object)("\u5f97\u5230\u4e0a\u73ed\u65f6\u95f4:sam:" + sam + "eam:" + eam + "spm:" + spm + "epm:" + epm));
         }
         catch (Exception e) {
-            AppriesAction.logger.debug((Object)"\u5f97\u5230\u4e0a\u73ed\u65f6\u95f4\u51fa\u9519,\u8bf7\u68c0\u67e5update/set.xml  \u662f\u5426\u6b63\u786e");
             e.printStackTrace();
         }
         final String time = new SimpleDateFormat("HH:mm").format(new java.util.Date());
@@ -582,13 +597,11 @@ public class AppriesAction extends ActionSupport
         }
         final List bmls = this.keyTypeService.findByApprieserId(1, 1, "");
         String bmk = "";
-        AppriesAction.logger.info((Object)"\u5224\u65ad\u662f\u5426\u4f7f\u7528\u672a\u8bc4\u4ef7\u6570\u636e");
         if (k7) {
             for (int j = 0; j < bmls.size(); ++j) {
                 final Map i = (Map) bmls.get(j);
                 if (!i.get("keyNo").toString().equals("6")) {
                     bmk = String.valueOf(bmk) + i.get("keyNo").toString() + ",";
-                    AppriesAction.logger.debug((Object)("\u5f97\u5230\u4e0d\u6ee1\u610fids" + bmk));
                 }
             }
         }
@@ -596,7 +609,6 @@ public class AppriesAction extends ActionSupport
             for (int j = 0; j < bmls.size(); ++j) {
                 final Map i = (Map) bmls.get(j);
                 bmk = String.valueOf(bmk) + i.get("keyNo").toString() + ",";
-                AppriesAction.logger.debug((Object)("\u5f97\u5230\u4e0d\u6ee1\u610fids" + bmk));
             }
         }
         if (bmk.indexOf(pj) > -1) {
@@ -619,7 +631,6 @@ public class AppriesAction extends ActionSupport
                         final String[] sip = ip.split(",");
                         for (int m = 0; m < sip.length; ++m) {
                             temp.put(sip[m], sip[m]);
-                            AppriesAction.logger.debug((Object)("\u7ba1\u7406Ip:" + sip[m]));
                         }
                     }
                 }
@@ -627,7 +638,6 @@ public class AppriesAction extends ActionSupport
                     final String mb = temp.get(key).toString();
                     if (!mb.equals("")) {
                         udp.send(mb, this.clientPort, this.msg);
-                        AppriesAction.logger.debug((Object)("\u53d1\u9001" + temp.get(key).toString() + "\u6210\u529f"));
                     }
                 }
                 final List mobile = this.managerService.getuserMobile();
@@ -640,7 +650,6 @@ public class AppriesAction extends ActionSupport
                         final String[] smobile = mobiles.split(",");
                         for (int j2 = 0; j2 < smobile.length; ++j2) {
                             l_m.add(smobile[j2]);
-                            AppriesAction.logger.debug((Object)("\u53d1\u9001" + smobile[j2] + "\u6210\u529f"));
                         }
                     }
                 }
@@ -661,18 +670,11 @@ public class AppriesAction extends ActionSupport
             }
             catch (Exception e3) {
                 e3.printStackTrace();
-                AppriesAction.logger.debug((Object)"\u83b7\u53d6\u9519\u8bef\u8bc4\u4ef7\u4fe1\u606f\u9519\u8bef\uff0c\u8bf7\u68c0\u67e5\u5458\u5de5\u5361\u53f7\u662f\u5426\u5b58\u5728\u91cd\u590d\u3002\u90e8\u95e8\u4fe1\u606f\u662f\u5426\u6b63\u786e\uff0cmac\u8bbe\u7f6e\u662f\u5426\u771f\u786e");
             }
         }
         String msg2 = "1";
-        AppriesAction.logger.debug((Object)"\u5f00\u59cb\u5199\u5165\u8bc4\u4ef7\u6570\u636e");
         if (!sam.equals("") && !eam.equals("") && !spm.equals("") && !epm.equals("")) {
-            AppriesAction.logger.debug((Object)"\u5224\u65ad\u4e0a\u4e0b\u73ed\u65f6\u95f4\u4e0d\u4e3a\u7a7a\uff0ctrue");
-            AppriesAction.logger.debug((Object)("\u5f53\u524d\u670d\u52a1\u5668\u65f6\u95f4\uff1a" + time));
-            AppriesAction.logger.debug((Object)("\u5f53\u524d\u662f\u5426\u4e3a\u4e0a\u73ed\u65f6\u95f4:" + ((time.compareTo(sam) >= 0 && time.compareTo(eam) <= 0) || (time.compareTo(spm) >= 0 && time.compareTo(epm) <= 0))));
             if ((time.compareTo(sam) >= 0 && time.compareTo(eam) <= 0) || (time.compareTo(spm) >= 0 && time.compareTo(epm) <= 0)) {
-                AppriesAction.logger.debug((Object)"\u5224\u65ad\u662f\u5426\u4e3a\u4e0a\u73ed\u65f6\u95f4\uff0ctrue");
-                AppriesAction.logger.debug((Object)("\u5199\u5165\u8bc4\u4ef7\u6570\u636e\uff1amac:" + mac + "tt:" + tt + "cardnum:" + cardnum + "pj:" + pj + "cf:" + cf + "demo:" + demo));
                 if (mac == null || mac.isEmpty()) {
                     this.msg = "error:mac\u4e3a\u7a7a";
                     msg2 = this.getText("sundyn.query.error.noMac");
@@ -708,15 +710,11 @@ public class AppriesAction extends ActionSupport
                         }
                         else if (list.size() == 0) {
                             if (this.appriesService.addArriresXiangYang(mac, tt, cardnum, pj, demo, videofile, businessTime, min, sec, tel, idCard, name, phone, imgfile, busRst)) {
-                                AppriesAction.logger.debug((Object)("\u5199\u5165\u8bc4\u4ef7\u6570\u636e\uff1amac:" + mac + "tt:" + tt + "cardnum:" + cardnum + "pj:" + pj + "cf:" + cf + "demo:" + demo + "\u6210\u529f"));
                                 this.msg = "success";
                             }
                             else {
-                                AppriesAction.logger.debug((Object)("\u5199\u5165\u8bc4\u4ef7\u6570\u636e\uff1amac:" + mac + "tt:" + tt + "cardnum:" + cardnum + "pj:" + pj + "cf:" + cf + "demo:" + demo + "\u5931\u8d25"));
-                                AppriesAction.logger.debug((Object)"\u5f00\u59cb\u5199\u5165\u9519\u8bef\u7684\u8bc4\u4ef7\u6570\u636e��������");
                                 msg2 = this.getText("sundyn.query.error.wrongDB");
                                 final boolean flag = this.errorInfoService.addDetail(mac, cardnum, pj, msg2);
-                                AppriesAction.logger.debug((Object)("\u5199\u5165\u9519\u8bef\u7684\u8bc4\u4ef7\u6570\u636e\u7ed3\u679c\u4e3a:" + flag));
                             }
                         }
                     }
@@ -726,14 +724,12 @@ public class AppriesAction extends ActionSupport
                 }
             }
             else {
-                AppriesAction.logger.debug((Object)"\u5f53\u524d\u4e3a\u4e0b\u73ed\u65f6\u95f4\u65e0\u6cd5\u5199\u5165\u6570\u636e");
                 this.msg = "\u5f53\u524d\u4e3a\u4e0b\u73ed\u65f6\u95f4";
                 msg2 = this.getText("sundyn.query.error.wrongWorkTime");
                 this.errorInfoService.addDetail(mac, cardnum, pj, msg2);
             }
         }
         else {
-            AppriesAction.logger.debug((Object)"\u4e0a\u4e0b\u73ed\u65f6\u95f4\u8bbe\u7f6e\u6709\u95ee\u9898\uff0c\u8bf7\u8bbe\u7f6e\u4e0b");
             this.msg = "\u4e0a\u4e0b\u73ed\u65f6\u95f4\u4e3a\u7a7a";
             msg2 = this.getText("sundyn.query.error.noWorkTime");
             this.errorInfoService.addDetail(mac, cardnum, pj, msg2);

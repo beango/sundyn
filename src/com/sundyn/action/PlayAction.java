@@ -2,6 +2,8 @@ package com.sundyn.action;
 
 import com.opensymphony.xwork2.*;
 import com.sundyn.service.*;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.struts2.*;
 import java.net.*;
 import org.jdom.*;
@@ -52,6 +54,7 @@ public class PlayAction extends MainAction
         String playTimes = request.getParameter("playTimes");
         final String playType = request.getParameter("playType");
         String playSource = request.getParameter("playSource");
+        playSource = playSource.replace("playSource/","");
         if (playType.equals("text")) {
             final String playTitle = request.getParameter("playTitle");
             String playContent = request.getParameter("playContent");
@@ -107,6 +110,7 @@ public class PlayAction extends MainAction
         playVo.setPlaySource(playSource);
         playVo.setPlayIndex(request.getParameter("playIndex"));
         playVo.setPlayTimes(new StringBuilder(String.valueOf(i_times)).toString());
+        playVo.setOrgname(request.getParameter("orgname"));
         this.playService.playAdd(playVo);
         return "msg";
     }
@@ -128,6 +132,7 @@ public class PlayAction extends MainAction
         String playTimes = request.getParameter("playTimes");
         final String playType = request.getParameter("playType");
         String playSource = request.getParameter("playSource");
+        playSource = playSource.replace("playSource/","");
         if (playType.equals("text")) {
             final String playTitle = request.getParameter("playTitle");
             String playContent = request.getParameter("playContent");
@@ -166,11 +171,9 @@ public class PlayAction extends MainAction
             format.setEncoding("gb2312");
             XMLOutputter XMLOut = new XMLOutputter(format);
             File f = new File(String.valueOf(basepath) + "playSource" + File.separator + playSource);
-            logger.info("edit生成资源路径：" + String.valueOf(basepath) + "playSource" + File.separator + playSource);
             if (!f.exists() || f.isDirectory()){
                 playSource = String.valueOf(System.currentTimeMillis()) + ".xml";
             }
-            logger.info("edit生成资源路径：" + String.valueOf(basepath) + "playSource" + File.separator + playSource);
             XMLOut.output(doc, (OutputStream)new FileOutputStream(String.valueOf(basepath) + "playSource" + File.separator + playSource));
 
             XMLOut = null;
@@ -196,6 +199,7 @@ public class PlayAction extends MainAction
         playVo.setPlaySource(playSource);
         playVo.setPlayIndex(request.getParameter("playIndex"));
         playVo.setPlayTimes(new StringBuilder(String.valueOf(i_times)).toString());
+        playVo.setOrgname(request.getParameter("orgname"));
         this.playService.playEdit(playVo);
         return "msg";
     }
@@ -249,7 +253,7 @@ public class PlayAction extends MainAction
             String dstPath = ServletActionContext.getServletContext().getRealPath("/");
             dstPath = dstPath.replaceAll("%20", " ");
             final long curTime = System.currentTimeMillis();
-            final String path = String.valueOf(dstPath) + "/" + "playSource" + File.separator + curTime + File.separator;
+            final String path = String.valueOf(dstPath) + "/playSource" + File.separator + curTime + File.separator;
             if (imgName.toLowerCase().endsWith("doc")) {
                 if (!new File(path).exists()) {
                     new File(path).mkdirs();
@@ -272,7 +276,34 @@ public class PlayAction extends MainAction
             }
         }
         else {
-            impPath = "";
+            JSONObject jo = uploadFile(null,"playSource");
+            if (jo.get("rst").equals("success")){
+                String dstPath = ServletActionContext.getServletContext().getRealPath("/");
+                dstPath = dstPath.replaceAll("%20", " ");
+                final long curTime = System.currentTimeMillis();
+                final String path = String.valueOf(dstPath) + "/playSource" + File.separator + curTime + File.separator;
+                String _docfile = ((JSONArray)(jo.get("path"))).get(0).toString();
+                if (_docfile.toLowerCase().endsWith("doc")) {
+                    if (!new File(path).exists()) {
+                        new File(path).mkdirs();
+                    }
+                    WordToHtmlUtil.doc(new FileInputStream(dstPath + _docfile), path, "index.html");
+                    impPath = new StringBuilder().append(curTime).toString();
+                    jo.put("path", new String[]{impPath});
+                }
+                else if (_docfile.toLowerCase().endsWith("docx")) {
+                    if (!new File(path).exists()) {
+                        new File(path).mkdirs();
+                    }
+                    logger.info("保存路径: " + path);
+                    WordToHtmlUtil.docx(new FileInputStream(dstPath + _docfile), path, "index.html");
+                    impPath = new StringBuilder().append(curTime).toString();
+                    jo.put("path", new String[]{impPath});
+                }
+            }
+
+            request.setAttribute("msg", jo.toString());
+            return "uploadsucc";
         }
         request.setAttribute("imgPath", (Object)impPath);
         return "success";

@@ -45,12 +45,15 @@
                 <s:text name='sundyn.play.playSource' />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
-                <input type="text" name="playSource" id="playSource" readonly="readonly" style="background-color: #c3c3c3;" class="input_comm"/>
-                <form id="pic" enctype="multipart/form-data" name="pic" action="playUpload.action" method="post">
+                <div class="layui-upload">
                     <input type="hidden" name="imgName" id="imgName" />
-                    <input type="file" name="img" id="img" onchange="getFileName()" />
-                    <input type="button" value=" <s:text name='sundyn.upload' />" onclick="playupload();" class="layui-btn layui-btn-sm"/>
-                </form>
+                    <button type="button" class="layui-btn" id="test1">选择资源文件</button>
+                    <div class="layui-upload-list">
+                        <input type="hidden" name="playSource" id="playSource"/>
+                        <input type="hidden" name="orgname" id="orgname"/>
+                        <a href="#" target="_blank" id="playSourceLink" style="font-color:blue;"></a>
+                    </div>
+                </div>
             </td>
         </tr>
         <tr id="txt1" style="display:none;">
@@ -97,10 +100,35 @@
 </body>
 <script>
     //Demo
-    layui.use('form', function(){
-        var form = layui.form;
+    layui.use(['form', 'upload'], function(){
+        var form = layui.form, upload = layui.upload;
         form.on('select(playType)', function(data){
             playTypeChange(data.value);
+        });
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1',
+            accept:'file',
+            url: 'playUpload.action'
+            , before: function(obj){
+                obj.preview(function(index, file, result){
+                    //$('#imgName').attr('src', result); //图片链接（base64）
+                });
+            }, done: function(res){
+                if(res.rst == "success" && res.path && res.path.length>0){
+                    $('#playSource').val(res.path[0]); //图片链接（base64）
+                    if  ($("#playType").val()=="doc")
+                        $("#playSourceLink").attr("href", "playSource/"+res.path[0]+"/index.html");
+                    else
+                        $("#playSourceLink").attr("href", res.path[0]);
+                    $("#orgname").val(res.orgin[0]);
+                    $("#playSourceLink").html(res.orgin[0]);
+                    return layer.msg('上传成功！');
+                }
+                alert(res.msg);
+            }, error: function(){
+                layer.msg('上传失败！');
+            }
         });
     });
 </script>

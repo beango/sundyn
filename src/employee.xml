@@ -50,6 +50,7 @@
 		<action name="employeeUpload" class="employeeAction"
 			method="employeeUpload">
 			<result name="success">/employee/success.jsp</result>
+            <result name="uploadsucc">/msg.jsp</result>
 		</action>
 		<action name="employeeEdit" class="employeeAction"
 			method="employeeEdit">

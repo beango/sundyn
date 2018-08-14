@@ -49,6 +49,7 @@
 		<action name="playUpload" class="playAction"
 			method="playUpload">
 			<result name="success">/play/success.jsp</result>
+            <result name="uploadsucc">/msg.jsp</result>
 		</action>
 	</package>
 </struts>

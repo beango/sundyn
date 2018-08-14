@@ -9,6 +9,16 @@ public class PlayVo
     String playUpdateDate;
     String playTimes;
     String playIndex;
+
+    public String getOrgname() {
+        return orgname;
+    }
+
+    public void setOrgname(String orgname) {
+        this.orgname = orgname;
+    }
+
+    String orgname;
     
     public Integer getPlayId() {
         return this.playId;

@@ -3,8 +3,6 @@
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 	<package name="download" extends="struts-default">
-		
-		
 		<action name="adviceDownload" class="adviceSurveyAction" method="adviceDownload">
 			<result name="adviceDownloadOk" type="stream">
 			 <param name="contentType">text/plain</param>
@@ -12,7 +10,6 @@
              <param name="contentDisposition">attachment;filename="advise.db"</param>
              <param name="bufferSize">4096</param>
 			</result>
-<!--			<result name="inputs">/adviceSurvey/weburl.jsp</result>-->
 		</action>
 		<action name="weburlDownload" class="weburlAction" method="weburlDownload">
 			<result name="weburlDownloadOk"  type="stream">
@@ -21,7 +18,6 @@
              <param name="contentDisposition">attachment;filename="query.xml"</param>
              <param name="bufferSize">4096</param>
             </result>
-<!--			<result name="inputs">/manager/weburl.jsp</result>-->
 		</action>
 		<action name="noticeDownload" class="noticeAction" method="noticeDownload">
 			<result name="noticeDownloadOk" type="stream">
@@ -30,7 +26,6 @@
              <param name="contentDisposition">attachment;filename="notice.xml"</param>
              <param name="bufferSize">4096</param>
             </result>
-<!--			<result name="inputs">manager/weburl.jsp</result>-->
 		</action>
 		<action name="employeeInfoSetDownload" class="baseAction" method="employeeInfoSetDownload">
 			<result name="downloadOk" type="stream">
@@ -39,12 +34,15 @@
              <param name="contentDisposition">attachment;filename="employeeInfoSet.xml"</param>
              <param name="bufferSize">4096</param>
             </result>
-<!--			<result name="inputs">/manager/weburl.jsp</result>-->
 		</action>
-		<action name="advicesaveAnswer" class="adviceSurveyAction" method="advicesaveAnswer">
-			<result name="advicesaveAnswerOk">/appries/msg.jsp</result>
-			<result name="input">/appries/msg.jsp</result>
-		</action>
+        <action name="getevalbuttons" class="deviceAction" method="getevalbuttons">
+            <result name="downloadOk" type="stream">
+                <param name="contentType">text/plain</param>
+                <param name="inputName">evalbutton</param>
+                <param name="contentDisposition">attachment;filename="button.xml"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+        </action>
 		<action name="getKeyTypeAll" class="keyTypeAction"
 			method="getKeyTypeAll">
 			<result name="success">keyType/json.jsp</result>

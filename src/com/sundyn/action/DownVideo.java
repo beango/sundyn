@@ -1,16 +1,24 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import org.apache.struts2.*;
-import java.net.*;
-import javax.servlet.http.*;
-import java.io.*;
+import com.opensymphony.xwork2.ActionSupport;
+import com.sundyn.service.AdviceService;
+import com.sundyn.utils.NumberUtils;
+import com.sundyn.utils.StringHql;
+import org.apache.struts2.ServletActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class DownVideo extends ActionSupport
 {
     private static final long serialVersionUID = 1L;
     private String fileName;
-    
+
     public void setFileName() {
         String fname = ServletActionContext.getRequest().getParameter("videofile");
         System.out.println("videofile\u7f16\u7801\u524d=" + fname);

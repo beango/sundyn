@@ -36,11 +36,11 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">开始时间:</label>
+                    <label class="layui-form-label">开始时间：</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="input_comm" id="startDate" value="${startDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                        <input type="text" class="input_comm" id="startDate1" value="${startDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
                         至
-                        <input type="text" class="input_comm" id="endDate" value="${endDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                        <input type="text" class="input_comm" id="endDate1" value="${endDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -75,10 +75,10 @@
 							    ${index.index+1}
 							</th>
 							<td style="text-align: left;text-overflow:ellipsis;overflow:hidden;">
-                                    ${data.batchid2}
+                                    ${data.deviceno}
 							</td>
                             <td style="text-align: left;text-overflow:ellipsis;overflow:hidden;">
-                                    ${data.batchname}
+                                <c:if test="${data.batchid2!=null}">${data.batchname}(${data.batchid2})</c:if>
                             </td>
                             <td style="text-align: center;text-overflow:ellipsis;overflow:hidden;">
                                     ${data.mac}

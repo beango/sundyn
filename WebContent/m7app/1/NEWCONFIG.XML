@@ -7,9 +7,10 @@
         <Shutdown>17:31</Shutdown>
         <Boot>8:30</Boot>
         <ShowEmployeePage>1</ShowEmployeePage>
+        <customerInfo>0</customerInfo>
     </Software>
     <Server>
-        <IP>192.168.239.1</IP>
+        <IP>192.168.239.111</IP>
         <Port>80</Port>
     </Server>
     <Network>

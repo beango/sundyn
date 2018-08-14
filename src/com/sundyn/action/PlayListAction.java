@@ -761,7 +761,6 @@ public class PlayListAction extends MainAction
         SAXBuilder sb = new SAXBuilder(false);
         Document doc = sb.build(new File(filePath));
         final Element root = doc.getRootElement();
-        System.out.println("playListConfigDialog-filePath=" + filePath);
         final String[] Shutdown = root.getChild("Software").getChildText("Shutdown").toString().split(":");
         final String[] Boot = root.getChild("Software").getChildText("Boot").toString().split(":");
         final int Shutdownhh = Integer.valueOf(Shutdown[0]);
@@ -779,6 +778,7 @@ public class PlayListAction extends MainAction
         config.put("Shutdown", root.getChild("Software").getChildText("Shutdown"));
         config.put("Boot", root.getChild("Software").getChildText("Boot"));
         config.put("ShowEmployeePage", root.getChild("Software").getChildText("ShowEmployeePage"));
+        config.put("customerInfo", root.getChild("Software").getChildText("customerInfo"));
         config.put("IP", root.getChild("Server").getChildText("IP"));
         config.put("Port", root.getChild("Server").getChildText("Port"));
         config.put("Type", root.getChild("Network").getChildText("Type"));
@@ -831,7 +831,6 @@ public class PlayListAction extends MainAction
     public String playListConfigSaveAndroid() throws Exception {
         final String basePath = ServletActionContext.getServletContext().getRealPath("\\");
         final HttpServletRequest request = ServletActionContext.getRequest();
-        System.out.println("playListConfigSave-begin");
         final String playListId = request.getParameter("playListId");
         final String Shutdownhh = request.getParameter("Shutdownhh");
         final String Shutdownmm = request.getParameter("Shutdownmm");
@@ -849,6 +848,7 @@ public class PlayListAction extends MainAction
         root.getChild("Software").getChild("Shutdown").setText(String.valueOf(Shutdownhh) + ":" + Shutdownmm);
         root.getChild("Software").getChild("Boot").setText(String.valueOf(Boothh) + ":" + Bootmm);
         root.getChild("Software").getChild("ShowEmployeePage").setText(request.getParameter("ShowEmployeePage"));
+        root.getChild("Software").getChild("customerInfo").setText(request.getParameter("customerInfo"));
         root.getChild("Server").getChild("IP").setText(request.getParameter("IP"));
         root.getChild("Server").getChild("Port").setText(request.getParameter("Port"));
         root.getChild("Network").getChild("Type").setText(request.getParameter("Type"));

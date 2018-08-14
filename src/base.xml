@@ -180,7 +180,10 @@
 			method="TopFrame">
 			<result name="success">/topframe.jsp</result>
 		</action>
-		
+        <action name="advicesaveAnswer" class="defaultAction" method="advicesaveAnswer">
+            <result name="advicesaveAnswerOk">/appries/msg.jsp</result>
+            <result name="input">/appries/msg.jsp</result>
+        </action>
 	</package>
 	<package name="baseO" extends="struts-default">
 		<!-- 验证用户登录 开始-->

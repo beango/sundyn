@@ -41,10 +41,9 @@ public class DeviceService extends SuperDao
         }
     }
 
-    public boolean addBatch(String batchid, String batchname, String batchdate) {
-        final String sql1 = "Insert into appries_devicebatch (batchid, batchname, batchdate) values(?,?,?)";
-
-        final Object[] arg = { batchid, batchname, batchdate};
+    public boolean addBatch(String batchid, String batchname, String batchdate, String batchid_deviceclass_1, String batchid_deviceclass_2, String batchid_year, String batchid_month, String batchid_no) {
+        final String sql1 = "Insert into appries_devicebatch (batchid, batchname, batchdate,batchid_deviceclass_1,batchid_deviceclass_2,batchid_year,batchid_month,batchid_no) values(?,?,?,?,?,?,?,?)";
+        final Object[] arg = { batchid, batchname, batchdate, batchid_deviceclass_1,batchid_deviceclass_2,batchid_year,batchid_month,batchid_no};
         try {
             this.getJdbcTemplate().update(sql1, arg);
 
@@ -80,9 +79,11 @@ public class DeviceService extends SuperDao
         }
     }
 
-    public boolean batchUpdate(final String id,final String batchid, final String batchname, final String batchdate) {
-        final String sql = "update appries_devicebatch set batchid=?,batchname=?,batchdate=? where id=?";
-        final Object[] args = { batchid, batchname, batchdate, id};
+    public boolean batchUpdate(final String id,final String batchid, final String batchname, final String batchdate,
+            final String batchid_deviceclass_1, final String batchid_deviceclass_2, final String batchid_year, final String batchid_month, final String batchid_no) {
+        final String sql = "update appries_devicebatch set batchid=?,batchname=?,batchdate=?," +
+                "batchid_deviceclass_1=?,batchid_deviceclass_2=?,batchid_year=?,batchid_month=?,batchid_no=? where id=?";
+        final Object[] args = { batchid, batchname, batchdate,batchid_deviceclass_1,batchid_deviceclass_2,batchid_year, batchid_month, batchid_no, id};
         try {
             this.getJdbcTemplate().update(sql, args);
         }
@@ -118,15 +119,12 @@ public class DeviceService extends SuperDao
     }
 
     public boolean addDevice(String batchid, String mac, boolean verifyFlag, String ver, String ctime) {
-        final String sql1 = "Insert into appries_device (batchid, mac, verifyFlag, ver, ctime) values(?,?,?,?,?)";
-
-        final Object[] arg = {batchid, mac, verifyFlag, ver, ctime};
+        final String sql = "{call deviceAdd(?,?,?,?)}";
+        final Object[] args = { "",batchid, ctime, mac};
         try {
-            this.getJdbcTemplate().update(sql1, arg);
-            return true;
+            return this.getJdbcTemplate().update(sql, args)>0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -146,7 +144,7 @@ public class DeviceService extends SuperDao
 
     public List findDevice(final String batchno, final String mac, final String startDate, final String endDate, final int startrow, final int pageSize, int[] total) {
         String sql = "";
-        sql = "select row_number() over(order by t1.id desc) as rows, t1.*,t2.batchid batchid2,t2.batchname " +
+        sql = "select row_number() over(order by t1.ctime desc) as rows, t1.*,t2.batchid batchid2,t2.batchname " +
                 "from appries_device t1 left join appries_devicebatch t2 on t1.batchid=t2.id where 1=1 ";
         if (startDate!=null && !startDate.equals(""))
             sql += "and ctime>='" + startDate+"' ";
@@ -155,10 +153,12 @@ public class DeviceService extends SuperDao
         if (batchno!=null && !batchno.equals(""))
             sql += "and t2.batchid='" + batchno+"' ";
         if (mac!=null && !mac.equals(""))
-            sql += "and t1.mac='" + mac+"' ";
-        sql = "select * from ("+sql+") t2 where t2.rows>" + startrow + " and t2.rows<=" + (startrow+pageSize);
+            sql += "and t1.mac like '%" + mac+"%' ";
+
         String totalsql = "select max(rows) c from ("+sql+") t2";
         total[0] =this.getJdbcTemplate().queryForInt(totalsql);
+
+        sql = "select * from ("+sql+") t2 where t2.rows>" + startrow + " and t2.rows<=" + (startrow+pageSize);
 
         final List advices = new ArrayList();
         try {
@@ -200,6 +200,7 @@ public class DeviceService extends SuperDao
             sql = sql + " and id != " + id;
         final Object[] arg = { mac };
         try {
+            logger.info(sql);
             return this.getJdbcTemplate().queryForList(sql, arg);
         }
         catch (Exception e) {
@@ -208,13 +209,12 @@ public class DeviceService extends SuperDao
     }
 
     public void deviceUpdate(String id, String batchid, String mac, boolean cerFlag, String ver, String ctime) {
-        final String sql = "update appries_device set batchid=?,ctime=? where id=?";
-        final Object[] args = {batchid, ctime, id};
+        final String sql = "{call deviceAdd(?,?,?,?)}";
+        final Object[] args = { id,batchid, ctime, mac};
         try {
             this.getJdbcTemplate().update(sql, args);
         }
         catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

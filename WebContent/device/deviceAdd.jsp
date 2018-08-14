@@ -37,11 +37,10 @@
                     <select name="batchid" id="batchid">
                         <option value="" <c:if test="batch.id==vo.batchid">selected="selected"</c:if>>--请选择--</option>
                         <c:forEach items="${batchList}" var="batch" varStatus="index">
-                            <option value="${batch.id}" <c:if test="${batch.id == vo.batchid}">selected="selected"</c:if>>${batch.batchname}</option>
+                            <option value="${batch.id}" <c:if test="${batch.id == vo.batchid}">selected="selected"</c:if>>${batch.batchname}(${batch.batchid})</option>
                         </c:forEach>
                     </select>
                 </div>
-
             </td>
         </tr>
         <tr >

@@ -42,6 +42,11 @@ public class NoticeAction extends ActionSupport
             this.msg = "内容不能为空!";
             return "msg";
         }
+        System.out.println("content.length():" + content.length());
+        if (content.length()>4000){
+            this.msg = "内容不能超过4000字!";
+            return "msg";
+        }
         if (noticeService.existsByName(null, title)){
             this.msg = "添加失败:已经存在相同标题的记录";
             return "msg";
@@ -56,7 +61,7 @@ public class NoticeAction extends ActionSupport
             this.creatXml();
             return "msg";
         }
-        this.isDeal = "\u6dfb\u52a0\u5931\u8d25\u8bf7\u91cd\u65b0\u6dfb\u52a0";
+        this.isDeal = "添加失败请重新添加";
         return "inputs";
     }
     
@@ -93,6 +98,10 @@ public class NoticeAction extends ActionSupport
         }
         if (content.equals("")){
             this.msg = "内容不能为空!";
+            return "msg";
+        }
+        if (content.length()>4000){
+            this.msg = "内容不能超过4000字!";
             return "msg";
         }
         if (noticeService.existsByName(id, title)){

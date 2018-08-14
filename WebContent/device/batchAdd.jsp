@@ -18,15 +18,19 @@
 
 <body>
 <div class="layui-form">
-    <table width="100%" height="101" border="0" cellpadding="0" cellspacing="0" style="border-color: #e9f5fd;">
+    <table width="500" height="101" border="0" cellpadding="0" cellspacing="0" style="border:1px solid #e9f5fd;">
         <tr>
-            <td width="32%" align="right" style="border-color: #e9f5fd;">
-                <input type="hidden" id="id" value="<%=request.getParameter("id")%>"/>
-                批次号<s:text name='sundyn.colon' />
-            </td>
-
+            <td align="right" rowspan="2" width="32%">批次号<s:text name='sundyn.colon' /><input type="hidden" id="id" value="<%=request.getParameter("id")%>"/></td>
+            <td align="left"><span style="width:100px;margin-left:10px;">设备类型码</span><span style="width:100px;margin-left:60px;">年月</span>
+                <span style="width:100px;margin-left:60px;">批次</span></td>
+        </tr>
+        <tr>
             <td align="left" style="border-color: #e9f5fd;">
-                <input name="batchid" class="input_comm" id="batchid" value="${vo.batchid}" />
+                <input name="batchid_deviceclass_1" class="input_comm" id="batchid_deviceclass_1" value="${vo.batchid_deviceclass_1}" style="width: 40px;" />
+                <input name="batchid_deviceclass_2" class="input_comm" id="batchid_deviceclass_2" value="${vo.batchid_deviceclass_2}" style="width: 40px;" />
+                <input name="batchid_year" class="input_comm" id="batchid_year" value="${vo.batchid_year==null?curyear:vo.batchid_year}" style="width: 40px;" />
+                <input name="batchid_month" class="input_comm" id="batchid_month" value="${vo.batchid_month==null?curmonth:vo.batchid_month}" style="width: 40px;" />
+                <input name="batchid_no" class="input_comm" id="batchid_no" value="${vo.batchid_no}" style="width: 70px;" />
             </td>
         </tr>
         <tr >

@@ -288,7 +288,6 @@ public class ManagerAction extends MainAction
         final String rand = request.getParameter("rand");
         final InetAddress addr = InetAddress.getLocalHost();
         final String ipHouse = addr.getHostAddress();
-        System.out.println("ipHouse===" + ipHouse);
         final Integer playListId = 1;
         final String basePath = ServletActionContext.getServletContext().getRealPath(File.separator);
         final String filePath = String.valueOf(basePath) + "m7app" + File.separator + playListId.toString() + File.separator + "NEWCONFIG.XML";
