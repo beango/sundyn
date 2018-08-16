@@ -165,7 +165,7 @@ public class EmployeeService extends SuperDao
     public int countEmployeeByDeptid(final Integer deptId) throws SQLException {
         final String sql = "select count(*) from appries_employee where ext1 is null and deptid =" + deptId;
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -190,7 +190,7 @@ public class EmployeeService extends SuperDao
     public int countEmployeeByName(final String name) throws SQLException {
         final String sql = "select count(*) from appries_employee where   Name  like '%" + name + "%'";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -213,7 +213,7 @@ public class EmployeeService extends SuperDao
     public int countMovedEmployee() throws SQLException {
         final String sql = "select  count(*) from appries_Employee  where  ext1='yes' ";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -302,7 +302,7 @@ public class EmployeeService extends SuperDao
     public boolean employeeExists(final String ext2) {
         final String sql = "select count(*) from appries_employee where ext2='" + ext2 + "'";
         try {
-            final int num = this.getJdbcTemplate().queryForInt(sql);
+            final int num = this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
             return num > 0;
         }
         catch (Exception e) {
@@ -313,7 +313,7 @@ public class EmployeeService extends SuperDao
     public boolean employeeCardNumExsits(final String cardNum) {
         final String sql = "select count(*) from appries_employee where CardNum='" + cardNum + "'";
         try {
-            final int num = this.getJdbcTemplate().queryForInt(sql);
+            final int num = this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
             return num > 0;
         }
         catch (Exception e) {
@@ -409,7 +409,7 @@ public class EmployeeService extends SuperDao
                 " select appries_employee.Name as employeeName, appries_employee.Sex ,appries_employee.CardNum, appries_dept.name as deptName  ,'\u4e0d\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id not  in(" + employeeIds + ")";
         sql = "select count(*) from (" + sql + ") as temp";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;
@@ -420,7 +420,7 @@ public class EmployeeService extends SuperDao
         String sql = " select appries_employee.Name as employeeName,  appries_employee.Sex ,appries_employee.CardNum, appries_dept.name as deptName ,'\u5728\u7ebf' as isline from  appries_employee , appries_dept where  appries_dept.id=appries_employee.deptid  and appries_dept.id in(" + deptIds + ")  and appries_employee.id in(" + employeeIds + ")";
         sql = "select count(*) from (" + sql + ") as temp";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;

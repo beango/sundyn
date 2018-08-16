@@ -54,7 +54,6 @@ input{border:0}
     left: 140px;
     width: 400px;
     height: 300px;
-    background: url(../img/guang.png) no-repeat;
 }
 .logo {
     position: absolute;
@@ -62,20 +61,17 @@ input{border:0}
     left: 140px;
     width: 200px;
     height: 200px;
-    background: url(../img/logo.png) no-repeat;
     
 }
 .logo_txt {
     margin-left: 20px;
     width: 395px;
     height: 50px;
-    background: url(../img/logo_text.png) no-repeat;
 }
 
 .login_box {
     width: 450px;
     height: 153px;
-    background: url(../img/login_box.png) no-repeat;
 }
 
 .login_table {

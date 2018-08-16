@@ -16,7 +16,7 @@ public class AdviceService extends SuperDao
         final Object[] arg = { question.getQuestion(), question.getSortid() };
         try {
             this.getJdbcTemplate().update(sql1, arg);
-            final int id = this.getJdbcTemplate().queryForInt(sql2);
+            final int id = this.getJdbcTemplate().queryForObject(sql2,null, java.lang.Integer.class);
             final String[] answer = StringUtils.getAnswer(answers);
             String[] array;
             for (int length = (array = answer).length, i = 0; i < length; ++i) {
@@ -318,12 +318,12 @@ public class AdviceService extends SuperDao
     
     public int getCount() {
         final String sql = "select count(id) from appries_question_answer";
-        return this.getJdbcTemplate().queryForInt(sql);
+        return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
     }
     
     public int getCount1() {
         final String sql = "select count(id) from appries_question";
-        return this.getJdbcTemplate().queryForInt(sql);
+        return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
     }
     
     public double getRate(final AnswerVo av) {

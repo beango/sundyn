@@ -51,7 +51,7 @@ public class PageUtils extends SuperDao implements Serializable
     
     public int getCount(final String sql) {
         int count = 0;
-        count = this.getJdbcTemplate().queryForInt(sql);
+        count = this.getJdbcTemplate().queryForObject(sql, null, Integer.class);
         return count;
     }
     

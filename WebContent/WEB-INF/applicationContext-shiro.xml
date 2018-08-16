@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/cache
+			http://www.springframework.org/schema/cache/spring-cache-3.2.xsd"
+	default-autowire="byName" default-lazy-init="false">
+	<!-- properties -->
+	<!-- <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:config/ehcache-shiro.xml" />
+		<property name="cacheManager" ref="coreCacheManager" />
+	</bean> -->
+
+	<bean id="MyRealm" class="com.sundyn.Realm.MyRealm">
+	</bean>
+
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- 单realm应用。如果有多个realm，使用‘realms’属性代替 -->
+		<property name="realm" ref="MyRealm" />
+		<!--<property name="cacheManager" ref="cacheManager" />-->
+		<property name="sessionManager" ref="sessionManager"/>
+	</bean>
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.ServletContainerSessionManager"/>
+
+	<!-- <bean id="coreCacheManager" class="net.sf.ehcache.CacheManager" factory-method="create" /> -->
+
+	<!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的ShiroDbRealm.java -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl"
+			value="/login.jsp" />
+		<property name="successUrl"
+			value="/index.jsp" />
+		<property name="unauthorizedUrl" value="unauthorized" />
+		<property name="filterChainDefinitions">
+			<value>
+                /style/**=anon
+                /css/**=anon
+                /js/**=anon
+                /images/**=anon
+                /img/**=anon
+                /fckeditor/**=anon
+
+                /common/logout.jsp=anon
+                /login.jsp=anon
+                /common/user/sso.htm=anon
+                /inte/DmCheck/**=anon
+                /websocket=anon
+                /** = authc
+			</value>
+		</property>
+	</bean>
+
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+	<bean
+        class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod"
+            value="org.apache.shiro.SecurityUtils.setSecurityManager"></property>
+        <property name="arguments" ref="securityManager"></property>
+    </bean>
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor" />
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.apache.shiro.authz.UnauthenticatedException">
+                    redirect:${shiro.ssologinurl}?service=${shiro.casurl}
+                </prop>
+                <prop key="org.apache.shiro.authz.UnauthorizedException">
+                    redirect:/frame/redirect.jsp
+                </prop>
+            </props>
+        </property>
+        <property name="defaultErrorView" value="error/genericView"/>
+    </bean>
+</beans>

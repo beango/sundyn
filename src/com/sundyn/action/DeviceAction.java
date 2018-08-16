@@ -55,12 +55,18 @@ public class DeviceAction extends MainAction
     private Pager pager;
 
     public InputStream getEvalbutton() {
-        String file = JavaXML.class.getClassLoader().getResource("").getPath();
-        file = file.replaceAll("%20", " ");
-        file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
-        final String filename = "evalbuttons.xml";
-        final String url = String.valueOf(file) + filename;
-        return ServletActionContext.getServletContext().getResourceAsStream("/WEB-INF/source/" + filename);
+        try{
+            String file = JavaXML.class.getClassLoader().getResource("").getPath();
+            file = file.replaceAll("%20", " ");
+            file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
+            final String filename = "evalbuttons.xml";
+            final String url = String.valueOf(file) + filename;
+            return ServletActionContext.getServletContext().getResourceAsStream("/WEB-INF/source/" + filename);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public void setEvalbutton(InputStream evalbutton) {

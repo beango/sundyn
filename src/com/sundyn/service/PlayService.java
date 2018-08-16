@@ -65,7 +65,7 @@ public class PlayService extends SuperDao
     public int countPlayQuery(final String playName) {
         final String sql = "select count(*) from  appries_play where playName like '%" + playName + "%'";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;
@@ -101,7 +101,7 @@ public class PlayService extends SuperDao
             sql += "and playid!=" + id;
         final Object[] arg = { playTitle };
         try {
-            return this.getJdbcTemplate().queryForInt(sql, arg)>0;
+            return this.getJdbcTemplate().queryForObject(sql, arg, Integer.class)>0;
         }
         catch (Exception e) {
             return false;

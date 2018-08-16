@@ -36,7 +36,7 @@ public class ManagerService extends SuperDao
         if (id!=null)
             arg.add(id);
         try {
-            final int num = this.getJdbcTemplate().queryForInt(sql, arg.toArray());
+            final int num = this.getJdbcTemplate().queryForObject(sql, arg.toArray(), java.lang.Integer.class);
             return num <= 0;
         }
         catch (Exception e) {
@@ -145,7 +145,6 @@ public class ManagerService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -153,7 +152,7 @@ public class ManagerService extends SuperDao
     public int countByName(final String name) {
         final String sql = "select count(*) from appries_manager where name like '%" + name + "%' ";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -181,7 +180,7 @@ public class ManagerService extends SuperDao
         final String sql = "select count(*) from appries_manager where  name like '%" + name + "%' and userGroupId in (select id from appries_power where deptIdGroup in (" + deptgroup + "))";
         System.out.println("sql1=" + sql);
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -192,7 +191,7 @@ public class ManagerService extends SuperDao
     public boolean isUseUserGroupId(final Integer id) {
         final String sql = "select count(*) from appries_manager where userGroupId=" + id;
         try {
-            final int num = this.getJdbcTemplate().queryForInt(sql);
+            final int num = this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
             return num > 0;
         }
         catch (Exception e) {

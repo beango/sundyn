@@ -62,7 +62,7 @@ public class DeptService extends SuperDao
         String sql = "select count(*) c from appries_dept t2 where remark=? and deptType=0";
         Object[] arg = { mac };
         try {
-            boolean has = this.getJdbcTemplate().queryForInt(sql, arg)>0;
+            boolean has = this.getJdbcTemplate().queryForObject(sql, arg, java.lang.Integer.class)>0;
             if  (!has){
                 sql = "Insert into appries_dept (name, fatherId, remark, child,lenvel,client_type,product_type,deptType,dept_camera_url,dept_businessId," +
                         "dept_playListId,ext1,ext2,ext3,useVideo,notice,cityid,provinceid,ext5) " +
@@ -395,7 +395,7 @@ public class DeptService extends SuperDao
     public int getEmployees(final String id) {
         final String sql = "select count(*) from appries_employee where deptid in (" + id + ")";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;
@@ -405,7 +405,7 @@ public class DeptService extends SuperDao
     public int getDetpLevel() {
         final String sql = "select max(lenvel) as maxvalue from appries_dept";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;
@@ -425,7 +425,7 @@ public class DeptService extends SuperDao
     public boolean isLeafage(final Integer id) throws Exception {
         final String sql = "select count(*) from appries_dept  where  fatherId =" + id;
         try {
-            final int num = this.getJdbcTemplate().queryForInt(sql);
+            final int num = this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
             return num <= 0;
         }
         catch (Exception e) {
@@ -484,7 +484,7 @@ public class DeptService extends SuperDao
         final String sql = "select count(*) from appries_dept where dept_playListId=?  ";
         final Object[] args = { playListId };
         try {
-            return this.getJdbcTemplate().queryForInt(sql, args);
+            return this.getJdbcTemplate().queryForObject(sql, args, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -495,7 +495,7 @@ public class DeptService extends SuperDao
     public int getMaxId() {
         final String sql = "select max(id) from appries_dept   ";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
