@@ -184,7 +184,6 @@ public class KeyTypeAction extends ActionSupport
         while ((len = is.read(b)) != -1) {
             str.append(new String(b, 0, len, "utf-8"));
         }
-        System.out.println(str.toString());
         List<button> o= (List<button>) XmlUtil.xmlToList(str.toString(), button.class);
         JSONArray ja = JSONArray.fromObject(o);
         return ja;

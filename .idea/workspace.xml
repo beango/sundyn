@@ -6,69 +6,11 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="eba58721-adeb-4560-a88f-2e2700ea2ca1" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/WebContent/MyJsp2.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebContent/js/interact.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebContent/js/jquery-ui-1.9.2.custom.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebContent/js/jquery-ui.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebContent/keyType/btn/eval_0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebContent/keyType/btn/eval_1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebContent/keyType/btn/eval_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/sundyn/listener/InitDbUpdate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/sundyn/util/XmlUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/evalbuttons.xml" afterDir="false" />
+    <list default="true" id="eba58721-adeb-4560-a88f-2e2700ea2ca1" name="Default" comment="1.0.3a">
+      <change afterPath="$PROJECT_DIR$/libs/spring-test-3.0.5.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/spring.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/MyJsp.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/MyJsp.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/WEB-INF/applicationContext-action.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/WEB-INF/applicationContext-action.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/device/batchAdd.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/device/batchAdd.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/device/deviceAdd.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/device/deviceAdd.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/device/deviceList.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/device/deviceList.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/employee/addDialog.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/employee/addDialog.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/employee/editDialog.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/employee/editDialog.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/favicon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/js/my_zh.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/js/my_zh.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebContent/keyType/dialog.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/keyType/dialog.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/m7Info/online.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/m7Info/online.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/m7app/1/NEWCONFIG.XML" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/m7app/1/NEWCONFIG.XML" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/notice/noticeAddDialog.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/notice/noticeAddDialog.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/notice/noticeUpdateDialog.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/notice/noticeUpdateDialog.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/play/addDialog.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/play/addDialog.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/play/editDialog.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/play/editDialog.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebContent/playList/configDialogAndroid.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/WebContent/playList/configDialogAndroid.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/appries.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/appries.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/base.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/base.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/AdviceSurveyAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/AdviceSurveyAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/AppriesAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/AppriesAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/DefaultAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/DefaultAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/DeviceAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/DeviceAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/DownVideo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/DownVideo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/EmployeeAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/EmployeeAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/KeyTypeAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/KeyTypeAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/M7InfoAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/M7InfoAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/MainAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/MainAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/ManagerAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/ManagerAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/NoticeAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/NoticeAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/PlayAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/PlayAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/PlayListAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/PlayListAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/action/WeatherAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/action/WeatherAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/service/AdviceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/service/AdviceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/service/AppriesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/service/AppriesService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/service/DeptService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/service/DeptService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/service/DeviceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/service/DeviceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/service/KeyTypeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/service/KeyTypeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/service/PlayService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/service/PlayService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/service/QueryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/service/QueryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/service/TotalService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/service/TotalService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/util/OnLineListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/util/OnLineListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/util/RegTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/util/RegTimer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/util/WordToHtmlUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/util/WordToHtmlUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/sundyn/vo/PlayVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/sundyn/vo/PlayVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/download.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/download.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/employee.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/employee.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/keyType.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/keyType.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/play.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/play.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sundyn_zh.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/sundyn_zh.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/zxpj.iml" beforeDir="false" afterPath="$PROJECT_DIR$/zxpj.iml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
@@ -110,26 +52,35 @@
       <file leaf-file-name="my_zh.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WebContent/js/my_zh.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
+            <state relative-caret-position="19771">
               <caret line="1163" column="33" selection-start-line="1163" selection-start-column="16" selection-end-line="1163" selection-end-column="33" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="KeyTypeAction.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="KeyTypeAction.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/KeyTypeAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
+            <state relative-caret-position="527">
               <caret line="55" column="69" selection-start-line="55" selection-start-column="66" selection-end-line="55" selection-end-column="69" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="batchAdd.jsp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WebContent/device/batchAdd.jsp">
+      <file leaf-file-name="AdviceService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/AdviceService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="31" column="139" selection-start-line="31" selection-start-column="139" selection-end-line="31" selection-end-column="139" />
+            <state relative-caret-position="129">
+              <caret line="317" column="4" selection-start-line="317" selection-start-column="4" selection-end-line="317" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="proxool.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="81" selection-start-line="6" selection-start-column="75" selection-end-line="6" selection-end-column="81" />
             </state>
           </provider>
         </entry>
@@ -137,8 +88,8 @@
       <file leaf-file-name="DeviceAction.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/DeviceAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="71">
-              <caret line="330" column="23" lean-forward="true" selection-start-line="330" selection-start-column="23" selection-end-line="330" selection-end-column="23" />
+            <state relative-caret-position="5049">
+              <caret line="330" column="23" selection-start-line="330" selection-start-column="23" selection-end-line="330" selection-end-column="23" />
               <folding>
                 <element signature="e#15164#15165#0" expanded="true" />
                 <element signature="e#15199#15200#0" expanded="true" />
@@ -147,21 +98,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dialog.jsp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="dialog.jsp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/WebContent/keyType/dialog.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="220" column="63" lean-forward="true" selection-start-line="220" selection-start-column="63" selection-end-line="220" selection-end-column="63" />
+            <state relative-caret-position="342">
+              <caret line="305" column="49" selection-start-line="305" selection-start-column="43" selection-end-line="305" selection-end-column="49" />
               <folding>
-                <element signature="n#style#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#0;n#tr#1;n#table#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#1;n#tr#1;n#table#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#2;n#tr#1;n#table#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#0;n#td#2;n#tr#1;n#table#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#3;n#tr#1;n#table#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#td#4;n#tr#1;n#table#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#0;n#td#1;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
               </folding>
@@ -177,7 +119,7 @@
       <file leaf-file-name="DeviceService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/DeviceService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2652">
+            <state relative-caret-position="2533">
               <caret line="156" selection-start-line="156" selection-end-line="156" />
             </state>
           </provider>
@@ -213,8 +155,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>DeviceLivingData.xml</find>
-      <find>xml</find>
       <find>employeeInfoSet</find>
       <find>employeeInfoSet.xml</find>
       <find>noticeDownload</find>
@@ -243,6 +183,8 @@
       <find>getevalbuttons</find>
       <find>button.xml</find>
       <find>keyTypeEdit</find>
+      <find>queryforint</find>
+      <find>content</find>
     </findStrings>
     <replaceStrings>
       <replace>/zxpj/js/</replace>
@@ -330,8 +272,8 @@
         <option value="$PROJECT_DIR$/WebContent/device/deviceList.jsp" />
         <option value="$PROJECT_DIR$/WebContent/js/my_zh.js" />
         <option value="$PROJECT_DIR$/src/com/sundyn/action/DeviceAction.java" />
-        <option value="$PROJECT_DIR$/WebContent/keyType/dialog.jsp" />
         <option value="$PROJECT_DIR$/src/com/sundyn/action/KeyTypeAction.java" />
+        <option value="$PROJECT_DIR$/WebContent/keyType/dialog.jsp" />
       </list>
     </option>
   </component>
@@ -365,33 +307,12 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="zxpj" type="b2602c69:ProjectViewProjectNode" />
               <item name="zxpj" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zxpj" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zxpj" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zxpj" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zxpj" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="zxpj" type="b2602c69:ProjectViewProjectNode" />
-              <item name="zxpj" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sundyn" type="462c0819:PsiDirectoryNode" />
-              <item name="action" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="zxpj" type="b2602c69:ProjectViewProjectNode" />
@@ -450,13 +371,16 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/WebContent/js" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/spring.jar!/" />
+    <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
@@ -984,6 +908,9 @@
       <workItem from="1533881311430" duration="6052000" />
       <workItem from="1534123588188" duration="11666000" />
       <workItem from="1534215273788" duration="1956000" />
+      <workItem from="1534237792244" duration="445000" />
+      <workItem from="1534412352753" duration="333000" />
+      <workItem from="1534412717191" duration="1442000" />
     </task>
     <task id="LOCAL-00001" summary="report">
       <created>1510288908047</created>
@@ -1118,7 +1045,14 @@
       <option name="project" value="LOCAL" />
       <updated>1531972876704</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="1.0.3a">
+      <created>1534237919883</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1534237919883</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1154,7 +1088,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1024465000" />
+    <option name="totallyTimeSpent" value="1026685000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1167,6 +1101,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.2563966" side_tool="true" weight="0.34994584" />
@@ -1180,26 +1115,26 @@
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.7436034" weight="0.34994584" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.7436034" visible="true" weight="0.34994584" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49865952" weight="0.32719395" />
       <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.47441363" weight="0.32719395" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="bottom" id="Java Enterprise" order="7" weight="0.32936078" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.48081023" weight="0.32502708" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7627346" weight="0.3261105" />
+      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.48081023" weight="0.32467532" />
       <window_info anchor="bottom" id="Spring" order="7" weight="0.32936078" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49932975" weight="0.32683983" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49666667" visible="true" weight="0.15938166" />
       <window_info anchor="bottom" id="Problems" order="8" sideWeight="0.49597856" weight="0.32719395" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49666667" visible="true" weight="0.15458423" />
       <window_info id="Web" order="2" sideWeight="0.50333333" side_tool="true" weight="0.3097015" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3289183" />
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="right" id="Coverage" order="4" side_tool="true" weight="0.32995737" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Coverage" order="4" side_tool="true" weight="0.32995737" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3289183" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -1232,7 +1167,8 @@
     <MESSAGE value="自动添加设置到部门" />
     <MESSAGE value="jsp" />
     <MESSAGE value="bbbbug" />
-    <option name="LAST_COMMIT_MESSAGE" value="bbbbug" />
+    <MESSAGE value="1.0.3a" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.0.3a" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1244,13 +1180,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/sundyn/utils/StringHql.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="22" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/applicationContext-action.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -1269,13 +1198,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="15" column="31" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/AdviceService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="266" selection-start-line="266" selection-end-line="266" />
         </state>
       </provider>
     </entry>
@@ -1337,12 +1259,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/keyType.xml">
-      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="578">
           <caret line="34" column="88" selection-start-line="34" selection-start-column="88" selection-end-line="34" selection-end-column="88" />
         </state>
       </provider>
+      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/vo/button.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1386,13 +1308,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WebContent/notice/noticeList.jsp">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1404,12 +1319,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/download.xml">
-      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="799">
           <caret line="47" column="60" selection-start-line="47" selection-start-column="60" selection-end-line="47" selection-end-column="60" />
         </state>
       </provider>
+      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/utils/JavaXML.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1461,12 +1376,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/appries.xml">
-      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="23" column="39" selection-start-line="23" selection-start-column="39" selection-end-line="23" selection-end-column="39" />
         </state>
       </provider>
+      <provider editor-type-id="com.intellij.struts2.graph.fileEditor.Struts2GraphFileEditorProvider" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/PlayListAction.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1522,7 +1437,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/DeviceService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2652">
+        <state relative-caret-position="2533">
           <caret line="156" selection-start-line="156" selection-end-line="156" />
         </state>
       </provider>
@@ -1553,31 +1468,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/DeviceAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="71">
-          <caret line="330" column="23" lean-forward="true" selection-start-line="330" selection-start-column="23" selection-end-line="330" selection-end-column="23" />
+        <state relative-caret-position="5049">
+          <caret line="330" column="23" selection-start-line="330" selection-start-column="23" selection-end-line="330" selection-end-column="23" />
           <folding>
             <element signature="e#15164#15165#0" expanded="true" />
             <element signature="e#15199#15200#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WebContent/keyType/dialog.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="220" column="63" lean-forward="true" selection-start-line="220" selection-start-column="63" selection-end-line="220" selection-end-column="63" />
-          <folding>
-            <element signature="n#style#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#1;n#table#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#1;n#tr#1;n#table#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#2;n#tr#1;n#table#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#input#0;n#td#2;n#tr#1;n#table#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#3;n#tr#1;n#table#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#4;n#tr#1;n#table#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#td#1;n#tr#0;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1591,15 +1486,47 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/WebContent/js/my_zh.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
+        <state relative-caret-position="19771">
           <caret line="1163" column="33" selection-start-line="1163" selection-start-column="16" selection-end-line="1163" selection-end-column="33" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sundyn/action/KeyTypeAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
+        <state relative-caret-position="527">
           <caret line="55" column="69" selection-start-line="55" selection-start-column="66" selection-end-line="55" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sundyn/dao/SuperDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sundyn/service/AdviceService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="129">
+          <caret line="317" column="4" selection-start-line="317" selection-start-column="4" selection-end-line="317" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/WEB-INF/proxool.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="81" selection-start-line="6" selection-start-column="75" selection-end-line="6" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WebContent/keyType/dialog.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="305" column="49" selection-start-line="305" selection-start-column="43" selection-end-line="305" selection-end-column="49" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1622,7 +1549,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>Struts 2</last-edited>
+          <last-edited>Struts 2 (zxpj)|Struts 2</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1658,12 +1585,11 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>zxpj</last-edited>
+          <last-edited>Web2|zxpj</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
@@ -1683,7 +1609,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>ant</last-edited>
+          <last-edited>spring</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

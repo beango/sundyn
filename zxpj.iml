@@ -152,5 +152,6 @@
     <orderEntry type="library" name="ehcache-2.7.8" level="project" />
     <orderEntry type="library" name="bcprov-ext-jdk15on-159" level="project" />
     <orderEntry type="library" name="bcpkix-jdk15on-159" level="project" />
+    <orderEntry type="library" name="spring" level="project" />
   </component>
 </module>
