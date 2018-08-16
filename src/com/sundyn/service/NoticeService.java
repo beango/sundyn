@@ -88,7 +88,7 @@ public class NoticeService extends SuperDao
     
     public int getCount() {
         final String sql = "select count(id) from appries_notice";
-        return this.getJdbcTemplate().queryForInt(sql);
+        return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
     }
 
     public boolean existsByName(String id, String title) {
@@ -97,7 +97,7 @@ public class NoticeService extends SuperDao
             sql += "and id!=" + id;
         final Object[] arg = { title };
         try {
-            return this.getJdbcTemplate().queryForInt(sql, arg)>0;
+            return this.getJdbcTemplate().queryForObject(sql, arg, Integer.class)>0;
         }
         catch (Exception e) {
             return false;

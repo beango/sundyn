@@ -18,7 +18,6 @@ public class BusinessService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -30,7 +29,6 @@ public class BusinessService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql, args);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -43,7 +41,6 @@ public class BusinessService extends SuperDao
             return true;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -54,7 +51,6 @@ public class BusinessService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -87,7 +83,6 @@ public class BusinessService extends SuperDao
             return this.getJdbcTemplate().queryForMap(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -97,7 +92,6 @@ public class BusinessService extends SuperDao
         final List ls = this.findByFatherIdAll(id);
         for (int i = 0; i < ls.size(); ++i) {
         	Map map = (Map)ls.get(i);
-            //res = res.concat(ls.get(i).get("businessId").toString()).concat(",");
         	res = res.concat(map.get("businessId").toString()).concat(",");
         }
         if (res.endsWith(",")) {
@@ -118,7 +112,6 @@ public class BusinessService extends SuperDao
             return true;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -130,7 +123,6 @@ public class BusinessService extends SuperDao
             return true;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -138,7 +130,7 @@ public class BusinessService extends SuperDao
     public boolean del(final Integer id) {
         try {
             final String sqltemp = "select count(*) from appries_business  where businessFatherId in (     select  businessFatherId  from (     select businessFatherId from appries_business where businessId in( " + id + ")    )  as temp)";
-            if (this.getJdbcTemplate().queryForInt(sqltemp) == 1) {
+            if (this.getJdbcTemplate().queryForObject(sqltemp, null, Integer.class) == 1) {
                 final String sql = "update appries_business set businessIsLeaf=1 where businessId in (       select  businessFatherId  from (     select businessFatherId from appries_business where businessId in( " + id + ")    )  as temp)";
                 this.getJdbcTemplate().update(sql);
             }
@@ -146,7 +138,6 @@ public class BusinessService extends SuperDao
             return true;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -157,7 +148,6 @@ public class BusinessService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

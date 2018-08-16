@@ -72,7 +72,7 @@ public class LybService extends SuperDao
     public int lybCount() {
         final String sql = "select count(*) from appries_lyb  ";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();

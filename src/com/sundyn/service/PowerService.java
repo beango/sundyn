@@ -26,7 +26,7 @@ public class PowerService extends SuperDao
     public int getDeptIdByManagerId(final int id) throws Exception {
         final String sql = "SELECT deptIdGroup  FROM appries_power where id in(select userGroupId from appries_manager where id= " + id + " )";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -119,7 +119,7 @@ public class PowerService extends SuperDao
     public int countByName(final String name) {
         final String sql = "select count(*) from appries_power where name  like '%" + name + "%'  ";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -145,7 +145,7 @@ public class PowerService extends SuperDao
         final String sql = "select count(*) from appries_power where  name like '%" + name + "%' and deptIdGroup in (" + deptgroup + ")";
         System.out.println("sql-countLowerPowerByName=" + sql);
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -158,7 +158,7 @@ public class PowerService extends SuperDao
         if (id!=null)
             sql += "and id!=" + id;
         try {
-            final int num = this.getJdbcTemplate().queryForInt(sql);
+            final int num = this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
             return num > 0;
         }
         catch (Exception e) {

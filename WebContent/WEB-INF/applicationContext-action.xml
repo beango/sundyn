@@ -100,6 +100,9 @@
 		<property name="deptService" ref="deptService"></property>
 		<property name="managerService" ref="managerService"></property>
 	</bean>
+    <bean id="authAction" class="com.sundyn.action.AuthAction" scope="prototype">
+        <property name="menuService" ref="menuService" />
+    </bean>
 	<bean id="totalAction" class="com.sundyn.action.TotalAction"
 		scope="prototype">
 		<property name="deptService" ref="deptService"></property>
@@ -107,8 +110,7 @@
 		<property name="powerService" ref="powerService"></property>
 		<property name="keyTypeService" ref="keyTypeService"></property>
 		<property name="businessService" ref="businessService"></property>
-		<!--<property name="queryService" ref="queryService"></property>
-	--></bean>
+    </bean>
 	<bean id="baseAction" class="com.sundyn.action.BaseAction"
 		scope="prototype">
 		<property name="playListService" ref="playListService"></property>

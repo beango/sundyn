@@ -4,6 +4,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.DeptService;
 import com.sundyn.service.PowerService;
 import com.sundyn.util.ConfigHelper;
+import com.sundyn.util.MyRequest;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -32,6 +32,7 @@ public class MainAction extends ActionSupport {
     private PowerService powerService;
 
     private HttpServletRequest request;
+    public MyRequest req;
     private Map UserManager = null;
     private String UserName = null;
     protected String UserDeptIds = null;
@@ -51,6 +52,7 @@ public class MainAction extends ActionSupport {
 
     public MainAction(){
         request = ServletActionContext.getRequest();
+        this.req = new MyRequest(this.request);
         UserManager = (Map)request.getSession().getAttribute("manager");
         if(null!=UserManager)
             UserName = (String) UserManager.get("name");
@@ -156,5 +158,5 @@ public class MainAction extends ActionSupport {
         public void setIndex(int index) {
             this.val = index;
         }
-        }
+    }
 }

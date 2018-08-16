@@ -14,7 +14,7 @@
 	<bean id="jdbcTemp"
 		class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource">
-			<ref local="dataSource" />
+			<ref bean="dataSource" />
 		</property>
 	</bean>
 	<bean id="superDao" class="com.sundyn.dao.SuperDao">
@@ -25,7 +25,7 @@
 	</bean>
 	<!-- spring 定时器 开始 -->
 	<bean id="regTimer" class="com.sundyn.util.RegTimer" />
-	<bean id="regTask"
+	<!--<bean id="regTask"
 		class="org.springframework.scheduling.timer.ScheduledTimerTask">
 		<property name="timerTask" ref="regTimer" />
 		<property name="period">
@@ -38,7 +38,7 @@
 				<ref bean="regTask" />
 			</list>
 		</property>
-	</bean>
+	</bean>-->
 	<!-- spring 定时器 结束 -->
 	<bean id="des" class="com.sundyn.util.impl.DesImpl"></bean>
 	<bean id="cPic" class="com.sundyn.util.CompressPicDemo"></bean>

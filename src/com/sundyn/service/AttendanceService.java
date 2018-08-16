@@ -45,7 +45,7 @@ public class AttendanceService extends SuperDao
     public int count(final String startDate, final String endDate) {
         final String sql = "select count(*) from appries_attendance where attendDate   >=left( '" + startDate + "',10)  and attendDate   <=left( '" + endDate + "',10)     ";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();

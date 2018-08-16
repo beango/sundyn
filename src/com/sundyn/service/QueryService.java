@@ -11,23 +11,23 @@ public class QueryService extends SuperDao
 {
     public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
 
-    public List<DeptVo> queryDept(final String deptids, final String startDate, final String endDate, final int start, final int num) {
+    /*public List<DeptVo> queryDept(final String deptids, final String startDate, final String endDate, final int start, final int num) {
         String sql = "select row_number() over(order by appries_appries.id desc) as rows, temp_appries.id,temp_appries.videofile as videofile, temp_appries.businessTime as businessTime,temp_appries.businessMin as businessMin,temp_appries.businessSec as businessSec,appries_employee.CardNum ,appries_employee.Name as 'employeeName',appries_keytype.name as 'keyName', temp_appries.JieshouTime ,appries_dept.name as 'deptName', temp_appries.serviceDate,temp_appries.appriesTime,temp_appries.CustorTime,appries_dept.dept_camera_url ,appries_dept.fatherId from  (select appries_appries.id, appries_appries.videofile,appries_appries.businessTime,appries_appries.businessMin,appries_appries.businessSec,appries_appries.DeptId,appries_appries.EmployeeId, appries_appries.JieshouTime,appries_appries.keyno, appries_appries.serviceDate,appries_appries.appriesTime,appries_appries.CustorTime  from appries_appries where appries_appries.DeptId in (" + deptids + ") " + "and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "'";
         sql += ")as temp_appries, appries_employee,appries_dept,appries_keytype " + "where  temp_appries.EmployeeId= appries_employee.Id " + "and temp_appries.DeptId=appries_dept.id " + "and temp_appries.keyno=appries_keytype.keyNo ";
         sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
         sql = " select a.*,b.name as fatherName from (" + sql + ") as a left join appries_dept b on a.fatherId=b.id  ORDER BY a.JieshouTime DESC";
         try {
-            return (List<DeptVo>)this.getJdbcTemplate().queryForList(sql);
+            return (List<DeptVo>)this.getJdbcTemplate().queryForList(sql,null,DeptVo.class);
         }
         catch (Exception e) {
             return null;
         }
-    }
+    }*/
 
     public int countQueryDept(final String deptids, final String startDate, final String endDate) {
         final String sql = "select count(*) from appries_appries where  appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' and  appries_appries.DeptId in (" + deptids + ") ";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;
@@ -95,7 +95,7 @@ public class QueryService extends SuperDao
     public int countQueryEmployee(final Integer employeeId, final String startDate, final String endDate) {
         final String sql = "select   count(*)from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id and appries_appries.keyno=appries_keytype.keyNo and appries_appries.EmployeeId =" + employeeId + " " + "and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' ";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;
@@ -112,7 +112,7 @@ public class QueryService extends SuperDao
                 "and appries_appries.JieshouTime  <='" + endDate + "' " +
                 "and appries_appries.keyno in (" + keys + " )";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;
@@ -190,7 +190,7 @@ public class QueryService extends SuperDao
         sql += "and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' " + "and appries_appries.DeptId  in (" + deptIds + ")";
         System.out.println("countQueryResult-sql" + sql);
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;
@@ -239,7 +239,7 @@ public class QueryService extends SuperDao
     public int countQueryResultTel(final String deptIds, final String tel, final String startDate, final String endDate) {
         final String sql = "select   count(*)from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id and appries_appries.keyno=appries_keytype.keyNo and appries_appries.ext1 =" + tel + " " + "and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' " + "and appries_appries.DeptId  in (" + deptIds + ")";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;
@@ -249,7 +249,7 @@ public class QueryService extends SuperDao
     public int countQueryResultIdCard(final String deptIds, final String tel, final String startDate, final String endDate) {
         final String sql = "select   count(*)from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id and appries_appries.keyno=appries_keytype.keyNo and appries_appries.ext2 =" + tel + " " + "and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' " + "and appries_appries.DeptId  in (" + deptIds + ")";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;
@@ -372,7 +372,7 @@ public class QueryService extends SuperDao
             sql = String.valueOf(sql) + " and appries_appries.JieshouTime  <='" + endDate + "' ";
         }
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;
@@ -398,7 +398,7 @@ public class QueryService extends SuperDao
             sql = String.valueOf(sql) + " and appries_appries.JieshouTime  <='" + endDate + "' ";
         }
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;
@@ -536,7 +536,7 @@ public class QueryService extends SuperDao
         if(keys!=null && keys!="")
             sql += "and keyno in (" + keys + ")";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;

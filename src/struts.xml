@@ -33,6 +33,7 @@
 	<include file="keyType.xml"></include>
 	<!-- 用户组管理-->
 	<include file="power.xml"></include>
+    <include file="auth.xml"></include>
 	<!-- 统计管理 -->
 	<include file="total.xml"></include>
 	<!-- 基本设置 -->

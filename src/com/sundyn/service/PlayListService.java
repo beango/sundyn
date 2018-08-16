@@ -81,7 +81,7 @@ public class PlayListService extends SuperDao
             sql = String.valueOf(sql) + "and  playListId  in(select dept_playListId from appries_dept where id in( " + deptIds + ")) ";
         }
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -104,7 +104,7 @@ public class PlayListService extends SuperDao
     public int getLastPlayListId() {
         final String sql = "select max(playListId) from appries_playlist ";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -118,7 +118,7 @@ public class PlayListService extends SuperDao
             sql += "and playListId!=" + id;
         final Object[] arg = { name };
         try {
-            return this.getJdbcTemplate().queryForInt(sql, arg)>0;
+            return this.getJdbcTemplate().queryForObject(sql, arg, java.lang.Integer.class)>0;
         }
         catch (Exception e) {
             return false;

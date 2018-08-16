@@ -36,7 +36,7 @@ public class VoteService extends SuperDao
     public int getVoteId() {
         try {
             final String sql = "select max(voteId) from appries_vote";
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();

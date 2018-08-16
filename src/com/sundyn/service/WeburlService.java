@@ -91,7 +91,7 @@ public class WeburlService extends SuperDao
         String sql = "select count(id) from appries_weburl where 1=1 ";
         if(null!=key_title && !"".equals(key_title))
             sql += "and name like '%"+key_title+"%'";
-        return this.getJdbcTemplate().queryForInt(sql);
+        return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
     }
     
     public List findWeburlChoose(final int deptId) {
@@ -185,7 +185,7 @@ public class WeburlService extends SuperDao
             sql += "and id!=" + id;
         final Object[] arg = { name };
         try {
-            return this.getJdbcTemplate().queryForInt(sql, arg)>0;
+            return this.getJdbcTemplate().queryForObject(sql, arg, Integer.class)>0;
         }
         catch (Exception e) {
             return false;

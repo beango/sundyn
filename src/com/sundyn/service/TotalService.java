@@ -101,7 +101,7 @@ public class TotalService extends SuperDao
 
         if(total != null){
             String totalsql = "select max(rows) from ("+sql+") t";
-            total[0] = this.getJdbcTemplate().queryForInt(totalsql);
+            total[0] = this.getJdbcTemplate().queryForObject(totalsql,null, java.lang.Integer.class);
         }
 
         if (start != null && num != null) {
@@ -131,7 +131,7 @@ public class TotalService extends SuperDao
                 "as A group by datingid, datingname  ";
         sql = "select count(*) from (" + sql + " ) as tempcount";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -187,7 +187,7 @@ public class TotalService extends SuperDao
         sql += " )as A group by windowname,windowid ";
         sql = "select count(*) from (" + sql + " ) as tempcount";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -282,7 +282,7 @@ public class TotalService extends SuperDao
         sql = "select row_number() over(order by t.employeeId) as rows, t.employeeId,t.key0,t.key1,t.key2,t.key3,t.key4,t.key5,t.key6,appries_employee.Name as employeeName from (" + sql + ") as t,appries_employee where t.employeeId=appries_employee.Id  ";
 
         String totalsql = "select max(rows) from ("+sql+") t";
-        totalrows[0] = this.getJdbcTemplate().queryForInt(totalsql);
+        totalrows[0] = this.getJdbcTemplate().queryForObject(totalsql,null, java.lang.Integer.class);
         if (start != null && num != null) {
             sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
         }
@@ -362,7 +362,7 @@ public class TotalService extends SuperDao
         sql = String.valueOf(sql) + ") as temp  group by employeeId ";
         sql = "select count(*) from (" + sql + " ) as tempcount";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -400,7 +400,7 @@ public class TotalService extends SuperDao
         sql = String.valueOf(sql) + ") as temp  group by employeeId ";
         sql = "select count(*) from (" + sql + " ) as tempcount";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -430,7 +430,7 @@ public class TotalService extends SuperDao
         sql = String.valueOf(sql) + ") as temp  group by businessType ";
         sql = "select count(*) from (" + sql + " ) as tempcount";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -520,7 +520,7 @@ public class TotalService extends SuperDao
         String sql = "select id,serviceDate,DeptId,employeeId, sum(key0)   as key0 , sum(key1)   as key1, sum(key2)   as key2, sum(key3)  as key3, sum(key4)  as key4, sum(key5)   as key5, sum(key6)   as key6  , windowid, windowname from ( select   temp. id,serviceDate,DeptId,employeeId,   key0,key1 ,key2  ,key3  ,key4 ,key5,key6 ,t1.id as windowid ,t1.name as windowname       from ( select id,serviceDate,DeptId,employeeId, (case keyno WHEN 0  THEN   1 else 0  end ) as key0, (case keyno WHEN 1  THEN   1 else 0    end ) as key1 , (case keyno WHEN 2  THEN   1 else 0    end ) as  key2  , (case keyno WHEN 3  THEN   1 else 0    end ) as  key3  , (case keyno WHEN 4  THEN   1 else 0    end ) as  key4 , (case keyno WHEN 5  THEN   1 else 0    end ) as  key5, (case keyno WHEN 6  THEN   1 else 0    end ) as  key6 from appries_appries  where serviceDate>='" + startDate + "'  and serviceDate<='" + endDate + "'   ) as temp,appries_dept t1 where   temp.DeptId=t1.id   and t1.id in( " + deptIds + ") )  as A group by trim( windowname   )";
         sql = "select count(*) from (" + sql + " ) as tempcount";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -541,13 +541,10 @@ public class TotalService extends SuperDao
 
     public List totalWindowVideo(final String datingId, final String startDate, final String endDate, final Integer start, final Integer num) {
         final String sql = "select id,serviceDate,DeptId,employeeId,videofile,windowid,windowname from ( select   temp. id,serviceDate,DeptId,employeeId,videofile, t1.id as windowid ,t1.name as windowname   from ( select id,serviceDate,DeptId,employeeId,videofile from appries_appries  where serviceDate>='" + startDate + "'  and serviceDate<='" + endDate + "'  " + " ) as temp" + ",appries_dept t1  where temp.DeptId=t1.id  and  t1.fatherId in( " + datingId + ") " + " )as A";
-        System.out.println("videosql=" + sql);
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            System.out.println("\u4f20\u5165\u7684\u90e8\u95e8id" + datingId);
-            e.printStackTrace();
             return null;
         }
     }
@@ -555,7 +552,7 @@ public class TotalService extends SuperDao
     public int countEmployeeAll() {
         final String sql = "select count(*) from appries_employee";
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             e.printStackTrace();

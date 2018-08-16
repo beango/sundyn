@@ -17,8 +17,7 @@
     <!-- /### You don't need include in your project -->
     <link href="${ctx}/assets/stylesheets/highlighting.css?1442373184" rel="stylesheet"/>
 
-    <link rel="stylesheet"
-          href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
     <script type="text/javascript" src="js/json2.js"></script>
     <script type="text/javascript" src="style/lib/jquery-1.9.0/jquery-1.9.0.min.js"></script>
     <script type="text/javascript" src="js/dojo.js"></script>

@@ -149,7 +149,7 @@ public class ThreeService extends SuperDao
             sql = String.valueOf(sql) + " and appries_appries.JieshouTime  <='" + endDate + "' ";
         }
         try {
-            return this.getJdbcTemplate().queryForInt(sql);
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
             return 0;

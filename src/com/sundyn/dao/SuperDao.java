@@ -1,6 +1,9 @@
 package com.sundyn.dao;
 
-import org.springframework.jdbc.core.*;
+import com.sundyn.entity.AppriesMenu;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.List;
 
 public class SuperDao
 {
