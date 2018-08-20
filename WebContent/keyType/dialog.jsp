@@ -301,7 +301,10 @@
             '            <div class="layui-upload e"><button type="button" class="layui-btn" id="evalbutton'+t.id+'">选择图片</button></div>\n' +
             '        </div>');
         if (t.img!=null && t.img !=''){
-            $("#e" + t.id).css("background-image", "url(/upload/" + t.img + ")"); //图片链接（base64）;
+            $("#e" + t.id).css({"background-image": "url(/upload/" + t.img + ")",
+                "background-repeat": "no-repeat",
+                "background-size": "100% 100%",
+                "-moz-background-size":"100% 100%"}); //图片链接（base64）;
         }
         $("#e" + t.id + " .close").click(function(){
             $(this).parent().remove();
