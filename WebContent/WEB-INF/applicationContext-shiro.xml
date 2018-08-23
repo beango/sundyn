@@ -82,10 +82,10 @@
         <property name="exceptionMappings">
             <props>
                 <prop key="org.apache.shiro.authz.UnauthenticatedException">
-                    redirect:login.jsp
+                    redirect:${shiro.ssologinurl}?service=${shiro.casurl}
                 </prop>
                 <prop key="org.apache.shiro.authz.UnauthorizedException">
-                    redirect:redirect.jsp
+                    redirect:/frame/redirect.jsp
                 </prop>
             </props>
         </property>

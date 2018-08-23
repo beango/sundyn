@@ -17,6 +17,9 @@
 		<property name="managerService" ref="managerService" />
 		<property name="deptService" ref="deptService"></property>
 		<property name="powerService" ref="powerService"></property>
+		<!--
+		<property name="loginService" ref="loginService"></property>
+		-->
 	</bean>
 	<bean id="menuAction" class="com.sundyn.action.MenuAction"
 		scope="prototype">
@@ -98,7 +101,7 @@
 		<property name="managerService" ref="managerService"></property>
 	</bean>
     <bean id="authAction" class="com.sundyn.action.AuthAction" scope="prototype">
-        <!--<property name="funcService" ref="funcService" />-->
+        <property name="menuService" ref="menuService" />
     </bean>
 	<bean id="totalAction" class="com.sundyn.action.TotalAction"
 		scope="prototype">

@@ -136,6 +136,7 @@ public class AdviceSurveyAction extends MainAction
     }
     
     public String showAnserTable() {
+        System.out.println("showAnserTableshowAnserTable>>..");
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.adviceService.getCount1();
         this.pager = new Pager("currentPage", pageSize, rowsCount, request);

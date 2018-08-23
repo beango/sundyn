@@ -1,19 +1,12 @@
 package com.sundyn.action;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.sundyn.entity.AppriesFunc;
-import com.sundyn.entity.AppriesPowerfunc;
+import com.opensymphony.xwork2.*;
 import com.sundyn.service.*;
-import com.sundyn.util.Mysql;
-import com.sundyn.util.Pager;
-import com.sundyn.vo.PowerVo;
-import org.apache.struts2.ServletActionContext;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.apache.struts2.*;
+import javax.servlet.http.*;
+import java.util.*;
+import com.sundyn.util.*;
+import com.sundyn.vo.*;
 
 public class PowerAction extends MainAction
 {
@@ -62,12 +55,7 @@ public class PowerAction extends MainAction
     public void setMsg(final String msg) {
         this.msg = msg;
     }
-
-    @Resource
-    private IAppriesPowerfuncService powerFuncService;
-    @Resource
-    private IAppriesFuncService appriesFuncService;
-
+    
     public String powerQuery() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.powerService.countByName("");
@@ -194,19 +182,12 @@ public class PowerAction extends MainAction
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
-
+        System.out.println("deptIdGroup=" + deptIdGroup);
         final List list = this.deptService.findChildALL(deptIdGroup);
         if (list != null && list.size() > 0) {
             final Map dept = (Map) list.get(0);
             dept.put("fatherId", -1);
         }
-
-        EntityWrapper<AppriesPowerfunc> ew = new EntityWrapper<AppriesPowerfunc>();
-        ew.where("powerid={0}", id);
-        List<AppriesPowerfunc> powerFuncList = powerFuncService.selectList(ew);
-        System.out.println("power.powerFuncList:" + powerFuncList.size());
-
-        request.setAttribute("powerFunc", powerFuncList);
         request.setAttribute("m", (Object)m);
         request.setAttribute("list", (Object)list);
         return "success";
@@ -225,27 +206,6 @@ public class PowerAction extends MainAction
         final Integer baseSet = Integer.valueOf(request.getParameter("baseSet"));
         final Integer dataManage = Integer.valueOf(request.getParameter("dataManage"));
         final Integer deptId = Integer.valueOf(request.getParameter("deptId"));
-        final String funcid = req.getString("funcid");
-        if (funcid!=null){
-            EntityWrapper ew=new EntityWrapper();
-            ew.setEntity(new AppriesPowerfunc());
-            ew.where("powerid = {0}", id);
-            boolean isdel = powerFuncService.delete(ew);
-
-            String[] funcidArr = funcid.split(",");
-            System.out.println("funcidArr: " + funcidArr.length);
-            List<AppriesPowerfunc> pfList = new ArrayList<>();
-            for (String f : funcidArr) {
-                System.out.println("f: " + f);
-                if (f.equals(""))
-                    continue;
-                AppriesPowerfunc pf = new AppriesPowerfunc();
-                pf.setFuncid(Integer.valueOf(f));
-                pf.setPowerid(id);
-                pfList.add(pf);
-                boolean isInsert = powerFuncService.insert(pf);
-            }
-        }
         final PowerVo powerVo = new PowerVo();
         powerVo.setId(id);
         powerVo.setName(name);

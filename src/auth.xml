@@ -26,46 +26,5 @@
                 method="authQueryJSON">
             <result name="success">/msg.jsp</result>
         </action>
-        <action name="authEdit" class="authAction"
-                method="authEdit">
-            <result name="success">auth/authEdit.jsp</result>
-        </action>
-        <action name="authEditPost" class="authAction"
-                method="authEditPost">
-            <result name="success">msg.jsp</result>
-        </action>
-        <action name="authDelPost" class="authAction"
-                method="authDelPost">
-            <result name="success">msg.jsp</result>
-        </action>
-        <action name="authCode" class="authAction"
-                method="authCode">
-            <result name="success">auth/authCode.jsp</result>
-        </action>
-        <action name="getAuthData" class="authAction"
-                method="getAuthData">
-            <result name="success">/msg.jsp</result>
-        </action>
-
-        <action name="menuQuery" class="menuAction"
-                method="menuQuery">
-            <result name="success">/menu/query.jsp</result>
-        </action>
-        <action name="menuQueryJson" class="menuAction"
-                method="menuQueryJson">
-            <result name="success">/msg.jsp</result>
-        </action>
-        <action name="menuEdit" class="menuAction"
-                method="menuEdit">
-            <result name="success">menu/menuEdit.jsp</result>
-        </action>
-        <action name="menuEditPost" class="menuAction"
-                method="menuEditPost">
-            <result name="success">msg.jsp</result>
-        </action>
-        <action name="menuDelPost" class="menuAction"
-                method="menuDelPost">
-            <result name="success">msg.jsp</result>
-        </action>
-    </package>
+	</package>
 </struts>

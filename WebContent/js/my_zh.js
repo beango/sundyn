@@ -1457,7 +1457,7 @@ function powerAdd() {
 }
 // 修改角色对话框
 function powerEditDialog(data, title) {
-    new dialog().iframe("powerEditDialog.action?id="+data, {title: title, w:"600px", h:"500px",resize:false});
+    new dialog().iframe("powerEditDialog.action?id="+data, {title: title, h:"500px",resize:false});
 }
  function powerEdit() {
 	var id = document.getElementById("id").value;
@@ -1483,13 +1483,7 @@ function powerEditDialog(data, title) {
 		dataManage = 0;
 	}
 	var deptId = document.getElementById("deptId").value;
-	var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
-    var nodes=zTree.getCheckedNodes(true),
-         v="";
-    for(var i=0;i<nodes.length;i++){
-         v+=nodes[i].id + ",";
-    }
-	dojo.xhrPost({url:"powerEdit.action", content:{id:id,funcid:v, name:name, baseSet:baseSet, dataManage:dataManage, deptId:deptId}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"powerEdit.action", content:{id:id, name:name, baseSet:baseSet, dataManage:dataManage, deptId:deptId}, load:function (resp, ioArgs) {
 		if(resp.trim()==""){
             layer.msg('修改成功', {
                 icon: 1,

@@ -4,7 +4,7 @@
 <something-else-entirely>
 	<proxool>
 		<alias>DbPool</alias>
-		<driver-url>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=zxproduct</driver-url>
+		<driver-url>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=zxeval</driver-url>
 		<driver-class>com.microsoft.jdbc.sqlserver.SQLServerDriver</driver-class>
 		<driver-properties>
 			<property name="user" value="sa" />

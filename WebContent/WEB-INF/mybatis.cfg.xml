@@ -4,8 +4,7 @@
 <configuration>
     <!-- mybatis别名定义 -->
     <typeAliases>
-        <!--<typeAlias alias="AppriesMenu" type="com.sundyn.entity.AppriesMenu"/>
-        <typeAlias alias="AppriesMenu" type="com.sundyn.entity.AppriesFunc"/>-->
+        <typeAlias alias="AppriesMenu" type="com.sundyn.entity.AppriesMenu"/>
     </typeAliases>
     <environments default="development">
         <environment id="development">
@@ -20,7 +19,6 @@
     </environments>
     <!-- mybatis的mapper文件，每个xml配置文件对应一个接口 -->
     <mappers>
-        <!--<mapper resource="com/sundyn/entity/AppriesMenuMapper.xml"/>
-        <mapper resource="com/sundyn/entity/AppriesFuncMapper.xml"/>-->
+        <mapper resource="com/sundyn/mapper/AppriesMenuMapper.xml"/>
     </mappers>
 </configuration>

@@ -90,6 +90,7 @@
     function onContextMenu(e,node){
         e.preventDefault();
         $(this).tree('select',node.target);
+        console.log("node", node.parentId);
         if (node){
             $('#mm').empty();
             $('#mm').menu('show',{
@@ -111,6 +112,7 @@
                     $.messager.confirm('删除', '确定删除该功能吗？！', function(r){
                         if (r){
                             $.post('${ctx}/common/func/delFunc.htm?keyIndex='+node.id, function(rst){
+                                console.log(rst);
                                 if (rst === "1"){
                                     succ("删除成功");
                                     reloadtree();
@@ -197,7 +199,7 @@
     }
 
     function onClick(event, treeId, treeNode, clickFlag) {
-        $("#iframepage").attr("src", "authCode.action?parentId=" + treeNode.id);
+        console.log("[ "+new Date()+" onClick ]&nbsp;&nbsp;clickFlag = " + clickFlag + " (" + (clickFlag===1 ? "普通选中": (clickFlag===0 ? "<b>取消选中</b>" : "<b>追加选中</b>")) + ")");
         return false;
     }
     function expandNodes(nodes) {
@@ -529,89 +531,55 @@
             }
         }
     }
-
     function setTrigger() {
         var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         zTree.setting.edit.drag.autoExpandTrigger = $("#callbackTrigger").attr("checked");
     }
+    //默认打开所有子级
+    //    setTimeout(function () {
+    //        expandAll();
+    //    }, 500);
+
+    //初始化关闭所有子级
+    //expandAll();
+
+
 
     //鼠标右键功能
     function onRightClick(event, treeId, treeNode) {
+
+        //var x = event.clientX+48;
+        //var y = event.clientY-132;
         var x = event.clientX;
         var y = event.clientY;
         if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
             zTree.cancelSelectedNode();
-            showRMenu(treeNode.level, x, y);
+            showRMenu("root", x, y);
         } else if (treeNode && !treeNode.noR) {
             zTree.selectNode(treeNode);
-            showRMenu(treeNode.level, x, y);
+            showRMenu("node", x, y);
         }
     }
 
-    function addAuth(){
-        hideRMenu();
-        var dia = new dialog();
-        zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
-        var nodes = zTree.getSelectedNodes();
-        if (nodes.length>0){
-            dia.iframe("authEdit.action?parentid=" + nodes[0].id, {title: '添加', resize: false, h: "300px"});
-        }
-        return true;
-    }
-
-    function editAuth(){
-        hideRMenu();
-        var dia = new dialog();
-        zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
-        var nodes = zTree.getSelectedNodes();
-        if (nodes.length>0){
-            dia.iframe("authEdit.action?id=" + nodes[0].id, {title: '修改', resize: false, h: "300px"});
-        }
-        return true;
-    }
-
-    function delAuth(){
+    function editAlbumName(){
         hideRMenu();
         zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes = zTree.getSelectedNodes();
-        if (nodes.length>0){
-            dojo.xhrPost({url:"authDelPost.action", content:{id:nodes[0].id}, load:function (resp, ioArgs) {
-                    if(resp.trim()==""){
-                        layer.msg('删除成功', {
-                            icon: 1,
-                            time: 800
-                        }, function(){
-                            refreshTab();
-                        });
-                    }
-                    else{
-                        layer.msg(resp, {
-                            icon: 2,
-                            time: 800
-                        }, function(){
-                        });
-                    }
-                }});
-        }
+        zTree.editName(nodes[0]);
         return true;
     }
 
-    function showRMenu(level, x, y) {
+
+
+    function showRMenu(type, x, y) {
         $("#rMenu ul").show();
-        if (level==0) {
+        if (type=="root") {
             $("#m_del").hide();
             $("#m_rename").hide();
-            $("#rMenu").height(30);
-        } else if (level==1)  {
+        } else {
             $("#m_del").show();
             $("#m_rename").show();
             $("#m_add").show();
-            $("#rMenu").height(90);
-        } else if (level==2)  {
-            $("#m_del").show();
-            $("#m_rename").show();
-            $("#m_add").hide();
-            $("#rMenu").height(60);
         }
         rMenu.css({"top":y+"px", "left":x+"px", "visibility":"visible"});
         $("body").bind("mousedown", onBodyMouseDown);
@@ -621,27 +589,9 @@
         if (rMenu) rMenu.css({"visibility": "hidden"});
         jQuery("body").unbind("mousedown", onBodyMouseDown);
     }
-
     function onBodyMouseDown(event){
         if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length>0)) {
             rMenu.css({"visibility" : "hidden"});
-        }
-    }
-
-    // 记录节点的编号
-    function selectAuth(id) {
-        console.log(id);
-        dojo.xhrPost({url:"authAction.action", content:{id: id}, load:function (resp, ioArgs) {
-            document.getElementById("deptView").innerHTML = resp;
-        }});
-    }
-
-    function iFrameHeight() {
-        var ifm= document.getElementById("iframepage");
-        var subWeb = document.frames ? document.frames["iframepage"].document : ifm.contentDocument;
-        if(ifm != null && subWeb != null) {
-            ifm.height = subWeb.body.scrollHeight;
-            ifm.width = subWeb.body.scrollWidth;
         }
     }
 </script>
@@ -660,34 +610,34 @@
 
     div#rMenu ul li{
         margin: 1px 0;
-        padding: 5px;
+        padding: 0 5px;
         cursor: pointer;
         list-style: none;
-        height: 20px;
+        height: 30px;
         background-color: #fff;
     }
     div#rMenu ul li:hover{
         background: #ddd;
     }
 </style>
-<div id="rMenu" style="width: 120px;height: 90px;font-size: 12px;" >
+<div id="rMenu" style="width: 120px;height: 110px;font-size: 12px;" >
     <ul>
-        <li id="m_add" onclick="addAuth();">
+        <li id="m_add" >
             <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
-                添加
+                添加相册
             </span>
         </li>
-        <li id="m_rename" onclick="editAuth();">
+        <li id="m_rename" onclick="editAlbumName();">
             <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
-                修改
+                重新命名
             </span>
         </li>
-        <li id="m_del" onclick="delAuth();">
+        <li id="m_del"  >
             <i class="fa fa-close fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
-                删除
+                删除相册
             </span>
         </li>
     </ul>
@@ -695,15 +645,32 @@
 <div id="man_zone">
     <div class="center_04">
         <div class="center_04_left">
-            <div class="kuang">
-                <ul id="zTreeMenuContent" class="ztree"></ul>
+            <div><img src="<s:text name='sundyn.query.pic.selectDept' />" /></div>
+            <div class="center_04_left_01 kuang">
+                <ul id="zTreeMenuContent" class="ztree" style="height: 790px;"></ul>
+                    <ul class='easyui-tree' id='tg'></ul>
+                <div class="dtree" id="tree" style="text-align: left;">
+                    <script type="text/javascript">
+                        d = new dTree('d');
+                        <c:forEach items="${menus}" var="menu">
+                        d.add(${menu.id},${menu.parentId},'${menu.menuName}','javascript:regId(${menu.id})');
+                        </c:forEach>
+                        console.log(d)
+                        document.write(d);
+                    </script>
+                </div>
             </div>
         </div>
         <input type="hidden" id="deptId" />
         <div class="center_04_right" id="deptView">
-            <iframe src="#" id="iframepage" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" onLoad="iFrameHeight()"></iframe>
+            <div><img src="<s:text name='sundyn.dept.pic.deptManage'/>" /></div>
+            <div class="center_04_right_01 kuang">
+                <s:text name="sundyn.dept.info" />
+            </div>
         </div>
     </div>
+</div>
+<div id="mm" class="easyui-menu">
 </div>
 </body>
 </html>

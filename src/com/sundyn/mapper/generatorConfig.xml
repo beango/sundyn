@@ -40,7 +40,7 @@
         </javaModelGenerator>
 
         <!--对应的mapper.xml文件  -->
-        <sqlMapGenerator targetPackage="com.sundyn.entity" targetProject=".\src\myb">
+        <sqlMapGenerator targetPackage="com.sundyn.mapper" targetProject=".\src\myb">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
@@ -50,7 +50,7 @@
         </javaClientGenerator>
 
         <!-- 列出要生成代码的所有表，这里配置的是不生成Example文件 -->
-        <table tableName="appries_func" domainObjectName="AppriesFunc"
+        <table tableName="appries_menu" domainObjectName="AppriesMenu"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <property name="useActualColumnNames" value="true" />
