@@ -149,9 +149,11 @@ public class MyCertifacate {
             inputStream = new FileInputStream(keystorePath);
             keyStore.load(inputStream, storepass.toCharArray());
             return keyStore;
-        } catch (KeyStoreException | NoSuchAlgorithmException
-                | CertificateException | IOException e) {
-            // TODO Auto-generated catch block
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
             e.printStackTrace();
         } finally {
             if (null != inputStream) {
@@ -214,9 +216,12 @@ public class MyCertifacate {
                                            String password) {
         try {
             return (PrivateKey) keyStore.getKey(alias, password.toCharArray());
-        } catch (UnrecoverableKeyException | KeyStoreException
-                | NoSuchAlgorithmException e) {
+        } catch (UnrecoverableKeyException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
             e.printStackTrace();
         }
         return null;
@@ -268,8 +273,7 @@ public class MyCertifacate {
             Certificate certificate = factory.generateCertificate(inputStream);
 
             return (X509Certificate) certificate;
-        } catch (CertificateException | IOException e) {
-            // TODO Auto-generated catch block
+        } catch (CertificateException e) {
             e.printStackTrace();
         } finally {
             if (null != inputStream) {
@@ -294,8 +298,12 @@ public class MyCertifacate {
             signature.initSign(privateKey);
             signature.update(plainText);
             return signature.sign();
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
+        } catch (NoSuchAlgorithmException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
 
@@ -318,9 +326,12 @@ public class MyCertifacate {
             signature.initVerify(certificate);
             signature.update(decodedText);
             return signature.verify(receivedignature);
-        } catch (NoSuchAlgorithmException | InvalidKeyException
-                | SignatureException e) {
+        } catch (NoSuchAlgorithmException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
         return false;
@@ -338,10 +349,16 @@ public class MyCertifacate {
             Cipher cipher = Cipher.getInstance(privateKey.getAlgorithm());
             cipher.init(Cipher.ENCRYPT_MODE, privateKey);
             return cipher.doFinal(plainText);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException
-                | InvalidKeyException | IllegalBlockSizeException
-                | BadPaddingException e) {
+        } catch (NoSuchAlgorithmException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
 
@@ -361,10 +378,16 @@ public class MyCertifacate {
             Cipher cipher = Cipher.getInstance(publicKey.getAlgorithm());
             cipher.init(Cipher.DECRYPT_MODE, publicKey);
             return cipher.doFinal(encodedText);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException
-                | InvalidKeyException | IllegalBlockSizeException
-                | BadPaddingException e) {
+        } catch (NoSuchAlgorithmException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
 
