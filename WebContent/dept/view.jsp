@@ -30,6 +30,7 @@
 		   	}
 		   return retVal;
       }
+
       function checkForm(ac){
           var menus=chooseMenus();
 		  $.ajax({url: ac+"&menus="+menus,

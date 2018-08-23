@@ -69,24 +69,6 @@
             }
         }
     }
-    $(function () {
-
-        /*$('#tg').tree({
-            url:"${ctx}/authQueryJSON.action",
-            width:220,
-            method: 'get',
-            fit : true,
-            animate : true,
-            parentField : "parentId",
-            lines:true,
-
-            onClick:function (r) {
-
-                $('#pp').panel('open').panel('refresh','${ctx}/common/func/updFunc1.htm?keyIndex=' + r.id);
-            },
-            onContextMenu: onContextMenu
-        });*/
-    });
     function onContextMenu(e,node){
         e.preventDefault();
         $(this).tree('select',node.target);
@@ -135,7 +117,7 @@
         async: {
             enable: true,
             autoParam: ["id=ids"],//, "name=n", "level=lv"
-            url: "${ctx}/authQueryJSON.action",
+            url: "${ctx}/menuQueryJson.action",
             dataFilter: filter,
             type: "post"
         },
@@ -197,7 +179,6 @@
     }
 
     function onClick(event, treeId, treeNode, clickFlag) {
-        $("#iframepage").attr("src", "authCode.action?parentId=" + treeNode.id);
         return false;
     }
     function expandNodes(nodes) {
@@ -233,7 +214,6 @@
 
     //用于捕获节点编辑名称
     function beforeRename(treeId, treeNode, newName, isCancel) {
-
         if (treeNode.id === "1") {
             layer.msg('根目录不能编辑！', {icon: 3});
             return true;
@@ -548,50 +528,50 @@
         }
     }
 
-    function addAuth(){
+    function addMenu(){
         hideRMenu();
         var dia = new dialog();
         zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes = zTree.getSelectedNodes();
         if (nodes.length>0){
-            dia.iframe("authEdit.action?parentid=" + nodes[0].id, {title: '添加', resize: false, h: "300px"});
+            dia.iframe("menuEdit.action?parentid=" + nodes[0].id, {title: '添加', resize: false, h: "300px"});
         }
         return true;
     }
 
-    function editAuth(){
+    function editMenu(){
         hideRMenu();
         var dia = new dialog();
         zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes = zTree.getSelectedNodes();
         if (nodes.length>0){
-            dia.iframe("authEdit.action?id=" + nodes[0].id, {title: '修改', resize: false, h: "300px"});
+            dia.iframe("menuEdit.action?id=" + nodes[0].id, {title: '修改', resize: false, h: "300px"});
         }
         return true;
     }
 
-    function delAuth(){
+    function delMenu(){
         hideRMenu();
         zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes = zTree.getSelectedNodes();
         if (nodes.length>0){
-            dojo.xhrPost({url:"authDelPost.action", content:{id:nodes[0].id}, load:function (resp, ioArgs) {
-                    if(resp.trim()==""){
-                        layer.msg('删除成功', {
-                            icon: 1,
-                            time: 800
-                        }, function(){
-                            refreshTab();
-                        });
-                    }
-                    else{
-                        layer.msg(resp, {
-                            icon: 2,
-                            time: 800
-                        }, function(){
-                        });
-                    }
-                }});
+        dojo.xhrPost({url:"menuDelPost.action", content:{id:nodes[0].id}, load:function (resp, ioArgs) {
+        if(resp.trim()==""){
+        layer.msg('删除成功', {
+        icon: 1,
+        time: 800
+        }, function(){
+            refreshTab();
+        });
+        }
+        else{
+        layer.msg(resp, {
+        icon: 2,
+        time: 800
+        }, function(){
+        });
+        }
+        }});
         }
         return true;
     }
@@ -621,27 +601,9 @@
         if (rMenu) rMenu.css({"visibility": "hidden"});
         jQuery("body").unbind("mousedown", onBodyMouseDown);
     }
-
     function onBodyMouseDown(event){
         if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length>0)) {
             rMenu.css({"visibility" : "hidden"});
-        }
-    }
-
-    // 记录节点的编号
-    function selectAuth(id) {
-        console.log(id);
-        dojo.xhrPost({url:"authAction.action", content:{id: id}, load:function (resp, ioArgs) {
-            document.getElementById("deptView").innerHTML = resp;
-        }});
-    }
-
-    function iFrameHeight() {
-        var ifm= document.getElementById("iframepage");
-        var subWeb = document.frames ? document.frames["iframepage"].document : ifm.contentDocument;
-        if(ifm != null && subWeb != null) {
-            ifm.height = subWeb.body.scrollHeight;
-            ifm.width = subWeb.body.scrollWidth;
         }
     }
 </script>
@@ -672,19 +634,19 @@
 </style>
 <div id="rMenu" style="width: 120px;height: 90px;font-size: 12px;" >
     <ul>
-        <li id="m_add" onclick="addAuth();">
+        <li id="m_add" onclick="addMenu();">
             <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
                 添加
             </span>
         </li>
-        <li id="m_rename" onclick="editAuth();">
+        <li id="m_rename" onclick="editMenu();">
             <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
                 修改
             </span>
         </li>
-        <li id="m_del" onclick="delAuth();">
+        <li id="m_del" onclick="delMenu();">
             <i class="fa fa-close fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
                 删除
@@ -701,7 +663,7 @@
         </div>
         <input type="hidden" id="deptId" />
         <div class="center_04_right" id="deptView">
-            <iframe src="#" id="iframepage" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" onLoad="iFrameHeight()"></iframe>
+
         </div>
     </div>
 </div>

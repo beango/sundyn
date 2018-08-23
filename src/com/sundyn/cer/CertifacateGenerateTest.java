@@ -52,7 +52,7 @@ public class CertifacateGenerateTest {
     private static final String SIG_ALG = "SHA1withRSA";
     private static final String DN_ZHANGSAN = "CN=zhangsan,OU=development,O=Huawei,L=ShenZhen,ST=GuangDong,C=CN";
     private static final String DN_CA = "CN=ZX,OU=ZX,O=ZX,L=GuangZou,ST=GuangDong,C=CN";
-    private static Map<String, String> algorithmMap = new HashMap<>();
+    private static Map<String, String> algorithmMap = new HashMap<String, String>();
 
     static {
         /**
@@ -310,8 +310,12 @@ public class CertifacateGenerateTest {
             signature.initVerify(certificate.getPublicKey());
             signature.update(decodedText);
             return signature.verify(receivedignature);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
+        } catch (NoSuchAlgorithmException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SignatureException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
         return false;

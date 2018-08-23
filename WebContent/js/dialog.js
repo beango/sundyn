@@ -31,14 +31,11 @@ function dialog()
             success:function(ly, index){
                 if(cb)cb();
                 if(args && args.full){
-                    console.log("全屏吧");
                     layer.full(index);
                 }
                 else if(args && (args.resize!=undefined || args.resize===false)){
-                    console.log("不用重新调整大小");
                 }
                 else{
-                    console.log("还是调整一下吧");
                     layer.iframeAuto(index);
                 }
             }
@@ -50,9 +47,7 @@ function dialog()
             icon: 2,
             time: 800
         }, function(){
-            console.log("msg:" + msg);
             if(close){
-                console.log("弹完了就关吧:" + close);
                 closeDialog();
             }
         });
