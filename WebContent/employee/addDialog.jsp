@@ -24,14 +24,14 @@
                 <div class="layui-upload">
                     <input type="hidden" name="imgName" id="imgName" />
                     <button type="button" class="layui-btn" id="test1">选择图片</button>
-                    <div class="layui-upload-list">
-                        <img style="width: 140px;height: 147px;" class="layui-upload-img" name="img123" id="img123">
+                   <%-- <div class="layui-upload-list">
+                        <img style="width: 140px;height: 147px;border:0;" class="layui-upload-img" name="img123" id="img123">
                         <p id="demoText"></p>
-                    </div>
+                    </div>--%>
                 </div>
             </td>
         </tr>
-        <tr>
+        <%--<tr>
             <td style="border-color: #e9f5fd;" width="20%" align="right" class="ff">
                 <c:if test="${employeeJobNum == 'true'}">
                     <s:text name="sundyn.column.employeeJobNum" />
@@ -41,6 +41,14 @@
                 </c:if><s:text name="sundyn.colon" /></td>
             <td style="border-color: #e9f5fd;" width="80%" align="left">
                 <input type="text" name="ext2" id="ext2" class="input_comm" onblur="employeeExsits()" /><span style="color: red; font-size: 12px;" id="tip"></span>						</td>
+        </tr>--%>
+        <tr>
+            <td style="border-color: #e9f5fd;" align="right" class="ff">
+                工号<s:text name="sundyn.colon" /></td>
+            <td style="border-color: #e9f5fd;" align="left">
+                <input type="text" name="CardNum" id="CardNum"  onblur="employeeCardNumExsits()" class="input_comm"  /><font color="#FF0000">*</font><span style="color: red; font-size: 12px;" id="tipcardnum"></span>
+                <div style="color:red; text-align:left;"><s:text name="sundyn.employee.alertCardNum"></s:text></div>
+            </td>
         </tr>
         <tr>
             <td style="border-color: #e9f5fd;" width="30%" align="right" class="ff">
@@ -64,15 +72,6 @@
                 <input type="radio" name="Sex" id="Sex" value="0" />
                 <s:text name="sundyn.female" /></td>
         </tr>
-        <tr>
-            <td style="border-color: #e9f5fd;" align="right" class="ff">
-                <s:text name="sundyn.column.employeeCardNum" /><s:text name="sundyn.colon" /></td>
-            <td style="border-color: #e9f5fd;" align="left">
-                <input type="text" name="CardNum" id="CardNum"  onblur="employeeCardNumExsits()" class="input_comm"  /><font color="#FF0000">*</font><span style="color: red; font-size: 12px;" id="tipcardnum"></span>
-                <div style="color:red; text-align:left;"><s:text name="sundyn.employee.alertCardNum"></s:text></div>
-            </td>
-        </tr>
-
         <tr>
             <td style="border-color: #e9f5fd;" align="right" class="ff">
                 <c:if test="${star == 'true'}">
@@ -105,7 +104,6 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-
                 <img src="<s:text name='sundyn.pic.ok' />" onclick="employeeAdd()" class="hand" />
                 <img src="<s:text name='sundyn.pic.close' />" onclick="closeDialog()" class="hand" />
             </td>

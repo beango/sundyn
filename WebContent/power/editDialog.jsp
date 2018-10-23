@@ -45,7 +45,7 @@
                 <input type="checkbox" name="dataManage" id="dataManage" <c:if test="${m.dataManage==1}">  checked="checked"  </c:if> lay-skin="switch" />
             </td>
         </tr>
-        <tr>
+        <tr style="display: none;">
             <td style="border-color: #e9f5fd;" align="right">
                 <s:text name='sundyn.role.atDept' />
             </td>
@@ -62,7 +62,7 @@
         <tr>
             <td></td>
             <td>
-                <div class="kuang">
+                <div>
                     <ul id="zTreeMenuContent" class="ztree"></ul>
                 </div>
             </td>

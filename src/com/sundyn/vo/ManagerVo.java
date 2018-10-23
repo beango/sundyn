@@ -11,7 +11,26 @@ public class ManagerVo
     private String remark;
     private String ext1;
     private String ext2;
-    
+    private int deptid;
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    private String deptName;
+
+    public int getDeptid() {
+        return deptid;
+    }
+
+    public void setDeptid(int deptid) {
+        this.deptid = deptid;
+    }
+
     public Integer getId() {
         return this.id;
     }

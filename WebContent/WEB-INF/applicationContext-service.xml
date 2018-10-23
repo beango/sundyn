@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+<!--
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.1.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">-->
     <!-- 配置sqlSessionFactory -->
     <!--<bean id="sqlSessionFactory1" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource1" />
@@ -59,9 +74,31 @@
         <property name="basePackage" value="com.sundyn.dao"/>
     </bean>
 
+    <bean id="managerpowerService" class="com.sundyn.service.impl.AppriesManagerpowerServiceImpl"/>
     <bean id="appriesFuncService" class="com.sundyn.service.impl.AppriesFuncServiceImpl"/>
     <bean id="appriesMenuService" class="com.sundyn.service.impl.AppriesMenuServiceImpl"/>
     <bean id="powerFuncService" class="com.sundyn.service.impl.AppriesPowerfuncServiceImpl"/>
+    <bean id="hallService" class="com.sundyn.service.impl.SysQueuehallServiceImpl"/>
+    <bean id="serialService" class="com.sundyn.service.impl.SysQueueserialServiceImpl"/>
+    <bean id="counterService" class="com.sundyn.service.impl.SysQueuecounterServiceImpl"/>
+    <bean id="customerVipService" class="com.sundyn.service.impl.SysQueuecustomervipServiceImpl"/>
+    <bean id="hisDetailService" class="com.sundyn.service.impl.SysQueuehisdetailServiceImpl"/>
+    <bean id="detailService" class="com.sundyn.service.impl.QueueDetailServiceImpl"/>
+    <bean id="inteLogService" class="com.sundyn.service.impl.InteLogServiceImpl"/>
+    <bean id="inteLoginService" class="com.sundyn.service.impl.InteLoginServiceImpl"/>
+    <bean id="inteunLoginService" class="com.sundyn.service.impl.InteUnloginServiceImpl"/>
+    <bean id="inteTicketService" class="com.sundyn.service.impl.InteTicketServiceImpl"/>
+    <bean id="inteCallService" class="com.sundyn.service.impl.InteCallServiceImpl"/>
+    <bean id="inteServiceService" class="com.sundyn.service.impl.InteServiceServiceImpl"/>
+    <bean id="inteAppriesService" class="com.sundyn.service.impl.InteAppriesServiceImpl"/>
+    <bean id="intePauseService" class="com.sundyn.service.impl.IntePauseServiceImpl"/>
+    <bean id="inteCancelpauseService" class="com.sundyn.service.impl.InteCancelpauseServiceImpl"/>
+    <bean id="sysBlacklistService" class="com.sundyn.service.impl.SysBlacklistServiceImpl"/>
+    <bean id="sysProxyService" class="com.sundyn.service.impl.SysProxyServiceImpl"/>
+    <bean id="queueEmployeereportService" class="com.sundyn.service.impl.QueueEmployeereportServiceImpl"/>
+    <bean id="keytypeServiceEx" class="com.sundyn.service.impl.AppriesKeytypeServiceImpl"/>
+    <bean id="deptServiceEx" class="com.sundyn.service.impl.AppriesDeptServiceImpl"/>
+
     <bean id="managerService" class="com.sundyn.service.ManagerService" parent="superDao"/>
 	<bean id="menuService" class="com.sundyn.service.MenuService" parent="superDao"/>
 	<bean id="quicklyService" class="com.sundyn.service.QuicklyService" parent="superDao"/>
@@ -107,4 +144,13 @@
     <bean id="pageUtils" class="com.sundyn.utils.PageUtils" parent="superDao"></bean>
     <bean id="citysUtils" class="com.sundyn.utils.CitysUtils" parent="superDao"></bean>
     <bean id="deviceService" class="com.sundyn.service.DeviceService" parent="superDao"></bean>
+
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean id="dCacheManager" class="com.xuan.xutils.cache.DefaultCacheManager"></bean>
 </beans>

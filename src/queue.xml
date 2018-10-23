@@ -1,0 +1,91 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="hisDetail" extends="json-default">
+		<!-- 验证用户登录 开始-->
+		<interceptors>
+			<interceptor name="userCheckR" class="com.sundyn.util.UserCheckR"></interceptor>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
+			<interceptor-stack name="mydefault">
+                <interceptor-ref name="operationInterceptor" />
+				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+        <!--  历史数据 -->
+		<action name="queueDetailQuery" class="queueDetailAction" method="queueDetailQuery">
+            <result name="success">/queue/query.jsp</result>
+		</action>
+        <action name="queueEmployeeReport" class="queueDetailAction" method="queueEmployeeReport">
+            <result name="success">/queue/employeereport.jsp</result>
+        </action>
+        <action name="queuealert" class="queueDetailAction" method="queuealert">
+            <result name="success">/queue/queuealert.jsp</result>
+        </action>
+        <action name="getlstappries" class="queueDetailAction" method="getlstappries">
+            <result name="success">/queue/getlstappries.jsp</result>
+        </action>
+        <action name="getQueueTotal" class="queueDetailAction" method="getQueueTotal">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="getQueueTotalOnce" class="queueDetailAction" method="getQueueTotalOnce">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+    </package>
+
+    <package name="sysInte" extends="json-default">
+        <interceptors>
+            <interceptor name="signInteceptor" class="com.sundyn.interceptor.SignatureInterceptor">
+            </interceptor>
+            <interceptor-stack name="mydefault">
+                <interceptor-ref name="signInteceptor" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+        <!--  接口 -->
+        <global-results>
+            <result name="inte_err" type="redirect">
+                /inte_err
+            </result>
+        </global-results>
+
+        <action name="inte_err" class="queueInteAction" method="inte_err">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+
+        <action name="sysqueueinterface" class="queueInteAction" method="sysqueueinterface">
+            <interceptor-ref name="params" />
+            <interceptor-ref name="mydefault"></interceptor-ref>
+            <result name="error" type="redirect">
+                /inte_err
+            </result>
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+
+    </package>
+
+    <package name="sysInte2" extends="json-default">
+        <action name="gethalldata" class="queueInteAction" method="gethalldata">
+            <result name="error" type="redirect">
+                /inte_err
+            </result>
+            <result name="success" type="json">
+                <param name="root">DATA</param>
+            </result>
+        </action>
+    </package>
+</struts>

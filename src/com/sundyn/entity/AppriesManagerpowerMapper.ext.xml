@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.AppriesManagerpowerDao">
+
+    <select id="selectListEx" resultType="AppriesManagerpower">
+        SELECT t1.*, (select top 1 name from appries_power t2 where t2.id=t1.powerid) powerName from appries_managerpower t1
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
+
+</mapper>

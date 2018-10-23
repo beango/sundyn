@@ -226,5 +226,12 @@
         <property name="deviceService" ref="deviceService"></property>
         <property name="appService" ref="appService"></property>
     </bean>
-
+    <bean id="hallAction" class="com.sundyn.action.HallAction" scope="prototype" ></bean>
+    <bean id="serialAction" class="com.sundyn.action.SerialAction" scope="prototype" ></bean>
+    <bean id="counterAction" class="com.sundyn.action.CounterAction" scope="prototype" ></bean>
+    <bean id="vipAction" class="com.sundyn.action.CustomerVipAction" scope="prototype" ></bean>
+    <bean id="hisDetailAction" class="com.sundyn.action.HisDetailAction" scope="prototype" ></bean>
+    <bean id="queueDetailAction" class="com.sundyn.action.QueueDetailAction" scope="prototype" ></bean>
+    <bean id="queueInteAction" class="com.sundyn.action.QueueInteAction" scope="prototype" ></bean>
+    <bean id="blackListAction" class="com.sundyn.action.BlackListAction" scope="prototype" ></bean>
 </beans>

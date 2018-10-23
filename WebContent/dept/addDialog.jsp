@@ -29,42 +29,6 @@
                         <c:if test="${deptType==0}"><s:text name="sundyn.dept.xxWindow" /></c:if>
                     </td>
                 </tr>
-                <%--					  <tr <c:if test="${deptType==2 || deptType==1 }"> style="display: none;"</c:if> >--%>
-                <%--					    <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.dept.clientConnectType" /></td>--%>
-                <%--					    <td align="left" style="border-color:#FFFFFF;"> --%>
-                <%--					       <select name="client_type" id="client_type"  onchange="clientTypeChange(this.value)">--%>
-                <%--								<option value="1">--%>
-                <%--									<s:text name="sundyn.guide.comServer" />--%>
-                <%--								</option>--%>
-                <%--								<option selected="selected" value="2">--%>
-                <%--									<s:text name="sundyn.guide.clientProgram" />--%>
-                <%--								</option>--%>
-                <%--							</select>--%>
-                <%--							<select name="product_type" id="product_type" onchange="productTypeChange(this.value)">--%>
-                <%--								<option value="-1"   >--%>
-                <%--									U<s:text name="sundyn.dept.type" />--%>
-                <%--								</option>--%>
-                <%--								<option value="-2"  >--%>
-                <%--									D<s:text name="sundyn.dept.type" />--%>
-                <%--								</option>--%>
-                <%--								<option value="-3" >--%>
-                <%--									T01U<s:text name="sundyn.dept.type" />--%>
-                <%--								</option>--%>
-                <%--								<option value="-4"  >--%>
-                <%--									M7<s:text name="sundyn.dept.type" />--%>
-                <%--								</option>--%>
-                <%--								<option value="1"  >--%>
-                <%--									S<s:text name="sundyn.dept.type" />--%>
-                <%--								</option>--%>
-                <%--								<option value="2" >--%>
-                <%--									W<s:text name="sundyn.dept.type" />--%>
-                <%--								</option>--%>
-                <%--								<option value="3"  >--%>
-                <%--									T01<s:text name="sundyn.dept.type" />--%>
-                <%--								</option>--%>
-                <%-- 							</select>--%>
-                <%--					    </td>--%>
-                <%--					  </tr>--%>
                 <tr <c:if test="${deptType==2 || deptType==1 }"> style="display: none;" </c:if>>
                     <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.guide.deviceInfo" /></td>
                     <td align="left" style="border-color:#FFFFFF;">
@@ -165,7 +129,7 @@
                 <tr  style="display:none;">
                     </s:if>
                     <s:else>
-                <tr>
+                <tr style="display:none;">
                     </s:else>
                     <td align="right" style="border-color:#FFFFFF;">所属地区：</td>
                     <td align="left" style="border-color:#FFFFFF;" class="layui-form-item">

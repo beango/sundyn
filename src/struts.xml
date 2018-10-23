@@ -79,6 +79,8 @@
 	<!--自动下载意见调查、信息查询、通知公告 -->
 	<include file="download.xml"></include>
     <include file="device.xml"></include>
+    <include file="hall.xml"></include>
+    <include file="queue.xml"></include>
     <bean type="org.apache.struts2.dispatcher.multipart.MultiPartRequest"
           name="myRequestParser" class="com.sundyn.wrapper.RequestParseWrapper"
           scope="default" optional="true" />
@@ -89,4 +91,8 @@
 			<result name="success">/msg.jsp</result>
 		</action>
 	</package>
+
+    <constant name="struts.convention.action.suffix" value="Controller"/>
+    <constant name="struts.convention.action.mapAllMatches" value="true"/>
+    <constant name="struts.convention.default.parent.package" value="rest-default"/>
 </struts>

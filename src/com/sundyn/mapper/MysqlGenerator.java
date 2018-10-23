@@ -29,7 +29,7 @@ public class MysqlGenerator {
     /**
      * 代码生成者
      */
-    private static final String AUTHOR = "oKong";
+    private static final String AUTHOR = "huangding";
 
     /**
      * JDBC相关配置
@@ -94,7 +94,7 @@ public class MysqlGenerator {
                                 .setDbColumnUnderline(true)// 全局下划线命名
                                 // .setTablePrefix(new String[]{"unionpay_"})// 此处可以修改为您的表前缀
                                 .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
-                                .setInclude(new String[] {"appries_powerfunc"}) // 需要生成的表
+                                .setInclude(new String[] {"appries_keytype"}) // 需要生成的表
                                 // .setExclude(new String[]{"test"}) // 排除生成的表
                                 // 自定义实体，公共字段
                                 // .setSuperEntityColumns(new String[]{"test_id"})

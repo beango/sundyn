@@ -2,12 +2,13 @@ package com.sundyn.action;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.sundyn.entity.AppriesFunc;
-import com.sundyn.entity.AppriesMenu;
 import com.sundyn.service.IAppriesFuncService;
+import com.sundyn.service.IAppriesPowerfuncService;
 import com.sundyn.util.ValidateUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -39,10 +40,11 @@ public class AuthAction extends MainAction
         jroot.put("parentId", "0");
         jroot.put("open", true);
         jroot.put("level", 1);
+        jroot.put("code","");
 
         EntityWrapper ew=new EntityWrapper();
         ew.setEntity(new AppriesFunc());
-        ew.where("parentId = {0}",pid);
+        ew.where("parentId = {0}",pid).orderBy("orderid");
         List<AppriesFunc> menus = appriesFuncService.selectList(ew);//(pid);
         //put("topmenu", menus);
 
@@ -56,7 +58,6 @@ public class AuthAction extends MainAction
             jo2.put("parentId", menus.get(i).getParentId());
             jo2.put("open", true);
             jo2.put("level", 2);
-            jo2.put("onclick", "selectAuth("+menus.get(i).getId()+")");
 
             ew=new EntityWrapper();
             ew.where("parentId = {0}", Integer.valueOf(menus.get(i).getId()));
@@ -158,7 +159,8 @@ public class AuthAction extends MainAction
         return "success";
     }
 
-    public String authEditPost(){
+    //@Transactional(rollbackFor=Exception.class)
+    public String authEditPost() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String errmsg = "";
 
@@ -184,7 +186,6 @@ public class AuthAction extends MainAction
             func.setFuncCode(funcCode);
             func.setOrderId(orderId);
             func.setParentId(parentId);
-            System.out.println(">>>>>>>>>>func.code:" + func.getFuncCode() + ", " + func.getId());
             ValidateUtil.validate(func);
         } catch (Exception e) {
             errmsg = e.getMessage();
@@ -193,25 +194,22 @@ public class AuthAction extends MainAction
         }
 
         if (id!=null && id!=0){
-            boolean isUpdate = appriesFuncService.updateById(func);
+            boolean isUpdate = appriesFuncService.updateFuncAndPowerfun(func);
         }else{
             boolean isAdd = appriesFuncService.insert(func);
         }
         return "success";
     }
 
-    public String authDelPost(){
+    public String authDelPost() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
 
         int id = req.getInt("id");
         if (id!=0){ //修改
-            EntityWrapper ew=new EntityWrapper();
-            ew.setEntity(new AppriesFunc());
-
-            ew.where("parentId = {0}",id);
-            boolean isdel = appriesFuncService.delete(ew);
-
-            appriesFuncService.deleteById(id);
+            boolean isSucc = appriesFuncService.deleteByIdAndPowerfunc(id);
+            if (!isSucc){
+                request.setAttribute("msg", "有菜单正在使用该权限，不能删除");
+            }
         }
 
         return "success";

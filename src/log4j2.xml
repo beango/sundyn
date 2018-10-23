@@ -6,7 +6,7 @@
     </Properties>
     <appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern=">>>>>>>>>>%highlight{%d{HH:mm:ss.SSS} %-5level %logger{36}.%M() @%L - %msg%n}{FATAL=Bright Red, ERROR=Bright Magenta, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}"/>
+            <PatternLayout pattern="------>%highlight{%d{HH:mm:ss.SSS} %-5level %logger{36}.%M() @%L - %msg%n}{FATAL=Bright Red, ERROR=Bright Magenta, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}"/>
         </Console>
 
         <!-- INFO级别日志 -->

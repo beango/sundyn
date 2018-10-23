@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.QueueDetailDao">
+
+    <select id="ProcQueueTicket" statementType="CALLABLE">
+        EXEC queue_ticket
+         #{step,jdbcType=VARCHAR,mode=IN},
+         #{id,jdbcType=VARCHAR,mode=IN},
+         #{outstr,jdbcType=VARCHAR,mode=OUT}
+    </select>
+
+    <select id="ProcQueueEmployee" statementType="CALLABLE">
+        EXEC queue_employee
+         #{step,jdbcType=VARCHAR,mode=IN},
+         #{id,jdbcType=VARCHAR,mode=IN},
+         #{outstr,jdbcType=VARCHAR,mode=OUT}
+    </select>
+
+    <select id="query_querydetail" resultType="QueueDetail">
+        SELECT * FROM(SELECT t1.*,t2.countername as hjcountername,
+         [dbo].[FN_SecondToString](waittime) waittimename, [dbo].[FN_SecondToString](servicetime) servicetimename
+        FROM queue_detail t1 LEFT JOIN sys_queuecounter t2 ON t1.hjcounter=t2.counterno and t1.hallno=t2.hallno
+        ) t1 WHERE 1=1 ${ew.sqlSegment}
+    </select>
+
+    <select id="query_querydetail_1" resultType="QueueDetail">
+        SELECT * FROM(SELECT t1.*,t2.countername as hjcountername,
+         [dbo].[FN_SecondToString](waittime) waittimename, [dbo].[FN_SecondToString](servicetime) servicetimename
+        FROM queue_detail t1 LEFT JOIN sys_queuecounter t2 ON t1.hjcounter=t2.counterno and t1.hallno=t2.hallno
+        UNION ALL
+        SELECT t1.*,t2.countername as hjcountername,
+         [dbo].[FN_SecondToString](waittime) waittimename, [dbo].[FN_SecondToString](servicetime) servicetimename
+        FROM queue_hisdetail t1 LEFT JOIN sys_queuecounter t2 ON t1.hjcounter=t2.counterno and t1.hallno=t2.hallno
+        ) t1 WHERE 1=1 ${ew.sqlSegment}
+    </select>
+</mapper>

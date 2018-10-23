@@ -2,19 +2,17 @@
         "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
-	<package name="employee" extends="struts-default">
+	<package name="employee" extends="json-default">
 		<!-- 验证用户登录 开始-->
-		<interceptors>
-			<interceptor name="userCheckR"
-				class="com.sundyn.util.UserCheckR">
-			</interceptor>
-			<interceptor name="registerCheck" class="registerCheck">
-			</interceptor>
-			<interceptor-stack name="mydefault">
-				<interceptor-ref name="userCheckR" />
-				<interceptor-ref name="defaultStack" />
-			</interceptor-stack>
-		</interceptors>
+        <interceptors>
+            <interceptor name="userCheckR" class="com.sundyn.util.UserCheckR"></interceptor>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
+            <interceptor-stack name="mydefault">
+                <interceptor-ref name="operationInterceptor" />
+                <interceptor-ref name="userCheckR" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
 		<default-interceptor-ref name="mydefault" />
 		<global-results>
 			<result name="login">/login.jsp</result>
@@ -37,7 +35,9 @@
 		<action name="employeeAdd" class="employeeAction"
 			method="employeeAdd">
             <result name="input">/employee/msg.jsp</result>
-			<result name="success">/employee/success.jsp</result>
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
 		</action>
 		<action name="employeeDel" class="employeeAction"
 			method="employeeDel">
@@ -54,7 +54,9 @@
 		</action>
 		<action name="employeeEdit" class="employeeAction"
 			method="employeeEdit">
-			<result name="success">/employee/success.jsp</result>
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
 		</action>
 		<action name="employeeOut" class="employeeAction"
 			method="employeeOut">

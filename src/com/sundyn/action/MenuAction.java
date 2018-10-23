@@ -3,6 +3,7 @@ package com.sundyn.action;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.sundyn.entity.AppriesFunc;
 import com.sundyn.entity.AppriesMenu;
+import com.sundyn.service.IAppriesFuncService;
 import com.sundyn.service.IAppriesMenuService;
 import com.sundyn.service.MenuService;
 import com.sundyn.util.ValidateUtil;
@@ -18,7 +19,8 @@ import java.util.List;
 public class MenuAction extends MainAction {
     @Resource
     private IAppriesMenuService appriesMenuService;
-
+    @Resource
+    private IAppriesFuncService appriesFuncService;
 	private MenuService menuService;
 
 	public MenuService getMenuService() {
@@ -31,20 +33,17 @@ public class MenuAction extends MainAction {
 	
 	public String getQuery() {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        final List menuAll = this.menuService.GetAll();
+        final List menuAll = this.menuService.GetAll(super.POWERS);
         final JSONArray json = JSONArray.fromObject((Object)menuAll);
         request.setAttribute("json", (Object)json);
         return "success";
     }
 
     public String menuQuery(){
-
         return "success";
     }
 
     public String menuQueryJson(){
-        final HttpServletRequest request = ServletActionContext.getRequest();
-        final HttpServletResponse response = ServletActionContext.getResponse();
         JSONArray jo = new JSONArray();
 
         long systemid = req.getLong("systemid");
@@ -60,10 +59,8 @@ public class MenuAction extends MainAction {
         EntityWrapper ew=new EntityWrapper();
         ew.setEntity(new AppriesMenu());
 
-        ew.where("parentId = {0}",pid);
+        ew.where("parentId={0} and isshow=1",pid).orderBy("menuorder");
         List<AppriesMenu> menus = appriesMenuService.selectList(ew);//(pid);
-        //put("topmenu", menus);
-
         JSONArray ja1 = new JSONArray();
         for(int i=0; i < menus.size(); i++) {
             JSONObject jo2 = new JSONObject();
@@ -75,9 +72,9 @@ public class MenuAction extends MainAction {
             jo2.put("open", true);
             jo2.put("level", 2);
 
-            ew=new EntityWrapper();System.out.println(">>>>id:" + menus.get(i).getId());
-            ew.where("parentId = {0}", Integer.valueOf(menus.get(i).getId()));
-            List<AppriesMenu> menuChild = appriesMenuService.selectList(ew);//.selectChildList(Integer.valueOf(menus.get(i).ID));
+            ew=new EntityWrapper();
+            ew.where("parentId={0} and isshow=1", Integer.valueOf(menus.get(i).getId()));
+            List<AppriesMenu> menuChild = appriesMenuService.selectList(ew.orderBy("menuorder"));//.selectChildList(Integer.valueOf(menus.get(i).ID));
             JSONArray ja2 = new JSONArray();
             for(int j=0; j<menuChild.size(); j++) {
                 JSONObject subjo2 = new JSONObject();
@@ -110,7 +107,7 @@ public class MenuAction extends MainAction {
             AppriesMenu menu = appriesMenuService.selectById(id);
             if (menu!=null){
                 request.setAttribute("model", menu);
-
+                request.setAttribute("funcList", appriesFuncService.selectList(new EntityWrapper<AppriesFunc>().where("","")));
             }
         }
         if (parentid!=null){ //添加
@@ -132,6 +129,7 @@ public class MenuAction extends MainAction {
         String nav = req.getString("nav");
         int menuorder = req.getInt("menuorder",0);
         int parentId = req.getInt("parentId",0);
+        String funccode = req.getString("funccode");
         AppriesMenu menu  = new AppriesMenu();
         String cls = "fa fa-chevron-circle-right";
 
@@ -158,6 +156,11 @@ public class MenuAction extends MainAction {
             menu.setParentId(parentId);
             menu.setIconCls(cls);
             menu.setIsshow(1);
+            if(funccode!=null && !funccode.equals("")){
+                AppriesFunc f = appriesFuncService.selectById(Integer.valueOf(funccode.replace(",", "")));
+                menu.setFuncCode(f.getFuncCode());
+            }
+
             ValidateUtil.validate(menu);
         } catch (Exception e) {
             errmsg = e.getMessage();
@@ -167,10 +170,8 @@ public class MenuAction extends MainAction {
 
         if (id!=null && id!=0){
             boolean isUpdate = appriesMenuService.updateById(menu);
-            System.out.println(">>>>>>>>>>effect isUpdate: " + isUpdate);
         }else{
             boolean isAdd = appriesMenuService.insert(menu);
-            System.out.println(">>>>>>>>>>effect isAdd: " + isAdd);
         }
         return "success";
     }

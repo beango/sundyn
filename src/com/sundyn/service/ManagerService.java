@@ -2,6 +2,7 @@ package com.sundyn.service;
 
 import com.sundyn.dao.SuperDao;
 import com.sundyn.vo.ManagerVo;
+import com.xuan.xutils.utils.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public class ManagerService extends SuperDao
     public Map findManageBy(final String userName, final String pwd) throws SQLException {
         if(userName==null || userName.equals(""))
             return null;
-        final String sql = "select * from appries_manager where name= ? and password= ?";
+        final String sql = "select *,(select name from appries_dept where id=appries_manager.deptid) deptname from appries_manager where name= ? and password= ?";
 
         final Object[] arg = { userName, pwd };
         try {
@@ -45,7 +46,7 @@ public class ManagerService extends SuperDao
     }
 
     public Map findManageById(final Integer id) {
-        final String sql = "select id,name,password,realname,userGroupId,remark,ext1,ext2 from appries_manager where id=" + id;
+        final String sql = "select id,name,password,realname,userGroupId,remark,ext1,ext2,deptid from appries_manager where id=" + id;
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }
@@ -55,12 +56,21 @@ public class ManagerService extends SuperDao
         }
     }
 
-    public boolean AddManager(final ManagerVo form) throws SQLException {
-        final String sql = "insert into appries_manager (name,realname,password,skinid,userGroupId,remark,ext1,ext2) values(?,?,?,?,?,?,?,?)";
-        final Object[] arg = { form.getName(), form.getRealname(), form.getPassword(), form.getSkinid(), form.getUserGroupId(), form.getRemark(), form.getExt1(), form.getExt2() };
+    public Map findManageByName(final String name) {
+        final String sql = "select id,name,password,realname,userGroupId,remark,ext1,ext2,deptid from appries_manager where name='" + name + "'";
         try {
-            final int num = this.getJdbcTemplate().update(sql, arg);
-            return num > 0;
+            return this.getJdbcTemplate().queryForMap(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public boolean AddManager(final ManagerVo form) throws SQLException {
+        final String sql = "insert into appries_manager (name,realname,password,skinid,userGroupId,remark,ext1,ext2,deptid) values(?,?,?,?,?,?,?,?,?)";
+        final Object[] arg = { form.getName(), form.getRealname(), form.getPassword(), form.getSkinid(), form.getUserGroupId(), form.getRemark(), form.getExt1(), form.getExt2(), form.getDeptid() };
+        try {
+            return this.getJdbcTemplate().update(sql, arg) > 0;
         }
         catch (Exception e) {
             return false;
@@ -68,8 +78,8 @@ public class ManagerService extends SuperDao
     }
 
     public boolean UpdateManage(final ManagerVo form) throws SQLException {
-        final String sql = "update appries_manager set  name=?,realname=?,skinid=?,userGroupId=?,remark=?,ext1=?,ext2=? where id =?";
-        final Object[] arg = { form.getName(), form.getRealname(), form.getSkinid(), form.getUserGroupId(), form.getRemark(), form.getExt1(), form.getExt2(), form.getId() };
+        final String sql = "update appries_manager set  name=?,realname=?,skinid=?,userGroupId=?,remark=?,deptid=?,ext1=?,ext2=? where id =?";
+        final Object[] arg = { form.getName(), form.getRealname(), form.getSkinid(), form.getUserGroupId(), form.getRemark(), form.getDeptid(), form.getExt1(), form.getExt2(), form.getId() };
         try {
             final int num = this.getJdbcTemplate().update(sql, arg);
             return num > 0;
@@ -155,47 +165,36 @@ public class ManagerService extends SuperDao
             return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return 0;
         }
     }
 
-    public List findLowerManagerByName(final String name, final String deptgroup, final int start, final int num) {
-        String sql = "select row_number() over(order by id desc) as rows, * from appries_manager where name like '%" + name + "%' " +
-                "and userGroupId in(" +
-                "select id from appries_power " +
-                "where deptIdGroup in (" + deptgroup + "))";
+    public List findLowerManagerByName(final String name, final String deptgroup, final int start, final int num, int[] rowNum) {
+        String sql = "select row_number() over(order by id desc) as rows, * from appries_manager where 1=1 ";
+        if(StringUtils.isNotBlank(name))
+            sql += "and name like '%" + name + "%' ";
+        if(StringUtils.isNotBlank(deptgroup))
+            sql += "and deptid in(" + deptgroup + ")";
+        if (rowNum!=null && rowNum.length==1){
+            String countSql = "select count(*) from ("+sql+") t";
+            rowNum[0] = this.getJdbcTemplate().queryForObject(countSql,null, java.lang.Integer.class);
+        }
         sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
-        logger.debug("findLowerManagerByName.sql=" + sql);
+        logger.debug(sql);
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
 
-    public int countLowerManagerByName(final String name, final String deptgroup) {
-        final String sql = "select count(*) from appries_manager where  name like '%" + name + "%' and userGroupId in (select id from appries_power where deptIdGroup in (" + deptgroup + "))";
-        System.out.println("sql1=" + sql);
-        try {
-            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
     public boolean isUseUserGroupId(final Integer id) {
-        final String sql = "select count(*) from appries_manager where userGroupId=" + id;
+        final String sql = "select count(*) from appries_managerpower where powerid="+id;
         try {
-            final int num = this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
-            return num > 0;
+            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class) > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -206,7 +205,6 @@ public class ManagerService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

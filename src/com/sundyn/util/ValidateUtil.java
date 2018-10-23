@@ -22,7 +22,7 @@ public class ValidateUtil {
             for(ConstraintViolation<T> constraintViolation: constraintViolations) { 
                 validateError += constraintViolation.getMessage() + "\r\n"; 
             } 
-            throw new Exception(validateError); 
+            throw new ValidException(validateError);
         } 
     } 
 }

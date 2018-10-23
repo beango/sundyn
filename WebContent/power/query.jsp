@@ -22,6 +22,14 @@
 	</head>
 	<body>
 		<div id="man_zone">
+            <div class="place">
+                <span>位置：</span>
+                <ul class="placeul">
+                    <c:forEach items="${navbar_menuname}" var="menu">
+                        <li><a href="#">${menu.name}</a></li>
+                    </c:forEach>
+                </ul>
+            </div>
 			<div style="width:99%;" class="">
 			    <div>
 				    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-color:#FFFFFF;">
@@ -35,9 +43,9 @@
                 <table class="layui-table">
 				  <tr>
 				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name="sundyn.column.roleName" /></td>
-				     <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name="sundyn.column.systemSetup" /></td>
-				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name="sundyn.column.baseSetup" /></td>
-				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name="sundyn.column.dept" /></td>
+				     <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1" style="display: none;"><s:text name="sundyn.column.systemSetup" /></td>
+				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1" style="display: none;"><s:text name="sundyn.column.baseSetup" /></td>
+				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1" style="display: none;"><s:text name="sundyn.column.dept" /></td>
 				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name="sundyn.column.operation" /></td>
 				  </tr>
 				    <c:forEach items="${pager.pageList}" var="power">
@@ -45,7 +53,7 @@
 							<td style="text-align: center;">
 								${power.name}
 							</td>
-							<td style="text-align: center;">
+							<td style="text-align: center;display: none;">
 								<c:if test="${ power.baseSet==1    }">
 									<s:text name='sundyn.yes' />
 							    </c:if>
@@ -53,7 +61,7 @@
 									<s:text name='sundyn.no' />
 							     </c:if>
 							</td>
-							<td style="text-align: center;">
+							<td style="text-align: center;display: none;">
 								<c:if test="${power.dataManage ==  1}">
 								   <s:text name='sundyn.yes' />
 								</c:if>
@@ -61,7 +69,7 @@
 								   <s:text name='sundyn.no' /> 
 								</c:if>
 							</td>
-							<td style="text-align: center;">
+							<td style="text-align: center;display: none;">
 								${power.deptname}
 							</td>
 								<td style="text-align: center;">

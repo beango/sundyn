@@ -1,9 +1,13 @@
 package com.sundyn.service;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.sundyn.dao.SuperDao;
+import com.sundyn.entity.AppriesPowerfunc;
 import com.sundyn.vo.PowerVo;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +85,16 @@ public class PowerService extends SuperDao
             return false;
         }
     }
-    
+    @Resource
+    private IAppriesPowerfuncService powerFuncService;
+
+    //@Transactional
+    public boolean delPowerAndFunc(final Integer id) throws SQLException {
+        Map power = this.getUserGroup(id);
+        powerFuncService.delete(new EntityWrapper<AppriesPowerfunc>().where("powerName={0}", power.get("name").toString()));//删除角色-权限表中该角色所有记录
+        return this.delUserGroup(id);
+    }
+
     public boolean delUserGroup(final Integer id) throws SQLException {
         final String sql = "delete from appries_power where id=" + id;
         try {

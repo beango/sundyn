@@ -4,18 +4,18 @@
 <struts>
 	<package name="total" extends="struts-default">
 		<!-- 验证用户登录 开始-->
-		<interceptors>
-			<interceptor name="userCheckR"
-				class="com.sundyn.util.UserCheckR">
-			</interceptor>
-			<interceptor name="registerCheck"
-				class="registerCheck">
-			</interceptor>
-			<interceptor-stack name="mydefault">
-				<interceptor-ref name="userCheckR" />
-				<interceptor-ref name="defaultStack" />
-			</interceptor-stack>
-		</interceptors>
+        <interceptors>
+            <interceptor name="userCheckR" class="com.sundyn.util.UserCheckR"></interceptor>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
+            <interceptor name="registerCheck"
+                         class="registerCheck">
+            </interceptor>
+            <interceptor-stack name="mydefault">
+                <interceptor-ref name="operationInterceptor" />
+                <interceptor-ref name="userCheckR" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
 		<default-interceptor-ref name="mydefault" />
 		<global-results>
 			<result name="login">/login.jsp</result>
@@ -36,6 +36,26 @@
                 <param name="bufferSize">4096</param>
             </result>
 		</action>
+        <action name="totalDeptDealRpt" class="totalAction"
+                method="totalDeptDealRpt">
+            <result name="success">/total/deptDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+        </action>
+        <action name="totalProxyDealRpt" class="totalAction"
+                method="totalProxyDealRpt">
+            <result name="success">/total/proxyDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+        </action>
 		<action name="totalDeptPrint" class="totalAction"
 			method="totalDeptDeal">
 			<result name="success">/total/deptPrint.jsp</result>
@@ -54,6 +74,16 @@
                 <param name="bufferSize">4096</param>
             </result>
 		</action>
+        <action name="totalDatingDealRpt" class="totalAction"
+                method="totalDatingDealRpt">
+            <result name="success">/total/datingDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+        </action>
 		<action name="totalWindow" class="totalAction"
 			method="totalWindow">
 			<result name="success">/total/window.jsp</result>
@@ -68,6 +98,35 @@
                 <param name="bufferSize">4096</param>
             </result>
 		</action>
+        <action name="totalBizDeal" class="totalAction"
+                method="totalBizDeal">
+            <result name="success">/total/bizDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+        </action>
+        <action name="totalBizDealRpt" class="totalAction"
+                method="totalBizDealRpt">
+            <result name="success">/total/bizDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+        </action>
+        <action name="totalWindowDealRpt" class="totalAction" method="totalWindowDealRpt">
+        <result name="success">/total/windowDeal.jsp</result>
+        <result name="excel" type="stream">
+            <param name="contentType">application/vnd.ms-excel</param>
+            <param name="inputName">excel</param>
+            <param name="contentDisposition">attachment;filename="${fileName}"</param>
+            <param name="bufferSize">4096</param>
+        </result>
+        </action>
 		<action name="totalPerson" class="totalAction"
 			method="totalPerson">
 			<result name="success">/total/person.jsp</result>
@@ -86,6 +145,16 @@
                 <param name="bufferSize">4096</param>
             </result>
 		</action>
+        <action name="totalPersonDealRpt" class="totalAction"
+                method="totalPersonDealRpt">
+            <result name="success">/total/personDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+        </action>
 		<action name="totalJobNum" class="totalAction"
 			method="totalJobNum">
 			<result name="success">/total/jobNum.jsp</result>

@@ -4,141 +4,174 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@ include file="/JSClass/FusionCharts.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:v="urn:schemas-microsoft-com:vml"
-      xmlns:o="urn:schemas-microsoft-com:office:office">
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE"/>
     <title><s:text name='sundyn.title'/></title>
-
-    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
-    <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
-
+    <link rel="stylesheet" href="css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
+    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="js/pie.js"></script>
     <script type="text/javascript" src="js/Pie3D.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="js/layer/layer.js"></script>
     <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/application.js"></script>
+    <script type="text/javascript" src="lib/util/deptselutil.js"></script>
+    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
+    <style type="text/css">
+        ul.ztree {margin-top: 10px;border: 1px solid #617775;background: #f0f6e4;width:420px;height:360px;overflow-y:scroll;overflow-x:auto;}
+    </style>
 </head>
 <body>
+<%
+    String qs_deptid = request.getParameter("deptIds");
+    String qs_employeeid = request.getParameter("id");
+    if (qs_deptid != null && qs_deptid.length() > 0)
+        request.setAttribute("qs_deptval", qs_deptid);
+    if (qs_employeeid != null && qs_employeeid.length() > 0)
+        request.setAttribute("qs_deptval", "e" + qs_employeeid);
+%>
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <c:forEach items="${navbar_menuname}" var="menu">
+            <li><a href="#">${menu.name}</a></li>
+        </c:forEach>
+    </ul>
+</div>
 <div class="layui-form" lay-filter="f">
     <input type="hidden" id="deptId" name="deptId" value="${deptId}"/>
     <div class="layui-select-cus layui-inline">
         <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.query.selectEmployee'/></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
+        <input id="deptSel" class="scinput" type="text" readonly value="<%=request.getParameter("deptname")==null?"":request.getParameter("deptname")%>" style="width:120px;" onclick="showDeptTree(this,null);" />
     </div>
     <div class="layui-inline">
         <label class="layui-form-label"><s:text name='sundyn.total.startDate'/></label>
         <div class="layui-input-inline">
-            <input type="text" class="input_comm" id="startDate" value="${startDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+            <input type="text" class="scinput" id="startDate" value="${startDate}"
+                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label"><s:text name='sundyn.total.endDate'/></label>
         <div class="layui-input-inline">
-            <input type="text" class="input_comm" id="endDate" value="${endDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+            <input type="text" class="scinput" id="endDate" value="${endDate}"
+                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label" style="width: 100px;"><s:text name='sundyn.query.selectResult'/></label>
         <div class="layui-input-inline" style="width:120px;">
-            <select id="result">
+            <select id="result" class="select2">
                 <option value="" <c:if test="${keys == \"\"}">selected="selected"</c:if>>--全部--</option>
                 <c:forEach items="${keyList}" var="key" varStatus="index">
-                    <option value="${key.keyNo}" <c:if test="${keys == key.keyNo.toString()}">selected="selected"</c:if>>${key.name}</option>
+                    <option value="${key.keyNo}"
+                            <c:if test="${keys == key.keyNo.toString()}">selected="selected"</c:if>>${key.name}</option>
                 </c:forEach>
             </select>
         </div>
     </div>
     <div class="layui-inline">
+        <label class="layui-form-label">业务名称：</label>
         <div class="layui-input-inline">
-            <img src="<s:text name='sundyn.total.pic.query'/>" width="81" height="25" style="cursor: pointer;" onclick="queryZhDeal1()" class="hand" />
+            <input type="text" class="scinput" id="bizname" name="bizname" value="<%=request.getParameter("bizname")==null?"":request.getParameter("bizname")%>" />
         </div>
     </div>
-    <table width="100%" class="layui-table">
+    <div class="layui-inline">
+        <div class="layui-input-inline">
+            <img src="<s:text name='sundyn.total.pic.query'/>" width="81" height="25" style="cursor: pointer;" onclick="queryZhDeal1()" class="hand"/>
+        </div>
+    </div>
+    <table width="100%" class="tablelist">
+        <thead>
         <tr>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
-                <s:text name='sundyn.column.employeeCardNum'/>
-            </td>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
+            <th style="text-align: center;">
                 <s:text name='sundyn.column.employeeName'/>
-            </td>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
+            </th>
+            <th style="text-align: center;">
                 <s:text name='sundyn.column.atDating'/>
-            </td>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
+            </th>
+            <th style="text-align: center;">
+                业务名称
+            </th>
+            <th style="text-align: center;">
+                排队号码
+            </th>
+            <th style="text-align: center;">
+                取号类型
+            </th>
+            <th style="text-align: center;">
+                取号／叫号时间／等待时长
+            </th>
+            <th style="text-align: center;">办理／办结时间</th>
+            <th style="text-align: center;">
                 <s:text name='sundyn.column.appriesResult'/>
-            </td>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
-                <s:text name='sundyn.column.appriesTime'/>
-            </td>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
+            </th>
+            <th style="text-align: center;">
                 <s:text name="sundyn.inquiry.result.obtainEvidence"/>
-            </td>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
-                <s:text name="sundyn.inquiry.result.businessTime"></s:text>
-            </td>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
-                客户姓名
-            </td>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
-                客户电话
-            </td>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">
-                意见反馈
-            </td>
+            </th>
+            <th style="text-align: center;">
+                状态
+            </th>
         </tr>
+        </thead>
         <c:forEach items="${pager.pageList}" var="query">
             <tr>
                 <td align="center">
-                        ${query.cardNum}
+                        ${query.staffname}<c:if test="${query.hjcountername!=null}">　／　${query.hjcountername}</c:if>
                 </td>
                 <td align="center">
-                        ${query.employeeName}
+                        ${query.deptname}
                 </td>
                 <td align="center">
-                        ${query.fatherName}
+                    <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;width:180px;" title="${query.bizname}">
+                            ${query.bizname}</div>
                 </td>
                 <td align="center">
-                        ${query.keyName}
+                        ${query.queuenum}
                 </td>
-                <td align="center">${query.JieshouTime}
+                <td align="center">
+                    <c:if test="${query.queuetype==0}">现场号</c:if><c:if test="${query.queuetype==1}">预约号</c:if><c:if test="${query.queuetype==2}">线上取号</c:if>
+                </td>
+                <td align="left">
+                    <label style="height:20px;"><fmt:formatDate value="${query.tickettime}" type="both" /></label><c:if test="${query.hjtime!=null}">　／　<label style="height:20px;"><fmt:formatDate value="${query.hjtime}" type="both" /></label></c:if>
+                    <c:if test="${query.hjtime==null}">　／　-- </c:if>
+                    <c:if test="${query.waittimename!=null}">　／　${query.waittimename.replace("0天00时00分","").replace("0天00时","").replace("0天","")}</c:if><c:if test="${query.waitout}"><font style="color:red;">(等候超时)</font></c:if>
+                    <c:if test="${query.waittimename==null}">　／　-- </c:if>
+                </td>
+                <td>
+                    <c:if test="${query.starttime==null}">--</c:if>
+                    <label style="height:20px;"><fmt:formatDate value="${query.starttime}" type="both" /></label><c:if test="${query.endtime!=null}">　／　<label style="height:20px;"><fmt:formatDate value="${query.endtime}" type="both" /></label></c:if>
+                    <c:if test="${query.endtime==null}">　／　-- </c:if>
+                    <c:if test="${query.servicetimename!=null}">　／　${query.servicetimename.replace("0天00时00分","").replace("0天00时","").replace("0天","")}</c:if><c:if test="${query.serviceout}"><font style="color:red;">(办理超时)</font></c:if>
+                    <c:if test="${query.servicetimename==null}">　／　-- </c:if>
+                </td>
+                <td align="center">
+                        ${query.appriseresultname}<%--<c:if test="${query.apprisetime!=null}">　／　</c:if>${query.apprisetime}--%>
                 </td>
                 <td align="center">
                     <c:if test="${not empty query.imgfile}">
                         <a class="layui-btn layui-btn-sm" href="${pageContext.request.contextPath }/download/recorder/${query.imgfile}" target="_blank" >截图</a>
                     </c:if>
                     <c:if test="${empty query.videofile}">
-                        <s:text name="sundyn.inquiry.result.noRecord"/>
+                        <s:text name="sundyn.inquiry.result.noVideo"/>
                     </c:if>
                     <c:if test="${!empty query.videofile}">
-                        <a href="#" id="${query.id }"><img src="images/lx.jpg" onclick="toshow('${query.videofile}','${pageContext.request.contextPath }','${query.id}');"/></a>
+                        <a href="#" id="${query.id}"><img src="images/lx.jpg" onclick="toshow('${query.videofile}','${pageContext.request.contextPath }','${query.id}');"/></a>
                         <a href="downloadVideo.action?videofile=${query.videofile}" target="_blank"><s:text name="sundyn.inquiry.result.download"></s:text></a>
                     </c:if>
                 </td>
                 <td align="center">
-                    <c:if test="${!empty query.businessMin}">
-                        ${query.businessMin}<s:text name="sundyn.inquiry.result.minuteForShort"/>${query.businessSec}<s:text name="sundyn.inquiry.result.secondForShort"/>
-                    </c:if>
-                    <c:if test="${empty query.businessMin}">
-                        <s:text name="sundyn.inquiry.result.noRecord"/>
-                    </c:if>
-                </td>
-                <td align="center">
-                        ${query.ext1}
-                </td>
-                <td align="center">
-                        ${query.ext2}
-                </td>
-                <td align="center">
-                    <c:if test="${query.remark != null && query.remark != ''}"><a href="#" onclick="showRemark('${query.remark}')">查看</a></c:if>
+                        ${QueueDetailBean.getStatusname(query.status)}
                 </td>
             </tr>
         </c:forEach>
@@ -153,24 +186,29 @@
     </c:if>
 </div>
 <c:if test="${pager.rowsCount >0 }">
-<%
-    String strXML1 = (String) request.getAttribute("strXML1");
-    if (strXML1 != null && !"".equals(strXML1)) {
-        String chartHTML1 = createChartHTML("Charts/Pie3D.swf", "", strXML1, "", 600, 350, false);
-%>
-<span> <%=chartHTML1%> </span>
-<%
-    }
-%>
+    <%
+        String strXML1 = (String) request.getAttribute("strXML1");
+        if (strXML1 != null && !"".equals(strXML1)) {
+            String chartHTML1 = createChartHTML("Charts/Pie3D.swf", "", strXML1, "", 600, 350, false);
+    %>
+    <span style="display:none;"> <%=chartHTML1%> </span>
+    <%
+        }
+    %>
 </c:if>
+<div id="treeContent" class="menuContent" style="display:none; position: absolute;">
+    <ul id="treeDept" class="ztree" style="margin-top:0; width:380px; height: 300px;"></ul>
+</div>
 </body>
 <script type="text/javascript">
     initPager(${pager.getRowsCount()}, ${pager.getCurrentPage()}, ${pager.getPageSize()});
 
-    layui.use('form', function(){
+    layui.use('form', function () {
         var form = layui.form;
-        var deptpath = '<%=request.getParameter("deptpath")==null?"":request.getParameter("deptpath")%>'.split(",");
-        renderchild(form, -1, -1, deptpath,'employee');
+    });
+
+    $(document).ready(function () {
+        initTree("?depttype=3", '${qs_deptval}');
     });
 </script>
 </html>

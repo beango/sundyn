@@ -20,6 +20,14 @@
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
 </head>
 <body>
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <c:forEach items="${navbar_menuname}" var="menu">
+            <li><a href="#">${menu.name}</a></li>
+        </c:forEach>
+    </ul>
+</div>
 <script type="text/javascript">
     function chooseMenus(){
         var menus=document.getElementById("CmenuNames");
@@ -69,24 +77,6 @@
             }
         }
     }
-    $(function () {
-
-        /*$('#tg').tree({
-            url:"${ctx}/authQueryJSON.action",
-            width:220,
-            method: 'get',
-            fit : true,
-            animate : true,
-            parentField : "parentId",
-            lines:true,
-
-            onClick:function (r) {
-
-                $('#pp').panel('open').panel('refresh','${ctx}/common/func/updFunc1.htm?keyIndex=' + r.id);
-            },
-            onContextMenu: onContextMenu
-        });*/
-    });
     function onContextMenu(e,node){
         e.preventDefault();
         $(this).tree('select',node.target);
@@ -701,7 +691,7 @@
         </div>
         <input type="hidden" id="deptId" />
         <div class="center_04_right" id="deptView">
-            <iframe src="#" id="iframepage" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" onLoad="iFrameHeight()"></iframe>
+            <iframe src="about:blank" id="iframepage" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" onLoad="iFrameHeight()"></iframe>
         </div>
     </div>
 </div>

@@ -19,4 +19,14 @@ public class AppriesMenuServiceImpl extends ServiceImpl<AppriesMenuDao, AppriesM
     public AppriesMenu selectById(Integer id){
         return baseMapper.selectById(id);
     }
+
+    @Override
+    public void updateAllFuncCode(String oldFunc, String newFunc) {
+        baseMapper.updateAllFuncCode(oldFunc, newFunc);
+    }
+
+    @Override
+    public AppriesMenu selectByIdEx(int id) {
+        return baseMapper.selectByIdEx(id);
+    }
 }

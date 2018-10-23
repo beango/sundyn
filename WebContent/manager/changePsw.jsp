@@ -9,6 +9,7 @@
  	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 		<title><s:text name='sundyn.title'/></title>
+        <link rel="stylesheet" href="css/style.css" media="all">
         <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
         <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"></link>
 		<script language="javascript">
@@ -30,6 +31,14 @@
 		</script>
  	</head>
     <body>
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <c:forEach items="${navbar_menuname}" var="menu">
+                <li><a href="#">${menu.name}</a></li>
+            </c:forEach>
+        </ul>
+    </div>
     <div class="layui-main">
         <form method="post" class="layui-form" action="managerChangePswDeal2.action" id="f">
             <table align="center" width="100%" borde="0" cellpadding="0" cellspacing="0" style="border:0px;">
@@ -60,10 +69,10 @@
                 </tr>
                 <tr>
                     <td align="right">
-                        <div class="button" onclick="return check()"><s:text name="sundyn.changePassword.submit" /></div>
+                        <input name="" type="button" class="scbtn" onclick="return check()" value="提交">
                     </td>
                     <td align="left">
-                        <div class="button" onclick="f.reset()"><s:text name="sundyn.changePassword.reset" /></div>
+                        <input name="" type="button" class="scbtnn" onclick="return f.reset()" value="重置">
                     </td>
                 </tr>
                 <c:if test="${not empty type}">

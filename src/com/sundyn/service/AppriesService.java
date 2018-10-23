@@ -89,7 +89,6 @@ public class AppriesService extends SuperDao
     }
 
     public boolean addAppriesContact(final String mac, final String tt, final String name, final String phone, final String remark){
-        logger.info("mac:"+ mac + ", name:"+ name + ", phone:" + phone + ", remark:"+remark + ", tt:" + tt);
         if (tt==null || tt.equals("") || mac==null || mac.equals("")){
             return false;
         }
@@ -100,9 +99,7 @@ public class AppriesService extends SuperDao
                 tt, mac
         };
         try {
-            int r =  this.getJdbcTemplate().update(sql, args);
-            logger.info("r:"+ r);
-            return r>0;
+            return this.getJdbcTemplate().update(sql, args)>0;
         }
         catch (Exception e) {
             e.printStackTrace();

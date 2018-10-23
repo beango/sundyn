@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.SysQueueserialDao">
+    <select id="selectListEx" resultType="SysQueueserial">
+       select * from (
+       SELECT sys_queueserial.*,sys_queuehall.hallname
+        FROM sys_queueserial INNER JOIN sys_queuehall on sys_queueserial.hallid=sys_queuehall.id
+        ) t1
+        WHERE 1=1 ${ew.sqlSegment}
+    </select>
+</mapper>

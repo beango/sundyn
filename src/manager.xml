@@ -5,13 +5,13 @@
 	<package name="manager" extends="struts-default">
 		<!-- 验证用户登录 开始-->
 		<interceptors>
-			<interceptor name="userCheckR"
-				class="com.sundyn.util.UserCheckR">
-			</interceptor>
+			<interceptor name="userCheckR" class="com.sundyn.util.UserCheckR"></interceptor>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
 			<interceptor name="registerCheck"
 				class="registerCheck">
 			</interceptor>
 			<interceptor-stack name="mydefault">
+                <interceptor-ref name="operationInterceptor" />
 				<interceptor-ref name="userCheckR" />
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
@@ -109,8 +109,15 @@
 
 	</package>
 	<package name="login" extends="struts-default">
-		<action name="managerLogin" class="managerAction"
-			method="managerLogin">
+        <interceptors>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
+            <interceptor-stack name="defualtSecurityStackWithAuthentication">
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="operationInterceptor" />
+            </interceptor-stack>
+        </interceptors>
+		<action name="managerLogin" class="managerAction" method="managerLogin">
+            <interceptor-ref name="defualtSecurityStackWithAuthentication"></interceptor-ref>
 			<result name="success">index.html</result>
 			<result name="input">login.jsp</result>
 		</action>

@@ -38,32 +38,36 @@ public class AppriesPowerfunc extends Model<AppriesPowerfunc> {
         this.id = id;
     }
 
-    public Integer getPowerid() {
-        return powerid;
+    public String getFuncCode() {
+        return funcCode;
     }
 
-    public void setPowerid(Integer powerid) {
-        this.powerid = powerid;
+    public void setFuncCode(String funcCode) {
+        this.funcCode = funcCode;
     }
 
-    public Integer getFuncid() {
-        return funcid;
+    public String getPowerName() {
+        return powerName;
     }
 
-    public void setFuncid(Integer funcid) {
-        this.funcid = funcid;
+    public void setPowerName(String powerName) {
+        this.powerName = powerName;
     }
 
-    @TableField("funcid")
-    private Integer funcid;
-    private Integer powerid;
-
+    @TableField("funcCode")
+    private String funcCode;
+    @TableField("powerName")
+    private String powerName;
+    @TableField(exist = false)
+    private int funcid;
+    @TableField(exist = false)
+    private int powerid;
 
     public static final String ID = "id";
 
     public static final String FUNCCODE = "funcCode";
 
-    public static final String POWERID = "powerid";
+    public static final String POWERNAME = "powerName";
 
     @Override
     protected Serializable pkVal() {

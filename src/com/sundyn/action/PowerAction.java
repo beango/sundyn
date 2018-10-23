@@ -111,7 +111,6 @@ public class PowerAction extends MainAction
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String deptGroups = this.deptService.findChildALLStr123(deptIdGroup);
         final int rowsCount = this.powerService.countLowerPowerByName(name, deptGroups);
-        System.out.println("rowsCount2=" + rowsCount);
         this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage");
         final List list = this.powerService.findLowerPowerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
@@ -143,7 +142,7 @@ public class PowerAction extends MainAction
         }
         else {
             this.msg = this.getText("sundyn.deleteSuccess");
-            this.powerService.delUserGroup(id);
+            this.powerService.delPowerAndFunc(id);
         }
         return "success";
     }
@@ -177,6 +176,26 @@ public class PowerAction extends MainAction
         final Integer baseSet = Integer.valueOf(request.getParameter("baseSet"));
         final Integer dataManage = Integer.valueOf(request.getParameter("dataManage"));
         final Integer deptId = Integer.valueOf(request.getParameter("deptId"));
+
+        final String funcid = req.getString("funcid");
+        if (funcid!=null){
+            List<AppriesFunc> allFuncs = appriesFuncService.selectList(null);
+            String[] funcidArr = funcid.split(",");
+            List<AppriesPowerfunc> pfList = new ArrayList<>();
+            for (String f : funcidArr) {
+                if (f.equals(""))
+                    continue;
+                AppriesFunc func = getAppeiesFuncById(allFuncs, Integer.valueOf(f));
+                if (func == null)
+                    continue;
+                AppriesPowerfunc pf = new AppriesPowerfunc();
+                pf.setFuncCode(func.getFuncCode());
+                pf.setPowerName(name);
+                pfList.add(pf);
+                boolean isInsert = powerFuncService.insert(pf);
+            }
+        }
+
         final PowerVo powerVo = new PowerVo();
         powerVo.setName(name);
         powerVo.setBaseSet(baseSet);
@@ -201,10 +220,10 @@ public class PowerAction extends MainAction
             dept.put("fatherId", -1);
         }
 
+        Map oldpower = powerService.getUserGroup(id);
         EntityWrapper<AppriesPowerfunc> ew = new EntityWrapper<AppriesPowerfunc>();
-        ew.where("powerid={0}", id);
-        List<AppriesPowerfunc> powerFuncList = powerFuncService.selectList(ew);
-        System.out.println("power.powerFuncList:" + powerFuncList.size());
+        ew.where("powerName={0}", oldpower.get("name"));
+        List<AppriesPowerfunc> powerFuncList = powerFuncService.selectListEx(ew);
 
         request.setAttribute("powerFunc", powerFuncList);
         request.setAttribute("m", (Object)m);
@@ -226,22 +245,28 @@ public class PowerAction extends MainAction
         final Integer dataManage = Integer.valueOf(request.getParameter("dataManage"));
         final Integer deptId = Integer.valueOf(request.getParameter("deptId"));
         final String funcid = req.getString("funcid");
-        if (funcid!=null){
+        Map oldpower = powerService.getUserGroup(id);
+        if (funcid!=null && oldpower!=null){
+            List<AppriesFunc> allFuncs = appriesFuncService.selectList(null);
+
+
             EntityWrapper ew=new EntityWrapper();
             ew.setEntity(new AppriesPowerfunc());
-            ew.where("powerid = {0}", id);
+            ew.where("powerName = {0}", oldpower.get("name"));
             boolean isdel = powerFuncService.delete(ew);
 
             String[] funcidArr = funcid.split(",");
             System.out.println("funcidArr: " + funcidArr.length);
             List<AppriesPowerfunc> pfList = new ArrayList<>();
             for (String f : funcidArr) {
-                System.out.println("f: " + f);
                 if (f.equals(""))
                     continue;
+                AppriesFunc func = getAppeiesFuncById(allFuncs, Integer.valueOf(f));
+                if (func == null)
+                    continue;
                 AppriesPowerfunc pf = new AppriesPowerfunc();
-                pf.setFuncid(Integer.valueOf(f));
-                pf.setPowerid(id);
+                pf.setFuncCode(func.getFuncCode());
+                pf.setPowerName(name);
                 pfList.add(pf);
                 boolean isInsert = powerFuncService.insert(pf);
             }
@@ -255,7 +280,15 @@ public class PowerAction extends MainAction
         this.powerService.update(powerVo);
         return "success";
     }
-    
+
+    private AppriesFunc getAppeiesFuncById(List<AppriesFunc> allFuncs, Integer integer) {
+        for (AppriesFunc f : allFuncs){
+            if (f.getId().equals(integer))
+                return f;
+        }
+        return null;
+    }
+
     public String powerExist() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String name = request.getParameter("name");

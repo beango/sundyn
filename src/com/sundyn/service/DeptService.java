@@ -1,7 +1,7 @@
 package com.sundyn.service;
 
-import com.sundyn.cache.Cache;
-import com.sundyn.cache.CacheManager;
+import com.sundyn.cache.Cache1;
+import com.sundyn.cache.CacheManager1;
 import com.sundyn.dao.SuperDao;
 import com.sundyn.utils.StringUtils;
 import com.sundyn.vo.DeptVo;
@@ -29,9 +29,9 @@ public class DeptService extends SuperDao
     }
 
     public void ClearCache(){
-        for (String item : CacheManager.getCacheAllkey()){
-            if (item.startsWith(CacheManager.DeptService_findchild)){
-                CacheManager.clearOnly(item);
+        for (String item : CacheManager1.getCacheAllkey()){
+            if (item.startsWith(CacheManager1.DeptService_findchild)){
+                CacheManager1.clearOnly(item);
             }
         }
     }
@@ -49,7 +49,7 @@ public class DeptService extends SuperDao
     public Map findDeptById(final Integer id) {
         final String sql = "select *,(select count(*) from appries_dept t1 where t1.fatherid=t2.id) as childs from appries_dept t2 where id=?";
         final Object[] arg = { id };
-        logger.debug("findDeptById: " + sql + id);
+        logger.debug(sql + id);
         try {
             return this.getJdbcTemplate().queryForMap(sql, arg);
         }
@@ -134,8 +134,14 @@ public class DeptService extends SuperDao
     }
 
     public boolean updateDept(final DeptVo dept) {
-        final String sql = "Update appries_dept set name=?,remark=?,client_type=?,product_type=?,dept_camera_url=?,dept_businessId=? ,dept_playListId=?,ext1=?,ext2=?,ext3=?,useVideo=?,notice=?   where id=?";
-        final Object[] arg = { dept.getName(), dept.getRemark(), dept.getClient_type(), dept.getProduct_Type(), dept.getDept_camera_url(), dept.getDept_businessId(), dept.getDept_playListId(), dept.getDeptPause(), dept.getDeptPic(), dept.getDeptLogoPic(), dept.getUseVideo(), dept.getNotice(), dept.getId() };
+        String sql = "Update appries_dept " +
+                "set name=?,remark=?,client_type=?,product_type=?,dept_camera_url=?,dept_businessId=? ,dept_playListId=?,ext1=?,ext2=?,ext3=?,useVideo=?,notice=? ";
+        if  (dept.getFatherId()!=null)
+            sql += ",fatherId=" + dept.getFatherId() + " ";
+        sql += "where id=?";
+        Object[] arg = { dept.getName(), dept.getRemark(), dept.getClient_type(), dept.getProduct_Type(), dept.getDept_camera_url(), dept.getDept_businessId(), dept.getDept_playListId(),
+                dept.getDeptPause(), dept.getDeptPic(), dept.getDeptLogoPic(), dept.getUseVideo(), dept.getNotice(), dept.getId() };
+
         try {
             final int num = this.getJdbcTemplate().update(sql, arg);
             ClearCache();
@@ -193,7 +199,6 @@ public class DeptService extends SuperDao
             return true;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -206,7 +211,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -217,7 +221,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -228,7 +231,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -239,7 +241,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -249,26 +250,25 @@ public class DeptService extends SuperDao
     }
 
     public List findchild(final Integer id, boolean isCountChild) {
-        String Key = CacheManager.DeptService_findchild + id + "_" + isCountChild;
+        //String Key = CacheManager1.DeptService_findchild + id + "_" + isCountChild;
 
-        Cache data = CacheManager.getCacheInfo(Key);
-        if(data!=null){
+        //Cache1 data = CacheManager1.getCacheInfo(Key);
+        /*if(data!=null){
             return (List)data.getValue();
-        }
+        }*/
         String sql = "select * ";
         if(isCountChild)
-            sql += ",(select count(*) from appries_dept t1 where t1.fatherid=t2.id) as childs ";
+            sql += ", (select count(*) from appries_dept t1 where t1.fatherid=t2.id) as childs ";
         sql += "from appries_dept t2 where fatherId =" + id;
         try {
             List l = this.getJdbcTemplate().queryForList(sql);
-            Cache c = new Cache();
+            /*Cache1 c = new Cache1();
             c.setValue(l);
-            CacheManager.AddKey(Key);
-            CacheManager.putCache(Key, c);
+            CacheManager1.AddKey(Key);
+            CacheManager1.putCache(Key, c);*/
             return l;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -280,7 +280,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql, args);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -320,13 +319,14 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
+
     public List findChildALL(final String ids) throws SQLException {
         return this.findChildALL(ids,999);
     }
+
     public List findChildALL(final String ids, int deep) throws SQLException {
         if(ids == null)
             return null;
@@ -342,6 +342,24 @@ public class DeptService extends SuperDao
             this.setTemp(new ArrayList());
         }
         return temp;
+    }
+
+    public String FN_GetDeptAndChild(int pid){
+        final String sql1 = "SELECT * FROM dbo.FN_GetDeptAndChild("+pid+");";
+        try {
+            List list = this.getJdbcTemplate().queryForList(sql1);
+            String s = "";
+            for (Object o : list) {
+                Map m = (Map)o;
+                s += "," + m.get("id").toString();
+            }
+            if (s!="")
+                return s.substring(1);
+            return null;
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     public String findChildALLStr123(final String ids) throws SQLException {
@@ -365,13 +383,49 @@ public class DeptService extends SuperDao
         return resl;
     }
 
+    public String findChildALLStr1234(String ids) throws SQLException {
+        if (ids==null || ids.equals(""))
+            ids = "1";
+        final List temp = this.findChildALL(ids);
+        List temp2 = null;
+
+        if(null != super.getUserDept())
+            temp2 = this.findChildALL(String.valueOf(super.getUserDept()));
+        if(temp == null || temp2 == null)
+            return null;
+        String resl = "";
+        String s1 = "",
+                s2 = "";
+        for (int i = 0; i < temp.size(); ++i) {
+            final Map m = (Map) temp.get(i);
+            if (m != null) {
+                final Object obj = m.get("id");
+
+                s1 += "," + obj;
+                if (obj != null) {
+                    final String id = obj.toString();
+                    for (int j=0; j<temp2.size(); j++)
+                    {
+                        s2 += "," + ((Map)temp2.get(j)).get("id").toString();
+
+                        if (((Map)temp2.get(j)).get("id").toString().equals(id))
+                            resl = String.valueOf(resl) + id + ",";
+                    }
+                }
+            }
+        }
+        if (resl.endsWith(",")) {
+            resl = resl.substring(0, resl.length() - 1);
+        }
+        return resl;
+    }
+
     public List findHisNoChild(final DeptVo fo) throws SQLException {
         final String sql1 = "select id,child,lenvel,fatherId,name from appries_dept  where child>0 and fatherId =" + fo.getId();
         try {
             return this.getJdbcTemplate().queryForList(sql1);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -429,7 +483,6 @@ public class DeptService extends SuperDao
             return num <= 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return true;
         }
     }
@@ -437,11 +490,9 @@ public class DeptService extends SuperDao
     public List findDeptByType(final String ids, final Integer DeptTypeId) {
         final String sql = "select * from appries_dept where id in(" + ids + ") and deptType=" + DeptTypeId;
         try {
-            System.out.println(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -452,7 +503,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForObject(sql, (Class)String.class).toString();
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -487,7 +537,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForObject(sql, args, java.lang.Integer.class);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return 0;
         }
     }
@@ -498,7 +547,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return 0;
         }
     }
@@ -510,7 +558,6 @@ public class DeptService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -522,7 +569,6 @@ public class DeptService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -546,7 +592,6 @@ public class DeptService extends SuperDao
             return true;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -560,7 +605,6 @@ public class DeptService extends SuperDao
             return true;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -574,7 +618,6 @@ public class DeptService extends SuperDao
             return true;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -585,7 +628,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -596,7 +638,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -607,7 +648,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -618,7 +658,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -629,7 +668,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -641,7 +679,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql2);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -653,7 +690,6 @@ public class DeptService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql2);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -665,7 +701,6 @@ public class DeptService extends SuperDao
             return l;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -706,7 +741,6 @@ public class DeptService extends SuperDao
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
         return ids;
@@ -726,7 +760,6 @@ public class DeptService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }

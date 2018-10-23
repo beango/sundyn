@@ -62,20 +62,13 @@ public class DefaultAction extends ActionSupport
         return "success";
     }
 	
-	public String TopFrame2(){
+	public String TopFrame2() throws IOException {
 		final HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response=ServletActionContext.getResponse();  
         response.setContentType("text/html;UTF-8");
         response.setCharacterEncoding("UTF-8");
-        
-        PrintWriter out = null;    
-        try {
-			out = response.getWriter();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}    
-       
+        PrintWriter out = response.getWriter();
+
         final Map manager = (Map)request.getSession().getAttribute("manager");
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final Map power = this.powerService.getUserGroup(groupid);
@@ -97,7 +90,8 @@ public class DefaultAction extends ActionSupport
         request.setAttribute("name", power.get("name"));
         JSONObject json= new JSONObject();
         json.put("realname", manager.get("realname"));
-        json.put("name", power.get("name"));
+        json.put("powername", manager.get("powers"));
+        json.put("deptname", manager.get("deptname"));
         out.println(json.toString()); 
         out.flush();    
         out.close(); 

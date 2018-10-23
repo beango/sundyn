@@ -42,7 +42,6 @@ public class UserCheck extends HttpServlet implements Filter
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
             resp.sendRedirect("login.jsp");
         }
     }

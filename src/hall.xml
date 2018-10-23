@@ -1,0 +1,136 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="hall" extends="json-default">
+		<!-- 验证用户登录 开始-->
+        <interceptors>
+            <interceptor name="userCheckR" class="com.sundyn.util.UserCheckR"></interceptor>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
+            <interceptor name="registerCheck"
+                         class="registerCheck">
+            </interceptor>
+            <interceptor-stack name="mydefault">
+                <interceptor-ref name="operationInterceptor" />
+                <interceptor-ref name="userCheckR" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+        <!--  大厅 -->
+		<action name="hallQuery" class="hallAction"
+			method="hallQuery">
+            <result name="success">/hall/query.jsp</result>
+		</action>
+        <action name="hallAdd" class="hallAction"
+                method="hallAdd">
+            <result name="success">/hall/add.jsp</result>
+        </action>
+        <action name="hallPost" class="hallAction"
+                method="hallPost">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="hallDel" class="hallAction"
+                method="hallDel">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <!--  业务 -->
+        <action name="serialQuery" class="serialAction"
+                method="serialQuery">
+            <result name="success">/serial/query.jsp</result>
+        </action>
+        <action name="serialAdd" class="serialAction"
+                method="serialAdd">
+            <result name="success">/serial/add.jsp</result>
+        </action>
+        <action name="serialPost" class="serialAction"
+                method="serialPost">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="serialDel" class="serialAction"
+                method="serialDel">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="getHallSerial" class="serialAction"
+                method="getHallSerial">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <!--  窗口管理 -->
+        <action name="counterQuery" class="counterAction"
+                method="counterQuery">
+            <result name="success">/counter/query.jsp</result>
+        </action>
+        <action name="counterAdd" class="counterAction"
+                method="counterAdd">
+            <result name="success">/counter/add.jsp</result>
+        </action>
+        <action name="counterPost" class="counterAction"
+                method="counterPost">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="counterDel" class="counterAction"
+                method="counterDel">
+            <result name="success">/msg.jsp</result>
+        </action>
+
+        <!--  vip管理 -->
+        <action name="vipQuery" class="vipAction"
+                method="vipQuery">
+            <result name="success">/vip/query.jsp</result>
+        </action>
+        <action name="vipAdd" class="vipAction"
+                method="vipAdd">
+            <result name="success">/vip/add.jsp</result>
+        </action>
+        <action name="vipPost" class="vipAction"
+                method="vipPost">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="vipDel" class="vipAction"
+                method="vipDel">
+            <result name="success">/msg.jsp</result>
+        </action>
+
+        <!--  黑名单管理 -->
+        <action name="blackQuery" class="blackListAction"
+                method="blackQuery">
+            <result name="success">/black/query.jsp</result>
+        </action>
+        <action name="blackAdd" class="blackListAction"
+                method="blackAdd">
+            <result name="success">/black/add.jsp</result>
+        </action>
+        <action name="blackPost" class="blackListAction"
+                method="blackPost">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="blackDel" class="blackListAction"
+                method="blackDel">
+            <result name="success">/msg.jsp</result>
+        </action>
+
+        <!--  代理人管理 -->
+        <action name="proxyQuery" class="blackListAction"
+                method="proxyQuery">
+            <result name="success">/proxy/query.jsp</result>
+        </action>
+        <action name="proxyAdd" class="blackListAction"
+                method="proxyAdd">
+            <result name="success">/proxy/add.jsp</result>
+        </action>
+        <action name="proxyPost" class="blackListAction"
+                method="proxyPost">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="proxyDel" class="blackListAction"
+                method="proxyDel">
+            <result name="success">/msg.jsp</result>
+        </action>
+    </package>
+</struts>

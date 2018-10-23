@@ -11,6 +11,10 @@ import com.baomidou.mybatisplus.service.IService;
  * @author oKong
  * @since 2018-08-22
  */
-public interface IAppriesMenuService extends IService<AppriesMenu> {
+public interface IAppriesMenuService extends IServiceBase<AppriesMenu> {
     AppriesMenu selectById(Integer id);
+
+    void updateAllFuncCode(String oldFunc, String newFunc);
+
+    AppriesMenu selectByIdEx(int id);
 }

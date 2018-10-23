@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.QueueEmployeereportDao">
+
+    <select id="report_queueemployee" resultType="QueueEmployeereport">
+        select t1.*, t2.hallname,t3.countername from queue_employeereport t1 left join sys_queuehall t2 on t1.hallno=t2.hallno
+        left join sys_queuecounter t3 on t1.counterno=t3.counterno and t2.id=t3.hallid
+        WHERE 1=1 ${ew.sqlSegment}
+    </select>
+
+</mapper>

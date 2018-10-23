@@ -1,13 +1,19 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.ActionSupport;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.sundyn.entity.AppriesManagerpower;
 import com.sundyn.service.DeptService;
+import com.sundyn.service.IAppriesManagerpowerService;
 import com.sundyn.service.ManagerService;
 import com.sundyn.service.PowerService;
 import com.sundyn.util.CookieUtils;
 import com.sundyn.util.Mysql;
 import com.sundyn.util.Pager;
 import com.sundyn.vo.ManagerVo;
+import com.xuan.xutils.cache.Cache;
+import com.xuan.xutils.cache.CacheManager;
+import com.xuan.xutils.cache.DefaultCacheManager;
+import com.xuan.xutils.cache.provider.SimpleCache;
 import org.apache.struts2.ServletActionContext;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -15,6 +21,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,17 +31,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ManagerAction extends MainAction
 {
+    @Resource
+    private IAppriesManagerpowerService managerpowerService;
+
     private List list;
     private ManagerService managerService;
     private DeptService deptService;
     private ManagerVo managerVo;
     private String msg,type;
     private Pager pager;
+
     private PowerService powerService;
 
     public DeptService getDeptService() {
@@ -71,9 +83,11 @@ public class ManagerAction extends MainAction
 
     public String managerAdd() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
+        String name = req.getString("name");
+        int dept = req.getInt("dept", 0);
         (this.managerVo = new ManagerVo()).setSkinid(0);
-        this.managerVo.setName(request.getParameter("name"));
-        String name = request.getParameter("name");
+        this.managerVo.setName(name);
+        String powers = req.getString("powers");
         name = Mysql.mysql(name);
         if (this.managerService.manageExist(null, name)) {
             this.msg = "";
@@ -85,19 +99,32 @@ public class ManagerAction extends MainAction
 
         this.managerVo.setRealname(request.getParameter("realname"));
         this.managerVo.setPassword("123456");
-        final int id = Integer.valueOf(request.getParameter("userGroupId"));
-        this.managerVo.setUserGroupId(id);
+        final int userGroupId = Integer.valueOf(request.getParameter("userGroupId"));
+        this.managerVo.setUserGroupId(userGroupId);
         this.managerVo.setRemark(request.getParameter("remark"));
         this.managerVo.setExt1(request.getParameter("ext1"));
         this.managerVo.setExt2(request.getParameter("ext2"));
+        this.managerVo.setDeptid(dept);
         boolean addsucc = this.managerService.AddManager(this.managerVo);
+
+        if (powers!=null){
+            int managerid = Integer.valueOf(managerService.findManageByName(name).get("id").toString());
+            String[] powersArr = powers.split(",");
+            for (String powre : powersArr) {
+                if (powre.equals(""))
+                    continue;
+                AppriesManagerpower appriesManagerpower = new AppriesManagerpower();
+                appriesManagerpower.setPowerid(Integer.valueOf(powre));
+                appriesManagerpower.setManagerid(managerid);
+                managerpowerService.insert(appriesManagerpower);
+            }
+        }
         if (addsucc)
             return "success";
         else{
             request.setAttribute("msg","添加失败!");
             return "error";
         }
-
     }
 
     public String managerAddDialog() throws Exception {
@@ -232,8 +259,11 @@ public class ManagerAction extends MainAction
 
     public String managerEdit() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        (this.managerVo = new ManagerVo()).setId(Integer.valueOf(request.getParameter("id")));
+        int id = req.getInt("id");
+        int dept = req.getInt("dept", 0);
+        (this.managerVo = new ManagerVo()).setId(id);
         String name = request.getParameter("name");
+        String powers = req.getString("powers");
         if (this.managerService.manageExist(request.getParameter("id"), name)) {
             this.msg = "";
         }
@@ -245,11 +275,25 @@ public class ManagerAction extends MainAction
         this.managerVo.setName(name);
         this.managerVo.setRealname(request.getParameter("realname"));
         this.managerVo.setPassword("123456");
-        this.managerVo.setUserGroupId(Integer.valueOf(request.getParameter("userGroupId")));
+        this.managerVo.setUserGroupId(req.getInt("userGroupId"));
         this.managerVo.setRemark(request.getParameter("remark"));
         this.managerVo.setExt1(request.getParameter("ext1"));
         this.managerVo.setExt2(request.getParameter("ext2"));
+        this.managerVo.setDeptid(dept);
         this.managerService.UpdateManage(this.managerVo);
+
+        if (powers!=null){
+            managerpowerService.delete(new EntityWrapper<AppriesManagerpower>().where("managerId={0}", id));
+            String[] powersArr = powers.split(",");
+            for (String powre : powersArr) {
+                if (powre.equals(""))
+                    continue;
+                AppriesManagerpower appriesManagerpower = new AppriesManagerpower();
+                appriesManagerpower.setPowerid(Integer.valueOf(powre));
+                appriesManagerpower.setManagerid(id);
+                managerpowerService.insert(appriesManagerpower);
+            }
+        }
         return "success";
     }
 
@@ -262,6 +306,17 @@ public class ManagerAction extends MainAction
         final String alldept = this.deptService.findChildALLStr123(deptid);
         this.list = this.powerService.getLowerPowerByDeptId(alldept);
         final Map m = this.managerService.findManageById(id2);
+
+        List<AppriesManagerpower> managerPower = managerpowerService.selectList(new EntityWrapper<AppriesManagerpower>().where("managerid={0}", req.getInt("id")));
+        for (int i=0; i<managerPower.size(); i++){
+            for (int j=0; j<list.size(); j++){
+                Map managerMap = (Map)list.get(j);
+                if (managerMap.get("id").toString().equals(managerPower.get(i).getPowerid().toString()))
+                {
+                    managerMap.put("checked", true);
+                }
+            }
+        }
         request.setAttribute("manager", (Object)m);
         return "success";
     }
@@ -342,8 +397,24 @@ public class ManagerAction extends MainAction
         }*/
         if (manager != null) {
             CookieUtils cookieUtils = new CookieUtils();
-            Cookie cookie = cookieUtils.addCookie(manager);
+            List<AppriesManagerpower> managerPowers = managerpowerService.selectListEx(new EntityWrapper<AppriesManagerpower>().where("managerId={0}",manager.get("id").toString()));
+
+            Map cookieMap = new HashMap();
+            cookieMap.put("name", manager.get("name"));
+            cookieMap.put("password", manager.get("password"));
+
+            String cookieMapPowerStr = "";
+            if (null!=managerPowers && managerPowers.size()>0){
+                for (AppriesManagerpower powr : managerPowers){
+                    cookieMapPowerStr += "|" + powr.getPowerName();
+                }
+                cookieMapPowerStr = cookieMapPowerStr.substring(1);
+            }
+            cookieMap.put("powers", cookieMapPowerStr);
+            Cookie cookie = cookieUtils.addCookie(cookieMap);
             response.addCookie(cookie);// 添加cookie到response中
+            cookie = cookieUtils.addCookie2(deptService.findChildALLStr1234(null));
+            response.addCookie(cookie);
 
             session.setAttribute("manager", (Object)manager);
             return "success";
@@ -351,6 +422,9 @@ public class ManagerAction extends MainAction
         this.msg = this.getText("login.passwordError");
         return "input";
     }
+
+    @Resource
+    private CacheManager dCacheManager;
 
     public String managerLogout() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
@@ -386,10 +460,11 @@ public class ManagerAction extends MainAction
         request.setAttribute("managerId", (Object)managerId);
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
-        final String deptGroups = this.deptService.findChildALLStr123(deptIdGroup);
-        final int rowsCount = this.managerService.countLowerManagerByName(name, deptGroups);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerManagerPage");
-        this.list = this.managerService.findLowerManagerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        final String deptGroups = this.deptService.findChildALLStr1234(deptIdGroup);
+        this.pager = new Pager("currentPage", pageSize, 0, request, "lowerManagerPage");
+        int[] rowNum = new int[1];
+        this.list = this.managerService.findLowerManagerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowNum);
+        this.pager = new Pager("currentPage", pageSize, rowNum[0], request, "lowerManagerPage");
         this.pager.setPageList(this.list);
         return "success";
     }
@@ -411,19 +486,17 @@ public class ManagerAction extends MainAction
 
     public String lowerManagerQueryAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        String name = request.getParameter("name");
-        if (name == null) {
-            name = "";
-        }
+        String name = req.getString("name","");
         name = name.trim();
         final Map manager = (Map)request.getSession().getAttribute("manager");
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String deptGroups = this.deptService.findChildALLStr123(deptIdGroup);
-        final int rowsCount = this.managerService.countLowerManagerByName(name, deptGroups);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerManagerPage");
-        this.list = this.managerService.findLowerManagerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        this.pager = new Pager("currentPage", pageSize, 0, request, "lowerManagerPage");
+        int[] rowNum = new int[1];
+        this.list = this.managerService.findLowerManagerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowNum);
+        this.pager = new Pager("currentPage", pageSize, rowNum[0], request, "lowerManagerPage");
         this.pager.setPageList(this.list);
         request.setAttribute("name", (Object)name);
         return "success";

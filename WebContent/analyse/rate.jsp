@@ -53,9 +53,9 @@
                     </option>
                 </select>
                 <img src="<s:text name='sundyn.analyse.pic.dataAnalyse' />" width="94" height="25" onclick="analyseContentRateAjax()" style="cursor: pointer; vertical-align: middle;"/>
-                <img src="<s:text name='sundyn.analyse.pic.week' />" onclick="analyseContentRateAjaxDay(7)" style="cursor: pointer; vertical-align: middle;"/>
+                <%--<img src="<s:text name='sundyn.analyse.pic.week' />" onclick="analyseContentRateAjaxDay(7)" style="cursor: pointer; vertical-align: middle;"/>
                 <img src="<s:text name='sundyn.analyse.pic.15' />" onclick="analyseContentRateAjaxDay(15)" style="cursor: pointer; vertical-align: middle;"/>
-                <img src="<s:text name='sundyn.analyse.pic.month' />" onclick="analyseContentRateAjaxDay(30)" style="cursor: pointer; vertical-align: middle;"/>
+                <img src="<s:text name='sundyn.analyse.pic.month' />" onclick="analyseContentRateAjaxDay(30)" style="cursor: pointer; vertical-align: middle;"/>--%>
             </td>
         </tr>
     </table>

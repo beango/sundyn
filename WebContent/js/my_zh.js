@@ -28,6 +28,9 @@ Date.prototype.format = function (format) {
                 ("00" + o[k]).substr(("" + o[k]).length));
     return format;
 }
+$(function (){
+    $('.tablelist tbody tr:odd').addClass('odd');
+});
 function quicklyDel(data) {
 	dojo.xhrGet({url:"quicklyDel.action", content:{id:data}, load:function (resp, ioArgs) {
 		dojo.byId("man_zone").innerHTML = resp;
@@ -86,21 +89,14 @@ function delInput(data){
 
 // 得到当前机构的下一个机构
 function querydept(exportexcel) {
-    initDeptValue();
-    var deptId = "";
-    var d = $("#deptId").val().split(",");
-    if(d.length>0)
-    {
-        for (var i=d.length-1; i--; i>-1){
-            if(d[i]!=''){
-                deptId = d[i];
-                break;
-            }
-        }
-    }
+    //initDeptValue();
+    //var deptId = getDeptSelect();
+    var deptId = getCheck();
+    var deptname = getCheckName();
  	var startDate = getStartDate();
 	var endDate =  getEndDate();
-  	var u = "queryDeptDeal.action?deptId=" + deptId + "&startDate=" + startDate + "&endDate=" + endDate+"&deptpath=" + $("#deptId").val();
+	console.log(deptId);
+  	var u = "queryDeptDeal.action?deptId=" + deptId + "&deptname=" + deptname + "&startDate=" + startDate + "&endDate=" + endDate;// + "&deptpath=" + $("#deptId").val();
   	if(exportexcel)
      u += "&export="+exportexcel;
     window.location.href = u;
@@ -212,11 +208,22 @@ function selectPeople(id, name) {
 // 显示按人员查询结果
 function queryEmployeeDeal(isExport) {
     var id = getEmployeeSelect();
-
+    var deptId = getCheck();
+    var deptId2="";
+    var employeeid="";
+    var deptname = getCheckName();
+    if(deptId!=null && deptId.length>0 && deptId[0]=="e"){
+        deptId2 = "";
+        employeeid = deptId.substr(1);
+    }
+    else{
+        deptId2 = deptId;
+    }
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
     var keyword = "";
-	window.location.href = "queryPeopleyDeal.action?id=" + id + "&keyword=" + keyword + "&startDate=" + startDate + "&endDate=" + endDate + "&export=" + isExport + "&deptpath=" + $("#deptId").val();;
+	window.location.href = "queryPeopleyDeal.action?id=" + id + "&deptId=" + deptId2 + "&deptname=" + deptname + "&keyword=" + keyword + "&startDate=" + startDate + "&endDate=" + endDate +
+        "&export=" + (isExport?isExport:false) + "&employeeid=" + employeeid;
 }
 // 显示按工号查询结果
 function queryEmployeeByCardNumDeal() {
@@ -309,25 +316,23 @@ function queryZhDeal() {
 }
 
 function queryZhDeal1() {
-    initDeptValue();
-    var deptId = "";
-    var d = $("#deptId").val().split(",");
-    if(d.length>0)
-    {
-        for (var i=d.length-1; i--; i>-1){
-            if(d[i]!=''){
-                deptId = d[i];
-                break;
-            }
-        }
+    var deptId = getCheck();
+    var deptId2="";
+    var employeeid="";
+    var deptname = getCheckName();
+    if(deptId!=null && deptId.length>0 && deptId[0]=="e"){
+        deptId2 = "";
+        employeeid = deptId.substr(1);
     }
-    var employeeId = getEmployeeSelect();
+    else{
+        deptId2 = deptId;
+    }
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    var deptIds = getDeptSelect();
     var keys = document.getElementById("result").value;
+    var bizname = document.getElementById("bizname").value;
     var myURL = parseURL(location.href);
-    var _newUrl = replaceUrlParams(myURL, { id: employeeId, startDate:startDate,endDate: endDate,deptIds: deptIds,keys:keys,deptpath:$("#deptId").val() });
+    var _newUrl = replaceUrlParams(myURL, { id: employeeid, startDate:startDate,endDate: endDate,deptIds: deptId2,deptname: deptname,keys:keys, bizname:bizname});
     //document.location.href = "queryZhDeal.action?id=" + employeeId + "&startDate=" + startDate + "&endDate=" + endDate + "&deptIds=" + deptIds + "&keys=" + keys;
     document.location.href = _newUrl; //"queryZhDealAjax.action?id=" + employeeId + "&startDate=" + startDate + "&endDate=" + endDate + "&deptIds=" + deptIds + "&keys=" + keys + "&deptpath=" + $("#deptId").val();
 }
@@ -343,12 +348,20 @@ function analyseTotalAjaxDay(data,w) {
     analyseTotalAjax(w);
 }
 
-function analyseTotalAjax(w) {
+function analyseTotalAjax(w, field, containerid, lay) {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-	var type = document.getElementById("type").value;
-	dojo.xhrPost({url:"analyseTotalAjax2.action", content:{startDate:startDate, endDate:endDate, type:type, w:w}, load:function (resp, ioArgs) {
-		$("#chartcontainer").html(resp);
+    var types = document.getElementsByName("type");
+    var type = "day";
+    for (i = 0; i < types.length; i++) {
+        if (types[i].checked) {
+            type = types[i].value;
+        }
+    }
+    var deptId = getCheck();
+	dojo.xhrPost({url:"analyseTotalAjax.action", content:{deptId:deptId, startDate:startDate, endDate:endDate, type:type, w:w, field: field}, load:function (resp, ioArgs) {
+	    $("#chartcontainer" + containerid).html(resp);
+	    layer.close(lay);
     }});
 }
 // 满意量
@@ -363,24 +376,49 @@ function analyseContentAjaxDay(data,w) {
 function analyseContentAjax(w) {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-	var type = document.getElementById("type").value;
-	dojo.xhrPost({url:"analyseContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type, w:w}, load:function (resp, ioArgs) {
+    var type = "day";
+    var types = document.getElementsByName("type");
+    for (i = 0; i < types.length; i++) {
+        if (types[i].checked) {
+            type = types[i].value;
+        }
+    }
+    var deptId = getCheck();
+	dojo.xhrPost({url:"analyseContentAjax.action", content:{deptId:deptId, startDate:startDate, endDate:endDate, type:type, w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
 	}});
 }
 // 满意率
-function analyseContentRateAjaxDay(data) {
-    var now = new Date();
-    var nowStr = now.format("yyyy-MM-dd");
-    $("#endDate").val(nowStr + " 23:59:59");
-    now.setDate(now.getDate()-data);
-    var startDate = now.format("yyyy-MM-dd") + " 00:00:00";
-    var endDate = nowStr + " 23:59:59";
-    $("#startDate").val(startDate);
-    var type = $("#type").val();
-	dojo.xhrPost({url:"analyseContentRateAjax.action", content:{startDate:startDate,endDate:endDate,num:data,type:type}, load:function (resp, ioArgs) {
+function analyseContentRateAjaxDay(data, w) {
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    var types = document.getElementsByName("type");
+    var type = "day";
+    for (i = 0; i < types.length; i++) {
+        if (types[i].checked) {
+            type = types[i].value;
+        }
+    }
+    var deptId = getCheck();
+	dojo.xhrPost({url:"analyseContentRateAjax.action", content:{startDate:startDate,endDate:endDate,num:data,type:type, deptId:deptId, w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
 	}});
+}
+
+function analyseContentRateAjaxAll(data, w){
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    var types = document.getElementsByName("type");
+    var type = "day";
+    for (i = 0; i < types.length; i++) {
+        if (types[i].checked) {
+            type = types[i].value;
+        }
+    }
+    var deptId = getCheck();
+    dojo.xhrPost({url:"analyseContentRateAjaxAll.action", content:{startDate:startDate,endDate:endDate,num:data, deptId:deptId, type:type, w:w}, load:function (resp, ioArgs) {
+            $("#chartcontainer").html(resp);
+        }});
 }
 
 // 决策分析，首页画图
@@ -426,8 +464,8 @@ function analyseContentDAjax(){
 
 // 机构分析
 // 业务量分析
-function analyseDeptAjax(w) {
-	var deptId = getDeptSelect();
+function analyseDeptAjax(w, field, containerid, lay) {
+    var deptId = getCheck();
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var types = document.getElementsByName("type");
@@ -437,19 +475,14 @@ function analyseDeptAjax(w) {
 			type = types[i].value;
 		}
 	}
-	dojo.xhrPost({url:"analyseDeptAjax123.action", content:{startDate:startDate, endDate:endDate, type:type, deptId:deptId, w:w}, load:function (resp, ioArgs) {
-        $("#chartcontainer").html(resp);
+	dojo.xhrPost({url:"analyseDeptAjax.action", content:{startDate:startDate, endDate:endDate, type:type, deptId:deptId, w:w, field:field}, load:function (resp, ioArgs) {
+	    $("#chartcontainer" + containerid).html(resp);
+	    layer.close(lay);
 	}});
 }
 // 机构满意量
 function analyseDeptContentAjax(w) {
-	var deptids = document.getElementsByName("deptId");
-	var deptId = getDeptSelect();
-	/*for (i = 0; i < deptids.length; i++) {
-		if (eval(deptId) < eval(deptids[i].value)) {
-			deptId = deptids[i].value;
-		}
-	}*/
+    var deptId = getCheck();
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var types = document.getElementsByName("type");
@@ -465,13 +498,7 @@ function analyseDeptContentAjax(w) {
 }
 // 机构满意度
 function analyseDeptContentRateAjax(w) {
-	var deptids = document.getElementsByName("deptId");
-	var deptId = getDeptSelect();
-	/*for (i = 0; i < deptids.length; i++) {
-		if (eval(deptId) < eval(deptids[i].value)) {
-			deptId = deptids[i].value;
-		}
-	}*/
+	var deptId = getCheck();
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var types = document.getElementsByName("type");
@@ -550,7 +577,7 @@ function analyseSectionContentRateAjax() {
 }
 
 // 员工业务量
-function analyseEmployeeAjax(w) {
+function analyseEmployeeAjax(w, field, containerid, lay) {
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var types = document.getElementsByName("type");
@@ -560,13 +587,16 @@ function analyseEmployeeAjax(w) {
 			type = types[i].value;
 		}
 	}
-	var employeeId = getEmployeeSelect();
-	/*if(employeeId == ""){
-	    alert("先查询，选择人员");
-	    return false;
-	}*/
-	dojo.xhrPost({url:"analyseEmployeeAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId,w:w}, load:function (resp, ioArgs) {
-        $("#chartcontainer").html(resp);
+	var employeeId='';
+	var deptid='';
+    var nodeid = getCheck();
+    if (nodeid && nodeid[0]==='e')
+        employeeId = nodeid.substr(1);
+    if (nodeid && nodeid[0]!='e')
+        deptid=nodeid;
+	dojo.xhrPost({url:"analyseEmployeeAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId, deptid:deptid, w:w, field:field}, load:function (resp, ioArgs) {
+        $("#chartcontainer"+containerid).html(resp);
+        layer.close(lay);
 	}});
 }
 // 员工满意量
@@ -580,12 +610,14 @@ function analyseEmployeeContentAjax(w) {
 			type = types[i].value;
 		}
 	}
-	var employeeId = getEmployeeSelect();
-	if(employeeId == ""){
-	 //alert("先查询，选择人员");
-	 //return false;
-	}
-	dojo.xhrPost({url:"analyseEmployeeContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId, w:w}, load:function (resp, ioArgs) {
+    var employeeId='';
+    var deptid='';
+    var nodeid = getCheck();
+    if (nodeid && nodeid[0]==='e')
+        employeeId = nodeid.substr(1);
+    if (nodeid && nodeid[0]!='e')
+        deptid=nodeid;
+	dojo.xhrPost({url:"analyseEmployeeContentAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId, deptid:deptid, w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
 	}});
 }
@@ -600,12 +632,14 @@ function analyseEmployeeContentRateAjax(w) {
 			type = types[i].value;
 		}
 	}
-	var employeeId = getEmployeeSelect();
-	if(employeeId == ""){
-	 //alert("先查询，选择人员");
-	 //return false;
-	}
-	dojo.xhrPost({url:"analyseEmployeeContentRateAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId, w:w}, load:function (resp, ioArgs) {
+    var employeeId='';
+    var deptid='';
+    var nodeid = getCheck();
+    if (nodeid && nodeid[0]==='e')
+        employeeId = nodeid.substr(1);
+    if (nodeid && nodeid[0]!='e')
+        deptid=nodeid;
+	dojo.xhrPost({url:"analyseEmployeeContentRateAjax.action", content:{startDate:startDate, endDate:endDate, type:type, employeeId:employeeId, deptid:deptid, w:w}, load:function (resp, ioArgs) {
         $("#chartcontainer").html(resp);
 	}});
 }
@@ -743,11 +777,19 @@ function deptAddDialog(data, deptid, title) {
 	}});
 }
 // 修改机构对话框
-function deptEditDialog(title) {
+function deptEditDialog(title, fatherid) {
 	var deptId = document.getElementById("deptId").value;
-	new dialog().iframe('deptEditDialog.action?deptId='+deptId, {title: title, resize:false, h:"600px"});
+	new dialog().iframe('deptEditDialog.action?deptId='+deptId + "&fatherid="+fatherid, {title: title, resize:false, h:"600px"});
 }
-
+// 大厅参数配置
+function deptCfgDialog(title, deptname) {
+    var deptId = document.getElementById("deptId").value;
+    new dialog().iframe('hallAdd.action?deptid='+deptId + "&deptName=" + deptname, {title: title, resize:false, w:'700px', h:"650px"});
+}
+//窗口参数配置
+function counterCfgDialog(title, deptname, fatherId, deptid) {
+    new dialog().iframe('counterAdd.action?deptid='+deptid + "&fatherId="+fatherId + "&deptName=" + deptname, {title: title, resize:false, w:'700px', h:"650px"});
+}
 function deptGenCer(mac, batchname){
     dojo.xhrPost({url:"deptGenCer.action", content:{mac:mac, batchname:batchname}, load:function (resp, ioArgs) {
         var j = JSON.parse(resp)
@@ -767,16 +809,11 @@ function deptGenCer(mac, batchname){
 }
 // 修改机构
 function deptEditItem(deptId) {
-// if (document.getElementById("deptId").value == "") {
-// alert("\u8bf7\u9009\u62e9\u90e8\u95e8");
-// return false;
-// }
 	var deptName = document.getElementById("deptName").value;
 
 	var reMark = "";
 	if(document.getElementById("reMark"))
         reMark = document.getElementById("reMark").value;
-// var client_type = document.getElementById("client_type").value;
 	var client_type = 0;
 	var useVideo = "";
     if(document.getElementById("useVideo"))
@@ -825,8 +862,16 @@ function deptEditItem(deptId) {
 	if(document.getElementById("citys")!=null){
 		cityid=document.getElementById("citys").value;
 	}
-// alert("product_type="+product_type);
-	dojo.xhrPost({url:"deptEditItem.action", content:{deptId:deptId, deptName:deptName, reMark:reMark, client_type:client_type,product_type:product_type,dept_camera_url:dept_camera_url,dept_businessId:dept_businessId,dept_playListId:dept_playListId,deptPause:dept_Pause,deptPic:deptPic,deptLogoPic:deptLogoPic,useVideo:useVideo,notice:notice,provinceid:provinceid,cityid:cityid}, load:function (resp, ioArgs) {
+	var fatherId = "";
+    var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
+    if (zTree){
+        var nodes=zTree.getCheckedNodes(true);
+        if(nodes && nodes.length>0)
+            fatherId = nodes[0].id;
+    }
+	dojo.xhrPost({url:"deptEditItem.action", content:{deptId:deptId, deptName:deptName, reMark:reMark, client_type:client_type,product_type:product_type,
+            dept_camera_url:dept_camera_url,dept_businessId:dept_businessId,dept_playListId:dept_playListId,deptPause:dept_Pause,deptPic:deptPic,
+            deptLogoPic:deptLogoPic,useVideo:useVideo,notice:notice,provinceid:provinceid,cityid:cityid,fatherId:fatherId}, load:function (resp, ioArgs) {
         var _newUrl = parent.location.href;
 	    if(parent.parent.qc){
                 var currTab = parent.parent.qc.main.mainTabs.tabs('getSelected');
@@ -878,14 +923,14 @@ function employeeCardNumExsits(){
 }
 // 添加员工
 function employeeAdd() {
-	if(document.getElementById("tip").innerHTML=='已经存在'){
+	/*if(document.getElementById("tip").innerHTML=='已经存在'){
 		alert("该用户已存在");
 		return false;
 	}
     if(document.getElementById("tipcardnum").innerHTML=='已经存在'){
         alert("卡号已经存在！");
         return false;
-    }
+    }*/
 	var Name = document.getElementById("Name").value;
 	var job_desc = document.getElementById("job_desc").value;
 	var CardNum = document.getElementById("CardNum").value;
@@ -893,7 +938,7 @@ function employeeAdd() {
 	var Phone = document.getElementById("Phone").value;
 	var sexs = document.getElementsByName("Sex");
 	var dept = document.getElementById("deptId").value;
-	var ext2= document.getElementById("ext2").value;
+	var ext2= "";//document.getElementById("ext2").value;
 	// var remark=document.getElementById("remark").value;
 	var remark="";
 	var showDeptName = document.getElementById("showDeptName").value;
@@ -909,9 +954,17 @@ function employeeAdd() {
 		Sex = "1";
 	}
 	dojo.xhrPost({url:"employeeAdd.action", content:{Name:Name, job_desc:job_desc, CardNum:CardNum, imgName:imgName, Sex:Sex, Phone:Phone, dept:dept,ext2:ext2,remark:remark,showDeptName:showDeptName,showWindowName:showWindowName,unitName:unitName}, load:function (resp, ioArgs) {
+	    resp = JSON.parse(resp);
+	    if (resp.succ){
+            parent.closeDialog();
+            parent.employeeManage(document.getElementById("deptId").value);
+        }
+        else{
+	        alert(resp.msg);
+        }
+
 	    //document.getElementById("dialog").innerHTML = resp;
-		parent.closeDialog();
-		parent.employeeManage(document.getElementById("deptId").value);
+
 	}});
 }
 // 把file名字放入input传过去
@@ -985,18 +1038,18 @@ function employeeUpload() {
 }
 // 修改员工
 function employeeEdit() {
-	if(document.getElementById("tip").innerHTML=='该用户已存在'){
+	/*if(document.getElementById("tip").innerHTML=='该用户已存在'){
 		alert("该用户已存在");
 		return false;
-	}
+	}*/
 	var employeeId = document.getElementById("employeeId").value;
 	var Name = document.getElementById("Name").value;
 	var job_desc = document.getElementById("job_desc").value;
 	var CardNum = document.getElementById("CardNum").value;
 	var imgName = document.getElementById("imgName").value;
-	var Phone = document.getElementById("Phone").value;
+	var Phone = "";//document.getElementById("Phone").value;
 	var sexs = document.getElementsByName("Sex");
-	var ext2= document.getElementById("ext2").value;
+	var ext2= "";//document.getElementById("ext2").value;
 	// var remark=document.getElementById("remark").value;
 	var remark="";
 	var showDeptName = document.getElementById("showDeptName").value;
@@ -1012,8 +1065,15 @@ function employeeEdit() {
 		Sex = "\u7537";
 	}
 	dojo.xhrPost({url:"employeeEdit.action", content:{employeeId:employeeId, Name:Name, job_desc:job_desc, CardNum:CardNum, imgName:imgName, Sex:Sex, Phone:Phone,ext2:ext2,remark:remark,showDeptName:showDeptName,showWindowName:showWindowName,unitName:unitName}, load:function (resp, ioArgs) {
-        parent.employeeManage(parent.$("#deptId").val());
-		parent.closeDialog();
+            resp = JSON.parse(resp);
+            console.log("employeeAdd:" + resp.succ, resp.msg);
+            if (resp.succ){
+                parent.employeeManage(parent.$("#deptId").val());
+                parent.closeDialog();
+            }
+            else{
+                alert(resp.msg);
+            }
 	}});
 }
 function employeeOut(data) {
@@ -1183,7 +1243,7 @@ function managerAddDialog() {
 // 添加低等级用户对话框
 function lowerManagerAddDialog(title) {
     var dia = new dialog();
-    dia.iframe("lowerManagerAddDialog.action",{title:title,h:"300px",resize:false});
+    dia.iframe("lowerManagerAddDialog.action",{title:title,h:"500px",resize:true});
 }
 // 验证用户不为空
 function managerCheck(){
@@ -1223,7 +1283,23 @@ function managerAdd() {
 	var ext1 = document.getElementById("ext1").value;
 	var ext2 = document.getElementById("ext2").value;
 	var userGroupId = document.getElementById("userGroupId").value;
-	dojo.xhrPost({url:"managerAdd.action", content:{name:name, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId}, load:function (resp, ioArgs) {
+    var powers = "";
+    var managerPowers = $("input[name=managerPowers]");
+    for (var i=0; i<managerPowers.length; i++){
+        if(managerPowers[i].checked){
+            powers += (managerPowers[i].value) + ",";
+        }
+    }
+    var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
+    var nodes=zTree.getCheckedNodes(true),
+        v="";
+    if(nodes && nodes.length>0)
+        v = nodes[0].id;
+    if (v == ""){
+        alert("选择部门机构");
+        return false;
+    }
+	dojo.xhrPost({url:"managerAdd.action", content:{name:name, powers:powers, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId, dept:v}, load:function (resp, ioArgs) {
 		if (resp.trim() == "") {
             layer.msg('添加成功', {
                 icon: 1,
@@ -1246,7 +1322,7 @@ function managerAdd() {
 // 修改用户对话框
 function managerEditDialog(data, title) {
     var dia = new dialog();
-    dia.iframe("managerEditDialog.action?id="+data, {title: title, resize: false, h: "300px"});
+    dia.iframe("managerEditDialog.action?id="+data, {title: title, resize: false, h: "500px"});
 }
 // 修改用户
 function managerEdit() {
@@ -1265,7 +1341,24 @@ function managerEdit() {
 	var ext1 = document.getElementById("ext1").value;
 	var ext2 = document.getElementById("ext2").value;
 	var userGroupId = document.getElementById("userGroupId").value;
-	dojo.xhrPost({url:"managerEdit.action", content:{id:id, name:name, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId}, load:function (resp, ioArgs) {
+	var powers = "";
+	var managerPowers = $("input[name=managerPowers]");
+	for (var i=0; i<managerPowers.length; i++){
+        if(managerPowers[i].checked){
+            powers += (managerPowers[i].value) + ",";
+        }
+    }
+    var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
+    var nodes=zTree.getCheckedNodes(true),
+        v="";
+    if(nodes && nodes.length>0)
+        v = nodes[0].id;
+    if (v == ""){
+        alert("选择部门机构");
+        return false;
+    }
+
+	dojo.xhrPost({url:"managerEdit.action", content:{id:id, name:name, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId, powers:powers, dept:v}, load:function (resp, ioArgs) {
             if(resp.trim()==""){
                 layer.msg('修改成功', {
                     icon: 1,
@@ -1391,7 +1484,7 @@ function lowerPowerPage(data) {
 function powerDel(data) {
 	if (confirm("确认要删除吗?")){
         dojo.xhrPost({url:"powerDel.action", content:{id:data}, load:function (resp, ioArgs){
-                layer.msg('删除成功', {
+                layer.msg(resp, {
                     icon: 1,
                     time: 800
                 }, function(){
@@ -1436,7 +1529,13 @@ function powerAdd() {
 		dataManage = 0;
 	}
 	var deptId = document.getElementById("deptId").value;
-	dojo.xhrPost({url:"powerAdd.action", content:{name:name, baseSet:baseSet, dataManage:dataManage, deptId:deptId}, load:function (resp, ioArgs) {
+    var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
+    var nodes=zTree.getCheckedNodes(true),
+        v="";
+    for(var i=0;i<nodes.length;i++){
+        v+=nodes[i].id + ",";
+    }
+	dojo.xhrPost({url:"powerAdd.action", content:{name:name,funcid:v, baseSet:baseSet, dataManage:dataManage, deptId:deptId}, load:function (resp, ioArgs) {
             if (resp.trim()==""){
                 layer.msg('角色添加成功', {
                     icon: 1,
@@ -1510,26 +1609,49 @@ function powerEditDialog(data, title) {
 }
 // 汇总
 // 机构汇总
-function totalDeptDeal(isExport) {
-    initDeptValue();
+function totalDeptDeal(isExport, sort) {
+     if(sort=='null')
+         sort = null;
+    var deptId = getCheck();
+    var deptname = getCheckName();
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-	window.location.href = "totalDeptDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + getDeptSelect() + "&export=" + isExport + "&deptpath=" + $("#deptId").val();
+	window.location.href = "?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId + "&export=" + (isExport==undefined?false:isExport)
+        + "&deptname=" + deptname + "&sort=" + (sort==undefined?"":sort);
 }
 // 大厅汇总
-function totalDatingDeal(isExport) {
+function totalDatingDeal(isExport, sort) {
+    if(sort=='null')
+        sort = null;
+    var deptId = getCheck();
+    var deptname = getCheckName();
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-    initDeptValue();
-	window.location.href = "totalDatingDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + getDeptSelect() + "&export=" + isExport + "&deptpath=" + $("#deptId").val();
+	window.location.href = "?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId
+        + "&export=" + (isExport==undefined?false:isExport) + "&deptname=" + deptname
+        + "&sort=" + (sort==undefined?"":sort);
 }
 // 窗口汇总
-function totalWindowDeal(isExport) {
+function totalWindowDeal(isExport, sort) {
+    if(sort=='null')
+        sort = null;
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
-	var deptId = getDeptSelect();
-    initDeptValue();
-	window.location.href = "totalWindowDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId + "&export=" + isExport + "&deptpath=" + $("#deptId").val();
+    var deptId = getCheck();
+    var deptname = getCheckName();
+	window.location.href = "?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId
+        + "&export=" + (isExport==undefined?false:isExport) + "&deptname=" + deptname + "&sort=" + (sort==undefined?"":sort);
+}
+function totalBizDeal(isExport, sort) {
+    if(sort=='null')
+        sort = null;
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    var deptId = getCheck();
+    var deptname = getCheckName();
+    var bizname = document.getElementById("bizname").value;
+    window.location.href = "?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId + "&export=" + (isExport==undefined?false:isExport)
+        + "&deptname=" + deptname + "&bizname=" + bizname + "&sort=" + (sort==undefined?"":sort);
 }
 // 个人汇总
 function totalPersonAjax(data) {
@@ -1543,14 +1665,34 @@ function totalSectionDeal() {
 	var endDate = document.getElementById("endDate").value;
 	window.location.href = "totalSectionDeal.action?startDate=" + startDate + "&endDate=" + endDate;
 }
-function totalPersonDeal(isExport) {
+function totalPersonDeal(isExport, sort) {
+    if(sort=='null')
+        sort = null;
 	var startDate = document.getElementById("startDate").value;
 	var endDate = document.getElementById("endDate").value;
 	var deptids = document.getElementsByName("deptId");
-    initDeptValue();
-    var deptId = getDeptSelect();
-    var eid = getEmployeeSelect();
-	window.location.href = "totalPersonDeal.action?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId + "&employeeId=" + eid + "&export=" + isExport +"&deptpath=" + $("#deptId").val();
+    var deptId = getCheck();
+    var deptId2="";
+    var employeeid="";
+    var deptname = getCheckName();
+    if(deptId!=null && deptId.length>0 && deptId[0]=="e"){
+        deptId2 = "";
+        employeeid = deptId.substr(1);
+    }
+    else{
+        deptId2 = deptId;
+    }
+	window.location.href = "?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId2 + "&deptname=" + deptname
+        + "&employeeId=" + employeeid + "&export=" + (isExport==undefined?false:isExport) + "&sort=" + (sort==undefined?"":sort) ;
+}
+function totalProxyDeal(isExport, sort) {
+    if(sort=='null')
+        sort = null;
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    var cardname = document.getElementById("cardname").value;
+    window.location.href = "?startDate=" + startDate + "&endDate=" + endDate
+        + "&cardname=" + cardname + "&export=" + (isExport==undefined?false:isExport) + "&sort=" + (sort==undefined?"":sort) ;
 }
 function totalBusinessDeal() {
 	var startDate = document.getElementById("startDate").value;
@@ -2729,7 +2871,7 @@ function sundynSetSave(){
 	var est1="";
 	var est2="";
 	var est3="";
-	var est4="";
+	var est4="false";
 	var est5="";
 	var est6="";
 	var est7="";
@@ -2755,12 +2897,12 @@ function sundynSetSave(){
 	}else{
 		est3 = "false";
 	}
-	if(document.getElementById("est4").checked){
+	/*if(document.getElementById("est4").checked){
 		est4="true";
 		coun = coun+1;
 	}else{
 		est4 = "false";
-	}
+	}*/
 	if(document.getElementById("est5").checked){
 		est5="true";
 		coun = coun+1;
@@ -4301,3 +4443,12 @@ function initPager(_count, _curr, _limit){
         });
     });
 }
+
+
+
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
+

@@ -2,6 +2,7 @@ package com.sundyn.service;
 
 import com.sundyn.dao.SuperDao;
 import com.sundyn.vo.DeptVo;
+import com.xuan.xutils.utils.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -34,12 +35,16 @@ public class QueryService extends SuperDao
         }
     }
 
-    public List QueryDeptChat(final String deptids, final String startDate, final String endDate) {
-        String sql = "select appries_keytype.name ,count(*) as num from appries_appries ,appries_keytype where appries_appries.keyno=appries_keytype.keyNo ";
+    public List QueryDeptChat(final String deptids, final String startDate, final String endDate, String keynos) {
+        String sql = "select ISNULL(appries_keytype.name,'未评价') name,count(*) as num from appries_appries left join appries_keytype on appries_appries.keyno=appries_keytype.keyNo where 1=1 ";
         if(null!=deptids && !"".equals(deptids))
             sql += "and appries_appries.DeptId in (" + deptids + ") ";
-        sql += "and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' " + " and  appries_keytype.yes=1 group by  appries_keytype.name";
+        sql += "and appries_appries.JieshouTime>='" + startDate + "' " + "and appries_appries.JieshouTime<='" + endDate + "' ";
+        if (!StringUtils.isBlank(keynos))
+            sql += "and appries_appries.keyno in("+keynos+") ";
+        sql += "group by appries_keytype.name";
         try {
+            logger.info(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
@@ -65,14 +70,17 @@ public class QueryService extends SuperDao
         }
     }
 
-    public List queryEmployee2(final Integer employeeId, final String startDate, final String endDate, final int start, final int num, final String keys) {
+    public List queryEmployee2(final String deptIds, final Integer employeeId, final String startDate, final String endDate,
+                               final int start, final int num, final String keys, int[] rc) {
         String sql = "select row_number() over(order by appries_appries.JieshouTime desc) as rows, appries_appries.id, appries_employee.CardNum ," +
-                "appries_employee.Name as 'employeeName',appries_keytype.name as 'keyName', appries_appries.JieshouTime," +
+                "appries_employee.Name as 'employeeName',ISNULL(appries_keytype.name,'未评价') as 'keyName', appries_appries.JieshouTime," +
                 "appries_appries.ext1,appries_appries.ext2,appries_appries.remark ,appries_appries.videofile,appries_appries.businessMin," +
                 "appries_appries.businessSec,appries_dept.name as 'deptName', appries_appries.serviceDate,appries_appries.appriesTime," +
-                "appries_appries.CustorTime , appries_appries.imgfile,appries_dept.dept_camera_url ,appries_dept.fatherId from appries_appries,appries_employee," +
-                "appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id " +
-                "and appries_appries.keyno=appries_keytype.keyNo ";
+                "appries_appries.CustorTime , appries_appries.imgfile,appries_dept.dept_camera_url ,appries_dept.fatherId,appries_appries.ywlsh from appries_appries " +
+                "left join appries_keytype on appries_appries.keyno=appries_keytype.keyNo, appries_employee," +
+                "appries_dept where appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id ";
+        if(null!=deptIds && !deptIds.equals(""))
+            sql += "and appries_dept.id in(" + deptIds + ") ";
         if(null!=employeeId && employeeId!=0)
                 sql += "and appries_appries.EmployeeId =" + employeeId + " ";
         if(null!=startDate && startDate!="")
@@ -81,10 +89,19 @@ public class QueryService extends SuperDao
             sql += "and appries_appries.JieshouTime  <='" + endDate + "' ";
         if(null!=keys && keys!="")
             sql += "and appries_appries.keyno in (" + keys + " ) ";
+        if (rc!=null && rc.length==1){
+            String countSql = "select count(*) from (" + sql + ")t";
+            rc[0] = this.getJdbcTemplate().queryForObject(countSql,null, java.lang.Integer.class);
+        }
         if(num>0)
             sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
-        sql = " select a.*,b.name as fatherName from  (" + sql + ") as a left join appries_dept b  on  a.fatherId=b.id ORDER BY a.JieshouTime DESC";
+
+        sql = " select a.*,b.name as fatherName,c.*,d.countername as hjcountername,dbo.FN_SecondToString(waittime) as waittimename, " +
+                "dbo.FN_SecondToString(servicetime) as servicetimename from  (" + sql + ") as a left join appries_dept b on a.fatherId=b.id " +
+                "left join v_queuedetail c on a.ywlsh=c.ywlsh left join sys_queuecounter d on d.counterno=c.hjcounter " +
+                "ORDER BY a.JieshouTime DESC";
         try {
+            logger.info(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
@@ -94,23 +111,6 @@ public class QueryService extends SuperDao
 
     public int countQueryEmployee(final Integer employeeId, final String startDate, final String endDate) {
         final String sql = "select   count(*)from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id and appries_appries.keyno=appries_keytype.keyNo and appries_appries.EmployeeId =" + employeeId + " " + "and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' ";
-        try {
-            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
-        }
-        catch (Exception e) {
-            return 0;
-        }
-    }
-
-    public int countQueryEmployee2(final Integer employeeId, final String startDate, final String endDate, final String keys) {
-        String sql = "select   count(*)from appries_appries,appries_employee,appries_dept,appries_keytype " +
-                "where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id " +
-                "and appries_appries.keyno=appries_keytype.keyNo ";
-        if(employeeId!=null)
-            sql += "and appries_appries.EmployeeId =" + employeeId + " ";
-        sql += "and appries_appries.JieshouTime  >='" + startDate + "' " +
-                "and appries_appries.JieshouTime  <='" + endDate + "' " +
-                "and appries_appries.keyno in (" + keys + " )";
         try {
             return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
@@ -130,17 +130,21 @@ public class QueryService extends SuperDao
         }
     }
 
-    public List QueryEmployeeChat2(final Integer employeeId, final String startDate, final String endDate) {
-        String sql = "select  appries_keytype.name ,count(*) as num from appries_appries ,appries_keytype " +
-                "where appries_appries.keyno=appries_keytype.keyNo ";
+    public List QueryEmployeeChat2(final String deptIds, final Integer employeeId, final String startDate, final String endDate, String keynos) {
+        String sql = "select ISNULL(appries_keytype.name,'未评价') name,count(*) as num from appries_appries left join appries_keytype on appries_appries.keyno=appries_keytype.keyNo, appries_dept " +
+                "where appries_appries.deptid=appries_dept.id ";
         if(employeeId!=null)
             sql += "and appries_appries.EmployeeId =" + employeeId + " ";
+        if(deptIds!=null && !deptIds.equals(""))
+            sql += "and appries_dept.id in(" + deptIds + ") ";
+
         sql += "and appries_appries.JieshouTime  >='" + startDate + "' " +
                 "and appries_appries.JieshouTime  <='" + endDate + "' " +
                 "and appries_appries.CustorTime  >='" + startDate + "' " +
-                "and appries_appries.CustorTime  <='" + endDate + "' " +
-                "and appries_keytype.yes=1  " +
-                "group by  appries_keytype.name";
+                "and appries_appries.CustorTime  <='" + endDate + "' ";
+        if (!StringUtils.isBlank(keynos))
+            sql += "and appries_appries.keyno in("+keynos+") ";
+        sql += "group by  appries_keytype.name";
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -149,19 +153,37 @@ public class QueryService extends SuperDao
         }
     }
 
-    public List queryResult(final String deptIds, final Integer result, final String startDate, final String endDate, final int start, final int num) {
-        String sql = "select row_number() over(order by appries_appries.JieshouTime desc) as rows,appries_appries.id, appries_appries.videofile videofile,appries_appries.imgfile,appries_appries.businessTime businessTime, appries_appries.businessMin businessMin,appries_appries.businessSec businessSec,appries_employee.CardNum ,appries_employee.Name as 'employeeName',appries_keytype.name as 'keyName', appries_appries.ext1,appries_appries.ext2,appries_appries.remark,appries_appries.JieshouTime ,appries_dept.name as 'deptName', appries_appries.serviceDate,appries_appries.appriesTime,appries_appries.CustorTime ,appries_dept.dept_camera_url,appries_dept.fatherId from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id " +
-                "and appries_appries.keyno=appries_keytype.keyNo ";
+    public List queryResult(final String deptIds, final Integer result, final String startDate, final String endDate, final int start, final int num, String allKeyInUse, int[] rowsCount) {
+        String sql = "select row_number() over(order by appries_appries.JieshouTime desc) as rows,appries_appries.id, appries_appries.videofile videofile,appries_appries.imgfile," +
+                "appries_appries.businessTime businessTime, appries_appries.businessMin businessMin,appries_appries.businessSec businessSec,appries_employee.CardNum ," +
+                "appries_employee.Name as 'employeeName',ISNULL(appries_keytype.name,'未评价') as 'keyName', appries_appries.ext1,appries_appries.ext2,appries_appries.remark,appries_appries.JieshouTime ," +
+                "appries_dept.name as 'deptName', appries_appries.serviceDate,appries_appries.appriesTime,appries_appries.CustorTime ,appries_dept.dept_camera_url,appries_dept.fatherId,appries_appries.ywlsh " +
+                "from appries_appries left join appries_keytype on appries_appries.keyno=appries_keytype.keyNo,appries_employee,appries_dept " +
+                "where appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id ";
         if(null!=result)
             sql += "and appries_appries.keyno =" + result + " ";
-        sql += "and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' " + "and appries_appries.DeptId in(" + deptIds + ") ";
+        sql += "and appries_appries.JieshouTime>='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' " + "and appries_appries.DeptId in(" + deptIds + ") ";
+        if (!allKeyInUse.equals("")) {
+            sql = String.valueOf(sql) + " and appries_appries.keyno in (" + allKeyInUse + ")  ";
+        }
+        if(null!=rowsCount && rowsCount.length==1){
+            String countSql = "select count(*) from ("+sql+") t";
+            rowsCount[0] = this.getJdbcTemplate().queryForObject(countSql, null, Integer.class);
+        }
         if (num>0)
             sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
-        sql = " select a.*,b.name as fatherName from  (" + sql + ") as a left join appries_dept b  on  a.fatherId=b.id ORDER BY a.JieshouTime DESC ";
+        sql = " select a.*,b.name as fatherName,c.*,d.countername as hjcountername,dbo.FN_SecondToString(waittime) as waittimename, " +
+                "dbo.FN_SecondToString(servicetime) as servicetimename " +
+                "from  (" + sql + ") as a left join appries_dept b on a.fatherId=b.id " +
+                "left join v_queuedetail c on a.ywlsh=c.ywlsh " +
+                "left join sys_queuecounter d on d.counterno=c.hjcounter " +
+                "ORDER BY a.JieshouTime DESC ";
         try {
+            logger.info(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -181,19 +203,6 @@ public class QueryService extends SuperDao
         }
         catch (Exception e) {
             return null;
-        }
-    }
-    public int countQueryResult(final String deptIds, final Integer result, final String startDate, final String endDate) {
-        String sql = "select count(*)from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id and appries_appries.keyno=appries_keytype.keyNo ";
-        if(null!=result)
-            sql += "and appries_appries.keyno =" + result + " ";
-        sql += "and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' " + "and appries_appries.DeptId  in (" + deptIds + ")";
-        System.out.println("countQueryResult-sql" + sql);
-        try {
-            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
-        }
-        catch (Exception e) {
-            return 0;
         }
     }
 
@@ -217,7 +226,7 @@ public class QueryService extends SuperDao
         }
     }
 
-    public List queryResultIdCard(final String deptIds, final String tel, final String startDate, final String endDate, final int start, final int num) {
+    public List queryResultIdCard(final String deptIds, final String tel, final String startDate, final String endDate, final int start, final int num, final String allKeyInUse, int[] rowsCount) {
         String sql = "select row_number() over(order by appries_appries.id desc) as rows, appries_appries.id,appries_appries.ext1,appries_appries.ext2,appries_appries.remark, " +
                 "appries_appries.videofile videofile,appries_appries.businessTime businessTime, appries_appries.businessMin businessMin,appries_appries.businessSec businessSec," +
                 "appries_employee.CardNum ,appries_employee.Name as 'employeeName',appries_keytype.name as 'keyName', appries_appries.JieshouTime ,appries_dept.name as 'deptName', " +
@@ -225,10 +234,19 @@ public class QueryService extends SuperDao
                 "from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id " +
                 "and appries_appries.keyno=appries_keytype.keyNo and appries_appries.ext2 =" + tel + " " + "and appries_appries.JieshouTime  >='" + startDate + "' " +
                 "and appries_appries.JieshouTime  <='" + endDate + "' " + "and appries_appries.DeptId in(" + deptIds + ") ";
+        if (!allKeyInUse.equals("")) {
+            sql = String.valueOf(sql) + " and appries_appries.keyno in (" + allKeyInUse + ")  ";
+        }
+        if(null!=rowsCount && rowsCount.length==1){
+            String countSql = "select count(*) from ("+sql+") t";
+            rowsCount[0] = this.getJdbcTemplate().queryForObject(countSql, null, Integer.class);
+        }
+
         sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
+
         sql = "select a.*,b.name as fatherName  from  (" + sql + ") as a left join appries_dept b  on  a.fatherId=b.id ORDER BY a.JieshouTime DESC";
-        System.out.println("queryResult-sql" + sql);
         try {
+            logger.info(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
@@ -246,24 +264,20 @@ public class QueryService extends SuperDao
         }
     }
 
-    public int countQueryResultIdCard(final String deptIds, final String tel, final String startDate, final String endDate) {
-        final String sql = "select   count(*)from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id and appries_appries.keyno=appries_keytype.keyNo and appries_appries.ext2 =" + tel + " " + "and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' " + "and appries_appries.DeptId  in (" + deptIds + ")";
-        try {
-            return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
-        }
-        catch (Exception e) {
-            return 0;
-        }
+    public List QueryResultChat(final String deptIds, final Integer result, final String startDate, final String endDate, String allKeyInUse){
+        return QueryResultChat(deptIds, result==null?"":String.valueOf(result), startDate, endDate, allKeyInUse);
     }
-    public List QueryResultChat(final Integer result, final String startDate, final String endDate){
-        return QueryResultChat(result==null?"":String.valueOf(result), startDate, endDate);
-    }
-    public List QueryResultChat(final String result, final String startDate, final String endDate) {
-        String sql = "select  appries_keytype.name ,count(*) as num from appries_appries ,appries_keytype ";
-        sql += "where appries_appries.keyno=appries_keytype.keyNo " ;
+
+    public List QueryResultChat(final String deptIds, final String result, final String startDate, final String endDate, String allKeyInUse) {
+        String sql = "select ISNULL(appries_keytype.name,'未评价') name ,count(*) as num from appries_appries left join appries_keytype ";
+        sql += "on appries_appries.keyno=appries_keytype.keyNo where 1=1 " ;
         if(null!=result && !"".equals(result))
             sql += "and appries_appries.keyno =" + result + " ";
-        sql += "and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "' " + " group by  appries_keytype.name";
+        if (!StringUtils.isBlank(allKeyInUse))
+            sql += "and appries_appries.keyno in("+allKeyInUse+") ";
+        if(null!=deptIds && !"".equals(deptIds))
+            sql += "and appries_appries.deptid in(" + deptIds + ") ";
+        sql += "and appries_appries.JieshouTime>='" + startDate + "' " + "and appries_appries.JieshouTime<='" + endDate + "' " + " group by appries_keytype.name";
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -325,8 +339,15 @@ public class QueryService extends SuperDao
         }
     }
 
-    public List queryZh2(final Integer employeeId, final String keys, final String deptIds, final String startDate, final String endDate, final Integer start, final Integer num) {
-        String sql = "select row_number() over(order by appries_appries.JieshouTime desc) as rows, appries_appries.id , appries_appries.videofile videofile,appries_appries.imgfile imgfile,appries_appries.businessTime businessTime,appries_appries.businessMin businessMin,appries_appries.businessSec businessSec, appries_employee.CardNum ,appries_employee.Name as 'employeeName',appries_keytype.name as 'keyName', appries_appries.ext1,appries_appries.ext2,appries_appries.remark,appries_appries.JieshouTime ,appries_dept.name as 'deptName', appries_appries.serviceDate,appries_appries.appriesTime,appries_appries.CustorTime ,appries_dept.dept_camera_url ,appries_dept.fatherId from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id and appries_appries.keyno=appries_keytype.keyNo ";
+    public List queryZh2(final Integer employeeId, final String keys, final String deptIds, final String startDate, final String endDate, final Integer start,
+                         final Integer num, int[] rowscount) {
+        String sql = "select row_number() over(order by appries_appries.JieshouTime desc) as rows, appries_appries.id , appries_appries.videofile videofile," +
+                "appries_appries.imgfile imgfile,appries_appries.businessTime businessTime,appries_appries.businessMin businessMin,appries_appries.businessSec businessSec, " +
+                "appries_employee.CardNum ,appries_employee.Name as 'employeeName',ISNULL(appries_keytype.name,'未评价') as 'keyName', appries_appries.ext1,appries_appries.ext2," +
+                "appries_appries.remark,appries_appries.JieshouTime ,appries_dept.name as 'deptName', appries_appries.serviceDate,appries_appries.appriesTime," +
+                "appries_appries.CustorTime ,appries_dept.dept_camera_url ,appries_dept.fatherId,appries_appries.ywlsh " +
+                "from appries_appries left join appries_keytype on appries_appries.keyno=appries_keytype.keyNo,appries_employee,appries_dept " +
+                "where appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id ";
         if (employeeId!=null && !employeeId.equals(new Integer(0))) {
             sql = String.valueOf(sql) + " and appries_appries.EmployeeId=" + employeeId + " ";
         }
@@ -342,11 +363,21 @@ public class QueryService extends SuperDao
         if (endDate!=null && !endDate.equals("")) {
             sql = String.valueOf(sql) + " and appries_appries.JieshouTime  <='" + endDate + "' ";
         }
+        if(null!=rowscount && rowscount.length==1){
+            String countSql = "select count(*) from ("+sql+") t";
+            rowscount[0] = this.getJdbcTemplate().queryForObject(countSql, null, Integer.class);
+        }
         if (start != null && num != null) {
             sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
         }
-        sql = " select a.*,b.name as fatherName  from  (" + sql + ") as a left join appries_dept b on  a.fatherId=b.id ORDER BY a.JieshouTime DESC ";
+        sql = " select a.*,b.name as fatherName,c.*,d.countername as hjcountername,dbo.FN_SecondToString(waittime) as waittimename," +
+                "dbo.FN_SecondToString(servicetime) as servicetimename " +
+                "from  (" + sql + ") as a left join appries_dept b on a.fatherId=b.id " +
+                "left join v_queuedetail c on a.ywlsh=c.ywlsh " +
+                "left join sys_queuecounter d on d.counterno=c.hjcounter " +
+                "ORDER BY a.JieshouTime DESC";
         try {
+            logger.info(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
@@ -380,7 +411,7 @@ public class QueryService extends SuperDao
     }
 
     public int countQueryZh2(final Integer employeeId, final String keys, final String deptIds, final String startDate, final String endDate) {
-        String sql = "select   count(*)from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id and appries_appries.keyno=appries_keytype.keyNo ";
+        String sql = "select   count(*) from appries_appries,appries_employee,appries_dept,appries_keytype where  appries_appries.EmployeeId= appries_employee.Id and appries_appries.DeptId=appries_dept.id and appries_appries.keyno=appries_keytype.keyNo ";
         if (employeeId!= null && !employeeId.equals(new Integer(0))) {
             sql = String.valueOf(sql) + " and appries_appries.EmployeeId=" + employeeId + " ";
         }
@@ -432,7 +463,7 @@ public class QueryService extends SuperDao
     }
 
     public List QueryZhChat2(final Integer employeeId, final String keys, final String deptIds, final String startDate, final String endDate) {
-        String sql = "select  appries_keytype.name ,count(*) as num from appries_appries ,appries_keytype where   appries_appries.keyno=appries_keytype.keyNo ";
+        String sql = "select ISNULL(appries_keytype.name, '未评价') name,count(*) as num from appries_appries left join appries_keytype on appries_appries.keyno=appries_keytype.keyNo where 1=1 ";
         if (null!=employeeId && !employeeId.equals(new Integer(0))) {
             sql = String.valueOf(sql) + " and appries_appries.EmployeeId=" + employeeId + " ";
         }
@@ -443,12 +474,12 @@ public class QueryService extends SuperDao
             sql = String.valueOf(sql) + " and appries_appries.DeptId in (" + deptIds + ")  ";
         }
         if (!startDate.equals("")) {
-            sql = String.valueOf(sql) + " and appries_appries.JieshouTime  >='" + startDate + "' ";
+            sql = String.valueOf(sql) + " and appries_appries.JieshouTime>='" + startDate + "' ";
         }
         if (null!= endDate && !endDate.equals("")) {
-            sql = String.valueOf(sql) + " and appries_appries.JieshouTime  <='" + endDate + "' ";
+            sql = String.valueOf(sql) + " and appries_appries.JieshouTime<='" + endDate + "' ";
         }
-        sql = String.valueOf(sql) + "  and appries_keytype.yes=1 group by  appries_keytype.name";
+        sql = String.valueOf(sql) + " group by  appries_keytype.name";
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -543,25 +574,13 @@ public class QueryService extends SuperDao
         }
     }
 
-    public List queryDept2(final String deptids, final String startDate, final String endDate, final int start, final int num, final String keys) {
-        /*String sql = "select temp_appries.id, appries_employee.CardNum ,CONCAT(appries_employee.Name,'') as 'employeeName',CONCAT(appries_keytype.name,'') as 'keyName', temp_appries.JieshouTime ,temp_appries.ext1,temp_appries.ext2,temp_appries.remark,CONCAT(appries_dept.name,'') as 'deptName', temp_appries.serviceDate,temp_appries.appriesTime,temp_appries.CustorTime,temp_appries.videofile,temp_appries.businessMin,temp_appries.businessSec,appries_dept.dept_camera_url ,appries_dept.fatherId from  (select appries_appries.id, appries_appries.DeptId,appries_appries.EmployeeId, appries_appries.JieshouTime,appries_appries.ext1,appries_appries.ext2,appries_appries.remark,appries_appries.keyno, appries_appries.serviceDate,appries_appries.appriesTime,appries_appries.CustorTime,appries_appries.videofile,appries_appries.businessMin,appries_appries.businessSec  from appries_appries where appries_appries.DeptId in (" + deptids + ") and keyno in (" + keys + ") and appries_appries.JieshouTime  >='" + startDate + "' " + "and appries_appries.JieshouTime  <='" + endDate + "'  order by appries_appries.id desc  limit  " + start + "," + num + " )as temp_appries, appries_employee,appries_dept,appries_keytype " + "where  temp_appries.EmployeeId= appries_employee.Id " + "and temp_appries.DeptId=appries_dept.id " + "and temp_appries.keyno=appries_keytype.keyNo ";
-        sql = " select a.*,CONCAT(b.name,'') as fatherName  from  (" + sql + ")   as a left join appries_dept b  on  a.fatherId=b.id    ORDER BY a.JieshouTime DESC";
-        System.out.println("queryDept2-sql=" + sql);
-        try {
-            return this.getJdbcTemplate().queryForList(sql);
-        }
-        catch (Exception e) {
-            return null;
-        }*/
+    public List queryDept2(final String deptids, final String startDate, final String endDate, final int start, final int num, final String keys, int[] rowcounts) {
         String sql = "select row_number() over(order by temp_appries.JieshouTime desc) as rows, temp_appries.id, appries_employee.CardNum ," +
-                "appries_employee.Name as 'employeeName',appries_keytype.name as 'keyName', " +
+                "appries_employee.Name as 'employeeName',ISNULL(appries_keytype.name,'未评价') as 'keyName', " +
                 "temp_appries.JieshouTime ,temp_appries.ext1,temp_appries.ext2,temp_appries.remark,appries_dept.name as 'deptName', " +
-                "temp_appries.serviceDate,temp_appries.appriesTime,temp_appries.CustorTime,temp_appries.videofile,temp_appries.businessMin," +
+                "temp_appries.serviceDate,temp_appries.appriesTime,temp_appries.CustorTime,temp_appries.videofile,temp_appries.businessMin,temp_appries.ywlsh," +
                 "temp_appries.businessSec, temp_appries.imgfile, appries_dept.dept_camera_url ,appries_dept.fatherId " +
-                "from (select appries_appries.id, appries_appries.DeptId,appries_appries.EmployeeId, " +
-                "appries_appries.JieshouTime,appries_appries.ext1,appries_appries.ext2,appries_appries.remark,appries_appries.keyno, " +
-                "appries_appries.serviceDate,appries_appries.appriesTime,appries_appries.CustorTime,appries_appries.videofile," +
-                "appries_appries.businessMin,appries_appries.businessSec,appries_appries.imgfile from appries_appries where 1=1 ";
+                "from (select * from appries_appries where 1=1 ";
         if(null!=deptids && deptids !="")
             sql += "and appries_appries.DeptId in (" + deptids + ") ";
         if(null!=keys && keys !="")
@@ -570,12 +589,190 @@ public class QueryService extends SuperDao
             sql += "and appries_appries.JieshouTime  >='" + startDate + "' ";
         if(null!=endDate && endDate !="")
             sql += "and appries_appries.JieshouTime  <='" + endDate + "'";
-        sql += ")as temp_appries, appries_employee,appries_dept,appries_keytype where temp_appries.EmployeeId= appries_employee.Id "
-                + "and temp_appries.DeptId=appries_dept.id " + "and temp_appries.keyno=appries_keytype.keyNo ";
+        sql += ")as temp_appries left join appries_keytype on temp_appries.keyno=appries_keytype.keyNo, appries_employee,appries_dept where temp_appries.EmployeeId= appries_employee.Id "
+                + "and temp_appries.DeptId=appries_dept.id ";
+        if (rowcounts!=null && rowcounts.length==1){
+            String countsql = "select count(*) from(" + sql + ") t";
+            rowcounts[0] = this.getJdbcTemplate().queryForObject(countsql,null, java.lang.Integer.class);
+        }
+
         if(num>0)
             sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
-        sql = " select a.*,b.name as fatherName  from  (" + sql + ")   as a left join appries_dept b  on  a.fatherId=b.id ORDER BY a.JieshouTime DESC";
+        sql = " select a.*,b.name as fatherName,c.*,d.countername as hjcountername,dbo.FN_SecondToString(waittime) as waittimename," +
+                "dbo.FN_SecondToString(servicetime) as servicetimename " +
+                "from  (" + sql + ") as a left join appries_dept b on a.fatherId=b.id " +
+                "left join v_queuedetail c on a.ywlsh=c.ywlsh " +
+                "left join sys_queuecounter d on d.counterno=c.hjcounter " +
+                "ORDER BY a.JieshouTime DESC";
         try {
+            logger.info(sql);
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List queryDept2Ex(final String deptids,String bizname, Integer employeeid,Integer keyno, final String startDate, final String endDate, final int start, final int num, final String keys, int[] rowcounts) {
+        String sql = "select row_number() over(order by tickettime desc) as rows,* from v_queuedetail where 1=1 ";
+        if(null!=deptids && deptids !="")
+            sql += "and deptid in (" + deptids + ") ";
+        if(null!=employeeid && employeeid!=0)
+            sql += "and staffno=(select cardnum from appries_employee where id=" + employeeid + ") ";
+        if(null!=keyno && keyno!= -1)
+            sql += "and appriseresult=" + keyno + " ";
+        //if(null!=keys && keys !="")
+        //    sql +=  "and appriseresult in (" + keys + ") ";
+        if(StringUtils.isNotBlank(bizname))
+            sql += "and bizname like '%"+bizname+"%' ";
+        if(null!=startDate && startDate !="")
+            sql += "and tickettime>='" + startDate + "' ";
+        if(null!=endDate && endDate !="")
+            sql += "and tickettime<='" + endDate + "'";
+        if (rowcounts!=null && rowcounts.length==1){
+            String countsql = "select count(*) from(" + sql + ") t";
+            rowcounts[0] = this.getJdbcTemplate().queryForObject(countsql,null, java.lang.Integer.class);
+        }
+        if(num>0)
+            sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
+        sql = "select t1.*,dbo.FN_SecondToString(waittime) as waittimename,dbo.FN_SecondToString(servicetime) as servicetimename,t3.countername as hjcountername,t2.videofile,t2.imgfile " +
+                "from("+sql+") t1 left join appries_appries t2 on t1.ywlsh=t2.ywlsh " +
+                "left join sys_queuecounter t3 on t1.hjcounter=t3.counterno order by tickettime desc";
+        try {
+            logger.info(sql);
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    /*
+    最近n条评价
+     */
+    public List getLstAppries(int n, String deptid) {
+        String sql = "select top "+n+" t2.name appriesname,t1.apprisetime,t3.name countername, t1.staffname from queue_detail t1 join appries_keytype t2 on t1.appriseresult=t2.keyno " +
+                "join appries_dept t3 on t3.id=t1.hjcounterdeptid " +
+                "where apprisetime is not null and appriseresult!=-1 ";
+        if (StringUtils.isNotBlank(deptid)){
+            sql += " and deptid in("+deptid+")";
+        }
+        sql += "order by apprisetime desc";
+        try {
+            logger.info(sql);
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    /*
+    当前人流量-当天业务总量，人流量（取号且未办结）
+     */
+    public List getQueueTotal(String deptid) {
+        String sql = "select ISNULL(SUM(ticketcount),0) ticketcount,ISNULL(SUM(servicecount),0) servicecount,ISNULL(SUM(cancelcount), 0) cancelcount," +
+                "ISNULL(SUM(totalkeymy),0) totalkeymy,ISNULL(SUM(totalkeybmy),0) totalkeybmy," +
+                "convert(varchar,CONVERT(decimal(18, 2),SUM(totalkeymy)*100.0/SUM(servicecount))) myl,FlOOR(SUM(totalmyd)*10.0/SUM(servicecount)) myd," +
+                "dbo.FN_SecondToString(sum(totalpausetime)) pausetime," +
+                "dbo.FN_SecondToString(sum(totalwaittime)/nullif(sum(servicecount),0)) as waittimeavg, " +
+                "dbo.FN_SecondToString(sum(totalservicetime)/nullif(sum(servicecount),0)) as servicetimeavg " +
+                "from rpt_deptdata where DateDiff(dd,servicedate,getdate())=0";
+        if (StringUtils.isNotBlank(deptid)){
+            sql += " and deptid in("+deptid+")";
+        }
+        try {
+            logger.debug(sql);
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    /*
+    当前人流量-当天业务总量，人流量（取号且未办结）
+     */
+    public List getQueueDeptAnysle(String deptid) {
+        String sql = "select deptid,deptname,servicedate,SUM(totalservicetime)/SUM(servicecount) totalservicetime," +
+                "SUM(totalservicetime) totalservicetime2,SUM(totalwaittime)/SUM(servicecount) totalwaittime,SUM(totalwaittime) totalwaittime2," +
+                "ISNULL(SUM(totalpausetime), 0) totalpausetime,sum(servicecount) servicecount,sum(ticketcount) ticketcount,SUM(totalkeybmy) totalkeybmy,SUM(totalwait) totalwait " +
+                "from rpt_deptdata t1 where DateDiff(dd,servicedate,getdate())=0 ";
+        if (StringUtils.isNotBlank(deptid)){
+            sql += " and deptid in("+deptid+")";
+        }
+         sql += " group by deptid,deptname,servicedate";
+        try {
+            logger.debug(sql);
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List getQueueEmployeeAnysle(String deptid) {
+        String sql = "select eno,ename,deptname,servicedate,SUM(totalservicetime)/SUM(servicecount) totalservicetime," +
+                "dbo.FN_SecondToString(sum(totalservicetime)/nullif(sum(servicecount),0)) as totalservicetimename, " +
+                "SUM(totalservicetime) totalservicetime2,SUM(totalwaittime)/SUM(servicecount) totalwaittime,SUM(totalwaittime) totalwaittime2," +
+                "ISNULL(SUM(totalpausetime), 0) totalpausetime,sum(servicecount) servicecount,sum(ticketcount) ticketcount,SUM(totalkeybmy) totalkeybmy " +
+                "from rpt_employeedata t1 where DateDiff(dd,servicedate,getdate())=0 ";
+        if (StringUtils.isNotBlank(deptid)){
+            sql += " and deptid in("+deptid+")";
+        }
+        sql += " group by eno,ename,deptname,servicedate";
+        try {
+            logger.debug(sql);
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    /*
+    前5条评价不满意的记录
+     */
+    public List getEmployeeWarn(String deptid) {
+        String sql = "select eno,ename,deptname," +
+                "SUM(servicecount) servicecount," +
+                "CONVERT(decimal(18, 2),SUM(servicecount)*1.0/COUNT(*)) servicecountavg," +
+                "SUM(totalkeybmy) totalkeybmy," +
+                "SUM(totalmyd) totalmyd from rpt_employeedata where 1=1 " ;
+        if (StringUtils.isNotBlank(deptid)){
+            sql += " and deptid in("+deptid+")";
+        }
+        sql += "group by eno,ename,deptname";
+        try {
+            logger.debug(sql);
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+    /*
+    查询超时记录
+     */
+    public List getSerialTimeout() {
+        String sql = "select top 5 t1.*,t2.name countername, dbo.FN_SecondToString(t1.servicetime) servicetimename " +
+                "from queue_detail t1 left join appries_dept t2 on t1.hjcounterdeptid=t2.id where serviceout=1 order by tickettime desc";
+        try {
+            logger.info(sql);
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    /*
+       查询差评预警
+        */
+    public List getHallEval6Warn() {
+        String sql = "select top 10 * from warn_ontimedetail t1 join queue_detail t2 on t1.ywlsh=t2.ywlsh where t1.type=3 order by t1.ctime desc";
+        try {
+            logger.info(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {

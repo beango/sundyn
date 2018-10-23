@@ -1,10 +1,13 @@
 package com.sundyn.action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.sundyn.cache.Cache1;
+import com.sundyn.cache.CacheManager1;
 import com.sundyn.service.DeptService;
 import com.sundyn.service.PowerService;
 import com.sundyn.util.ConfigHelper;
 import com.sundyn.util.MyRequest;
+import com.xuan.xutils.cache.Cache;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -17,7 +20,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -28,15 +33,29 @@ import static org.apache.struts2.ServletActionContext.getServletContext;
 
 public class MainAction extends ActionSupport {
     private static Logger logger = Logger.getLogger("ManagerService");
+    @Resource
     private DeptService deptService;
+    @Resource
+    private com.xuan.xutils.cache.CacheManager dCacheManager;
     private PowerService powerService;
 
-    private HttpServletRequest request;
+    protected HttpServletRequest request;
     public MyRequest req;
     private Map UserManager = null;
-    private String UserName = null;
+    protected String UserName = null;
     protected String UserDeptIds = null;
-    protected int pageSize = 20;
+    protected String[] POWERS = null;
+    protected String DEPTIDS = null;
+    protected int pageSize = 20, pageindex=1;
+
+    protected Integer getUserDept(){
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        HttpSession session = request.getSession();
+        Map map = (Map) session.getAttribute("manager");
+        if (map == null)
+            return null;
+        return Integer.valueOf(map.get("deptid").toString());
+    }
 
     public String getUserDeptIds() {
         final Integer groupid = Integer.valueOf(UserManager.get("userGroupId").toString());
@@ -51,16 +70,51 @@ public class MainAction extends ActionSupport {
     }
 
     public MainAction(){
-        request = ServletActionContext.getRequest();
-        this.req = new MyRequest(this.request);
-        UserManager = (Map)request.getSession().getAttribute("manager");
-        if(null!=UserManager)
-            UserName = (String) UserManager.get("name");
-        try{
-            pageSize = Integer.valueOf(ConfigHelper.getValue("PageSizeDef"));
+        if (request == null){
+            request = ServletActionContext.getRequest();
+            this.req = new MyRequest(this.request);
+            ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
+            deptService = (DeptService) ctx.getBean("deptService");
         }
-        catch (Exception e){
-            e.printStackTrace();
+
+        if (UserManager == null){
+            UserManager = (Map)request.getSession().getAttribute("manager");
+            if(null!=UserManager){
+                UserName = (String) UserManager.get("name");
+                if (UserManager.get("POWERS") != null){
+                    POWERS = UserManager.get("POWERS").toString().split("\\|");
+                }
+            }
+            try{
+                pageSize = Integer.valueOf(ConfigHelper.getValue("PageSizeDef"));
+                if (req.getInt("pageSize")!=0){
+                    pageSize = req.getInt("pageSize");
+                }
+                pageindex = req.getInt("currentPage", 1);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        if (DEPTIDS == null && UserManager!=null){
+            String Key = CacheManager1.MainAction_LOGINUSER_DEPTIDS + "_" + UserManager.get("name").toString();
+
+            Cache1 data = CacheManager1.getCacheInfo(Key);
+            if(data!=null){
+                DEPTIDS = data.getValue().toString();
+            }
+            else{
+                try{
+                    DEPTIDS = deptService.findChildALLStr1234(null);
+                    System.out.println("获取数据库：" + DEPTIDS);
+                    Cache1 c = new Cache1();
+                    c.setValue(DEPTIDS);
+                    CacheManager1.AddKey(Key);
+                    CacheManager1.putCache(Key, c);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -110,6 +164,7 @@ public class MainAction extends ActionSupport {
     }
 
     public void init(){
+        System.out.println("ACTION++++++++++++++++++++++++++++++initinit");
         ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
         powerService = (PowerService)ctx.getBean("powerService");
         deptService = (DeptService)ctx.getBean("deptService");
@@ -127,7 +182,7 @@ public class MainAction extends ActionSupport {
     public enum ENUM_DEPTTYPE{
         DEPT("部门",2),
         DATING("大厅",1),
-        EMPLOYEE("人员",0);
+        EMPLOYEE("窗口",0);
         // 成员变量
         private String name;
         private int val;
@@ -157,6 +212,16 @@ public class MainAction extends ActionSupport {
         }
         public void setIndex(int index) {
             this.val = index;
+        }
+    }
+
+    protected void ClearCache_DEPT(){
+        String MANAGERKEY = "MANAGER-" + this.UserName;
+        Cache cache = dCacheManager.getCache(MANAGERKEY);
+        if(cache!=null){
+            //cache = this.initManagerCache();
+            System.out.println("清除缓存" + MANAGERKEY);
+            cache.remove("KEY-MANAGER-DEPTIDS");
         }
     }
 }

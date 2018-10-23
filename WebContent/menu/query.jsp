@@ -8,6 +8,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+    <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
     <link rel="stylesheet" href="lib/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
     <title><s:text name='sundyn.title'/></title>
     <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
@@ -534,7 +535,7 @@
         zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes = zTree.getSelectedNodes();
         if (nodes.length>0){
-            dia.iframe("menuEdit.action?parentid=" + nodes[0].id, {title: '添加', resize: false, h: "300px"});
+            dia.iframe("menuEdit.action?parentid=" + nodes[0].id, {title: '添加', resize: false, h: "600px"});
         }
         return true;
     }
@@ -545,7 +546,7 @@
         zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes = zTree.getSelectedNodes();
         if (nodes.length>0){
-            dia.iframe("menuEdit.action?id=" + nodes[0].id, {title: '修改', resize: false, h: "300px"});
+            dia.iframe("menuEdit.action?id=" + nodes[0].id, {title: '修改', resize: false, h: "600px"});
         }
         return true;
     }
@@ -632,6 +633,14 @@
         background: #ddd;
     }
 </style>
+    <div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <c:forEach items="${navbar_menuname}" var="menu">
+        <li><a href="#">${menu.name}</a></li>
+    </c:forEach>
+    </ul>
+    </div>
 <div id="rMenu" style="width: 120px;height: 90px;font-size: 12px;" >
     <ul>
         <li id="m_add" onclick="addMenu();">

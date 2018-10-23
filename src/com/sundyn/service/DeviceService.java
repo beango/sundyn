@@ -28,7 +28,7 @@ public class DeviceService extends SuperDao
         String sql = "";
         sql = "select row_number() over(order by id desc) as rows, *,(select count(*) from appries_device where batchid=appries_devicebatch.id) devices from appries_devicebatch";
         sql = "select * from ("+sql+") t2 where t2.rows>" + startrow + " and t2.rows<=" + (startrow+pageSize);
-        String totalsql = "select max(rows) c from ("+sql+") t2";
+        String totalsql = "select count(*) c from ("+sql+") t2";
         total[0] =this.getJdbcTemplate().queryForObject(totalsql,null, java.lang.Integer.class);
 
         final List advices = new ArrayList();
@@ -46,11 +46,9 @@ public class DeviceService extends SuperDao
         final Object[] arg = { batchid, batchname, batchdate, batchid_deviceclass_1,batchid_deviceclass_2,batchid_year,batchid_month,batchid_no};
         try {
             this.getJdbcTemplate().update(sql1, arg);
-
             return true;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -139,6 +137,8 @@ public class DeviceService extends SuperDao
             this.getJdbcTemplate().update(sql, arg);
         }
         catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e);
         }
     }
 
@@ -155,7 +155,7 @@ public class DeviceService extends SuperDao
         if (mac!=null && !mac.equals(""))
             sql += "and t1.mac like '%" + mac+"%' ";
 
-        String totalsql = "select max(rows) c from ("+sql+") t2";
+        String totalsql = "select count(*) c from ("+sql+") t2";
         total[0] =this.getJdbcTemplate().queryForObject(totalsql, null, Integer.class);
 
         sql = "select * from ("+sql+") t2 where t2.rows>" + startrow + " and t2.rows<=" + (startrow+pageSize);

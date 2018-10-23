@@ -3,6 +3,10 @@
 <mapper namespace="com.sundyn.dao.AppriesMenuDao">
 
     <select id="selectById" resultType="AppriesMenu">
-        SELECT *,(select menuName from appries_menu t where t.id=appries_menu.parentId) parentName FROM appries_menu WHERE id=#{id}
+        SELECT *,(select menuName from appries_menu t where t.id=appries_menu.parentId) parentName,(select id from appries_func t where t.funcCode=appries_menu.funcCode) funcId FROM appries_menu WHERE id=#{id}
     </select>
+
+    <update id="updateAllFuncCode">
+        update appries_menu set funccode=#{newCold} where funcCode=#{oldCold}
+    </update>
 </mapper>

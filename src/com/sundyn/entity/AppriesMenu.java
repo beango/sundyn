@@ -62,6 +62,26 @@ public class AppriesMenu extends Model<AppriesMenu> {
     @TableField(exist = false)
     private String parentName;
 
+    public String getFuncCode() {
+        return funcCode;
+    }
+
+    public void setFuncCode(String funcCode) {
+        this.funcCode = funcCode;
+    }
+
+    public String getFuncId() {
+        return funcId;
+    }
+
+    public void setFuncId(String funcId) {
+        this.funcId = funcId;
+    }
+
+    @TableField(exist = false)
+    private String funcId;
+    @TableField("funcCode")
+    private String funcCode;
     public String getNav() {
         return nav;
     }
@@ -125,6 +145,8 @@ public class AppriesMenu extends Model<AppriesMenu> {
     public static final String ISSHOW = "isshow";
 
     public static final String MENUORDER = "menuorder";
+
+    public static final String FUNCCODE = "funcCode";
 
     @Override
     protected Serializable pkVal() {

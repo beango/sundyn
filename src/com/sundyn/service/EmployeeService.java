@@ -140,7 +140,7 @@ public class EmployeeService extends SuperDao
     }
 
     public List findEmployeeByDeptid(final Integer deptId, final int start, final int num) throws SQLException {
-        String sql = "select row_number() over(order by id desc) as rows, Id, Name,Sex,CardNum,Phone from appries_employee where ext1 is null and  deptid in (" + deptId + ")";
+        String sql = "select row_number() over(order by id desc) as rows, Id, Name,Sex,CardNum,Phone,ext2 from appries_employee where ext1 is null and  deptid in (" + deptId + ")";
         sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
         try {
             return this.getJdbcTemplate().queryForList(sql);
@@ -151,15 +151,33 @@ public class EmployeeService extends SuperDao
         }
     }
 
-    public List findEmployeeByDeptId(final Integer deptId) throws SQLException {
+    public List findEmployeeByDeptId(final Integer deptId) {
         final String sql = "select *  from appries_employee where deptid in (" + deptId + ") order by  id ,job_desc  ";
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
+    }
+
+    public String findEmployeeByDeptId(final String deptId) {
+        final String sql = "select *  from appries_employee where deptid in (" + deptId + ") order by  id ,job_desc  ";
+        try {
+            List list = this.getJdbcTemplate().queryForList(sql);
+            if (list!=null && list.size()>0){
+                String s = "";
+                for (int i=0; i<list.size();i++){
+                    s += ((Map)list.get(i)).get("id").toString() + ",";
+                }
+                if (s.length()>0)
+                    return s.substring(0, s.length()-1);
+            }
+        }
+        catch (Exception e) {
+            return null;
+        }
+        return null;
     }
 
     public int countEmployeeByDeptid(final Integer deptId) throws SQLException {
@@ -334,7 +352,7 @@ public class EmployeeService extends SuperDao
     }
 
     public Map findByCardnum(final String cardNum) {
-        final String sql = "select top 1 id, Name,CardNum from appries_employee where  CardNum = '" + cardNum + "'";
+        final String sql = "select top 1 id, Name,CardNum from appries_employee where CardNum = '" + cardNum + "'";
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }

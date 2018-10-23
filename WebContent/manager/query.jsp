@@ -20,9 +20,17 @@
 
 </head>
 <body>
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <c:forEach items="${navbar_menuname}" var="menu">
+            <li><a href="#">${menu.name}</a></li>
+        </c:forEach>
+    </ul>
+</div>
     <div id="layui-main">
 			<input type="hidden" name="managerId" id="managerId" value="${managerId}" />
-			<div style="width:99%; height:100%;" class="">
+			<div style="width:99%; height:100%;">
 			    <div>
 				    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-color:#FFFFFF;" align="">
 				       <tr>

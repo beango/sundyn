@@ -1,24 +1,25 @@
 <%@page pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div><img src="<s:text name='sundyn.dept.pic.deptManage' />" /></div>
-<div class="center_04_right_01 kuang" align="center">
-	<table width="100%" height="101" border="0" cellpadding="0" cellspacing="0" style="border-color:#FFFFFF;">
+
+<div class="center_04_right_01 kuang" style="width:500px;" align="center">
+	<table width="100%" height="101" border="0" cellpadding="0" cellspacing="0" style="border:0;">
 	  <tr>
 	    <td width="32%" align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.column.datingName" /><s:text name="sundyn.colon" /> </td>
-	    <td width="40%" align="left" style="border-color:#FFFFFF;">${dept.name}</td>
+	    <td align="left">${dept.name}</td>
 	  </tr>
 	  <tr>
-	    <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.column.deviceInfo" /><s:text name="sundyn.colon" /></td>
-	    <td align="left" style="border-color:#FFFFFF;">
+	    <td align="right"><s:text name="sundyn.column.deviceInfo" /><s:text name="sundyn.colon" /></td>
+	    <td align="left">
 		    ${dept.reMark}
 	    </td>
 	  </tr>
  	  <tr>
-	    <td align="center" style="border-color:#FFFFFF;" colspan="2" >
-	    <div style="margin: 0px auto;width: 260px;"><div class="button left" onclick="deptEditDialog('<s:text name="sundyn.dept.modifyDating" />')"  ><s:text name="sundyn.dept.modifyDating" /></div>
-	    <div class="button left" onclick="deptAddDialog(0,'<%=request.getParameter("deptId")%>','<s:text name="sundyn.dept.addWindow" />')" style="margin-left: 5px;" ><s:text name="sundyn.dept.addWindow" /></div>
-	    <div class="button left" onclick="del()" style="margin-left: 5px;"><s:text name="sundyn.del" /></div></div>
+	    <td align="center" style="border-color:#FFFFFF;" colspan="2">
+	    <div class="button left" onclick="deptEditDialog('<s:text name="sundyn.dept.modifyDating" />','${dept.fatherId}')"><s:text name="sundyn.dept.modifyDating" /></div>
+        <div style="margin-left: 5px;" class="button left" onclick="deptCfgDialog('大厅参数配置','${dept.name}')">参数配置</div>
+	    <div style="margin-left: 5px;" class="button left" onclick="deptAddDialog(0,'<%=request.getParameter("deptId")%>','<s:text name="sundyn.dept.addWindow" />')" ><s:text name="sundyn.dept.addWindow" /></div>
+	    <div style="margin-left: 5px;" class="button left" onclick="del()"><s:text name="sundyn.del" /></div>
 	    </td>
 	  </tr>
 	</table>

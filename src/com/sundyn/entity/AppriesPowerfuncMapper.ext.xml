@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.AppriesPowerfuncDao">
+
+    <select id="selectListEx" resultType="AppriesPowerfunc">
+        SELECT t1.*,t2.id as powerid, t3.id as funcid FROM appries_powerfunc t1 join appries_power t2 on t1.powername=t2.name join appries_func t3 on t3.funccode=t1.funccode
+        <where>
+        ${ew.sqlSegment}
+    </where>
+    </select>
+
+    <update id="updateAllFunc">
+        update appries_powerfunc set funccode=#{newCold} where funcCode=#{oldCold}
+    </update>
+</mapper>

@@ -22,13 +22,13 @@
             <div class="layui-upload">
                 <input type="hidden" name="imgName" id="imgName" value="${m.picture }" />
                 <button type="button" class="layui-btn" id="test1">选择图片</button>
-                <div class="layui-upload-list">
+                <%--<div class="layui-upload-list">
                     <img style="width: 140px;height: 147px;" class="layui-upload-img" name="img123" id="img123" value="${m.picture }">
                     <p id="demoText"></p>
-                </div>
+                </div>--%>
             </div>
         </td></tr>
-        <tr>
+        <%--<tr>
             <td width="20%" align="right">
                 <c:if test="${employeeJobNum == 'true'}">
                     <s:text name="sundyn.column.employeeJobNum" />
@@ -39,6 +39,15 @@
             </td>
             <td align="left">
                 <input type="text" name="ext2" id="ext2" class="input_comm" value="${m.ext2}"  onblur="employeeExsits()" /><span style="color: red; font-size: 12px;" id="tip"></span>
+            </td>
+        </tr>--%>
+        <tr>
+            <td style="border-color: #e9f5fd;" align="right" class="ff">
+                工号<s:text name="sundyn.colon" />
+            </td>
+            <td style="border-color: #e9f5fd;" align="left">
+                <input type="text" name="CardNum" id="CardNum"  class="input_comm"  value="${m.CardNum}" /><font color="#FF0000">*</font>
+                <div style="color:red; text-align:left;"><s:text name="sundyn.employee.alertCardNum"></s:text> </div>
             </td>
         </tr>
         <tr>
@@ -69,15 +78,6 @@
                 <input type="radio" name="Sex" id="Sex" value="0"
                        <c:if test="${m.Sex=='0'}">checked="checked" </c:if>>
                 <s:text name="sundyn.female" />
-            </td>
-        </tr>
-        <tr>
-            <td style="border-color: #e9f5fd;" align="right" class="ff">
-                <s:text name="sundyn.column.employeeCardNum" /><s:text name="sundyn.colon" />
-            </td>
-            <td style="border-color: #e9f5fd;" align="left">
-                <input type="text" name="CardNum" id="CardNum"  class="input_comm"  value="${m.CardNum}" /><font color="#FF0000">*</font>
-                <div style="color:red; text-align:left;"><s:text name="sundyn.employee.alertCardNum"></s:text> </div>
             </td>
         </tr>
         <tr>

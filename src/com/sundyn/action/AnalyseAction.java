@@ -5,8 +5,10 @@ import com.sundyn.service.*;
 import com.sundyn.util.ColorHelper;
 import com.sundyn.util.DateHelper;
 import com.sundyn.util.SundynSet;
+import com.xuan.xutils.utils.StringUtils;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
+import org.jsoup.helper.StringUtil;
 import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class AnalyseAction extends ActionSupport
+public class AnalyseAction extends MainAction
 {
     private AnalyseService analyseService;
     private List bmls;
@@ -88,6 +90,7 @@ public class AnalyseAction extends ActionSupport
     public String analyseContentAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String type = request.getParameter("type");
+        String deptId = req.getString("deptId");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null || startDate.equals("")) {
             startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
@@ -99,12 +102,30 @@ public class AnalyseAction extends ActionSupport
             type = "day";
         }
         final String contentId = this.getContentId();
-        this.chartList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, type, this.getDeptIds());
+        String filterDeptids = super.DEPTIDS;
+        if (StringUtils.isNotBlank(deptId)){
+            filterDeptids = this.deptService.findChildALLStr1234(deptId);//low
+        }
+        this.chartList = this.analyseService.AnalyseTotalExRpt(this.startDate, this.endDate, contentId, type, filterDeptids,"totalkeymy");
         final StringBuilder strXML1 = new StringBuilder("");
+        //strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        //strXML1.append("<graph caption='满意量走势分析' xAxisName='日期' yAxisName='满意量' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
         strXML1.append("<graph caption='满意量走势分析' xAxisName='日期' yAxisName='满意量' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
 
         if (type.equals("day")) {
+            strXML1.append(mergeCategory(1));
+            strXML1.append(mergeDataSet(1));
+        }
+        else if (type.equals("month")) {
+            strXML1.append(mergeCategory(2));
+            strXML1.append(mergeDataSet(2));
+        }
+        else {
+            strXML1.append(mergeCategory(3));
+            strXML1.append(mergeDataSet(3));
+        }
+        /*if (type.equals("day")) {
             SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
             Date start = df.parse(startDate);
             Date end = df.parse(endDate);
@@ -201,10 +222,11 @@ public class AnalyseAction extends ActionSupport
 
                 start = cal.getTime();
             }
-        }
+        }*/
         strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
         request.setAttribute("w", request.getParameter("w"));
+        request.setAttribute("strXMLType", "MSLine.swf");
         return "success";
     }
 
@@ -218,7 +240,7 @@ public class AnalyseAction extends ActionSupport
         cal.set(6, cal.get(6) - numI);
         this.startDate = df.format(cal.getTime());
         final String contentId = this.getContentId();
-        this.chartList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, "day", this.getDeptIds());
+        this.chartList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, "day", super.DEPTIDS);
         final List tempList = new ArrayList();
         for (int i = 0; i < this.chartList.size(); ++i) {
             final Map chartM = (Map) this.chartList.get(i);
@@ -243,6 +265,7 @@ public class AnalyseAction extends ActionSupport
     public String analyseContentRateAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String type = request.getParameter("type");
+        String deptId = req.getString("deptId");
         startDate = request.getParameter("startDate");
         endDate = request.getParameter("endDate");
         DateHelper dateHelper = DateHelper.getInstance();
@@ -256,26 +279,76 @@ public class AnalyseAction extends ActionSupport
             type = "day";
         }
         final String allId = this.getAllId();
-        final List totalList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, type, this.getDeptIds());
-        final String contentId = this.getContentId();
-        final List contentList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, type, this.getDeptIds());
-        this.chartList = this.rate(contentList, totalList);
+        String filterDeptids = super.DEPTIDS;
+        if (StringUtils.isNotBlank(deptId)){
+            filterDeptids = this.deptService.findChildALLStr1234(deptId);//low
+        }
+        chartList = this.analyseService.AnalyseTotalExRpt(this.startDate, this.endDate, allId, type, filterDeptids, "totalmyd");
+        for (Object item: chartList)
+        {
+            Map m = (Map)item;
+            Object d = m.get("d");
+            if(d!=null)
+                m.put("num", Math.floor(Double.valueOf(d.toString())));
+            else
+                m.put("num",0);
+        }
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='满意率走势分析' xAxisName='日期' yAxisName='满意率' baseFontSize='12' rotateYAxisName='1' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
+        strXML1.append("<graph caption='满意率走势分析' xAxisName='日期' yAxisName='满意率' baseFontSize='12' rotateYAxisName='1' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1' decimals='2'>");
 
         if (type.equals("day")) {
-            strXML1.append(mergeData(1));
+            //strXML1.append(mergeData(1));
+            strXML1.append(mergeCategory(1));
+            strXML1.append(mergeDataSet(1));
         }
         else if (type.equals("month")) {
-            strXML1.append(mergeData(2));
+            //strXML1.append(mergeData(2));
+            strXML1.append(mergeCategory(2));
+            strXML1.append(mergeDataSet(2));
         }
         else {
-            strXML1.append(mergeData(3));
+            //strXML1.append(mergeData(3));
+            strXML1.append(mergeCategory(3));
+            strXML1.append(mergeDataSet(3));
         }
         strXML1.append("</graph>");
+        System.out.println(strXML1);
         request.setAttribute("strXML1", strXML1.toString());
-        request.setAttribute("strXMLType", "Column3D.swf");//占比
+        request.setAttribute("strXMLType", "MSLine.swf");//占比
+        return "success";
+    }
+
+    public String analyseContentRateAjaxAll() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        String type = request.getParameter("type");
+        String deptId = req.getString("deptId");
+        startDate = request.getParameter("startDate");
+        endDate = request.getParameter("endDate");
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null || startDate.equals("")) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+        }
+        if(endDate == null || endDate.equals("")) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
+        if (type == null) {
+            type = "day";
+        }
+        final String allId = this.getAllId();
+        String filterDeptids = super.DEPTIDS;
+        if (StringUtils.isNotBlank(deptId)){
+            filterDeptids = this.deptService.findChildALLStr1234(deptId);//low
+        }
+        chartList = this.analyseService.AnalyseTotalEx2(this.startDate, this.endDate, allId, type, filterDeptids);
+        final StringBuilder strXML1 = new StringBuilder("");
+        strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
+        strXML1.append("<chart caption='综合数据分析' xAxisName='日期' yAxisName='满意率' baseFontSize='12' rotateYAxisName='1' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1' decimals='2'>");
+        strXML1.append(mergeCategory2(3));
+        strXML1.append(mergeDataSet2(3));
+        strXML1.append("</chart>");
+        request.setAttribute("strXML1", strXML1.toString());
+        request.setAttribute("strXMLType", "MSColumn3D.swf");//占比
         return "success";
     }
 
@@ -299,9 +372,9 @@ public class AnalyseAction extends ActionSupport
         cal.set(Calendar.SECOND, 0);
         this.startDate = df2.format(cal.getTime());
         final String allId = this.getAllId();
-        final List totalList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, "day", this.getDeptIds());
+        final List totalList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, "day", super.DEPTIDS);
         final String contentId = this.getContentId();
-        final List contentList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, "day", this.getDeptIds());
+        final List contentList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, "day", super.DEPTIDS);
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
@@ -362,15 +435,15 @@ public class AnalyseAction extends ActionSupport
         this.endDate = df2.format(cal.getTime());
 
         final String allId = this.getAllId();
-        final List totalList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, "day", this.getDeptIds());
+        final List totalList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, "day", super.DEPTIDS);
         final String contentId = this.getContentId();
-        final List contentList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, "day", this.getDeptIds());
+        final List contentList = this.analyseService.AnalyseContent(this.startDate, this.endDate, contentId, "day", super.DEPTIDS);
         this.chartList = this.rate(contentList, totalList);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' subCaption='"+this.startDate +" 至 "+ this.endDate+"' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
         String keys = request.getParameter("keys");
-        final List chatList = this.queryService.QueryResultChat(keys, this.startDate, this.endDate);
+        final List chatList = this.queryService.QueryResultChat(null, keys, this.startDate, this.endDate, null);
         for (int i = 0; i < chatList.size(); ++i) {
             final Map temp = (Map) chatList.get(i);
             final Map m = new HashMap();
@@ -399,12 +472,14 @@ public class AnalyseAction extends ActionSupport
         return "success";
     }
 
-    public String analyseDeptAjax123() throws Exception {
+    public String analyseDeptAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String deptId = request.getParameter("deptId");
-        /*if(deptId.equals(""))
-            deptId = "-1";*/
-        final String deptIds = this.deptService.findChildALLStr123(deptId);
+        String deptIds = this.deptService.findChildALLStr1234(deptId);
+        String filterDeptids = this.deptService.findChildALLStr1234(super.DEPTIDS);
+        if (StringUtils.isNotBlank(deptId)){
+            filterDeptids = this.deptService.findChildALLStr1234(deptId);//low
+        }
 
         String type = request.getParameter("type");
         DateHelper dateHelper = DateHelper.getInstance();
@@ -418,47 +493,44 @@ public class AnalyseAction extends ActionSupport
             type = "day";
         }
         final String allId = this.getAllId();
-        /*
-        List l = this.deptService.findchild(Integer.valueOf(deptId));
-        String deptIds2 = "";
-        this.chartList = new ArrayList();
-        SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-        for (Object m : l){
-            Map d = (Map)m;
-            final Object obj = d.get("id");
-            if (obj != null) {
-                final String id = obj.toString();
-                deptIds2 += id + ",";
-                Calendar c = Calendar.getInstance();
-                Date s =df.parse(this.startDate);
-                Date e =df.parse(this.endDate);
-                final String _deptIds = this.deptService.findChildALLStr123(id);
-                List _chartList = this.analyseService.AnalyseDeptTotal(_deptIds, null, this.startDate, this.endDate, allId, type);
-                while (s.getTime()<e.getTime()){
-                    Map mm = new HashMap();
-                    mm.put("seriesId", id);
-                    mm.put("seriesName", d.get("name"));
-                    mm.put("num", 0);
-                    mm.put("serviceDate", df.format(s));
-                    for (Object m2 : _chartList){
-                        if (df.format(s).equals(((Map)m2).get("serviceDate").toString())){
-                            mm.put("num", Integer.valueOf(mm.get("num").toString()) + Integer.valueOf(((Map)m2).get("num").toString()));
-                        }
-                    }
-                    this.chartList.add(mm);
-                    c.setTime(s);
-                    c.add(Calendar.DATE,1);
-                    s = c.getTime();
-                }
-            }
-        }
-        if (deptIds.endsWith(",")) {
-            deptIds2 = deptIds.substring(0, deptIds.length() - 1);
-        }*/
-        this.chartList = this.analyseService.AnalyseDeptTotal(deptIds, null, this.startDate, this.endDate, allId, type);
+        String field = req.getString("field");
+        this.chartList = this.analyseService.AnalyseDeptTotalRpt(filterDeptids, null, this.startDate, this.endDate, allId, type, field);
         final StringBuilder strXML1 = new StringBuilder("");
+        String chartTitle = "";
+        String yName = "";
+        switch (req.getString("field")){
+            case "servicecount":
+                chartTitle = "业务量分析";
+                yName = "业务量";
+                break;
+            case "cancelcount":
+                chartTitle = "弃号量分析";
+                yName = "弃号量";
+                break;
+            case "totalwaittime":
+                chartTitle = "平均等待时间分析";
+                yName = "平均等待时间";
+                break;
+            case "totalservicetime":
+                chartTitle = "平均办理时间分析";
+                yName = "平均办理时间";
+                break;
+            case "totalkeymy":
+                chartTitle = "满意额分析";
+                yName = "满意额";
+                break;
+            case "totalmyd":
+                chartTitle = "满意度分析";
+                yName = "满意度";
+                break;
+        }
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='窗口业务量分析' xAxisName='日期' yAxisName='业务量' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
+        strXML1.append("<graph caption='"+chartTitle+"' xAxisName='日期' yAxisName='"+yName+"' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'");
+        if(req.getString("field").equals("totalwaittime") || req.getString("field").equals("totalservicetime"))
+            strXML1.append(" formatNumberScale='1' defaultNumberScale='秒' numberScaleValue='60,60,24,7' numberScaleUnit='分,时,天,周'");
+        else
+            strXML1.append(" formatNumberScale='0' decimalPrecision='0'");
+        strXML1.append(">");
 
         if (type.equals("day")) {
             strXML1.append(mergeCategory(1));
@@ -482,7 +554,7 @@ public class AnalyseAction extends ActionSupport
     public String analyseDeptContentAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
-        final String deptIds = this.deptService.findChildALLStr123(deptId);
+        final String deptIds = this.deptService.findChildALLStr1234(deptId);
         String type = request.getParameter("type");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null || startDate.equals("")) {
@@ -497,9 +569,41 @@ public class AnalyseAction extends ActionSupport
         final String contentId = this.getContentId();
         this.chartList = this.analyseService.AnalyseDeptContent(deptIds, this.startDate, this.endDate, contentId, type);
         final StringBuilder strXML1 = new StringBuilder("");
+        String chartTitle = "";
+        String yName = "";
+        switch (req.getString("field")){
+            case "servicecount":
+                chartTitle = "业务量分析";
+                yName = "业务量";
+                break;
+            case "cancelcount":
+                chartTitle = "弃号量分析";
+                yName = "弃号量";
+                break;
+            case "totalwaittime":
+                chartTitle = "平均等待时间分析";
+                yName = "平均等待时间";
+                break;
+            case "totalservicetime":
+                chartTitle = "平均办理时间分析";
+                yName = "平均办理时间";
+                break;
+            case "totalkeymy":
+                chartTitle = "满意额分析";
+                yName = "满意额";
+                break;
+            case "totalmyd":
+                chartTitle = "满意度分析";
+                yName = "满意度";
+                break;
+        }
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='窗口满意额分析' xAxisName='日期' yAxisName='满意额'  rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
-
+        strXML1.append("<graph caption='"+chartTitle+"' xAxisName='时间' yAxisName='"+yName+"' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'");
+        if(req.getString("field").equals("totalwaittime") || req.getString("field").equals("totalservicetime"))
+            strXML1.append(" formatNumberScale='1' defaultNumberScale='秒' numberScaleValue='60,60,24,7' numberScaleUnit='分,时,天,周'");
+        else
+            strXML1.append(" formatNumberScale='0' decimalPrecision='0'");
+        strXML1.append(">");
         if (type.equals("day")) {
             strXML1.append(mergeCategory(1));
             strXML1.append(mergeDataSet(1));
@@ -522,7 +626,7 @@ public class AnalyseAction extends ActionSupport
     public String analyseDeptContentRateAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
-        final String deptIds = this.deptService.findChildALLStr123(deptId);
+        final String deptIds = this.deptService.findChildALLStr1234(deptId);
         String type = request.getParameter("type");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null || startDate.equals("")) {
@@ -536,13 +640,17 @@ public class AnalyseAction extends ActionSupport
         }
         final String allId = this.getAllId();
         final List totalList = this.analyseService.AnalyseDeptTotal(deptIds,null, this.startDate, this.endDate, allId, type);
-        final String contentId = this.getContentId();
-        final List contentList = this.analyseService.AnalyseDeptContent(deptIds, this.startDate, this.endDate, contentId, type);
+        //final String contentId = this.getContentId();
+        //final List contentList = this.analyseService.AnalyseDeptContent(deptIds, this.startDate, this.endDate, contentId, type);
         this.chartList = totalList;//this.rate(contentList, totalList);
         for (Object item: chartList)
         {
             Map m = (Map)item;
-            m.put("num", Math.floor(Double.valueOf(m.get("d").toString())));
+            Object d = m.get("d");
+            if(d!=null)
+                m.put("num", Math.floor(Double.valueOf(d.toString())));
+            else
+                m.put("num",0);
         }
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
@@ -588,7 +696,8 @@ public class AnalyseAction extends ActionSupport
     }
     public String analyseEmployeeAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        final String employeeId = request.getParameter("employeeId");
+        String employeeId = request.getParameter("employeeId");
+        String deptid= req.getString("deptid");
         String type = request.getParameter("type");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null || startDate.equals("")) {
@@ -600,13 +709,51 @@ public class AnalyseAction extends ActionSupport
         if (type == null) {
             type = "day";
         }
-        getEmployeeTree();
+        //getEmployeeTree();
 
-        final String allId = this.getAllId();
-        this.chartList = this.analyseService.AnalyseEmployeeTotal2(employeeId, this.startDate, this.endDate, allId, type);
+        final String keyno = this.getAllId();
+        String deptIds = this.deptService.findChildALLStr1234(super.DEPTIDS);
+        if (StringUtils.isNotBlank(deptid)) {
+            deptIds = this.deptService.findChildALLStr1234(deptid);
+            employeeId = this.employeeService.findEmployeeByDeptId(deptid);
+        }
+        this.chartList = this.analyseService.AnalyseEmployeeTotalRpt(deptIds, employeeId, this.startDate, this.endDate, keyno, type, req.getString("field"));
         final StringBuilder strXML1 = new StringBuilder("");
+        String chartTitle = "";
+        String yName = "";
+        switch (req.getString("field")){
+            case "servicecount":
+                chartTitle = "业务量分析";
+                yName = "业务量";
+                break;
+            case "cancelcount":
+                chartTitle = "弃号量分析";
+                yName = "弃号量";
+                break;
+            case "totalwaittime":
+                chartTitle = "平均等待时间分析";
+                yName = "平均等待时间";
+                break;
+            case "totalservicetime":
+                chartTitle = "平均办理时间分析";
+                yName = "平均办理时间";
+                break;
+            case "totalkeymy":
+                chartTitle = "满意额分析";
+                yName = "满意额";
+                break;
+            case "totalmyd":
+                chartTitle = "满意度分析";
+                yName = "满意度";
+                break;
+        }
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<graph caption='业务量分析' xAxisName='日期' yAxisName='业务量' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
+        strXML1.append("<graph caption='"+chartTitle+"' xAxisName='时间' yAxisName='"+yName+"' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'");
+        if(req.getString("field").equals("totalwaittime") || req.getString("field").equals("totalservicetime"))
+            strXML1.append(" formatNumberScale='1' defaultNumberScale='秒' numberScaleValue='60,60,24,7' numberScaleUnit='分,时,天,周'");
+        else
+            strXML1.append(" formatNumberScale='0' decimalPrecision='0'");
+        strXML1.append(">");
 
         if (type.equals("day")) {
             strXML1.append(mergeCategory(1));
@@ -629,7 +776,8 @@ public class AnalyseAction extends ActionSupport
 
     public String analyseEmployeeContentAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        final String employeeId = request.getParameter("employeeId");
+        String employeeId = request.getParameter("employeeId");
+        String deptid = req.getString("deptid");
         String type = request.getParameter("type");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null || startDate.equals("")) {
@@ -642,7 +790,12 @@ public class AnalyseAction extends ActionSupport
             type = "day";
         }
         final String contentId = this.getContentId();
-        this.chartList = this.analyseService.AnalyseEmployeeContent2(employeeId, this.startDate, this.endDate, contentId, type);
+        String deptIds = this.deptService.findChildALLStr1234(super.DEPTIDS);
+        if (StringUtils.isNotBlank(deptid)) {
+            deptIds = this.deptService.findChildALLStr1234(deptid);
+            employeeId = this.employeeService.findEmployeeByDeptId(deptid);
+        }
+        this.chartList = this.analyseService.AnalyseEmployeeContent2(deptIds, employeeId, this.startDate, this.endDate, contentId, type);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
         strXML1.append("<graph caption='满意额分析' xAxisName='日期' yAxisName='满意额' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
@@ -697,7 +850,16 @@ public class AnalyseAction extends ActionSupport
         strXML1.append("</categories>");
         return strXML1;
     }
-
+    public StringBuilder mergeCategory2(int fmt) throws ParseException {
+        StringBuilder strXML1 = new StringBuilder();
+        strXML1.append("<categories>");
+        strXML1.append("<category label='业务总量' />");
+        strXML1.append("<category label='弃号量' />");
+        strXML1.append("<category label='平均等候时长' />");
+        strXML1.append("<category label='平均办理时长' />");
+        strXML1.append("</categories>");
+        return strXML1;
+    }
     /*
     1按天,2按月,3按年
      */
@@ -724,7 +886,6 @@ public class AnalyseAction extends ActionSupport
                     strXML1.append("<set name='" + day + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
                     iscontain = true;
                 }
-
             }
             if(!iscontain){
                 strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
@@ -801,10 +962,55 @@ public class AnalyseAction extends ActionSupport
         }
         return strXML1;
     }
+    /*
+        1按天,2按月,3按年
+         */
+    public StringBuilder mergeDataSet2(int fmt) throws ParseException {
+        StringBuilder strXML1 = new StringBuilder();
 
+        HashMap<String, String> seriesHashMap = new HashMap<>();
+
+        for (int i = 0; i < this.chartList.size(); ++i) {
+            final Map chartM = (Map) this.chartList.get(i);
+            Object servercount = chartM.get("servercount");
+            Object seriesName = chartM.get("seriesName");
+            String unkey = chartM.get("unkey").toString();
+            String waittimeavg = chartM.get("waittimeavg").toString();
+            String servicetimeavg = chartM.get("servicetimeavg").toString();
+            strXML1.append(String.format("<dataset seriesName='%s' color='"+ColorHelper.getColor()+"' showValues='1'>", seriesName));
+            strXML1.append("<set value='" + servercount + "' />");
+            strXML1.append("<set value='" + unkey + "' />");
+            strXML1.append("<set value='" + waittimeavg + "' />");
+            strXML1.append("<set value='" + servicetimeavg + "' />");
+            strXML1.append("</dataset>");
+        }
+
+        /*strXML1.append("<dataset seriesName='弃号量' color='"+ColorHelper.getColor()+"' showValues='1'>");
+        for (int i = 0; i < this.chartList.size(); ++i) {
+            final Map chartM = (Map) this.chartList.get(i);
+            String unkey = chartM.get("unkey").toString();
+            strXML1.append("<set value='" + unkey + "' />");
+        }
+        strXML1.append("</dataset>");
+        strXML1.append("<dataset seriesName='平均等候时长' color='"+ColorHelper.getColor()+"' showValues='1'>");
+        for (int i = 0; i < this.chartList.size(); ++i) {
+            final Map chartM = (Map) this.chartList.get(i);
+            String waittimeavg = chartM.get("waittimeavg").toString();
+            strXML1.append("<set value='" + waittimeavg + "' />");
+        }
+        strXML1.append("</dataset>");
+        strXML1.append("<dataset seriesName='平均办理时长' color='"+ColorHelper.getColor()+"' showValues='1'>");
+        for (int i = 0; i < this.chartList.size(); ++i) {
+            final Map chartM = (Map) this.chartList.get(i);
+            String servicetimeavg = chartM.get("servicetimeavg").toString();
+            strXML1.append("<set value='" + servicetimeavg + "' />");
+        }*/
+        return strXML1;
+    }
     public String analyseEmployeeContentRateAjax() throws Exception {
-        final HttpServletRequest request = ServletActionContext.getRequest();
-        final String employeeId = request.getParameter("employeeId");
+        HttpServletRequest request = ServletActionContext.getRequest();
+        String employeeId = request.getParameter("employeeId");
+        String deptid = req.getString("deptid");
         String type = request.getParameter("type");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null || startDate.equals("")) {
@@ -817,9 +1023,14 @@ public class AnalyseAction extends ActionSupport
             type = "day";
         }
         final String allId = this.getAllId();
-        final List totalList = this.analyseService.AnalyseEmployeeTotal2(employeeId, this.startDate, this.endDate, allId, type);
-        final String contentId = this.getContentId();
-        final List contentList = this.analyseService.AnalyseEmployeeContent2(employeeId, this.startDate, this.endDate, contentId, type);
+        String deptIds = this.deptService.findChildALLStr1234(super.DEPTIDS);
+        if (StringUtils.isNotBlank(deptid)) {
+            deptIds = this.deptService.findChildALLStr1234(deptid);
+            employeeId = this.employeeService.findEmployeeByDeptId(deptid);
+        }
+        final List totalList = this.analyseService.AnalyseEmployeeTotal(deptIds, employeeId, this.startDate, this.endDate, null, type);
+        //final String contentId = this.getContentId();
+        //final List contentList = this.analyseService.AnalyseEmployeeContent2(deptIds, employeeId, this.startDate, this.endDate, contentId, type);
         this.chartList = totalList;//this.rate2(contentList, totalList);
         for (Object item: chartList)
         {
@@ -856,59 +1067,9 @@ public class AnalyseAction extends ActionSupport
     public String analyseTotalAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String type = request.getParameter("type");
-        DateHelper dateHelper = DateHelper.getInstance();
-        if(startDate == null || startDate.equals("")) {
-            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
-        }
-        if(endDate == null || endDate.equals("")) {
-            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
-        }
-        if (type == null) {
-            type = "day";
-        }
-        final String allId = this.getAllId();
-        this.chartList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, type, this.getDeptIds());
-        final List tempList = new ArrayList();
-        if (type.equals("day")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(8);
-                chartM.put("serviceDate", String.valueOf(day) + this.getText("sundyn.analyse.day2"));
-                tempList.add(chartM);
-            }
-        }
-        else if (type.equals("month")) {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(5, 7);
-                chartM.put("serviceDate", String.valueOf(day) + "\u6708");
-                tempList.add(chartM);
-            }
-        }
-        else {
-            for (int i = 0; i < this.chartList.size(); ++i) {
-                final Map chartM = (Map) this.chartList.get(i);
-                String day = chartM.get("serviceDate").toString();
-                day = day.substring(0, 4);
-                chartM.put("serviceDate", String.valueOf(day) + "\u5e74");
-                tempList.add(chartM);
-            }
-        }
-        this.msg = this.getText("sundyn.analyse.info2", new String[] { this.startDate, this.endDate });
-        final Map<String, Object> m = new HashMap<String, Object>();
-        m.put("list", tempList);
-        m.put("msg", this.msg);
-        final JSONObject json = JSONObject.fromObject((Object)m);
-        request.setAttribute("json", (Object)json);
-        return "success";
-    }
-
-    public String analyseTotalAjax2() throws Exception {
-        final HttpServletRequest request = ServletActionContext.getRequest();
-        String type = request.getParameter("type");
         String w = request.getParameter("w");
+        String deptId = req.getString("deptId");
+
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null || startDate.equals("")) {
             startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
@@ -920,102 +1081,65 @@ public class AnalyseAction extends ActionSupport
             type = "day";
         }
         final String allId = this.getAllId();
-        this.chartList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, type, this.getDeptIds());
+        String filterDeptids = this.deptService.findChildALLStr1234(super.DEPTIDS);
+        if (StringUtils.isNotBlank(deptId)){
+            filterDeptids = this.deptService.findChildALLStr1234(deptId);//low
+        }
+        this.chartList = this.analyseService.AnalyseTotalExRpt(this.startDate, this.endDate, allId, type, filterDeptids, req.getString("field"));
+        String chartTitle = "";
+        String yName = "";
+        switch (req.getString("field")){
+            case "servicecount":
+                chartTitle = "业务量分析";
+                yName = "业务量";
+                break;
+            case "cancelcount":
+                chartTitle = "弃号量分析";
+                yName = "弃号量";
+                break;
+            case "totalwaittime":
+                chartTitle = "平均等待时间分析";
+                yName = "平均等待时间";
+                break;
+            case "totalservicetime":
+                chartTitle = "平均办理时间分析";
+                yName = "平均办理时间";
+                break;
+            case "totalkeymy":
+                chartTitle = "满意额分析";
+                yName = "满意额";
+                break;
+            case "totalmyd":
+                chartTitle = "满意度分析";
+                yName = "满意度";
+                break;
+        }
 
-        final StringBuilder strXML1 = new StringBuilder("");
+        StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
-        strXML1.append("<chart caption='业务总量走势分析' xAxisName='日期' yAxisName='业务总量' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'>");
+        strXML1.append("<graph caption='"+chartTitle+"' xAxisName='时间' yAxisName='"+yName+"' rotateYAxisName='1' baseFontSize='12' rotateYAxisName='1' slantLabels='1' labelDisplay='ROTATE' rotateNames='1'");
+        if(req.getString("field").equals("totalwaittime") || req.getString("field").equals("totalservicetime"))
+            strXML1.append(" formatNumberScale='1' defaultNumberScale='秒' numberScaleValue='60,60,24,7' numberScaleUnit='分,时,天,周'");
+        else
+            strXML1.append(" formatNumberScale='0' decimalPrecision='0'");
+        strXML1.append(">");
 
         if (type.equals("day")) {
-            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-            Date start = df.parse(startDate);
-            Date end = df.parse(endDate);
-            Calendar s = Calendar.getInstance();
-            s.setTime(df.parse(startDate));
-            Calendar e = Calendar.getInstance();
-            e.setTime(df.parse(endDate));
-
-            while(start.getTime()<=end.getTime()){
-                boolean iscontain = false;
-                for (int i = 0; i < chartList.size(); ++i) {
-                    final Map chartM = (Map) this.chartList.get(i);
-                    String day = chartM.get("serviceDate").toString();
-                    if (df.format(start).equals(day)){
-                        strXML1.append("<set name='" + day + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-                        iscontain = true;
-                    }
-                }
-                if(!iscontain){
-                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
-                }
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(start);
-                cal.add(Calendar.DATE,1);
-
-                start = cal.getTime();
-            }
+            strXML1.append(mergeCategory(1));
+            strXML1.append(mergeDataSet(1));
         }
         else if (type.equals("month")) {
-            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM");
-            Date start = df.parse(startDate);
-            Date end = df.parse(endDate);
-            Calendar s = Calendar.getInstance();
-            s.setTime(df.parse(startDate));
-            Calendar e = Calendar.getInstance();
-            e.setTime(df.parse(endDate));
-
-            while(start.getTime()<=end.getTime()){
-                boolean iscontain = false;
-                for (int i = 0; i < chartList.size(); ++i) {
-                    final Map chartM = (Map) this.chartList.get(i);
-                    String day = chartM.get("serviceDate").toString();
-                    if (df.format(start).equals(day)){
-                        strXML1.append("<set name='" + String.valueOf(day) + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-                        iscontain = true;
-                    }
-                }
-                if(!iscontain){
-                    strXML1.append("<set name='" + String.valueOf(df.format(start)) + "' value='0' color='" + ColorHelper.getColor() + "' />");
-                }
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(start);
-                cal.add(Calendar.MONTH,1);
-
-                start = cal.getTime();
-            }
+            strXML1.append(mergeCategory(2));
+            strXML1.append(mergeDataSet(2));
         }
         else {
-            SimpleDateFormat df=new SimpleDateFormat("yyyy");
-            Date start = df.parse(startDate);
-            Date end = df.parse(endDate);
-            Calendar s = Calendar.getInstance();
-            s.setTime(df.parse(startDate));
-            Calendar e = Calendar.getInstance();
-            e.setTime(df.parse(endDate));
-
-            while(start.getTime()<=end.getTime()){
-                boolean iscontain = false;
-                for (int i = 0; i < chartList.size(); ++i) {
-                    final Map chartM = (Map) this.chartList.get(i);
-                    String day = chartM.get("serviceDate").toString();
-                    if (df.format(start).equals(day)){
-                        strXML1.append("<set name='" + String.valueOf(day) + "' value='" + chartM.get("num") + "' color='" + ColorHelper.getColor() + "' />");
-                        iscontain = true;
-                    }
-                }
-                if(!iscontain){
-                    strXML1.append("<set name='" + df.format(start) + "' value='0' color='" + ColorHelper.getColor() + "' />");
-                }
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(start);
-                cal.add(Calendar.YEAR,1);
-
-                start = cal.getTime();
-            }
+            strXML1.append(mergeCategory(3));
+            strXML1.append(mergeDataSet(3));
         }
-        strXML1.append("</chart>");
+        strXML1.append("</graph>");
         request.setAttribute("strXML1", strXML1.toString());
-        request.setAttribute("w",w);
+        request.setAttribute("w", request.getParameter("w"));
+        request.setAttribute("strXMLType", "MSLine.swf");
         return "success";
     }
 
@@ -1029,7 +1153,7 @@ public class AnalyseAction extends ActionSupport
         cal.set(6, cal.get(6) - numI);
         this.startDate = df.format(cal.getTime());
         final String allId = this.getAllId();
-        this.chartList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, "day", this.getDeptIds());
+        this.chartList = this.analyseService.AnalyseTotal(this.startDate, this.endDate, allId, "day", super.DEPTIDS);
         final List tempList = new ArrayList();
         for (int i = 0; i < this.chartList.size(); ++i) {
             final Map chartM = (Map) this.chartList.get(i);
@@ -1082,6 +1206,7 @@ public class AnalyseAction extends ActionSupport
         if (result.startsWith(",")) {
             result = result.substring(1, result.length() - 1);
         }
+        result += ",7";
         return result;
     }
 
@@ -1306,16 +1431,6 @@ public class AnalyseAction extends ActionSupport
 
     public void setType(final String type) {
         this.type = type;
-    }
-
-    public String getDeptIds() throws SQLException {
-        final HttpServletRequest request = ServletActionContext.getRequest();
-        final Map manager = (Map)request.getSession().getAttribute("manager");
-        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
-        final Map power = this.powerService.getUserGroup(groupid);
-        final String deptIdGroup = power.get("deptIdGroup").toString();
-        final String ids = this.deptService.findChildALLStr123(deptIdGroup);
-        return ids;
     }
 
     public String analyseContentD() {

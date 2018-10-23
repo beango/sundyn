@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.AppriesDeptDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, fatherId, name, child, lenvel, remark, dev_undownload, dev_savedphoto, lastcheck, client_type, product_type, deptType, dept_camera_url, dept_businessId, dept_playListId, ext1, ext2, ext3, useVideo, ext4, ext5, notice, noticeNow, noticeTime, cityid, provinceid, ipadd
+    </sql>
+
+</mapper>

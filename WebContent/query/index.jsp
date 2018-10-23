@@ -104,7 +104,7 @@
 <div class='col-6 mb-10'>
     <div class='easyui-panel' data-options="cls:'panel-primary-no', iconCls:'fa fa-user', closable:false"
          title='<s:text name="sundyn.main.title5"/>'>
-        <div id="chartcontainer1">
+        <div id="chartcontainer1" style="border:1px solid #bad6ec;">
 
         </div>
     </div>
@@ -113,7 +113,7 @@
 <div class='col-6 col-last'>
     <div class='easyui-panel' data-options="cls:'panel-primary-no', iconCls:'fa fa-tags', closable:false"
          title='<s:text name="sundyn.main.title4"/>'>
-        <div id="chartcontainer2">
+        <div id="chartcontainer2" style="border:1px solid #bad6ec;">
 
         </div>
     </div>

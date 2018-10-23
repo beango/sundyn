@@ -354,7 +354,7 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
 
         this.pager = new Pager("currentPage", pageSize, 0, this.request);
         Integer[] total = new Integer[1];
-        this.list = this.totalService.totalDating(ids, null, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
+        this.list = this.totalService.totalDating(null, ids, null, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
                 this.pager.getPageSize(), total);
         final int rowsCount = total[0];
         this.pager = new Pager("currentPage", pageSize, rowsCount, this.request);
@@ -392,7 +392,7 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
         final String deptId = this.request.getParameter("deptId");
         final int rowsCount = this.totalService.counttotalWindow(deptId, this.startDate, this.endDate);
         this.pager = new Pager("currentPage", pageSize, rowsCount, this.request);
-        this.list = this.totalService.totalWindow(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        this.list = this.totalService.totalWindow(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), null);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.windowSatisfactionDiagram") + "' xAxisName='" + this.getText("sundyn.column.windowName") + "' yAxisName='" + this.getText("sundyn.column.contentDegree") + "' rotateYAxisName='1' baseFont='Arial' baseFontSize='14' decimalPrecision='0' formatNumberScale='0'>");

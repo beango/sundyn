@@ -6,64 +6,171 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf8"/>
-    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
+    <link rel="stylesheet" href="css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css"/>
     <title><s:text name='sundyn.title'/></title>
-    <script>
-        //这段脚本如果你的页面里有，就可以去掉它们了
-        //欢迎访问我的网站queyang.com
-        var ie = navigator.appName == "Microsoft Internet Explorer";
-
-        function $(objID) {
-            return document.getElementById(objID);
-        }
-    </script>
-    <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
+    <script type="text/javascript" src="assets/javascripts/vendor/jquery-2.1.3.min.js?1440992355"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
-    <script type="text/javascript" src="js/line.js"></script>
-    <script type="text/javascript" src="js/jscharts.js"></script>
-    <script type="text/javascript" src="js/json.js"></script>
+    <script type="text/javascript" src="lib/layer/layer.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?3"></script>
+    <script type="text/javascript" src="lib/util/deptselutil.js"></script>
+    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="lib/jquery.idTabs.min.js"></script>
+    <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
+    <script language="javascript">
+        $(document).ready(function () {
+            initTree("?depttype=1&isOnlyLeaf=0", '<%=request.getParameter("deptId")%>');
+        });
+    </script>
+    <style type="text/css">
+        ul.ztree {
+            margin-top: 10px;
+            border: 1px solid #617775;
+            background: #f0f6e4;
+            width: 420px;
+            height: 360px;
+            overflow-y: scroll;
+            overflow-x: auto;
+        }
+        .layui-form-radio{margin:0px !important;}
+    </style>
 </head>
-<body>
-<script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
-<div id="man_zone">
-    <table width="100%" height="51" border="0" cellpadding="0" cellspacing="0"
-           style="border-color:#FFFFFF;">
-        <tr>
-            <td style="border-color:#FFFFFF;" align="left">
-                <s:text name='sundyn.total.startDate'/>
-                <input type="text" id="startDate" class="input_comm" <s:text name="sundyn.language.calendar.setDay"/> onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-                <s:text name='sundyn.total.endDate'/>
-                <input type="text" id="endDate" class="input_comm" <s:text name="sundyn.language.calendar.setDay"/> onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-                <s:text name='sundyn.analyse.by'/>
-                <select name="type" id="type">
-                    <option value="day" selected="selected">
-                        <s:text name='sundyn.analyse.day'/>
-                    </option>
-                    <option value="month">
-                        <s:text name='sundyn.analyse.month'/>
-                    </option>
-                    <option value="year">
-                        <s:text name='sundyn.analyse.year'/>
-                    </option>
-                </select>
-                <img src="<s:text name='sundyn.analyse.pic.dataAnalyse' />" width="94" height="25" onclick="analyseTotalAjax(w)" style="cursor: pointer; vertical-align: middle;"/>
-                <img src="<s:text name='sundyn.analyse.pic.week' />" onclick="analyseTotalAjaxDay(7,w)" style="cursor: pointer; vertical-align: middle;"/>
-                <img src="<s:text name='sundyn.analyse.pic.15' />" onclick="analyseTotalAjaxDay(15,w)" style="cursor: pointer; vertical-align: middle;"/>
-                <img src="<s:text name='sundyn.analyse.pic.month' />" onclick="analyseTotalAjaxDay(30,w)" style="cursor: pointer; vertical-align: middle;"/>
-            </td>
-        </tr>
-    </table>
-    <div style="height:100%;width:100%;" id="chartcontainer">
+<body class="layui-form">
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <c:forEach items="${navbar_menuname}" var="menu">
+            <li><a href="#">${menu.name}</a></li>
+        </c:forEach>
+    </ul>
+</div>
+<table width="100%" height="51" border="0" cellpadding="0" cellspacing="0"
+       style="border-color:#FFFFFF;">
+    <tr>
+        <td style="border-color:#FFFFFF;" align="left">
+            <div class="layui-select-cus layui-inline">
+                <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.query.selectDept'/></label>
+                <div class="layui-form-mid layui-word-aux">
+                </div>
+                <input id="deptSel" class="scinput" type="text" readonly
+                       value="<%=request.getParameter("deptname")==null?"":request.getParameter("deptname")%>"
+                       style="width:120px;cursor: pointer;" onclick="showDeptTree(this,null);"/>
+            </div>
+            <s:text name='sundyn.total.startDate'/>
+            <input type="text" id="startDate" class="scinput" <s:text name="sundyn.language.calendar.setDay"/>
+                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+            <s:text name='sundyn.total.endDate'/>
+            <input type="text" id="endDate" class="scinput" <s:text name="sundyn.language.calendar.setDay"/>
+                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+            <s:text name='sundyn.analyse.by'/>
+
+            <input type="radio" name="type" checked="checked" value="day" title="<s:text name='sundyn.analyse.day'/>"/>
+            <input type="radio" name="type" value="month" title="<s:text name='sundyn.analyse.month'/>"/>
+            <input type="radio" name="type" value="year" title="<s:text name='sundyn.analyse.year'/>"/>
+            <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" style="cursor:pointer;" onclick="query()"/>
+            <%--<img src="<s:text name='sundyn.analyse.businessNumAnalyse' />" width="94" height="25"
+                 onclick="analyseTotalAjax(w, 'servicecount')" style="cursor: pointer; vertical-align: middle;"/>
+            <img src="<s:text name="sundyn.analyse.contentNumAnalyse" />" onclick="analyseTotalAjax(w,'totalkeymy')"
+                 style="cursor: pointer; vertical-align: middle;"/>
+            <input type="button" class="button" style="background: url(images/button_bg.gif)"
+                   onclick="analyseTotalAjax(w,'totalmyd')" value="满意度分析"/>--%>
+        </td>
+    </tr>
+</table>
+<div class="formbody">
+    <div id="usual1" class="usual">
+        <div class="itab">
+            <ul>
+                <li><a href="#tab1" class="selected">业务量分析</a></li>
+                <li><a href="#tab2">弃号量分析</a></li>
+                <li><a href="#tab3">平均等待时间分析</a></li>
+                <li><a href="#tab4">平均办理时间分析</a></li>
+                <li><a href="#tab5">满意额分析</a></li>
+                <li><a href="#tab6">满意度分析</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="tab1" class="tabson">
+        <div style="height:100%;width:100%;" id="chartcontainer1">
+        </div>
+    </div>
+    <div id="tab2" class="tabson">
+        <div style="height:100%;width:100%;" id="chartcontainer2">
+        </div>
+    </div>
+    <div id="tab3" class="tabson">
+        <div style="height:100%;width:100%;" id="chartcontainer3">
+        </div>
+    </div>
+    <div id="tab4" class="tabson">
+        <div style="height:100%;width:100%;" id="chartcontainer4">
+        </div>
+    </div>
+    <div id="tab5" class="tabson">
+        <div style="height:100%;width:100%;" id="chartcontainer5">
+        </div>
+    </div>
+    <div id="tab6" class="tabson">
+        <div style="height:100%;width:100%;" id="chartcontainer6">
+        </div>
     </div>
 </div>
+<script type="text/javascript">
+    $('.tablelist tbody tr:odd').addClass('odd');
+</script>
+</div>
+
+<div id="treeContent" class="menuContent" style="display:none; position: absolute;">
+    <ul id="treeDept" class="ztree" style="margin-top:0; width:380px; height: 300px;"></ul>
+</div>
 <script type="text/javascript" language="javascript">
-    var w;
-    $(function () {
-        w = $("#chartcontainer").width();
-        analyseTotalAjax(w);
+    layui.use('form', function () {
+        var form = layui.form;
     });
+
+    var curTab = "";
+    $(function () {
+        $("#usual1 ul").idTabs(function(id){
+            curTab = id;
+            loadChart(id);
+            return true;
+        });
+    });
+
+    function loadChart(id){
+        var lay = layer.msg('加载中', {
+            icon: 16
+            ,shade: 0.1
+        });
+        var w = $(".placeul").width()-100;
+        if(id == '#tab1'){
+            analyseTotalAjax(w, "servicecount", 1, lay);
+        }
+        if(id == '#tab2'){
+            analyseTotalAjax(w, "cancelcount", 2, lay);
+        }
+        if(id == '#tab3'){
+            analyseTotalAjax(w, "totalwaittime", 3, lay);
+        }
+        if(id == '#tab4'){
+            analyseTotalAjax(w, "totalservicetime", 4, lay);
+        }
+        if(id == '#tab5'){
+            analyseTotalAjax(w, "totalkeymy", 5, lay);
+        }
+        if(id == '#tab6'){
+            analyseTotalAjax(w, "totalmyd", 6, lay);
+        }
+    }
+
+    //刷新
+    function query(){
+        loadChart(curTab);
+    }
 </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 package com.sundyn.utils;
 
-import com.sundyn.cache.Cache;
-import com.sundyn.cache.CacheManager;
+import com.sundyn.cache.Cache1;
+import com.sundyn.cache.CacheManager1;
 import com.sundyn.dao.SuperDao;
 import com.sundyn.entity.City;
 import com.sundyn.entity.Province;
@@ -35,8 +35,8 @@ public class CitysUtils extends SuperDao
     }
     
     public List<Province> getProvincesOnly() throws SQLException {
-        String Key = CacheManager.CitysUtils_getProvincesOnly;
-        Cache data = CacheManager.getCacheInfo(Key);
+        String Key = CacheManager1.CitysUtils_getProvincesOnly;
+        Cache1 data = CacheManager1.getCacheInfo(Key);
         if(data!=null){
             return (List<Province>)data.getValue();
         }
@@ -51,10 +51,10 @@ public class CitysUtils extends SuperDao
                 p.setName((String)m.get("name"));
                 provinces.add(p);
             }
-            data = new Cache();
+            data = new Cache1();
             data.setValue(provinces);
-            CacheManager.AddKey(Key);
-            CacheManager.putCache(Key, data);
+            CacheManager1.AddKey(Key);
+            CacheManager1.putCache(Key, data);
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -4,17 +4,18 @@
 <struts>
 	<package name="dept" extends="json-default">
 		<!-- 验证用户登录 开始-->
-		<interceptors>
-			<interceptor name="userCheckR"
-				class="com.sundyn.util.UserCheckR">
-			</interceptor>
-			<interceptor name="registerCheck" class="registerCheck">
-			</interceptor>
-			<interceptor-stack name="mydefault">
-				<interceptor-ref name="userCheckR" />
-				<interceptor-ref name="defaultStack" />
-			</interceptor-stack>
-		</interceptors>
+        <interceptors>
+            <interceptor name="userCheckR" class="com.sundyn.util.UserCheckR"></interceptor>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
+            <interceptor name="registerCheck"
+                         class="registerCheck">
+            </interceptor>
+            <interceptor-stack name="mydefault">
+                <interceptor-ref name="operationInterceptor" />
+                <interceptor-ref name="userCheckR" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
 		<default-interceptor-ref name="mydefault" />
 		<global-results>
 			<result name="login">/login.jsp</result>
@@ -56,7 +57,11 @@
 			method="deptEditItem">
 			<result name="success">/dept/json.jsp</result>
 		</action>
-		
+        <action name="authDeptTree" class="deptAction"
+                method="authDeptTree">
+            <result name="success">/msg.jsp</result>
+        </action>
+
 		<action name="deptReg" class="deptAction" method="deptReg">
 			<result name="reg0">/dept/reg0.jsp</result>
 			<result name="reg1">/dept/reg1.jsp</result>

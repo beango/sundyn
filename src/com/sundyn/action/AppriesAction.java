@@ -535,7 +535,6 @@ public class AppriesAction extends ActionSupport
         if(remark!=null){
             remark = remark.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
         }
-        System.out.println("remark::"+remark);
         final String mac = request.getParameter("mac");
         boolean bool = appriesService.addAppriesContact(mac, tt, name, phone, remark);
         this.msg = bool ? "提交成功":"提交失败";

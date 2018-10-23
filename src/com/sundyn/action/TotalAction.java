@@ -2,17 +2,19 @@ package com.sundyn.action;
 
 import com.sundyn.service.*;
 import com.sundyn.util.*;
+import com.sundyn.utils.NumberUtils;
 import com.sundyn.vo.WeburlVo;
+import com.xuan.xutils.utils.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.jdom.JDOMException;
 import org.junit.Test;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TotalAction extends MainAction
@@ -30,7 +32,8 @@ public class TotalAction extends MainAction
     public List getDeptJSON() {
         return deptJSON;
     }
-
+    @Resource
+    private EmployeeService employeeService;
     public void setDeptJSON(List deptJSON) {
         this.deptJSON = deptJSON;
     }
@@ -120,14 +123,15 @@ public class TotalAction extends MainAction
             final List temp = new ArrayList();
             for (int i = 0; i < list.size(); ++i) {
                 final Map m = (Map) list.get(i);
-                final Integer key0 = Integer.valueOf(m.get("key0").toString());
-                final Integer key2 = Integer.valueOf(m.get("key1").toString());
-                final Integer key3 = Integer.valueOf(m.get("key2").toString());
-                final Integer key4 = Integer.valueOf(m.get("key3").toString());
-                final Integer key5 = Integer.valueOf(m.get("key4").toString());
-                final Integer key6 = Integer.valueOf(m.get("key5").toString());
-                final Integer key7 = Integer.valueOf(m.get("key6").toString());
+                final Integer key0 = m.get("key0")==null?0:Integer.valueOf(m.get("key0").toString());
+                final Integer key2 = m.get("key1")==null?0:Integer.valueOf(m.get("key1").toString());
+                final Integer key3 = m.get("key2")==null?0:Integer.valueOf(m.get("key2").toString());
+                final Integer key4 = m.get("key3")==null?0: Integer.valueOf(m.get("key3").toString());
+                final Integer key5 = m.get("key4")==null?0:Integer.valueOf(m.get("key4").toString());
+                final Integer key6 = m.get("key5")==null?0:Integer.valueOf(m.get("key5").toString());
+                final Integer key7 = m.get("key6")==null?0:Integer.valueOf(m.get("key6").toString());
                 final Integer[] key8 = { key0, key2, key3, key4, key5, key6, key7 };
+                Integer servercount = m.get("servercount")==null?0:Integer.valueOf(m.get("servercount").toString());
                 final double prate = Math.rint((1.0 - key7 * 1.0 / (key0 + key2 + key3 + key4 + key5 + key6 + key7)) * 10000.0) / 100.0;
                 final double erate = Math.rint((key0 * 1.0 + key2 * 1.0) / (key0 + key2 + key3 + key4 + key5 + key6 + key7) * 10000.0) / 100.0;
                 double mrate = 0.0;
@@ -181,6 +185,8 @@ public class TotalAction extends MainAction
                         kbm.add(key8[Integer.parseInt(k.get("keyNo").toString())]);
                     }
                     mrate = Math.rint(msum * 1.0 / (msum * 1.0 + bmsum * 1.0) * 10000.0) * 1.0 / 100.0;
+                    mrate = Math.rint(msum * 1.0 / (servercount * 1.0) * 10000.0) * 1.0 / 100.0; //满意总量/业务总量
+
                     if (Double.valueOf(mrate).equals(Double.NaN)) {
                         mrate = 0.0;
                     }
@@ -191,15 +197,24 @@ public class TotalAction extends MainAction
                         sum += key8[j];
                     }
                 }
-                m.put("prate", prate);
-                m.put("erate", erate);
-                m.put("mrate", mrate);
-                m.put("km", km);
-                m.put("kbm", kbm);
-                m.put("msum", msum);
-                m.put("bmsum", bmsum);
-                m.put("p", p);
-                m.put("sum", sum);
+                if(m.get("prate")==null)
+                    m.put("prate", prate);
+                if(m.get("erate")==null)
+                    m.put("erate", erate);
+                if(m.get("mrate")==null)
+                    m.put("mrate", mrate);
+                if(m.get("km")==null)
+                    m.put("km", km);
+                if(m.get("kbm")==null)
+                    m.put("kbm", kbm);
+                if(m.get("msum")==null)
+                    m.put("msum", msum);
+                if(m.get("bmsum")==null)
+                    m.put("bmsum", bmsum);
+                if(m.get("p")==null)
+                    m.put("p", p);
+                if(m.get("sum")==null)
+                    m.put("sum", sum);
                 temp.add(m);
             }
             return temp;
@@ -400,13 +415,14 @@ public class TotalAction extends MainAction
             final HashMap<String, String> allId = this.getAllId();
             for (int i = 0; i < this.list.size(); ++i) {
                 final Map m = (Map) this.list.get(i);
-                Integer key0 = Integer.valueOf(m.get("key0").toString());
-                Integer key2 = Integer.valueOf(m.get("key1").toString());
-                Integer key3 = Integer.valueOf(m.get("key2").toString());
-                Integer key4 = Integer.valueOf(m.get("key3").toString());
-                Integer key5 = Integer.valueOf(m.get("key4").toString());
-                Integer key6 = Integer.valueOf(m.get("key5").toString());
-                Integer key7 = Integer.valueOf(m.get("key6").toString());
+                Integer key0 = m.get("key0")==null?0:Integer.valueOf(m.get("key0").toString());
+                Integer key2 = m.get("key1")==null?0:Integer.valueOf(m.get("key1").toString());
+                Integer key3 = m.get("key2")==null?0:Integer.valueOf(m.get("key2").toString());
+                Integer key4 = m.get("key3")==null?0:Integer.valueOf(m.get("key3").toString());
+                Integer key5 = m.get("key4")==null?0:Integer.valueOf(m.get("key4").toString());
+                Integer key6 = m.get("key5")==null?0:Integer.valueOf(m.get("key5").toString());
+                Integer key7 = m.get("key6")==null?0:Integer.valueOf(m.get("key6").toString());
+                Integer servercount = m.get("servercount")==null?0:Integer.valueOf(m.get("servercount").toString());
                 if(!allId.containsKey("0"))key0=0;
                 if(!allId.containsKey("1"))key2=0;
                 if(!allId.containsKey("2"))key3=0;
@@ -417,13 +433,14 @@ public class TotalAction extends MainAction
                 //logger.info("key1:"+key0+",key2:"+key2+",key3:"+key3+",key4:"+key4+",key5:"+key5+",key6:"+key6+",key7:"+key7);
                 //logger.info("keyWeight1:"+keyWeight[0]+",keyWeight2:"+keyWeight[1]+",keyWeight3:"+keyWeight[2]+",keyWeight4:"+keyWeight[3]+",keyWeight5:"+keyWeight[4]+",keyWeight6:"+keyWeight[5]+",keyWeight7:"+keyWeight[6]);
                 if (key0 + key2 + key3 + key4 + key5 + key6 == 0) {
-                    m.put("num", 100);
+                    m.put("num", "");
                 }
                 else {
                     //logger.info("计算满意度1:"+(key0 * keyWeight[0] + key2 * keyWeight[1] + key3 * keyWeight[2] + key4 * keyWeight[3] + key5 * keyWeight[4] + key6 * keyWeight[5] + key7 * keyWeight[6]));
                     //logger.info("计算满意度2:"+(keyWeight[0] + keyWeight[1] + keyWeight[2] + keyWeight[3] + keyWeight[4] + keyWeight[5] + keyWeight[6]));
                     //logger.info("计算满意度:"+(48.0/10.0/7*100.0));
-                    m.put("num", Math.floor((key0 * keyWeight[0] + key2 * keyWeight[1] + key3 * keyWeight[2] + key4 * keyWeight[3] + key5 * keyWeight[4] + key6 * keyWeight[5] + key7 * keyWeight[6])*1.0 / 10.0 / (1.0*(key0 + key2 + key3 + key4 + key5 + key6 + key7)) * 100.0));
+                    //m.put("num", (int)Math.floor((key0 * keyWeight[0] + key2 * keyWeight[1] + key3 * keyWeight[2] + key4 * keyWeight[3] + key5 * keyWeight[4] + key6 * keyWeight[5] + key7 * keyWeight[6])*1.0 / 10.0 / (1.0*(key0 + key2 + key3 + key4 + key5 + key6 + key7)) * 100.0));
+                    m.put("num", (int)Math.floor((key0 * keyWeight[0] + key2 * keyWeight[1] + key3 * keyWeight[2] + key4 * keyWeight[3] + key5 * keyWeight[4] + key6 * keyWeight[5] + key7 * keyWeight[6])*1.0 / 10.0 / (1.0*servercount) * 100.0));
                 }
                 temp.add(m);
             }
@@ -766,6 +783,7 @@ public class TotalAction extends MainAction
     }
 
     public String totalDatingDeal() throws Exception {
+        boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
             startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
@@ -783,17 +801,22 @@ public class TotalAction extends MainAction
         String dating=null;
         if (request.getParameter("deptId")!=null && !request.getParameter("deptId").equals("")){
             Map dataMap = this.deptService.findDeptById(Integer.valueOf(request.getParameter("deptId")));
-            if (dataMap!=null && (int)dataMap.get("deptType")==ENUM_DEPTTYPE.DATING.getValue()){
+            if (dataMap!=null && (Short)dataMap.get("deptType")==ENUM_DEPTTYPE.DATING.getValue()){
                 dating = request.getParameter("deptId");
             }
-            if (dataMap!=null && (int)dataMap.get("deptType")==ENUM_DEPTTYPE.DEPT.getValue()){
+            if (dataMap!=null && (Short)dataMap.get("deptType")==ENUM_DEPTTYPE.DEPT.getValue()){
                 ids = this.deptService.findChildALLStr123(request.getParameter("deptId"));
             }
         }
+        String sort = req.getString("sort");
+        final String filterDeptIds = this.deptService.findChildALLStr1234(request.getParameter("deptId"));
         this.pager = new Pager("currentPage", pageSize, 0, request);
         Integer[] total = new Integer[1];
-        this.list = this.totalService.totalDating(ids, dating, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
-                this.pager.getPageSize(), total);
+        this.list = null;
+        if(isRpt)
+            this.list = this.totalService.totalDatingRpt(filterDeptIds, ids, dating, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), sort, total);
+        else
+            this.list = this.totalService.totalDating(filterDeptIds, ids, dating, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), total);
         final int rowsCount = total[0];
         this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         this.list = this.getPandM(this.list);
@@ -816,25 +839,34 @@ public class TotalAction extends MainAction
             ls.add(j);
         }
         final JfreeChart jfreeChart = new JfreeChart();
-        jfreeChart.createBar("\u603b\u7684\u6ee1\u610f\u5ea6\u6307\u6570", "\u611f\u77e5\u9879", "\u6ee1\u610f\u5ea6", ls, String.valueOf(path) + "pubpic.jpg");
+        //jfreeChart.createBar("总的满意度指数", "感知项", "满意度", ls, String.valueOf(path) + "pubpic.jpg");
         this.pager.setPageList(this.list);
-        Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
-        totalMap = this.getRate(totalMap);
-        request.setAttribute("totalMap", (Object)totalMap);
+        final String allKeyInUse = this.keyTypeService.findAllKeyInUse(1);
 
         String exportExcel = request.getParameter("export");
         if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
-            List list2 = this.totalService.totalDating(ids, dating, this.startDate, this.endDate, null, null, null);
-            list2 = this.getPandM(list2);
-            list2 = this.getStar(list2);
-            list2 = this.getD(list2);
+            //Map totalMap = this.totalService.totalDeptRpt(filterDeptIds, ids, this.startDate, this.endDate, allKeyInUse);
+            //totalMap = this.getRate(totalMap);
+            //request.setAttribute("totalMap", (Object)totalMap);
+            //List list2 = this.totalService.totalDating(filterDeptIds, ids, dating, this.startDate, this.endDate, null, null, null);
+            //list2 = this.getPandM(list2);
+            //list2 = this.getStar(list2);
+            //list2 = this.getD(list2);
             List ls2 = new ArrayList();
-            for (int i = 0; i < list2.size(); ++i) {
+            //准备数据
+            for (int i = 0; i < list.size(); ++i) {
                 final Map m = new LinkedHashMap();
-                final Map temp = (Map) list2.get(i);
-                m.put("m1", temp.get("datingname"));
-                m.put("m2", temp.get("star"));
-                int j = 3;
+                final Map temp = (Map) list.get(i);
+                int j = 0;
+                m.put("m" + (j++), i+1);
+                m.put("m" + (j++), temp.get("datingname"));
+                m.put("m" + (j++), temp.get("ticketcount"));
+                m.put("m" + (j++), temp.get("servercount"));
+                m.put("m" + (j++), temp.get("cancelcount"));
+                m.put("m" + (j++), temp.get("waittimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                m.put("m" + (j++), temp.get("servicetimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                m.put("m" + (j++), temp.get("pausetime")==null||temp.get("pausetime").toString().equals("null")
+                        ?"":temp.get("pausetime").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
                 for (Object item: (ArrayList)(temp.get("km"))){
                     m.put("m" + (j++), item);
                 }
@@ -842,42 +874,56 @@ public class TotalAction extends MainAction
                 for (Object item: (ArrayList)(temp.get("kbm"))){
                     m.put("m" + (j++), item);
                 }
-                m.put("m" + (j++), temp.get("bmsum"));
-                m.put("m" + (j++), temp.get("key6"));
-                m.put("m" + (j++), (int)temp.get("key0")+(int)temp.get("key1")+(int)temp.get("key2")+(int)temp.get("key3")+(int)temp.get("key4")+(int)temp.get("key5")+(int)temp.get("key6"));
-                m.put("m" + (j++), temp.get("mrate")+"%");
-                m.put("m" + (j++), temp.get("num"));
+                m.put("m" + (j++), temp.get("bmsum"));//不满意合计
+                m.put("m" + (j++), temp.get("totalunkey"));//未评价
+                m.put("m" + (j++), temp.get("totalkey"));//评价合计
+                m.put("m" + (j++), temp.get("mrate")+"%");//满意率
+                m.put("m" + (j++), temp.get("num"));//满意度
                 ls2.add(m);
             }
             final Poi poi = new Poi();
+            /*****************************************
+             * 开始添加第一个标题行
+             *****************************************/
             List<String> args = new ArrayList<String>();
+            args.add("排名");
             args.add(this.getText("sundyn.column.datingName"));
-            args.add(this.getText("sundyn.column.star"));
+            args.add("取号量");
+            args.add("业务量");
+            args.add("弃号量");
+            args.add("平均等待时长");
+            args.add("平均办理时长");
+            args.add("暂停时长");
             for (Object item : mls){
-                //Map map = (Map)this.mls.get(i);
-                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
                 args.add(this.getText("sundyn.column.content"));
             }
             args.add(this.getText("sundyn.column.content"));
             for (Object item : bmls){
-                //Map map = (Map)this.mls.get(i);
-                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
                 args.add(this.getText("sundyn.column.nocontent"));
             }
             args.add(this.getText("sundyn.column.nocontent"));
             args.add(this.getText("sundyn.column.noappries"));
-            args.add(this.getText("sundyn.column.sum"));
+            args.add("评价"+this.getText("sundyn.column.sum"));
             args.add(this.getText("sundyn.column.contentRate"));
             args.add(this.getText("sundyn.column.contentDegree"));
 
-            poi.addTitle(this.getText("sundyn.total.excelTitle.dating"), 1, args.size()-1);
+            String deptname = req.getString("deptname");
+            String deptNamT = "";
+            if (StringUtils.isNotBlank(deptname))
+                deptNamT = "（" + deptname + "）";
+            poi.addTitle("按照大厅统计" + deptNamT,  this.startDate + " 至 " + this.endDate, 1, args.size()-1);//添加报表标题，合并
             poi.addListTitle(args.toArray(), 1);
-            poi.addMerge(2,2,2,2+mls.size());
-            poi.addMerge(2,2+mls.size()+1,2,2+mls.size()+1 + bmls.size());
+            int mergStepN = 8;//需要合并行（不是列）的n列，如机构名称，业务量，弃号量等
+            poi.addMerge(2,mergStepN,2,mergStepN + mls.size());
+            poi.addMerge(2,mergStepN+mls.size()+1,2,mergStepN + mls.size()+1 + bmls.size());
 
+            /*****************************************
+             * 开始添加第二个标题行
+             *****************************************/
             List<String> args2 = new ArrayList<String>();
-            args2.add("");
-            args2.add("");
+            for (int i = 0; i < mergStepN; i++) {//补第二行 mergStepN列的空数据，会合并掉，所以补空白即可
+                args2.add("");
+            }
             for (Object item : mls){
                 args2.add(String.valueOf(((Map)item).get("name").toString()));
             }
@@ -892,15 +938,18 @@ public class TotalAction extends MainAction
             args2.add("");
             poi.addListTitle(args2.toArray(), 1);
 
-            poi.addMerge(2,0,3,0);
-            poi.addMerge(2,1,3,1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1,3,2+mls.size() +1+ bmls.size()+1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1,3,2+mls.size() +1+ bmls.size()+1+1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1+1);
+            for (int i = 0; i < mergStepN; i++) {//合并标题行-机构名称、业务量、弃号量等
+                poi.addMerge(2, i,3, i);
+            }
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1,3,mergStepN+mls.size() +1+ bmls.size()+1);//合并标题行-满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1);//合并标题行-不满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1);//未评价
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1);//评价合计
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1);//满意率
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1);//满意度
             poi.addList(ls2, false);
 
-            int lastr = 3 + ls2.size();
+            /*int lastr = 3 + ls2.size();
             //统计信息
             ls2 = new ArrayList();
             poi.addTitle(this.getText("sundyn.total.toatlInfo.dating"), 1, args.size()-1);
@@ -966,15 +1015,19 @@ public class TotalAction extends MainAction
             }
             poi.addMerge(lastr+1 ,6,lastr + 1 + bmls.size() - 1,7);
             poi.addMerge(lastr+1 ,10,lastr + 1 + bmls.size() - 1,11);
-            poi.addList(ls2, false);
+            poi.addList(ls2, false);*/
 
 
             poi.createFile(String.valueOf(path) + "standard.xls");
             this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
-            this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
+            this.fileName = new String("按照大厅统计报表.xls".getBytes("gb2312"), "iso8859-1");;
             return "excel";
         }
         return "success";
+    }
+
+    public String totalDatingDealRpt() throws Exception {
+        return this.totalDatingDeal();
     }
 
     public String totalDatingExcel() throws Exception {
@@ -984,7 +1037,7 @@ public class TotalAction extends MainAction
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String ids = this.deptService.findChildALLStr123(deptIdGroup);
-        this.list = this.totalService.totalDating(ids,null, this.startDate, this.endDate, null, null, null);
+        this.list = this.totalService.totalDating(null, ids,null, this.startDate, this.endDate, null, null, null);
         this.list = this.getPandM(this.list);
         Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
         totalMap = this.getRate(totalMap);
@@ -1145,7 +1198,7 @@ public class TotalAction extends MainAction
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String ids = this.deptService.findChildALLStr123(deptIdGroup);
-        this.list = this.totalService.totalDating(ids, null, this.startDate, this.endDate, null, null, null);
+        this.list = this.totalService.totalDating(null, ids, null, this.startDate, this.endDate, null, null, null);
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
         Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
@@ -1159,6 +1212,7 @@ public class TotalAction extends MainAction
     }
 
     public String totalDeptDeal() throws Exception {
+        boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
             startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
@@ -1202,34 +1256,56 @@ public class TotalAction extends MainAction
         }
         Map manager = (Map)request.getSession().getAttribute("manager");
         Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
-
         Map power = this.powerService.getUserGroup(groupid);
-        String deptIdGroup = power.get("deptIdGroup").toString();
-
+        String deptIdGroup = manager.get("deptid").toString();
         List dtemp = new ArrayList();
-
-        if(request.getParameter("deptId")!=null && !request.getParameter("deptId").equals("")){
-            //dtemp = this.deptService.findchild(Integer.valueOf(request.getParameter("deptId")));
-            dtemp.add(deptService.findDeptById(Integer.valueOf(request.getParameter("deptId"))));
+        int deptId = req.getInt("deptId");
+        /*if (null==deptIds || deptIds.equals("")) {
+            deptIds = this.deptService.findChildALLStr1234(deptIdGroup);
+        }
+        else{
+            deptIds = this.deptService.findChildALLStr1234(deptIds);
+        }*/
+        if(deptId!=0){
+            Map d = this.deptService.findDeptById(deptId);
+            if(d!=null && d.get("deptType").toString().equals("2")){
+                //dtemp = this.deptService.findchild(deptId);
+                List list = this.deptService.findchild(deptId);
+                for (int i = 0; i < list.size(); i++) {
+                    Map _d = (Map)list.get(i);
+                    if (_d.get("deptType").toString().equals("2"))
+                        dtemp.add(_d);
+                }
+                if (dtemp.size()==0)
+                    dtemp.add(deptService.findDeptById(deptId));
+            }
+            if(d!=null && d.get("deptType").toString().equals("1"))
+                dtemp.add(deptService.findDeptById(deptId));
         }
         else
             dtemp.add(deptService.findDeptById(Integer.valueOf(deptIdGroup)));
         List res = new ArrayList();
         for (int i = 0; i < dtemp.size(); i++) {
-            String name = ((Map)dtemp.get(i)).get("name").toString();
+            Map data = (Map)dtemp.get(i);
+            String deptType = data.get("deptType").toString();
+            String name = data.get("name").toString();
             String id = ((Map)dtemp.get(i)).get("id").toString();
-            String ids = this.deptService.findChildALLStr123(id);
-            Map m = this.totalService.totalDept(ids, this.startDate, this.endDate);
+            String ids = this.deptService.findChildALLStr1234(id);
+            Map m = null;
+            if(isRpt)
+                m = this.totalService.totalDeptRpt("", ids, this.startDate, this.endDate, "");
+            else
+                m = this.totalService.totalDept("", ids, this.startDate, this.endDate, "");
             if (m != null) {
                 m.put("DeptId", id);
                 m.put("name", name);
-                Integer key0 = Integer.valueOf(m.get("key0").toString());
-                Integer key1 = Integer.valueOf(m.get("key1").toString());
-                Integer key2 = Integer.valueOf(m.get("key2").toString());
-                Integer key3 = Integer.valueOf(m.get("key3").toString());
-                Integer key4 = Integer.valueOf(m.get("key4").toString());
-                Integer key5 = Integer.valueOf(m.get("key5").toString());
-                Integer key6 = Integer.valueOf(m.get("key6").toString());
+                Integer key0 = m.get("key0")==null?0:Integer.valueOf(m.get("key0").toString());
+                Integer key1 = m.get("key1")==null?0:Integer.valueOf(m.get("key1").toString());
+                Integer key2 = m.get("key2")==null?0:Integer.valueOf(m.get("key2").toString());
+                Integer key3 = m.get("key3")==null?0:Integer.valueOf(m.get("key3").toString());
+                Integer key4 = m.get("key4")==null?0:Integer.valueOf(m.get("key4").toString());
+                Integer key5 = m.get("key5")==null?0:Integer.valueOf(m.get("key5").toString());
+                Integer key6 = m.get("key6")==null?0:Integer.valueOf(m.get("key6").toString());
                 Integer[] key = { key0, key1, key2, key3, key4, key5, key6 };
                 double prate = Math.rint((1.0D - key6.intValue() * 1.0D / (key0.intValue() + key1.intValue() +
                         key3.intValue() + key4.intValue() + key5.intValue() + key6.intValue())) * 10000.0D) / 100.0D;
@@ -1245,6 +1321,7 @@ public class TotalAction extends MainAction
                 int bmsum = 0;
                 int p = 0;
                 int sum = 0;
+                int servercount=m.get("servercount")==null?0 : Integer.valueOf(m.get("servercount").toString());
 
                 if (this.k7) {
                     for (int j = 0; j < this.mls.size(); j++) {
@@ -1279,17 +1356,18 @@ public class TotalAction extends MainAction
                 else {
                     for (int j = 0; j < this.mls.size(); j++) {
                         Map k = (Map)this.mls.get(j);
-
                         msum = msum + key[Integer.parseInt(k.get("keyNo").toString())].intValue();
+                        //servercount += key[Integer.parseInt(k.get("servercount").toString())].intValue();
                         km.add(key[Integer.parseInt(k.get("keyNo").toString())]);
                     }
                     for (int j = 0; j < this.bmls.size(); j++) {
                         Map k = (Map)this.bmls.get(j);
-
+                       // servercount += key[Integer.parseInt(k.get("servercount").toString())].intValue();
                         bmsum = bmsum + key[Integer.parseInt(k.get("keyNo").toString())].intValue();
                         kbm.add(key[Integer.parseInt(k.get("keyNo").toString())]);
                     }
                     mrate = Math.rint(msum * 1.0D / (msum * 1.0D + bmsum * 1.0D) * 10000.0D) * 1.0D / 100.0D;
+                    mrate = Math.rint(msum * 1.0D / servercount * 10000.0D) * 1.0D / 100.0D;
                     for (int j = 0; j < key.length; j++) {
                         p += key[j].intValue();
                     }
@@ -1306,14 +1384,24 @@ public class TotalAction extends MainAction
                 m.put("bmsum", Integer.valueOf(bmsum));
                 m.put("p", Integer.valueOf(p));
                 m.put("sum", Integer.valueOf(sum));
+                String pausetime = this.totalService.totalDeptPauseTime(ids, this.startDate, this.endDate);
+                m.put("pausetime", String.valueOf(pausetime));
+                m.put("servercount", m.get("servercount"));
+                m.put("waittime", m.get("waittime"));
+                m.put("servicetime", m.get("servicetime"));
+                m.put("unkey", Integer.parseInt(m.get("servercount").toString())-msum-bmsum);
+                m.put("totalkey", msum + bmsum);
                 res.add(m);
             }
         }
+
         this.list = res;
         this.list = getStar(this.list);
         this.list = getD(this.list);
-
-        List ls = new ArrayList();
+        String sort = req.getString("sort");
+        if(StringUtils.isNotBlank(sort))
+            Collections.sort(this.list, new SortByServiceCount(sort.split(",")[0], sort.split(",")[1]));
+        /*List ls = new ArrayList();
         SundynSet sundynSet = SundynSet.getInstance(path);
         String standard = ((String)sundynSet.getM_content().get("standard")).toString();
         Map m1 = new HashMap();
@@ -1330,21 +1418,37 @@ public class TotalAction extends MainAction
             ls.add(m);
         }
         JfreeChart jfreeChart = new JfreeChart();
-        jfreeChart.createBar("总的满意度指数", "感知项", "满意度", ls, path + "pubpic.jpg");
+        jfreeChart.createBar("总的满意度指数", "感知项", "满意度", ls, path + "pubpic.jpg");*/
 
-        String ids = this.deptService.findChildALLStr123(deptIdGroup);
-        Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
-        totalMap = getRate(totalMap);
-        request.setAttribute("totalMap", totalMap);
+        /*String ids = "";//this.deptService.findChildALLStr1234(deptIdGroup);
+        if(req.getInt("deptId")!=0){
+            ids = this.deptService.findChildALLStr1234(request.getParameter("deptId"));
+        }
+        else
+            ids = this.deptService.findChildALLStr1234(deptIdGroup);*/
+
+        /*
+
+        request.setAttribute("totalMap", totalMap);*/
         String exportExcel = request.getParameter("export");
         if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
+            //Map totalMap = this.totalService.totalDeptRpt(null, ids, this.startDate, this.endDate, null);
+            //totalMap = getRate(totalMap);
             List ls2 = new ArrayList();
+            //准备数据
             for (int i = 0; i < list.size(); ++i) {
                 final Map m = new LinkedHashMap();
                 final Map temp = (Map) list.get(i);
-                m.put("m1", temp.get("name"));
-                m.put("m2", temp.get("star"));
-                int j = 3;
+                int j = 0;
+                m.put("m" + (j++), i+1);
+                m.put("m" + (j++), temp.get("name"));
+                m.put("m" + (j++), temp.get("ticketcount"));
+                m.put("m" + (j++), temp.get("servercount"));
+                m.put("m" + (j++), temp.get("cancelcount"));
+                m.put("m" + (j++), temp.get("waittimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                m.put("m" + (j++), temp.get("servicetimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                m.put("m" + (j++), temp.get("pausetime")==null||temp.get("pausetime").toString().equals("null")
+                        ?"":temp.get("pausetime").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
                 for (Object item: (ArrayList)(temp.get("km"))){
                     m.put("m" + (j++), item);
                 }
@@ -1352,42 +1456,55 @@ public class TotalAction extends MainAction
                 for (Object item: (ArrayList)(temp.get("kbm"))){
                     m.put("m" + (j++), item);
                 }
-                m.put("m" + (j++), temp.get("bmsum"));
-                m.put("m" + (j++), temp.get("key6"));
-                m.put("m" + (j++), (int)temp.get("key0")+(int)temp.get("key1")+(int)temp.get("key2")+(int)temp.get("key3")+(int)temp.get("key4")+(int)temp.get("key5")+(int)temp.get("key6"));
-                m.put("m" + (j++), temp.get("mrate")+"%");
-                m.put("m" + (j++), temp.get("num"));
+                m.put("m" + (j++), temp.get("bmsum"));//不满意合计
+                m.put("m" + (j++), temp.get("unkey"));//未评价
+                m.put("m" + (j++), temp.get("totalkey"));//评价合计
+                m.put("m" + (j++), temp.get("mrate")+"%");//满意率
+                m.put("m" + (j++), temp.get("num"));//满意度
                 ls2.add(m);
             }
             final Poi poi = new Poi();
+            /*****************************************
+             * 开始添加第一个标题行
+             *****************************************/
             List<String> args = new ArrayList<String>();
+            args.add("排名");
             args.add(this.getText("sundyn.column.deptName"));
-            args.add(this.getText("sundyn.column.star"));
+            args.add("取号量");
+            args.add("业务量");
+            args.add("弃号量");
+            args.add("平均等待时长");
+            args.add("平均办理时长");
+            args.add("暂停时长");
             for (Object item : mls){
-                //Map map = (Map)this.mls.get(i);
-                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
                 args.add(this.getText("sundyn.column.content"));
             }
             args.add(this.getText("sundyn.column.content"));
             for (Object item : bmls){
-                //Map map = (Map)this.mls.get(i);
-                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
                 args.add(this.getText("sundyn.column.nocontent"));
             }
             args.add(this.getText("sundyn.column.nocontent"));
             args.add(this.getText("sundyn.column.noappries"));
-            args.add(this.getText("sundyn.column.sum"));
+            args.add("评价"+this.getText("sundyn.column.sum"));
             args.add(this.getText("sundyn.column.contentRate"));
             args.add(this.getText("sundyn.column.contentDegree"));
-
-            poi.addTitle(this.getText("sundyn.total.excelTitle4"), 1, args.size()-1);
+            String deptname = req.getString("deptname");
+            String deptNamT = "";
+            if (StringUtils.isNotBlank(deptname))
+                deptNamT = "（" + deptname + "）";
+            poi.addTitle("按照机构统计" + deptNamT,  this.startDate + " 至 " + this.endDate, 1, args.size()-1); //添加报表标题，合并
             poi.addListTitle(args.toArray(), 1);
-            poi.addMerge(2,2,2,2+mls.size());
-            poi.addMerge(2,2+mls.size()+1,2,2+mls.size()+1 + bmls.size());
+            int mergStepN = 8;//需要合并行（不是列）的n列，如机构名称，业务量，弃号量等
+            poi.addMerge(2,mergStepN,2,mergStepN + mls.size());
+            poi.addMerge(2,mergStepN+mls.size()+1,2,mergStepN + mls.size()+1 + bmls.size());
 
+            /*****************************************
+             * 开始添加第二个标题行
+             *****************************************/
             List<String> args2 = new ArrayList<String>();
-            args2.add("");
-            args2.add("");
+            for (int i = 0; i < mergStepN; i++) {//补第二行 mergStepN列的空数据，会合并掉，所以补空白即可
+                args2.add("");
+            }
             for (Object item : mls){
                 args2.add(String.valueOf(((Map)item).get("name").toString()));
             }
@@ -1396,21 +1513,24 @@ public class TotalAction extends MainAction
                 args2.add(String.valueOf(((Map)item).get("name").toString()));
             }
             args2.add(this.getText("sundyn.column.nocontentTotal"));
-            args2.add("");
+            args2.add("");//补满意，不满意后面4列的空白数据，会合并掉，所以补空白即可
             args2.add("");
             args2.add("");
             args2.add("");
             poi.addListTitle(args2.toArray(), 1);
 
-            poi.addMerge(2,0,3,0);
-            poi.addMerge(2,1,3,1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1,3,2+mls.size() +1+ bmls.size()+1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1,3,2+mls.size() +1+ bmls.size()+1+1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1+1);
+            for (int i = 0; i < mergStepN; i++) {//合并标题行-机构名称、业务量、弃号量等
+                poi.addMerge(2, i,3, i);
+            }
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1,3,mergStepN+mls.size() +1+ bmls.size()+1);//合并标题行-满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1);//合并标题行-不满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1);//未评价
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1);//评价合计
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1);//满意率
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1);//满意度
             poi.addList(ls2, false);
 
-            int lastr = 3 + ls2.size();
+            /*int lastr = 3 + ls2.size();
             //统计信息
             ls2 = new ArrayList();
             poi.addTitle(this.getText("sundyn.total.toatlInfo"), 1, args.size()-1);
@@ -1476,15 +1596,40 @@ public class TotalAction extends MainAction
             }
             poi.addMerge(lastr+1 ,6,lastr + 1 + bmls.size() - 1,7);
             poi.addMerge(lastr+1 ,10,lastr + 1 + bmls.size() - 1,11);
-            poi.addList(ls2, false);
-
+            poi.addList(ls2, false);*/
 
             poi.createFile(String.valueOf(path) + "standard.xls");
             this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
-            this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
+            this.fileName = new String("按照机构统计报表.xls".getBytes("gb2312"), "iso8859-1");;
             return "excel";
         }
         return "success";
+    }
+
+    class SortByServiceCount implements Comparator {
+        private String field;
+        private String desc;
+
+        public SortByServiceCount(String field, String desc) {
+            this.field = field;
+            this.desc = desc;
+        }
+        public int compare(Object o1, Object o2) {
+            Map s1 = (Map) o1;
+            Map s2 = (Map) o2;
+            int r = 1;
+            if (s1.get(field) == null || s2.get(field)==null || !NumberUtils.isNumber(s1.get(field).toString())
+                    || !NumberUtils.isNumber(s2.get(field).toString()))
+                return -1;
+            if (Float.parseFloat(s1.get(field).toString()) > Float.parseFloat(s2.get(field).toString()))
+                r = desc.equals("desc") ? -1 : 1;
+            else
+                r = desc.equals("desc") ? 1 : -1;
+            return r;
+        }
+    }
+    public String totalDeptDealRpt() throws Exception {
+        return this.totalDeptDeal();
     }
 
     public String totalDeptDeal1() throws Exception {
@@ -1956,6 +2101,7 @@ public class TotalAction extends MainAction
     }
 
     public String totalPersonDeal() throws Exception {
+        boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
             startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
@@ -1978,12 +2124,26 @@ public class TotalAction extends MainAction
         this.deptJSON = this.deptService.findChildALL(deptIdGroup2);
 
         String deptId = request.getParameter("deptId");
-        final String ids = this.deptService.findChildALLStr123(deptId);
-        final String employeeId = request.getParameter("employeeId");
+        final String ids = this.deptService.findChildALLStr1234(deptId);
+        final Integer employeeId = req.getInt("employeeId");
         this.pager = new Pager("currentPage", pageSize, 0, request);
         Integer[] totalrows = new Integer[1];
-        this.list = this.totalService.totalPerson(ids, employeeId, this.startDate, this.endDate,
-                (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), totalrows);
+        Map e = this.employeeService.findEmployeeById(employeeId);
+        String keyCardNum = null;
+        if (e!=null)
+        {
+            keyCardNum = e.get("cardnum").toString();
+        }
+        String sort = req.getString("sort");
+        String exportExcel = request.getParameter("export");
+
+        this.list = null;
+        if(isRpt) {
+            if (exportExcel != null && exportExcel.toLowerCase().equals("true"))
+                this.pager.setPageSize(0);
+            this.list = this.totalService.totalPersonRpt(ids, sort, keyCardNum, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), totalrows);
+        } else
+            this.list = this.totalService.totalPerson(ids, keyCardNum, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), totalrows);
         final int rowsCount = totalrows[0];
         this.pager = new Pager("currentPage", pageSize, rowsCount, request);
 
@@ -1993,7 +2153,7 @@ public class TotalAction extends MainAction
         final List ls = new ArrayList();
         final SundynSet sundynSet = SundynSet.getInstance(path);
         final String standard = sundynSet.getM_content().get("standard").toString();
-        final Map m1 = new HashMap();
+        /*final Map m1 = new HashMap();
         m1.put("num", standard);
         m1.put("category", "感知");
         m1.put("item", "标准");
@@ -2005,29 +2165,28 @@ public class TotalAction extends MainAction
             j.put("category", "感知");
             j.put("item", temp.get("employeeName"));
             ls.add(j);
-        }
-        final JfreeChart jfreeChart = new JfreeChart();
-        jfreeChart.createBar("人员满意度指数", "感知项", "满意度", ls, String.valueOf(path) + "pubpic.jpg");
+        }*/
+        //final JfreeChart jfreeChart = new JfreeChart();
+        //jfreeChart.createBar("人员满意度指数", "感知项", "满意度", ls, String.valueOf(path) + "pubpic.jpg");
         this.pager.setPageList(this.list);
-
-        Map totalMap = this.totalService.totalDept(ids, employeeId, this.startDate, this.endDate);
-        totalMap = this.getRate(totalMap);
-        request.setAttribute("totalMap", (Object)totalMap);
         request.setAttribute("deptId", (Object)deptId);
 
-        String exportExcel = request.getParameter("export");
         if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
-            List list2 = this.totalService.totalPerson(ids, employeeId, this.startDate, this.endDate, null, null, totalrows);
-            list2 = this.getPandM(list2);
-            list2 = this.getStar(list2);
-            list2 = this.getD(list2);
             List ls2 = new ArrayList();
-            for (int i = 0; i < list2.size(); ++i) {
+            for (int i = 0; i < list.size(); ++i) {
                 final Map m = new LinkedHashMap();
-                final Map temp = (Map) list2.get(i);
-                m.put("m1", temp.get("employeeName"));
-                m.put("m2", temp.get("star"));
-                int j = 3;
+                final Map temp = (Map) list.get(i);
+                int j = 0;
+                m.put("m" + (j++), i+1);
+                m.put("m" + (j++), temp.get("deptname"));
+                m.put("m" + (j++), temp.get("employeeName"));
+                m.put("m" + (j++), temp.get("ticketcount"));
+                m.put("m" + (j++), temp.get("servercount"));
+                m.put("m" + (j++), temp.get("cancelcount"));
+                m.put("m" + (j++), temp.get("waittimeavg")==null?"":temp.get("waittimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                m.put("m" + (j++), temp.get("servicetimeavg")==null?"":temp.get("servicetimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                m.put("m" + (j++), temp.get("pausetime")==null||temp.get("pausetime").toString().equals("null")
+                        ?"":temp.get("pausetime").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
                 for (Object item: (ArrayList)(temp.get("km"))){
                     m.put("m" + (j++), item);
                 }
@@ -2035,42 +2194,58 @@ public class TotalAction extends MainAction
                 for (Object item: (ArrayList)(temp.get("kbm"))){
                     m.put("m" + (j++), item);
                 }
-                m.put("m" + (j++), temp.get("bmsum"));
-                m.put("m" + (j++), temp.get("key6"));
-                m.put("m" + (j++), (int)temp.get("key0")+(int)temp.get("key1")+(int)temp.get("key2")+(int)temp.get("key3")+(int)temp.get("key4")+(int)temp.get("key5")+(int)temp.get("key6"));
-                m.put("m" + (j++), temp.get("mrate")+"%");
-                m.put("m" + (j++), temp.get("num"));
+                m.put("m" + (j++), temp.get("bmsum"));//不满意合计
+                m.put("m" + (j++), temp.get("totalunkey"));//未评价
+                m.put("m" + (j++), temp.get("totalkey"));//评价合计
+                m.put("m" + (j++), temp.get("mrate")+"%");//满意率
+                m.put("m" + (j++), temp.get("num"));//满意度
                 ls2.add(m);
             }
             final Poi poi = new Poi();
+            /*****************************************
+             * 开始添加第一个标题行
+             *****************************************/
             List<String> args = new ArrayList<String>();
+            args.add("排名");
+            args.add("大厅名称");
             args.add(this.getText("sundyn.column.name"));
-            args.add(this.getText("sundyn.column.star"));
+            args.add("取号量");
+            args.add("业务量");
+            args.add("弃号量");
+            args.add("平均等待时长");
+            args.add("平均办理时长");
+            args.add("暂停时长");
+
             for (Object item : mls){
-                //Map map = (Map)this.mls.get(i);
-                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
                 args.add(this.getText("sundyn.column.content"));
             }
             args.add(this.getText("sundyn.column.content"));
             for (Object item : bmls){
-                //Map map = (Map)this.mls.get(i);
-                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
                 args.add(this.getText("sundyn.column.nocontent"));
             }
             args.add(this.getText("sundyn.column.nocontent"));
             args.add(this.getText("sundyn.column.noappries"));
-            args.add(this.getText("sundyn.column.sum"));
+            args.add("评价"+this.getText("sundyn.column.sum"));
             args.add(this.getText("sundyn.column.contentRate"));
             args.add(this.getText("sundyn.column.contentDegree"));
 
-            poi.addTitle(this.getText("sundyn.total.excelTitle.person"), 1, args.size()-1);
+            String deptname = req.getString("deptname");
+            String deptNamT = "";
+            if (StringUtils.isNotBlank(deptname))
+                deptNamT = "（" + deptname + "）";
+            poi.addTitle("按照员工统计" + deptNamT,  this.startDate + " 至 " + this.endDate, 1, args.size()-1); //添加报表标题，合并
             poi.addListTitle(args.toArray(), 1);
-            poi.addMerge(2,2,2,2+mls.size());
-            poi.addMerge(2,2+mls.size()+1,2,2+mls.size()+1 + bmls.size());
+            int mergStepN = 9;//需要合并行（不是列）的n列，如机构名称，业务量，弃号量等
+            poi.addMerge(2,mergStepN,2,mergStepN + mls.size());
+            poi.addMerge(2,mergStepN+mls.size()+1,2,mergStepN + mls.size()+1 + bmls.size());
 
+            /*****************************************
+             * 开始添加第二个标题行
+             *****************************************/
             List<String> args2 = new ArrayList<String>();
-            args2.add("");
-            args2.add("");
+            for (int i = 0; i < mergStepN; i++) {//补第二行 mergStepN列的空数据，会合并掉，所以补空白即可
+                args2.add("");
+            }
             for (Object item : mls){
                 args2.add(String.valueOf(((Map)item).get("name").toString()));
             }
@@ -2079,96 +2254,201 @@ public class TotalAction extends MainAction
                 args2.add(String.valueOf(((Map)item).get("name").toString()));
             }
             args2.add(this.getText("sundyn.column.nocontentTotal"));
-            args2.add("");
+            args2.add("");//补满意，不满意后面4列的空白数据，会合并掉，所以补空白即可
             args2.add("");
             args2.add("");
             args2.add("");
             poi.addListTitle(args2.toArray(), 1);
 
-            poi.addMerge(2,0,3,0);
-            poi.addMerge(2,1,3,1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1,3,2+mls.size() +1+ bmls.size()+1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1,3,2+mls.size() +1+ bmls.size()+1+1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1+1);
+            for (int i = 0; i < mergStepN; i++) {//合并标题行-机构名称、业务量、弃号量等
+                poi.addMerge(2, i,3, i);
+            }
+
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1,3,mergStepN+mls.size() +1+ bmls.size()+1);//合并标题行-满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1);//合并标题行-不满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1);//未评价
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1);//评价合计
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1);//满意率
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1);//满意度
             poi.addList(ls2, false);
-
-            int lastr = 3 + ls2.size();
-            //统计信息
-            ls2 = new ArrayList();
-            poi.addTitle(this.getText("sundyn.total.toatlInfo.person"), 1, args.size()-1);
-
-            for (Object item : mls){
-                Map itemMap = (Map)item;
-                final Map m2 = new LinkedHashMap();
-                m2.put("m1", this.getText("sundyn.column.content"));
-                int j = 2;
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), String.valueOf(itemMap.get("name").toString()));//keyNo
-                Integer[] d = (Integer[])(totalMap.get("key"));
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), d[Integer.valueOf(itemMap.get("keyNo").toString())]);
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), totalMap.get("msum"));//keyNo
-                double[] d2 = (double[])(totalMap.get("keyr"));
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), d2[Integer.valueOf(itemMap.get("keyNo").toString())]+"%");
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), totalMap.get("mrate")+"%");//keyNo
-                m2.put("m" + (j++), "");
-                ls2.add(m2);
-            }
-            poi.addMerge(lastr + 2 ,0,lastr + 2 + mls.size() - 1,1);
-            int _t = lastr + 2;
-            while(_t <= lastr + 2 + mls.size() - 1) {
-                poi.addMerge(_t, 2, _t, 3);
-                poi.addMerge(_t, 4, _t, 5);
-                poi.addMerge(_t, 8, _t, 9);
-                _t++;
-            }
-            poi.addMerge(lastr + 2 ,6,lastr + 2 + mls.size() - 1,7);
-            poi.addMerge(lastr + 2 ,10,lastr + 2 + mls.size() - 1,11);
-            for (Object item : bmls){
-                Map itemMap = (Map)item;
-                final Map m2 = new LinkedHashMap();
-                m2.put("m1", this.getText("sundyn.column.nocontent"));
-                int j = 2;
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), String.valueOf(itemMap.get("name").toString()));//keyNo
-                Integer[] d = (Integer[])(totalMap.get("key"));
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), d[Integer.valueOf(itemMap.get("keyNo").toString())]);
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), totalMap.get("bmsum"));//keyNo
-                double[] d2 = (double[])(totalMap.get("keyr"));
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), d2[Integer.valueOf(itemMap.get("keyNo").toString())]+"%");
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), totalMap.get("bmrate")+"%");//keyNo
-                m2.put("m" + (j++), "");
-                ls2.add(m2);
-            }
-            lastr = lastr + 2 + mls.size() - 1;
-            poi.addMerge(lastr+1 ,0,lastr + 1 + bmls.size() - 1,1);
-            _t = lastr;
-            while(_t <= lastr + 2 + bmls.size() - 1) {
-                poi.addMerge(_t, 2, _t, 3);
-                poi.addMerge(_t, 4, _t, 5);
-                poi.addMerge(_t, 8, _t, 9);
-                _t++;
-            }
-            poi.addMerge(lastr+1 ,6,lastr + 1 + bmls.size() - 1,7);
-            poi.addMerge(lastr+1 ,10,lastr + 1 + bmls.size() - 1,11);
-            poi.addList(ls2, false);
-
 
             poi.createFile(String.valueOf(path) + "standard.xls");
             this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
-            this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
+            this.fileName = new String("按照员工统计报表.xls".getBytes("gb2312"), "iso8859-1");;
             return "excel";
         }
 
         return "success";
+    }
+
+    public String totalProxyDealRpt() throws Exception {
+        boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+        }
+        if(endDate == null) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
+
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String path = ServletActionContext.getServletContext().getRealPath("/");
+
+        final Map manager2 = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
+        final Map power2 = this.powerService.getUserGroup(groupid2);
+        final String deptIdGroup2 = power2.get("deptIdGroup").toString();
+        final List deptList2 = new ArrayList();
+        final Map dept2 = this.deptService.findDeptById(Integer.valueOf(deptIdGroup2));
+        deptList2.add(dept2);
+        request.setAttribute("deptList", (Object)deptList2);
+        this.deptJSON = this.deptService.findChildALL(deptIdGroup2);
+
+        String deptId = request.getParameter("deptId");
+        final String ids = this.deptService.findChildALLStr1234(deptId);
+        this.pager = new Pager("currentPage", pageSize, 0, request);
+        Integer[] totalrows = new Integer[1];
+        String sort = req.getString("sort");
+        String exportExcel = request.getParameter("export");
+
+        this.list = null;
+        if(isRpt) {
+            if (exportExcel != null && exportExcel.toLowerCase().equals("true"))
+                this.pager.setPageSize(0);
+            this.list = this.totalService.totalProxyRpt(ids, sort, req.getString("cardname"), this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), totalrows);
+        }
+        final int rowsCount = totalrows[0];
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+
+        this.list = this.getPandM(this.list);
+        this.list = this.getStar(this.list);
+        this.list = this.getD(this.list);
+        final List ls = new ArrayList();
+        final SundynSet sundynSet = SundynSet.getInstance(path);
+        final String standard = sundynSet.getM_content().get("standard").toString();
+        /*final Map m1 = new HashMap();
+        m1.put("num", standard);
+        m1.put("category", "感知");
+        m1.put("item", "标准");
+        ls.add(m1);
+        for (int i = 0; i < this.list.size(); ++i) {
+            final Map temp = (Map) this.list.get(i);
+            final Map j = new HashMap();
+            j.put("num", temp.get("num"));
+            j.put("category", "感知");
+            j.put("item", temp.get("employeeName"));
+            ls.add(j);
+        }*/
+        //final JfreeChart jfreeChart = new JfreeChart();
+        //jfreeChart.createBar("人员满意度指数", "感知项", "满意度", ls, String.valueOf(path) + "pubpic.jpg");
+        this.pager.setPageList(this.list);
+        request.setAttribute("deptId", (Object)deptId);
+
+        if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
+            List ls2 = new ArrayList();
+            for (int i = 0; i < list.size(); ++i) {
+                final Map m = new LinkedHashMap();
+                final Map temp = (Map) list.get(i);
+                int j = 0;
+                m.put("m" + (j++), temp.get("cardname"));
+                m.put("m" + (j++), temp.get("ticketcount"));
+                m.put("m" + (j++), temp.get("servercount"));
+                m.put("m" + (j++), temp.get("cancelcount"));
+                m.put("m" + (j++), temp.get("waittimeavg")==null?"":temp.get("waittimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                m.put("m" + (j++), temp.get("servicetimeavg")==null?"":temp.get("servicetimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                for (Object item: (ArrayList)(temp.get("km"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("msum"));
+                for (Object item: (ArrayList)(temp.get("kbm"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("bmsum"));//不满意合计
+                m.put("m" + (j++), temp.get("totalunkey"));//未评价
+                m.put("m" + (j++), temp.get("totalkey"));//评价合计
+                m.put("m" + (j++), temp.get("mrate")+"%");//满意率
+                m.put("m" + (j++), temp.get("num"));//满意度
+                ls2.add(m);
+            }
+            final Poi poi = new Poi();
+            /*****************************************
+             * 开始添加第一个标题行
+             *****************************************/
+            List<String> args = new ArrayList<String>();
+            args.add("代理人");
+            args.add("取号量");
+            args.add("业务量");
+            args.add("弃号量");
+            args.add("平均等待时长");
+            args.add("平均办理时长");
+
+            for (Object item : mls){
+                args.add(this.getText("sundyn.column.content"));
+            }
+            args.add(this.getText("sundyn.column.content"));
+            for (Object item : bmls){
+                args.add(this.getText("sundyn.column.nocontent"));
+            }
+            args.add(this.getText("sundyn.column.nocontent"));
+            args.add(this.getText("sundyn.column.noappries"));
+            args.add("评价"+this.getText("sundyn.column.sum"));
+            args.add(this.getText("sundyn.column.contentRate"));
+            args.add(this.getText("sundyn.column.contentDegree"));
+
+            String deptname = req.getString("deptname");
+            String deptNamT = "";
+            if (StringUtils.isNotBlank(deptname))
+                deptNamT = "（" + deptname + "）";
+            poi.addTitle("按照代理人统计" + deptNamT,  this.startDate + " 至 " + this.endDate, 1, args.size()-1); //添加报表标题，合并
+            poi.addListTitle(args.toArray(), 1);
+            int mergStepN = 6;//需要合并行（不是列）的n列，如机构名称，业务量，弃号量等
+            poi.addMerge(2,mergStepN,2,mergStepN + mls.size());
+            poi.addMerge(2,mergStepN+mls.size()+1,2,mergStepN + mls.size()+1 + bmls.size());
+
+            /*****************************************
+             * 开始添加第二个标题行
+             *****************************************/
+            List<String> args2 = new ArrayList<String>();
+            for (int i = 0; i < mergStepN; i++) {//补第二行 mergStepN列的空数据，会合并掉，所以补空白即可
+                args2.add("");
+            }
+            for (Object item : mls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.contentTotal"));
+            for (Object item : bmls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.nocontentTotal"));
+            args2.add("");//补满意，不满意后面4列的空白数据，会合并掉，所以补空白即可
+            args2.add("");
+            args2.add("");
+            args2.add("");
+            poi.addListTitle(args2.toArray(), 1);
+
+            for (int i = 0; i < mergStepN; i++) {//合并标题行-机构名称、业务量、弃号量等
+                poi.addMerge(2, i,3, i);
+            }
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1,3,mergStepN+mls.size() +1+ bmls.size()+1);//合并标题行-满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1);//合并标题行-不满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1);//未评价
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1);//评价合计
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1);//满意率
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1);//满意度
+            poi.addList(ls2, false);
+
+            poi.createFile(String.valueOf(path) + "standard.xls");
+            this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
+            this.fileName = new String("按照代理人统计报表.xls".getBytes("gb2312"), "iso8859-1");;
+            return "excel";
+        }
+
+        return "success";
+    }
+
+    public String totalPersonDealRpt() throws Exception
+    {
+        return totalPersonDeal();
     }
 
     public String totalPersonDeal2() throws Exception {
@@ -2398,6 +2678,7 @@ public class TotalAction extends MainAction
     }
 
     public String totalWindowDeal() throws Exception {
+        boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
             startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
@@ -2416,11 +2697,21 @@ public class TotalAction extends MainAction
         final String ids22 = this.deptService.findChildALLStr123(deptIdGroup2);
         this.list2 = this.deptService.findDeptByType(ids22, 1);
         this.deptJSON = this.deptService.findChildALL(deptIdGroup2);
+        String sort = req.getString("sort");
+        String exportExcel = request.getParameter("export");
 
-        final int rowsCount = this.totalService.counttotalWindow(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
-        final String ids2 = this.deptService.findChildALLStr123(deptId);
-        this.list = this.totalService.totalWindow(ids2, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        int[] rowsCount = new int[1];
+        this.pager = new Pager("currentPage", pageSize, 0, request);
+        final String ids2 = this.deptService.findChildALLStr1234(deptId);
+        this.list = null;
+        if(isRpt){
+            if (exportExcel != null && exportExcel.toLowerCase().equals("true"))
+                this.pager.setPageSize(0);
+            list = this.totalService.totalWindowRpt(ids2, sort, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
+        }
+        else
+            list = this.totalService.totalWindow(ids2, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
         this.list = this.getD(this.list);
@@ -2443,26 +2734,26 @@ public class TotalAction extends MainAction
             }
         }
         final JfreeChart jfreeChart = new JfreeChart();
-        jfreeChart.createBar("总满意度指数", "感知项", "满意度", ls, String.valueOf(path) + "pubpic.jpg");
+        //jfreeChart.createBar("总满意度指数", "感知项", "满意度", ls, String.valueOf(path) + "pubpic.jpg");
         this.pager.setPageList(this.list);
-        Map totalMap = this.totalService.totalDept(ids2, this.startDate, this.endDate);
-        totalMap = this.getRate(totalMap);
-        request.setAttribute("totalMap", (Object)totalMap);
         request.setAttribute("deptId", (Object)deptId);
 
-        String exportExcel = request.getParameter("export");
         if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
-            List list2 = this.totalService.totalWindow(ids2, this.startDate, this.endDate, null, null);
-            list2 = this.getPandM(list2);
-            list2 = this.getStar(list2);
-            list2 = this.getD(list2);
             List ls2 = new ArrayList();
-            for (int i = 0; i < list2.size(); ++i) {
+            for (int i = 0; i < list.size(); ++i) {
                 final Map m = new LinkedHashMap();
-                final Map temp = (Map) list2.get(i);
-                m.put("m1", temp.get("windowname"));
-                m.put("m2", temp.get("star"));
-                int j = 3;
+                final Map temp = (Map) list.get(i);
+                int j = 0;
+                m.put("m" + (j++), i+1);
+                m.put("m" + (j++), temp.get("deptname"));
+                m.put("m" + (j++), temp.get("windowname"));
+                m.put("m" + (j++), temp.get("ticketcount"));
+                m.put("m" + (j++), temp.get("servercount"));
+                m.put("m" + (j++), temp.get("cancelcount"));
+                m.put("m" + (j++), temp.get("waittimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                m.put("m" + (j++), temp.get("servicetimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                m.put("m" + (j++), temp.get("pausetime")==null||temp.get("pausetime").toString().equals("null")
+                        ?"":temp.get("pausetime").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
                 for (Object item: (ArrayList)(temp.get("km"))){
                     m.put("m" + (j++), item);
                 }
@@ -2470,42 +2761,57 @@ public class TotalAction extends MainAction
                 for (Object item: (ArrayList)(temp.get("kbm"))){
                     m.put("m" + (j++), item);
                 }
-                m.put("m" + (j++), temp.get("bmsum"));
-                m.put("m" + (j++), temp.get("key6"));
-                m.put("m" + (j++), (int)temp.get("key0")+(int)temp.get("key1")+(int)temp.get("key2")+(int)temp.get("key3")+(int)temp.get("key4")+(int)temp.get("key5")+(int)temp.get("key6"));
-                m.put("m" + (j++), temp.get("mrate")+"%");
-                m.put("m" + (j++), temp.get("num"));
+                m.put("m" + (j++), temp.get("bmsum"));//不满意合计
+                m.put("m" + (j++), temp.get("totalunkey"));//未评价
+                m.put("m" + (j++), temp.get("totalkey"));//评价合计
+                m.put("m" + (j++), temp.get("mrate")+"%");//满意率
+                m.put("m" + (j++), temp.get("num"));//满意度
                 ls2.add(m);
             }
             final Poi poi = new Poi();
+            /*****************************************
+             * 开始添加第一个标题行
+             *****************************************/
             List<String> args = new ArrayList<String>();
+            args.add("排名");
+            args.add("大厅名称");
             args.add(this.getText("sundyn.column.windowName"));
-            args.add(this.getText("sundyn.column.star"));
+            args.add("取号量");
+            args.add("业务量");
+            args.add("弃号量");
+            args.add("平均等待时长");
+            args.add("平均办理时长");
+            args.add("暂停时长");
             for (Object item : mls){
-                //Map map = (Map)this.mls.get(i);
-                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
                 args.add(this.getText("sundyn.column.content"));
             }
             args.add(this.getText("sundyn.column.content"));
             for (Object item : bmls){
-                //Map map = (Map)this.mls.get(i);
-                //excelBuf.append(String.valueOf(map.get("name").toString()) + "\t");
                 args.add(this.getText("sundyn.column.nocontent"));
             }
             args.add(this.getText("sundyn.column.nocontent"));
             args.add(this.getText("sundyn.column.noappries"));
-            args.add(this.getText("sundyn.column.sum"));
+            args.add("评价"+this.getText("sundyn.column.sum"));
             args.add(this.getText("sundyn.column.contentRate"));
             args.add(this.getText("sundyn.column.contentDegree"));
 
-            poi.addTitle(this.getText("sundyn.total.excelTitle.window"), 1, args.size()-1);
+            String deptname = req.getString("deptname");
+            String deptNamT = "";
+            if (StringUtils.isNotBlank(deptname))
+                deptNamT = "（" + deptname + "）";
+            poi.addTitle("按照窗口统计" + deptNamT,  this.startDate + " 至 " + this.endDate, 1, args.size()-1); //添加报表标题，合并
             poi.addListTitle(args.toArray(), 1);
-            poi.addMerge(2,2,2,2+mls.size());
-            poi.addMerge(2,2+mls.size()+1,2,2+mls.size()+1 + bmls.size());
+            int mergStepN = 9;//需要合并行（不是列）的n列，如机构名称，业务量，弃号量等
+            poi.addMerge(2,mergStepN,2,mergStepN + mls.size());
+            poi.addMerge(2,mergStepN+mls.size()+1,2,mergStepN + mls.size()+1 + bmls.size());
 
+            /*****************************************
+             * 开始添加第二个标题行
+             *****************************************/
             List<String> args2 = new ArrayList<String>();
-            args2.add("");
-            args2.add("");
+            for (int i = 0; i < mergStepN; i++) {//补第二行 mergStepN列的空数据，会合并掉，所以补空白即可
+                args2.add("");
+            }
             for (Object item : mls){
                 args2.add(String.valueOf(((Map)item).get("name").toString()));
             }
@@ -2514,96 +2820,212 @@ public class TotalAction extends MainAction
                 args2.add(String.valueOf(((Map)item).get("name").toString()));
             }
             args2.add(this.getText("sundyn.column.nocontentTotal"));
-            args2.add("");
+            args2.add("");//补满意，不满意后面4列的空白数据，会合并掉，所以补空白即可
             args2.add("");
             args2.add("");
             args2.add("");
             poi.addListTitle(args2.toArray(), 1);
 
-            poi.addMerge(2,0,3,0);
-            poi.addMerge(2,1,3,1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1,3,2+mls.size() +1+ bmls.size()+1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1,3,2+mls.size() +1+ bmls.size()+1+1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1);
-            poi.addMerge(2,2+mls.size() +1+ bmls.size()+1+1+1+1,3,2+mls.size() +1+ bmls.size()+1+1+1+1);
+            for (int i = 0; i < mergStepN; i++) {//合并标题行-机构名称、业务量、弃号量等
+                poi.addMerge(2, i,3, i);
+            }
+
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1,3,mergStepN+mls.size() +1+ bmls.size()+1);//合并标题行-满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1);//合并标题行-不满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1);//未评价
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1);//评价合计
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1);//满意率
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1);//满意度
             poi.addList(ls2, false);
-
-            int lastr = 3 + ls2.size();
-            //统计信息
-            ls2 = new ArrayList();
-            poi.addTitle(this.getText("sundyn.total.toatlInfo.window"), 1, args.size()-1);
-
-            for (Object item : mls){
-                Map itemMap = (Map)item;
-                final Map m2 = new LinkedHashMap();
-                m2.put("m1", this.getText("sundyn.column.content"));
-                int j = 2;
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), String.valueOf(itemMap.get("name").toString()));//keyNo
-                Integer[] d = (Integer[])(totalMap.get("key"));
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), d[Integer.valueOf(itemMap.get("keyNo").toString())]);
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), totalMap.get("msum"));//keyNo
-                double[] d2 = (double[])(totalMap.get("keyr"));
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), d2[Integer.valueOf(itemMap.get("keyNo").toString())]+"%");
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), totalMap.get("mrate")+"%");//keyNo
-                m2.put("m" + (j++), "");
-                ls2.add(m2);
-            }
-            poi.addMerge(lastr + 2 ,0,lastr + 2 + mls.size() - 1,1);
-            int _t = lastr + 2;
-            while(_t <= lastr + 2 + mls.size() - 1) {
-                poi.addMerge(_t, 2, _t, 3);
-                poi.addMerge(_t, 4, _t, 5);
-                poi.addMerge(_t, 8, _t, 9);
-                _t++;
-            }
-            poi.addMerge(lastr + 2 ,6,lastr + 2 + mls.size() - 1,7);
-            poi.addMerge(lastr + 2 ,10,lastr + 2 + mls.size() - 1,11);
-            for (Object item : bmls){
-                Map itemMap = (Map)item;
-                final Map m2 = new LinkedHashMap();
-                m2.put("m1", this.getText("sundyn.column.nocontent"));
-                int j = 2;
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), String.valueOf(itemMap.get("name").toString()));//keyNo
-                Integer[] d = (Integer[])(totalMap.get("key"));
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), d[Integer.valueOf(itemMap.get("keyNo").toString())]);
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), totalMap.get("bmsum"));//keyNo
-                double[] d2 = (double[])(totalMap.get("keyr"));
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), d2[Integer.valueOf(itemMap.get("keyNo").toString())]+"%");
-                m2.put("m" + (j++), "");
-                m2.put("m" + (j++), totalMap.get("bmrate")+"%");//keyNo
-                m2.put("m" + (j++), "");
-                ls2.add(m2);
-            }
-            lastr = lastr + 2 + mls.size() - 1;
-            poi.addMerge(lastr+1 ,0,lastr + 1 + bmls.size() - 1,1);
-            _t = lastr;
-            while(_t <= lastr + 2 + bmls.size() - 1) {
-                poi.addMerge(_t, 2, _t, 3);
-                poi.addMerge(_t, 4, _t, 5);
-                poi.addMerge(_t, 8, _t, 9);
-                _t++;
-            }
-            poi.addMerge(lastr+1 ,6,lastr + 1 + bmls.size() - 1,7);
-            poi.addMerge(lastr+1 ,10,lastr + 1 + bmls.size() - 1,11);
-            poi.addList(ls2, false);
-
 
             poi.createFile(String.valueOf(path) + "standard.xls");
             this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
-            this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
+            this.fileName = new String("按照窗口统计报表.xls".getBytes("gb2312"), "iso8859-1");;
             return "excel";
         }
 
         return "success";
+    }
+
+    public String totalBizDealRpt() throws Exception
+    {
+        return this.totalBizDeal();
+    }
+
+    public String totalBizDeal() throws Exception {
+        boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null) {
+            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+        }
+        if(endDate == null) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String path = ServletActionContext.getServletContext().getRealPath("/");
+        final String deptId = request.getParameter("deptId");
+        String bizname = req.getString("bizname");
+
+        final Map manager2 = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
+        final Map power2 = this.powerService.getUserGroup(groupid2);
+        final String deptIdGroup2 = power2.get("deptIdGroup").toString();
+        final String ids22 = this.deptService.findChildALLStr123(deptIdGroup2);
+        this.list2 = this.deptService.findDeptByType(ids22, 1);
+        this.deptJSON = this.deptService.findChildALL(deptIdGroup2);
+        String sort = req.getString("sort");
+        String exportExcel = request.getParameter("export");
+
+        int[] rowsCount = new int[1];
+        this.pager = new Pager("currentPage", pageSize, 0, request);
+        final String ids2 = this.deptService.findChildALLStr1234(deptId);
+        this.list = null;
+        if(isRpt){
+            if (exportExcel != null && exportExcel.toLowerCase().equals("true"))
+                this.pager.setPageSize(0);
+            list = this.totalService.totalBizRpt(ids2, sort, bizname, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
+        }
+        else
+            list = this.totalService.totalBiz(ids2, bizname, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        this.list = this.getPandM(this.list);
+        this.list = this.getStar(this.list);
+        this.list = this.getD(this.list);
+        final List ls = new ArrayList();
+        //final SundynSet sundynSet = SundynSet.getInstance(path);
+        //final String standard = sundynSet.getM_content().get("standard").toString();
+        /*final Map m1 = new HashMap();
+        m1.put("num", standard);
+        m1.put("category", "\u611f\u77e5");
+        m1.put("item", "\u6807\u51c6");
+        ls.add(m1);
+        if(this.list.size()>0){
+            for (int i = 0; i < this.list.size(); ++i) {
+                final Map temp = (Map) this.list.get(i);
+                final Map j = new HashMap();
+                j.put("num", temp.get("num"));
+                j.put("category", "\u611f\u77e5");
+                j.put("item", temp.get("windowname"));
+                ls.add(j);
+            }
+        }*/
+        //final JfreeChart jfreeChart = new JfreeChart();
+        //jfreeChart.createBar("总满意度指数", "感知项", "满意度", ls, String.valueOf(path) + "pubpic.jpg");
+        this.pager.setPageList(this.list);
+
+        request.setAttribute("deptId", (Object)deptId);
+
+        if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
+            List ls2 = new ArrayList();
+            for (int i = 0; i < list.size(); ++i) {
+                final Map m = new LinkedHashMap();
+                final Map temp = (Map) list.get(i);
+                int j = 0;
+                m.put("m" + (j++), i+1);
+                m.put("m" + (j++), temp.get("deptname"));
+                m.put("m" + (j++), temp.get("bizname"));
+                m.put("m" + (j++), temp.get("ticketcount"));
+                m.put("m" + (j++), temp.get("servercount"));
+                m.put("m" + (j++), temp.get("cancelcount"));
+                m.put("m" + (j++), temp.get("waittimeavg")==null?"":temp.get("waittimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                m.put("m" + (j++), temp.get("servicetimeavg")==null?"":temp.get("servicetimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                //m.put("m" + (j++), temp.get("pausetime")==null||temp.get("pausetime").toString().equals("null")
+                //        ?"":temp.get("pausetime").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                for (Object item: (ArrayList)(temp.get("km"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("msum"));
+                for (Object item: (ArrayList)(temp.get("kbm"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("bmsum"));//不满意合计
+                m.put("m" + (j++), temp.get("totalunkey"));//未评价
+                m.put("m" + (j++), temp.get("totalkey"));//评价合计
+                m.put("m" + (j++), temp.get("mrate")+"%");//满意率
+                m.put("m" + (j++), temp.get("num"));//满意度
+                ls2.add(m);
+            }
+            final Poi poi = new Poi();
+            /*****************************************
+             * 开始添加第一个标题行
+             *****************************************/
+            List<String> args = new ArrayList<String>();
+            args.add("排名");
+            args.add("大厅名称");
+            args.add("业务名称");
+            args.add("取号量");
+            args.add("业务量");
+            args.add("弃号量");
+            args.add("平均等待时长");
+            args.add("平均办理时长");
+            //args.add("暂停时长");
+            for (Object item : mls){
+                args.add(this.getText("sundyn.column.content"));
+            }
+            args.add(this.getText("sundyn.column.content"));
+            for (Object item : bmls){
+                args.add(this.getText("sundyn.column.nocontent"));
+            }
+            args.add(this.getText("sundyn.column.nocontent"));
+            args.add(this.getText("sundyn.column.noappries"));
+            args.add("评价"+this.getText("sundyn.column.sum"));
+            args.add(this.getText("sundyn.column.contentRate"));
+            args.add(this.getText("sundyn.column.contentDegree"));
+
+            String deptname = req.getString("deptname");
+            String deptNamT = "";
+            if (StringUtils.isNotBlank(deptname))
+                deptNamT = "（" + deptname + "）";
+            poi.addTitle("按照业务统计" + deptNamT,  this.startDate + " 至 " + this.endDate, 1, args.size()-1); //添加报表标题，合并
+            poi.addListTitle(args.toArray(), 1);
+            int mergStepN = 8;//需要合并行（不是列）的n列，如机构名称，业务量，弃号量等
+            poi.addMerge(2,mergStepN,2,mergStepN + mls.size());
+            poi.addMerge(2,mergStepN+mls.size()+1,2,mergStepN + mls.size()+1 + bmls.size());
+
+            /*****************************************
+             * 开始添加第二个标题行
+             *****************************************/
+            List<String> args2 = new ArrayList<String>();
+            for (int i = 0; i < mergStepN; i++) {//补第二行 mergStepN列的空数据，会合并掉，所以补空白即可
+                args2.add("");
+            }
+            for (Object item : mls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.contentTotal"));
+            for (Object item : bmls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.nocontentTotal"));
+            args2.add("");//补满意，不满意后面4列的空白数据，会合并掉，所以补空白即可
+            args2.add("");
+            args2.add("");
+            args2.add("");
+            poi.addListTitle(args2.toArray(), 1);
+
+            for (int i = 0; i < mergStepN; i++) {//合并标题行-机构名称、业务量、弃号量等
+                poi.addMerge(2, i,3, i);
+            }
+
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1,3,mergStepN+mls.size() +1+ bmls.size()+1);//合并标题行-满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1);//合并标题行-不满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1);//未评价
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1);//评价合计
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1);//满意率
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1);//满意度
+            poi.addList(ls2, false);
+
+            poi.createFile(String.valueOf(path) + "standard.xls");
+            this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
+            this.fileName = new String("按照业务统计报表.xls".getBytes("gb2312"), "iso8859-1");;
+            return "excel";
+        }
+
+        return "success";
+    }
+
+    public String totalWindowDealRpt() throws Exception {
+        return totalWindowDeal();
     }
 
     public String totalJobNum() throws Exception {
@@ -2622,7 +3044,7 @@ public class TotalAction extends MainAction
     public String totalWindowExcel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
-        this.getPandM(this.list = this.totalService.totalWindow(deptId, this.startDate, this.endDate, null, null));
+        this.getPandM(this.list = this.totalService.totalWindow(deptId, this.startDate, this.endDate, null, null, null));
         this.list = this.getPandM(this.list);
         final String ids = this.deptService.findChildALLStr123(deptId);
         Map totalMap = this.totalService.totalDept(ids, this.startDate, this.endDate);
@@ -2778,7 +3200,7 @@ public class TotalAction extends MainAction
     public String totalWindowPrint() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
-        this.list = this.totalService.totalWindow(deptId, this.startDate, this.endDate, null, null);
+        this.list = this.totalService.totalWindow(deptId, this.startDate, this.endDate, null, null, null);
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
         final String ids = this.deptService.findChildALLStr123(deptId);

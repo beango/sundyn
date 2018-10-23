@@ -1,5 +1,6 @@
 package com.sundyn.action;
 
+import com.opensymphony.xwork2.Action;
 import com.sundyn.service.*;
 import com.sundyn.util.*;
 import com.sundyn.vo.AttendanceVo;
@@ -8,7 +9,6 @@ import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.LinkedMap;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -16,10 +16,6 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,6 +36,16 @@ public class EmployeeAction extends MainAction
     private AttendanceService attendanceService;
     private Integer deptId;
     private DeptService deptService;
+
+    public Map<String, Object> getJsonData() {
+        return jsonData;
+    }
+
+    public void setJsonData(Map<String, Object> jsonData) {
+        this.jsonData = jsonData;
+    }
+
+    Map<String,Object> jsonData = new HashMap<String,Object>();
 
     public DeviceService getDeviceService() {
         return deviceService;
@@ -160,28 +166,39 @@ public class EmployeeAction extends MainAction
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String name = request.getParameter("Name");
         final String sex = request.getParameter("Sex");
-        final String cardNum = request.getParameter("CardNum");
+        String cardNum = request.getParameter("CardNum");
         final String phone = request.getParameter("Phone");
         final String imgName = request.getParameter("imgName");
         final String deptId = request.getParameter("dept");
         final String job_desc = request.getParameter("job_desc");
-        final String ext2 = request.getParameter("ext2");
+        String ext2 = request.getParameter("ext2");
         final String remark = request.getParameter("remark");
         final String showDeptName = request.getParameter("showDeptName");
         final String showWindowName = request.getParameter("showWindowName");
         final String unitName = request.getParameter("unitName");
-        if (ext2.equals("")){
+       /* if (ext2.equals("")){
             this.msg = "员工工号不能为空！";
-            return "input";
-        }
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", msg);
+            return Action.SUCCESS;
+        }*/
         if (name.equals("")){
             this.msg = "员工姓名不能为空！";
-            return "input";
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", msg);
+            return Action.SUCCESS;
         }
+
         if (cardNum.equals("")){
-            this.msg = "员工卡号不能为空！";
-            return "input";
+            this.msg = "员工工号不能为空！";
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", msg);
+            return Action.SUCCESS;
         }
+        ext2 = cardNum;
         final EmployeeVo employeeVo = new EmployeeVo();
         employeeVo.setPicture(imgName);
         employeeVo.setName(name);
@@ -203,6 +220,9 @@ public class EmployeeAction extends MainAction
             employeeVo.setExt4(md5Str);
         }
         this.employeeService.addEmployee(employeeVo);
+        jsonData.clear();
+        jsonData.put("succ", true);
+        jsonData.put("msg", "添加成功");
         return "success";
     }
 
@@ -245,12 +265,37 @@ public class EmployeeAction extends MainAction
         final String phone = request.getParameter("Phone");
         final String imgName = request.getParameter("imgName");
         final String job_desc = request.getParameter("job_desc");
-        final String ext2 = request.getParameter("ext2");
+        String ext2 = request.getParameter("ext2");
+
         String remark = request.getParameter("remark");
         final String showDeptName = request.getParameter("showDeptName");
         final String showWindowName = request.getParameter("showWindowName");
         final String unitName = request.getParameter("unitName");
+        if (name.equals("")){
+            this.msg = "员工姓名不能为空！";
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", msg);
+            return Action.SUCCESS;
+        }
+
+        if (cardNum.equals("")){
+            this.msg = "员工工号不能为空！";
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", msg);
+            return Action.SUCCESS;
+        }
+        ext2 = cardNum;
         remark = Mysql.mysql(remark);
+        Map exists = employeeService.findByCardnum(cardNum);
+        if (exists!=null && !exists.get("id").toString().equals(employeeId)){
+            this.msg = "员工工号已经存在！";
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", msg);
+            return Action.SUCCESS;
+        }
         final EmployeeVo employeeVo = new EmployeeVo();
         employeeVo.setName(name);
         employeeVo.setJob_desc(job_desc);
@@ -264,7 +309,6 @@ public class EmployeeAction extends MainAction
         employeeVo.setRemark(remark);
         employeeVo.setShowDeptName(showDeptName);
         employeeVo.setShowWindowName(showWindowName);
-        //File f = new File(imgName);
 
         String filename = String.valueOf(getServletContext().getRealPath("/")) + imgName;
         if (imgName != null && !imgName.equals("") && new File(filename).exists()) {
@@ -272,6 +316,9 @@ public class EmployeeAction extends MainAction
             final String md5Str = md5.MD5(filename);
             employeeVo.setExt4(md5Str);
         }
+        jsonData.clear();
+        jsonData.put("succ", true);
+        jsonData.put("msg", "添加成功");
         this.employeeService.UpdateEmployee(employeeVo);
         return "success";
     }
@@ -360,7 +407,7 @@ public class EmployeeAction extends MainAction
         final String path = getServletContext().getRealPath("/");
         final SundynSet sundynSet = SundynSet.getInstance(path);
         String star = sundynSet.getM_system().get("star").toString();
-        this.m = this.employeeService.employeeFindByCardnum(cardnum);
+        this.m = this.employeeService.findEmployeeByExt2(cardnum);
         if (this.m == null) {
             this.msg = "getInfoError";
         }
@@ -543,6 +590,7 @@ public class EmployeeAction extends MainAction
             this.msg = "密码错误";
         }
         else {
+
             this.msg = "loginSuccess";
         }
         return "success";
@@ -555,12 +603,25 @@ public class EmployeeAction extends MainAction
         String psw = request.getParameter("psw");
         name = Mysql.mysql(name);
         psw = Mysql.mysql(psw);
-        final Map employee = this.employeeService.employeeLogin2(name, psw);
+        Map employee = this.employeeService.findEmployeeByExt2(name);
         if (employee == null) {
-            this.msg = "loginError";
+            this.msg = "loginMsg:卡号不存在";
+            return "success";
+        }
+        employee = this.employeeService.employeeLogin2(name, psw);
+        if (employee == null) {
+            this.msg = "loginMsg:密码错误";
         }
         else {
-            this.msg = "loginSuccess|" + employee.get("CardNum");
+            String mac = req.getString("mac");
+            if (mac!=null && !mac.equals("")){
+                Map deptmap = deptService.findByMac(mac);
+                if (deptmap!=null && !deptmap.get("fatherId").toString().equals(employee.get("deptid").toString())){
+                    this.msg = "loginMsg::请在本营业厅登录";
+                    return "success";
+                }
+            }
+                this.msg = "loginSuccess|" + employee.get("CardNum");
         }
         return "success";
     }
@@ -667,8 +728,9 @@ public class EmployeeAction extends MainAction
     }
 
     public String employeeManage() throws Exception {
-        final boolean flag = this.deptService.isLastestTwo(this.deptId);
-        if (flag) {
+        //final boolean flag = this.deptService.isLastestTwo(this.deptId);
+        Map dept = this.deptService.findDeptById(this.deptId);
+        if (dept!=null && dept.get("deptType").toString().equals("1")) {//服务厅
             final HttpServletRequest request = ServletActionContext.getRequest();
             final int num = this.employeeService.countEmployeeByDeptid(this.deptId);
             this.pager = new Pager("currentPage", pageSize, num, request);

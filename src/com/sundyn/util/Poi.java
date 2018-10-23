@@ -1,9 +1,11 @@
 package com.sundyn.util;
 
+import com.xuan.xutils.utils.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.Region;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.util.IOUtils;
+import org.apache.poi.util.StringUtil;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -134,8 +136,12 @@ public class Poi
         final Picture pict = drawing.createPicture(anchor, pictureIdx);
         pict.resize();
     }
-    
+
     public void addTitle(final String title, final int rowAddNum, final int cNum) {
+        addTitle(title, null, rowAddNum, cNum);
+    }
+
+    public void addTitle(final String title, String subtitle, final int rowAddNum, final int cNum) {
         final int rNum = this.sheet.getLastRowNum() + rowAddNum;
         final HSSFRow row = this.sheet.createRow(rNum);
         final HSSFCell c = row.createCell(0);
@@ -143,9 +149,20 @@ public class Poi
         fontinfo.setFontHeightInPoints((short)24);
         final HSSFCellStyle cellStylename = this.wb.createCellStyle();
         cellStylename.setAlignment((short)2);
+        if (StringUtils.isBlank(subtitle))
+            c.setCellValue(title);
+        else{
+            row.setHeight((short)1150);
+            HSSFRichTextString richString = new HSSFRichTextString(title + "\r\n" + subtitle);
+            HSSFFont font = wb.createFont();
+            font.setFontHeightInPoints((short) 14); // 字体高度
+            font.setFontName("黑体"); //字体
+            richString.applyFont((title + "\r\n").length(), (title + "\r\n" + subtitle).length(), font);
+            c.setCellValue(richString);
+        }
         cellStylename.setFont(fontinfo);
+        cellStylename.setWrapText(true);
         c.setCellStyle(cellStylename);
-        c.setCellValue(title);
         Region region1 = new Region(rNum, (short) 0, rNum, (short) cNum);
         //参数1：行号 参数2：起始列号 参数3：行号 参数4：终止列号
         sheet.addMergedRegion(region1);

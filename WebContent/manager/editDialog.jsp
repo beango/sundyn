@@ -6,6 +6,7 @@
 <head>
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
     <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="lib/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
@@ -13,6 +14,8 @@
     <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
+    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
 </head>
 <body>
 <div class="layui-form">
@@ -37,15 +40,29 @@
         </tr>
         <tr>
             <td style="border-color: #e9f5fd;" align="right">
+                部门（机构）
+            </td>
+            <td align="left" style="border-color: #e9f5fd;">
+                <ul id="zTreeMenuContent" class="ztree"></ul>
+            </td>
+        </tr>
+        <tr>
+            <td style="border-color: #e9f5fd;" align="right">
                 <s:text name="sundyn.user.role" />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
-                <div class="layui-input-inline">
+                <div class="layui-input-inline" style="display: none;">
                 <select id="userGroupId">
                     <c:forEach items="${list}" var="power" varStatus="index">
                         <option <c:if test="${power.id==manager.userGroupId}"> selected="selected"</c:if> value="${power.id}">${power.name}</option>
                     </c:forEach>
                 </select>
+
+                </div>
+                <div class="layui-input-inline">
+                    <c:forEach items="${list}" var="power" varStatus="index">
+                        <input type="checkbox" lay-skin="switch" lay-text="${power.name}|${power.name}" lay-filter="employeeInfoSet" value="${power.id}" name="managerPowers" <c:if test="${power.checked}">checked="checked"</c:if> />&nbsp;&nbsp;<br/>
+                    </c:forEach>
                 </div>
             </td>
         </tr>
@@ -90,10 +107,60 @@
     </table>
 </div>
 <script>
-    //Demo
     layui.use('form', function(){
         var form = layui.form;
     });
+    var curStatus = "init", curAsyncCount = 0, asyncForAll = false, goAsync = false;
+    var setting = {
+        check: {
+            enable: true,
+            chkStyle: "radio",
+            radioType : "all"
+        },
+        async: {
+            enable: true,
+            autoParam: ["id=ids"],//, "name=n", "level=lv"
+            url: "${ctx}/authDeptTree.action",
+            type: "post"
+        },
+        view: {
+            fontCss: getFont,
+            showLine: true,
+            expandSpeed: "",
+            selectedMulti: true
+        },
+        data: {
+            keep: {
+                parent: true
+            },
+            simpleData: {
+                enable: false
+            }
+        },
+        callback: {
+            onAsyncSuccess: function(){
+                var funcid = "${manager.deptid}";
+                if (funcid!=null && funcid != ""){
+                    var node = zTree.getNodeByParam("id", funcid);
+                    if(node){
+                        node.checked = true;
+                        zTree.updateNode(node);
+                    }
+                }
+            }
+        }
+    };
+
+    //初始化
+    var rMenu,zTree;
+    $(document).ready(function () {
+        zTree = jQuery.fn.zTree.init($("#zTreeMenuContent"), setting);
+    });
+
+    //字体设置
+    function getFont(treeId, node) {
+        return node.font ? node.font : {};
+    }
 </script>
 </body>
 </html>

@@ -115,7 +115,7 @@ public class KeyTypeService extends SuperDao
     }
     
     public String findAllKeyInUse(final Integer yes) throws SQLException {
-        final String sql = "select  * from appries_keytype where yes=" + yes + "  order by keyNo";
+        final String sql = "select * from appries_keytype where yes=" + yes + " order by keyNo";
         try {
             final List l = this.getJdbcTemplate().queryForList(sql);
             String allKey = "";
@@ -125,6 +125,27 @@ public class KeyTypeService extends SuperDao
                     allKey = String.valueOf(allKey) + m.get("keyNo").toString() + ",";
                 }
                 allKey = allKey.substring(0, allKey.length() - 1);
+            }
+            return allKey;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return "8";
+        }
+    }
+
+    public String findAllKeyInUseWithNoEval(final Integer yes) throws SQLException {
+        final String sql = "select * from appries_keytype where yes=" + yes + " order by keyNo";
+        try {
+            final List l = this.getJdbcTemplate().queryForList(sql);
+            String allKey = "";
+            if (l != null || !l.equals("")) {
+                for (int i = 0; i < l.size(); ++i) {
+                    final Map m = (Map) l.get(i);
+                    allKey = String.valueOf(allKey) + m.get("keyNo").toString() + ",";
+                }
+                allKey = allKey.substring(0, allKey.length() - 1);
+                allKey +=",6";
             }
             return allKey;
         }

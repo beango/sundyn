@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.SysQueueserialDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, hallid, bizid, bizlsh, bizotherid, ticketmachineno, bizname, deptid, deptname, biztype, onlinenetticket, bizdiscrible, bizappointnote, alimitnum1, alimitnum2, alimitnum3, alimitnum4, alimitnum5, alimitnum6, alimitnum7, plimitnum1, plimitnum2, plimitnum3, plimitnum4, plimitnum5, plimitnum6, plimitnum7, xcqueuenumberprefix, xcsnumber, xcenumber, yyqueuenumberprefix, ysnumber, yenumber, ispauseticket, transferbizid, expectedservicetime, serviceouttime, waitouttime, isverfifyticket, smssendpernumbers, isinputcustomerinfo, servicescounter, wk1ticketworktimeam1, wk1ticketworktimeam2, wk2ticketworktimeam1, wk2ticketworktimeam2, wk3ticketworktimeam1, wk3ticketworktimeam2, wk4ticketworktimeam1, wk4ticketworktimeam2, wk5ticketworktimeam1, wk5ticketworktimeam2, wk6ticketworktimeam1, wk6ticketworktimeam2, wk7ticketworktimeam1, wk7ticketworktimeam2, wk1ticketworktimepm1, wk1ticketworktimepm2, wk2ticketworktimepm1, wk2ticketworktimepm2, wk3ticketworktimepm1, wk3ticketworktimepm2, wk4ticketworktimepm1, wk4ticketworktimepm2, wk5ticketworktimepm1, wk5ticketworktimepm2, wk6ticketworktimepm1, wk6ticketworktimepm2, wk7ticketworktimepm1, wk7ticketworktimepm2, lastservingnumber
+    </sql>
+
+</mapper>

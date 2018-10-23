@@ -3,17 +3,18 @@ package com.sundyn;
 import com.sundyn.action.FormFile;
 import com.sundyn.cer.CertifacateGenerate;
 import com.sundyn.util.BaseCert;
+import com.sundyn.utils.NumberUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.junit.Test;
 
 import java.io.*;
 import java.net.*;
 import java.security.*;
-import java.security.cert.*;
 import java.security.cert.Certificate;
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
+import java.security.cert.*;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class test1 {
     /**
@@ -375,5 +376,80 @@ public class test1 {
         Key key = Key.class.cast(ois.readObject());
         ois.close();
         return key;
+    }
+    @Test
+    public void test1(){
+        System.out.println("123");
+        List list = new ArrayList();
+        Map m = new HashMap();
+        m.put("a", 1.1);
+        m.put("b", 2.1);
+        m.put("c", 3.1);
+        list.add(m);
+
+        m = new HashMap();
+        m.put("a", 4.1);
+        m.put("b", 5.1);
+        m.put("c", 6.1);
+        list.add(m);
+
+        m = new HashMap();
+        m.put("a", 9.1);
+        m.put("b", 8.1);
+        m.put("c", 7.1);
+        list.add(m);
+
+        for (Object o : list) {
+            Map m2 = (Map)o;
+            System.out.println("a:" + m2.get("a").toString() + " b:" + m2.get("b") + " c:" + m2.get("c"));
+        }
+        Collections.sort(list, new SortByServiceCount("c", "desc"));
+        for (Object o : list) {
+            Map m2 = (Map)o;
+            System.out.println("a:" + m2.get("a").toString() + " b:" + m2.get("b") + " c:" + m2.get("c"));
+        }
+
+        System.out.println(StringUtils.isAlpha("123.4"));
+        System.out.println(NumberUtils.isNumber("null"));
+    }
+
+    //方法一：用JAVA自带的函数
+    public static boolean isNumeric(String str){
+        for (int i = str.length();--i>=0;){
+            if (!Character.isDigit(str.charAt(i))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isInteger(String str) {
+        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
+        return pattern.matcher(str).matches();
+    }
+    class SortByServiceCount implements Comparator {
+        private String field;
+        private String desc;
+
+        public SortByServiceCount(String field, String desc) {
+            this.field = field;
+            this.desc = desc;
+        }
+        public int compare(Object o1, Object o2) {
+            Map s1 = (Map) o1;
+            Map s2 = (Map) o2;
+            System.out.println(field + ", " + s1.get(field).toString() + ", " + s2.get(field).toString() + ", "
+                    +(Float.parseFloat(s1.get(field).toString()) > Float.parseFloat(s2.get(field).toString())));
+            int r = 1;
+            if (Float.parseFloat(s1.get(field).toString()) > Float.parseFloat(s2.get(field).toString()))
+                r = desc.equals("desc") ? 1 : -1;
+            r = desc.equals("desc") ? -1 : 1;
+            return r;
+        }
+    }
+
+    @Test
+    public void test2(){
+        System.out.println((int)Math.floor(123.12));
     }
 }

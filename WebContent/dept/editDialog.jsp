@@ -7,6 +7,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
         <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
+        <link rel="stylesheet" href="lib/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
 		<title><s:text name='sundyn.advice.question.list' /></title>
 		<script type="text/javascript" src="js/dojo.js"></script>
 		<script type="text/javascript" src="js/dialog.js"></script>
@@ -14,6 +15,8 @@
 		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
         <script type="text/javascript" src="lib/layui/layui.js"></script>
         <script type="text/javascript" src="js/myAjax.js"></script>
+        <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
+        <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
 	</head>
 	<body>
 
@@ -128,10 +131,10 @@
             </tr>
             </c:if>
             <s:if test='getText("sundyn.language") eq "en"'>
-            <tr  style="display:none;">
+            <tr style="display:none;">
                 </s:if>
                 <s:else>
-            <tr>
+            <tr style="display:none;">
                 </s:else>
                 <td align="right" style="border-color:#FFFFFF;">所属地区:</td>
                 <td align="left" style="border-color:#FFFFFF;" class="layui-form-item">
@@ -151,6 +154,16 @@
                     </div>
                 </td>
             </tr>
+            <c:if test="${dept.deptType!=2 }">
+            <tr>
+                <td align="right" style="border-color:#FFFFFF;">上级部门:</td>
+                <td align="left" style="border-color:#FFFFFF;" class="layui-form-item">
+                    <div class="layui-input-inline" style="width:100px;">
+                        <ul id="treeDept" class="ztree"></ul>
+                    </div>
+                </td>
+            </tr>
+            </c:if>
             <c:if test="${dept.deptType==0 }">
             <tr >
                 <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.system.screenInfo"/></td>
@@ -170,6 +183,7 @@
         </table>
     </div>
 	</body>
+    <script type="text/javascript" src="lib/util/deptselutil.js"></script>
     <script>
         layui.use(['form', 'layedit', 'laydate'], function(){
             var form = layui.form
@@ -180,6 +194,14 @@
                 showCitys(function(){form.render('select')});
             });
         });
+        var depttype = '${dept.deptType}';
+        var deptPara = 0;
+        if(depttype == '1'){//大厅
+            deptPara = 2;
+        }
+        if(depttype == '0'){//大厅
+            deptPara = 1;
+        }
+        initTree("?depttype="+deptPara+"&isOnlyLeaf=1", "<%=request.getParameter("fatherid")%>");
     </script>
-
 </html>

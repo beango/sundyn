@@ -12,8 +12,12 @@ import com.sundyn.entity.AppriesFunc;
  * @author oKong
  * @since 2018-08-21
  */
-public interface IAppriesFuncService extends IService<AppriesFunc> {
+public interface IAppriesFuncService extends IServiceBase<AppriesFunc> {
     Page<AppriesFunc> selectListExt(Page<AppriesFunc> page);
 
     AppriesFunc selectById(Integer id);
+
+    boolean updateFuncAndPowerfun(AppriesFunc func) throws Exception;
+
+    boolean deleteByIdAndPowerfunc(int id) throws Exception;
 }

@@ -1,0 +1,14 @@
+<chart caption='Quarterly Sales Summary' subcaption='Figures in $' bgColor='FFFFFF' xAxisName='Quarter' yAxisName='Sales'>
+    <set label='Quarter 1' value='420500' />
+    <set label='Quarter 2' value='395400' />
+    <set label='Quarter 3' value='523400' />
+    <set label='Quarter 4' value='465400' />
+    <styles>
+        <definition>
+            <style name='myBgAnim' type='Animation' param='_alpha' start='0' duration='1'/>
+        </definition>
+        <application>
+            <apply toObject='Background' styles='myBgAnim' />
+        </application>
+    </styles>
+</chart>

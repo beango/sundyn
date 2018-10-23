@@ -6,9 +6,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE"/>
-    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
+    <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <link rel="stylesheet" href="css/dialog.css" type="text/css"/>
     <link rel="stylesheet" href="css/dtree.css" type="text/css"></link>
     <title><s:text name='sundyn.title'/></title>
@@ -41,7 +39,14 @@
     </script>
 </head>
 <body>
-
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <c:forEach items="${navbar_menuname}" var="menu">
+            <li><a href="#">${menu.name}</a></li>
+        </c:forEach>
+    </ul>
+</div>
 <iframe src="piedata.xml" style="display: none;"></iframe>
 <input type="hidden" name="deptIds" id="deptIds" value="${deptIds}"/>
 <input type="hidden" name="keys" id="keys" value="${keys}"/>

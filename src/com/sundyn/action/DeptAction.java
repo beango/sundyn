@@ -1,18 +1,23 @@
 package com.sundyn.action;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.sundyn.cer.CertifacateGenerate;
 import com.sundyn.entity.City;
 import com.sundyn.entity.Province;
+import com.sundyn.entity.SysQueuecounter;
+import com.sundyn.entity.SysQueuehall;
 import com.sundyn.service.*;
 import com.sundyn.util.Mysql;
 import com.sundyn.util.SundynSet;
 import com.sundyn.utils.CitysUtils;
 import com.sundyn.vo.DeptVo;
 import com.sundyn.vo.WeburlVo;
+import com.xuan.xutils.cache.CacheManager;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -46,7 +51,14 @@ public class DeptAction extends MainAction
     private WeburlService weburlService;
     private List<WeburlVo> haveList;
     private List<WeburlVo> noList;
-
+    @Resource
+    private ISysQueuehallService hallService;
+    @Resource
+    private ISysQueuecounterService counterService;
+    @Resource
+    private CacheManager dCacheManager;
+    @Resource
+    private EmployeeService employeeService;
     public String getDeptLogoPic() {
         return this.deptLogoPic;
     }
@@ -146,6 +158,7 @@ public class DeptAction extends MainAction
         }
         final JSONArray json = JSONArray.fromObject((Object)this.list);
         request.setAttribute("json", (Object)json);
+        ClearCache_DEPT();
         return "success";
     }
     
@@ -175,6 +188,7 @@ public class DeptAction extends MainAction
     public String deptDel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         this.deptService.deleteDept(this.deptId);
+        hallService.delete(new EntityWrapper<SysQueuehall>().where("deptid={0}", this.deptId));
         final Map manager = (Map)request.getSession().getAttribute("manager");
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final Map power = this.powerService.getUserGroup(groupid);
@@ -186,21 +200,15 @@ public class DeptAction extends MainAction
         }
         final JSONArray json = JSONArray.fromObject((Object)this.list);
         request.setAttribute("json", (Object)json);
+
+        ClearCache_DEPT();
         return "success";
     }
-    
+
     public String deptEditDialog() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         this.dept = this.deptService.findDeptById(this.deptId);
         this.list = this.businessService.find(true);
-/*
-
-        final Map manager = (Map)request.getSession().getAttribute("manager");
-        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
-        final Map power = this.powerService.getUserGroup(groupid);
-        final String deptIdGroup = power.get("deptIdGroup").toString();
-        final String deptIds = this.deptService.findChildALLStr123(deptIdGroup);//low
-*/
 
         final int pid = (int) this.dept.get("provinceid");
         this.cityid = (int) this.dept.get("cityid");
@@ -266,16 +274,17 @@ public class DeptAction extends MainAction
         final String useVideo = request.getParameter("useVideo");
         final String notice = request.getParameter("notice");
         final String deptIds = this.deptService.findChildALLStr123(this.deptId.toString());
+        final Integer fatherId = req.getInt("fatherId", -99);
         this.deptService.updateUseVideo(deptIds, useVideo);
         if (!this.deptService.isLeafage(this.deptId)) {
             final String sonDeptIds = this.deptService.findChildALLStr123(this.deptId.toString());
             this.deptService.updateDeptNotice(sonDeptIds, notice);
         }
+        final Map localdept = this.deptService.findDeptById(this.deptId);
         try {
-            final Map dept = this.deptService.findDeptById(this.deptId);
             String olddept_playListId = "";
-            if (dept.get("dept_playListId") != null) {
-                olddept_playListId = dept.get("dept_playListId").toString();
+            if (localdept.get("dept_playListId") != null) {
+                olddept_playListId = localdept.get("dept_playListId").toString();
             }
             if (dept_playListId != null && !dept_playListId.equals("") && !dept_playListId.equals(olddept_playListId)) {
                 final String ids = this.deptService.findChildALLStr123(new StringBuilder().append(this.deptId).toString());
@@ -307,7 +316,13 @@ public class DeptAction extends MainAction
         deptVo.setNotice(notice);
         deptVo.setCityid(Integer.parseInt(cityId));
         deptVo.setProvinceid(Integer.parseInt(provinceId));
+        if(fatherId!=null && -99 != fatherId)
+            deptVo.setFatherId(fatherId);
         this.deptService.updateDept(deptVo);
+        if (localdept.get("deptType").toString().equals("1"))//大厅
+            hallService.updateForSet("hallname='"+deptVo.getName()+"'", new EntityWrapper<SysQueuehall>().where("deptid={0}", deptId));
+        if (localdept.get("deptType").toString().equals("0"))//窗口
+            counterService.updateForSet("countername='"+deptVo.getName()+"'", new EntityWrapper<SysQueuecounter>().where("deptid={0}", deptId));
         this.deptService.updateCitys(this.deptId, deptVo.getCityid(), deptVo.getProvinceid());
         final Map manager = (Map)request.getSession().getAttribute("manager");
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
@@ -322,6 +337,7 @@ public class DeptAction extends MainAction
         d.setCityid(1);
         final JSONArray json = JSONArray.fromObject((Object)this.list);
         request.setAttribute("json", (Object)json);
+        ClearCache_DEPT();
         return "success";
     }
     
@@ -420,7 +436,151 @@ public class DeptAction extends MainAction
         request.setAttribute("msg", (Object)tempStr);
         return "error";
     }
-    
+
+
+    public String authDeptTree() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final HttpServletResponse response = ServletActionContext.getResponse();
+
+        long systemid = req.getLong("systemid");
+        int pid = req.getInt("pid",-1);
+        boolean isOnlyLeaf = req.getInt("isOnlyLeaf")==1;
+        boolean isCheck = req.getInt("isCheck")==1;
+        int depttype = req.getInt("depttype", -1); //-1全部，2只显示部门，1显示大厅，0显示评价器,3显示员工
+        String rootDept = deptService.findChildALLStr1234(null);
+        JSONArray jroot = initDeptTree(","+rootDept + ",", pid, depttype);
+
+        if (isOnlyLeaf){
+            hasChildren(jroot);
+        }
+        if(rootDept!=null) {
+            expChildren("," + rootDept + ",", jroot);
+            JSONArray newJ = new JSONArray();
+            delNoAuth(jroot,newJ);
+            request.setAttribute("msg", newJ.toString());
+        }
+        return "success";
+    }
+
+    private void hasChildren(JSONArray jroot) {
+        if(jroot!=null ){
+            for (int i=0; i< jroot.size(); i++){
+                JSONObject jo = (JSONObject)jroot.get(i);
+                if (jo.containsKey("children")){
+                    JSONArray j = (JSONArray)jo.get("children");
+                    if (j!=null && j.size()>0){
+                        jo.put("nocheck",true);
+                        hasChildren(j);
+                    }
+                }
+            }
+        }
+    }
+
+    private void expChildren(String rootDept, JSONArray jroot) {
+        if(jroot!=null ){
+            for (int i=0; i< jroot.size(); i++){
+                JSONObject jo = (JSONObject)jroot.get(i);
+                if (rootDept.indexOf(","+jo.get("id").toString()+",")>-1)
+                    jo.put("isauth",true);
+                if (jo.containsKey("children")){
+                    JSONArray j = (JSONArray)jo.get("children");
+                    if (j!=null && j.size()>0){
+                        expChildren(rootDept, j);
+                    }
+                }
+            }
+        }
+    }
+
+    private void delNoAuth(JSONArray jroot, JSONArray newJ){
+        if(jroot!=null ) {
+            for (int i = 0; i < jroot.size(); i++) {
+                JSONObject jo = (JSONObject) jroot.get(i);
+                if(jo.containsKey("isauth") && jo.getBoolean("isauth")){
+                    newJ.add(jo);
+                }
+                if(!jo.containsKey("isauth") || !jo.getBoolean("isauth")){
+                    if (jo.containsKey("children")){
+                        JSONArray j2 = (JSONArray)jo.get("children");
+                        if (j2!=null && j2.size()>0){
+                            delNoAuth(j2, newJ);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private JSONArray initDeptTree(String rootDept, int parentId, int depttype) {
+        List depts = deptService.findchild(parentId, false);
+
+        if (depts==null || depts.size()==0)
+            return null;
+        JSONArray ja = new JSONArray();
+        for(Object item : depts) {
+            Map dept = (Map)item;
+            int _deptType = Integer.valueOf(dept.get("deptType").toString());
+
+            if(depttype != 0 && _deptType == 0) {//评价器设备不加进去
+                continue;
+            }
+            if (depttype == 2){
+                if(_deptType == 1) {
+                    continue;
+                }
+            }
+            /*System.out.println(dept.get("id").toString() + "---" + rootDept.indexOf(","+dept.get("id").toString()+","));
+            if (rootDept.indexOf(","+dept.get("id").toString()+",")>-1){
+
+            }
+                continue;*/
+            JSONObject jo2 = new JSONObject();
+            jo2.put("id", dept.get("id"));
+            jo2.put("name", dept.get("name"));
+            jo2.put("parentId", dept.get("fatherId"));
+
+            boolean open = true;
+            if(depttype == 3) { //显示员工
+                if (_deptType == 1) {//大厅
+                    List eList = this.employeeService.findEmployeeByDeptId(Integer.valueOf(dept.get("id").toString()));
+                    if(eList!=null && eList.size()>0){
+                        JSONArray employeeJ = new JSONArray();
+                        for (int i=0; i< eList.size(); i++){
+                            JSONObject jo3 = new JSONObject();
+                            Map m = (Map)eList.get(i);
+                            jo3.put("id", "e"+m.get("id"));
+                            jo3.put("name", m.get("name"));
+                            jo3.put("parentId", dept.get("id"));
+                            jo3.put("open", false);
+                            employeeJ.add(jo3);
+                        }
+                        if (employeeJ.size()>0)
+                            jo2.put("children", employeeJ);
+                    }
+                    jo2.put("open", false);
+                }
+                else
+                    jo2.put("open", true);
+            }
+            else if(depttype == 0) {//显示窗口
+                if (_deptType == 1) {//大厅
+                    jo2.put("open", false);
+                }
+                else
+                    jo2.put("open", true);
+            }
+            else
+                jo2.put("open", true);
+
+            JSONArray children = initDeptTree(rootDept, Integer.valueOf(dept.get("id").toString()), depttype);
+            if(children!=null && children.size()>0)
+                jo2.put("children", children);
+            ja.add(jo2);
+        }
+        return ja;
+    }
+
     public BusinessService getBusinessService() {
         return this.businessService;
     }

@@ -1,10 +1,9 @@
 package com.sundyn.action;
 
 import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
+import com.sundyn.entity.QueueDetail;
 import com.sundyn.service.*;
 import com.sundyn.util.*;
-import net.sf.json.JSONArray;
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONObject;
 
@@ -275,16 +274,13 @@ public class QueryAction extends MainAction
     public String queryDeptAjax2() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map) request.getSession().getAttribute("manager");
-        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
-        final Map power = this.powerService.getUserGroup(groupid);
-        final String deptIdGroup = power.get("deptIdGroup").toString();
         this.select = "";
         String type = request.getParameter("type");
         request.setAttribute("level", Integer.valueOf(request.getParameter("level"))+1);
-
         if(this.id!=null){
             Map map = this.deptService.findDeptByFatherid(this.id);
-            if (map!=null && map.get("deptType").equals(1) && type.equals("employee")){ //大厅
+
+            if (map!=null && map.get("deptType").toString().equals("1") && type.equals("employee")){ //大厅
                 this.deptList = this.employeeService.findEmployeeByDeptId(this.id);
                 request.setAttribute("dataType", "employee");
                 return "success";
@@ -292,25 +288,50 @@ public class QueryAction extends MainAction
         }
 
         this.deptList = this.deptService.findchild(this.id);
-
         List d = new ArrayList();
         for (Object m : this.deptList){
             Map _m = (Map)m;
-            if (type.equals("dept") && _m.get("deptType").equals(2)){//部门
+            if (type.equals("dept") && _m.get("deptType").toString().equals("2")){//部门
                 d.add(_m);
             }
-            if ((type.equals("dating")||type.equals("employee")) && (_m.get("deptType").equals(2) || _m.get("deptType").equals(1))){//大厅
+            if ((type.equals("dating")||type.equals("employee")) && (_m.get("deptType").toString().equals("2") || _m.get("deptType").toString().equals("1"))){//大厅
                 d.add(_m);
             }
-            if (type.equals("window") && (_m.get("deptType").equals(2) || _m.get("deptType").equals(1) || _m.get("deptType").equals(0))){//窗口
+            if (type.equals("window") && (_m.get("deptType").toString().equals("2") || _m.get("deptType").toString().equals("1") || _m.get("deptType").toString().equals("0"))){//窗口
                 d.add(_m);
             }
         }
         request.setAttribute("dataType", "dept");
         this.deptList = d;
+        List nl = new ArrayList();
+        for (int i=0; i< deptList.size(); i++){
+            if ((","+super.DEPTIDS+",").contains(((Map)deptList.get(i)).get("id").toString()))
+            {
+                nl.add(deptList.get(i));
+            }
+        }
+        this.deptList = nl;
         return "success";
     }
 
+    private List loopchild(int id, String type){
+        List _deptList = this.deptService.findchild(id);
+        List d = new ArrayList();
+        for (Object m : _deptList){
+            Map _m = (Map)m;
+            if (type.equals("dept") && _m.get("deptType").toString().equals("2")){//部门
+                d.add(_m);
+            }
+            if ((type.equals("dating")||type.equals("employee")) && (_m.get("deptType").toString().equals("2") || _m.get("deptType").toString().equals("1"))){//大厅
+                d.add(_m);
+            }
+            if (type.equals("window") && (_m.get("deptType").toString().equals("2") || _m.get("deptType").toString().equals("1") || _m.get("deptType").toString().equals("0"))){//窗口
+                d.add(_m);
+            }
+            loopchild(Integer.valueOf(_m.get("id").toString()), type);
+        }
+        return d;
+    }
     public String queryDeptAjax() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Map manager = (Map)request.getSession().getAttribute("manager");
@@ -430,16 +451,18 @@ public class QueryAction extends MainAction
 
         if(request.getParameter("deptId")!=null&&!request.getParameter("deptId").equals(""))
             this.deptId = Integer.valueOf(request.getParameter("deptId"));
-        final String deptIds = this.deptService.findChildALLStr123(request.getParameter("deptId"));
-        final String allKeyInUse = this.keyTypeService.findAllKeyInUse(1);
-        final int rowsCount = this.queryService.countQueryDept2(deptIds, this.startDate, this.endDate, allKeyInUse);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
-        List list = this.queryService.queryDept2(deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), allKeyInUse);
+        final String deptIds = this.deptService.findChildALLStr1234(request.getParameter("deptId"));
+        final String allKeyInUse = this.keyTypeService.findAllKeyInUseWithNoEval(1);
+        this.pager = new Pager("currentPage", pageSize, 0, request);
+        int[] rowcounts = new int[1];
+        List list = this.queryService.queryDept2Ex(deptIds,req.getString("bizname"),null, null, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
+                this.pager.getPageSize(), allKeyInUse, rowcounts);
+        this.pager = new Pager("currentPage", pageSize, rowcounts[0], request);
         list = this.handleEmptyFile(list);
         this.pager.setPageList(list);
         JSONObject gson = new JSONObject(pager);
         this.pagerJSON = gson;
-        final List chatList = this.queryService.QueryDeptChat(deptIds, this.startDate, this.endDate);
+        final List chatList = this.queryService.QueryDeptChat(deptIds, this.startDate, this.endDate, allKeyInUse);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFont='\u5b8b\u4f53'  baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
@@ -457,7 +480,8 @@ public class QueryAction extends MainAction
         }
         String exportExcel = request.getParameter("export");
         if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
-            List list2 = this.queryService.queryDept2(deptIds, this.startDate, this.endDate, 0, 0, allKeyInUse);
+            System.out.println("导出：" + req.getString("deptId"));
+            List list2 = this.queryService.queryDept2(deptIds, this.startDate, this.endDate, 0, 0, allKeyInUse, null);
 
             final List ls = new ArrayList();
             for (int i = 0; i < list2.size(); ++i) {
@@ -489,6 +513,7 @@ public class QueryAction extends MainAction
             this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
             return "excel";
         }
+        request.setAttribute("QueueDetailBean", new QueueDetail());
         return "success";
     }
 
@@ -795,7 +820,7 @@ public class QueryAction extends MainAction
         final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
         final Map power2 = this.powerService.getUserGroup(groupid2);
         final String deptIdGroup2 = power2.get("deptIdGroup").toString();
-        this.deptJSON = this.deptService.findChildALL(deptIdGroup2, 2);
+        this.deptJSON = this.deptService.findChildALL(this.deptService.findChildALLStr1234("0"), 2);
 
         final List temp = new ArrayList();
         for (int i = 0; i < this.deptJSON.size(); ++i) {
@@ -806,6 +831,7 @@ public class QueryAction extends MainAction
     }
 
     public String queryPeopleyDeal() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
             startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
@@ -813,19 +839,24 @@ public class QueryAction extends MainAction
         if(endDate == null) {
             endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
         }
-        getEmployeeTree();
-
-        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String deptIds = this.deptService.findChildALLStr1234(request.getParameter("deptId"));
         final String path = ServletActionContext.getServletContext().getRealPath("/");
-        final String allKeyInUse = this.keyTypeService.findAllKeyInUse(1);
-        final int rowsCount = this.queryService.countQueryEmployee2(this.id, this.startDate, this.endDate, allKeyInUse);
+        final String allKeyInUse = this.keyTypeService.findAllKeyInUseWithNoEval(1);
+        int rowsCount = 0;//this.queryService.countQueryEmployee2(this.id, this.startDate, this.endDate, allKeyInUse);
         this.pager = new Pager("currentPage", pageSize, rowsCount, request);
-        List querylist = this.queryService.queryEmployee2(this.id, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), allKeyInUse);
+        int[] rc = new int[1];
+        //List querylist = this.queryService.queryEmployee2(deptIds, req.getInt("employeeid"), this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
+        //        this.pager.getPageSize(), allKeyInUse, rc);
+        List querylist = this.queryService.queryDept2Ex(deptIds,req.getString("bizname"), req.getInt("employeeid"),null, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
+                this.pager.getPageSize(), allKeyInUse, rc);
+        rowsCount = rc[0];
+
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
         if (querylist != null) {
             querylist = this.handleEmptyFile(querylist);
         }
         this.pager.setPageList(querylist);
-        final List chatList = this.queryService.QueryEmployeeChat2(this.id, this.startDate, this.endDate);
+        final List chatList = this.queryService.QueryEmployeeChat2(deptIds, req.getInt("employeeid"), this.startDate, this.endDate, allKeyInUse);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
@@ -841,10 +872,10 @@ public class QueryAction extends MainAction
         if (this.getCamera().equals("true")) {
             return "camera";
         }
-        request.setAttribute("employeeinfo", employeeService.findEmployeeById(this.id));
+        request.setAttribute("employeeinfo", employeeService.findEmployeeById(req.getInt("employeeid")));
         String exportExcel = request.getParameter("export");
         if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
-            List list2 = this.queryService.queryEmployee2(this.id, this.startDate, this.endDate, 0, 0, allKeyInUse);
+            List list2 = this.queryService.queryEmployee2(deptIds, req.getInt("employeeid"), this.startDate, this.endDate, 0, 0, allKeyInUse, null);
 
             final List ls = new ArrayList();
             for (int i = 0; i < list2.size(); ++i) {
@@ -876,6 +907,7 @@ public class QueryAction extends MainAction
             this.fileName = "standard" + Math.round(Math.random() * 10000.0) + ".xls";
             return "excel";
         }
+        request.setAttribute("QueueDetailBean", new QueueDetail());
         return "success";
     }
 
@@ -941,20 +973,25 @@ public class QueryAction extends MainAction
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
-        final String deptIds = this.deptService.findChildALLStr123(deptIdGroup);
+        final String deptIds = this.deptService.findChildALLStr1234(deptIdGroup);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
         Integer keys = null;
         if(request.getParameter("keys")!=null && !request.getParameter("keys").equals(""))
             keys =Integer.parseInt(request.getParameter("keys"));
-        final int rowsCount = this.queryService.countQueryResult(deptIds, keys, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
-        List querylist = this.queryService.queryResult(deptIds, keys, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        final int[] rowsCount = new int[]{0};
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        final String allKeyInUse = this.keyTypeService.findAllKeyInUseWithNoEval(1);
+        //List querylist = this.queryService.queryResult(deptIds, keys, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
+        //        this.pager.getPageSize(), allKeyInUse, rowsCount);
+        List querylist = this.queryService.queryDept2Ex(deptIds, req.getString("bizname"), null, keys, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
+                this.pager.getPageSize(), allKeyInUse, rowsCount);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
         querylist = this.handleEmptyFile(querylist);
         this.pager.setPageList(querylist);
         this.keys = new StringBuilder(String.valueOf(keys)).toString();
-        final List chatList = this.queryService.QueryResultChat(keys, this.startDate, this.endDate);
+        final List chatList = this.queryService.QueryResultChat(deptIds, keys, this.startDate, this.endDate, allKeyInUse);
         if (chatList!=null){
             for (int i = 0; i < chatList.size(); ++i) {
                 final Map temp = (Map) chatList.get(i);
@@ -971,7 +1008,7 @@ public class QueryAction extends MainAction
 
         String exportExcel = request.getParameter("export");
         if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
-            List list2 = this.queryService.queryResult(deptIds, keys, this.startDate, this.endDate, 0, 0);
+            List list2 = this.queryService.queryResult(deptIds, keys, this.startDate, this.endDate, 0, 0, allKeyInUse, null);
             querylist = this.handleEmptyFile(querylist);
 
             final List ls = new ArrayList();
@@ -1009,6 +1046,7 @@ public class QueryAction extends MainAction
         if (this.getCamera().equals("true")) {
             return "camera";
         }
+        request.setAttribute("QueueDetailBean", new QueueDetail());
         return "success";
     }
 
@@ -1058,9 +1096,12 @@ public class QueryAction extends MainAction
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
         final String tel = request.getParameter("tel");
-        final int rowsCount = this.queryService.countQueryResultIdCard(deptIds, tel, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
-        List querylist = this.queryService.queryResultIdCard(deptIds, tel, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        final int[] rowsCount = new int[]{0};
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        final String allKeyInUse = this.keyTypeService.findAllKeyInUse(1);
+        List querylist = this.queryService.queryResultIdCard(deptIds, tel, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
+                this.pager.getPageSize(), allKeyInUse, rowsCount);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
         querylist = this.handleEmptyFile(querylist);
         this.pager.setPageList(querylist);
         this.keys = new StringBuilder(String.valueOf(this.keys)).toString();
@@ -1126,6 +1167,7 @@ public class QueryAction extends MainAction
 
         String deptIds = request.getParameter("deptIds");
         String keys = request.getParameter("keys");
+        String bizname = req.getString("bizname");
         if (this.id == null)
             this.id = 0;
         if (keys == null || keys.equals("")) {
@@ -1148,9 +1190,10 @@ public class QueryAction extends MainAction
         if (keys.endsWith(",")) {
             keys = keys.substring(0, keys.length() - 1);
         }
-        final int rowsCount = this.queryService.countQueryZh2(this.id, keys, deptIds, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
-        List tempList = this.queryService.queryZh2(this.id, keys, deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        final int rowsCount[] = new int[1];//this.queryService.countQueryZh2(this.id, keys, deptIds, this.startDate, this.endDate);
+        this.pager = new Pager("currentPage", pageSize, 0, request);
+        List tempList = this.queryService.queryZh2(this.id, keys, deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
         if (tempList != null) {
             tempList = this.handleEmptyFile(tempList);
         }
@@ -1191,17 +1234,17 @@ public class QueryAction extends MainAction
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
-
+        System.out.println("deptidgroup:2>" + deptIdGroup);
         String deptIds = request.getParameter("deptIds");
         String keys = request.getParameter("keys");
         if (keys == null || keys.equals("")) {
-            keys = this.keyTypeService.findAllKeyInUse(1);
+            keys = this.keyTypeService.findAllKeyInUseWithNoEval(1);
         }
         if (null==deptIds || deptIds.equals("")) {
-            deptIds = this.deptService.findChildALLStr123(deptIdGroup);
+            deptIds = this.deptService.findChildALLStr1234(deptIdGroup);
         }
         else{
-            deptIds = this.deptService.findChildALLStr123(deptIds);
+            deptIds = this.deptService.findChildALLStr1234(deptIds);
         }
         if (this.startDate == null) {
             this.startDate = "";
@@ -1212,9 +1255,14 @@ public class QueryAction extends MainAction
         if (keys.endsWith(",")) {
             keys = keys.substring(0, keys.length() - 1);
         }
-        final int rowsCount = this.queryService.countQueryZh2(this.id, keys, deptIds, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
-        List tempList = this.queryService.queryZh2(this.id, keys, deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        final int[] rowsCount = new int[]{0};
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        final String allKeyInUse = this.keyTypeService.findAllKeyInUseWithNoEval(1);
+        //List tempList = this.queryService.queryZh2(this.id, keys, deptIds, this.startDate, this.endDate,
+        //        (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
+        List tempList = this.queryService.queryDept2Ex(deptIds,req.getString("bizname"), id, req.getInt("keys",-1), this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
+                this.pager.getPageSize(), allKeyInUse, rowsCount);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
         if (tempList != null) {
             tempList = this.handleEmptyFile(tempList);
         }
@@ -1237,6 +1285,7 @@ public class QueryAction extends MainAction
         strXML1.append("</graph>");
         request.setAttribute("strXML1", (Object)strXML1.toString());
         request.setAttribute("chatList", (Object)chatList);
+        request.setAttribute("QueueDetailBean", new QueueDetail());
         if (this.getCamera().equals("true")) {
             return "camera";
         }

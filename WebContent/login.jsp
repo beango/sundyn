@@ -11,7 +11,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-    <title> <s:text name="sundyn.title" /> </title>
+    <title>广州市车管所排队与评价综管系统</title>
     <link rel="stylesheet" href="style/login.css" type="text/css"></link>
     <link rel="stylesheet" href="${ctx}/css/zh-cn.default.css" type="text/css" media="screen">
     <!--<link rel="stylesheet" href="./用户登录 - 禅道_files/zh-cn.default.css" type="text/css" media="screen">-->
@@ -64,7 +64,7 @@
     <div class="nLContent">
         <ul style="padding-left:0;">
         <li>
-            <img src="images/managementLogin.jpg" style="width: 100%;height: 1080px;" />
+            <img src="images/managementLogin2.png" style="width: 100%;height: 1080px;" />
         </li>
         </ul>
         <div class="nLpostion">

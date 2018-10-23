@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.SysQueuecounterDao">
+
+    <select id="selectListEx" resultType="SysQueuecounter">
+       select * from (
+       SELECT sys_queuecounter.*,sys_queuehall.hallname
+        FROM sys_queuecounter INNER JOIN sys_queuehall on sys_queuecounter.hallid=sys_queuehall.id
+        ) t1
+        WHERE 1=1 ${ew.sqlSegment}
+    </select>
+
+</mapper>
