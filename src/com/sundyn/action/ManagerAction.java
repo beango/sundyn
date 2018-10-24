@@ -336,7 +336,13 @@ public class ManagerAction extends MainAction
     }
 
     public String managerLogin() throws Exception {
-        final Map manager = this.managerService.findManageBy(this.managerVo.getName(), this.managerVo.getPassword());
+        String[] loginrst = new String[1];
+        final Map manager = this.managerService.findManageBy(this.managerVo.getName(), this.managerVo.getPassword(), loginrst);
+        if (manager==null){
+            this.msg = loginrst[0];
+            System.out.println("login:" + loginrst[0]);
+            return "input";
+        }
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpServletResponse response = ServletActionContext.getResponse();
         final HttpSession session = request.getSession();
@@ -419,7 +425,7 @@ public class ManagerAction extends MainAction
             session.setAttribute("manager", (Object)manager);
             return "success";
         }
-        this.msg = this.getText("login.passwordError");
+        this.msg = "登录失败";
         return "input";
     }
 

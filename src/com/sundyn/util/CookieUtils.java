@@ -45,7 +45,7 @@ public class CookieUtils {
                         String username = split[0];
                         String password = split[1];
                         try {
-                            Map user = managerService.findManageBy(username, password);
+                            Map user = managerService.findManageBy(username, password,null);
                             List<AppriesManagerpower> managerPowers = managerPowerService.selectListEx(new EntityWrapper<AppriesManagerpower>().where("managerid={0}", user.get("id")));
                             String cookieMapPowerStr = "";
                             if (null!=managerPowers && managerPowers.size()>0){

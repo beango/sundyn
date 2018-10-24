@@ -14,16 +14,31 @@ public class ManagerService extends SuperDao
 {
     public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
 
-    public Map findManageBy(final String userName, final String pwd) throws SQLException {
+    public Map findManageBy(final String userName, final String pwd, String[] rst) throws SQLException {
         if(userName==null || userName.equals(""))
             return null;
-        final String sql = "select *,(select name from appries_dept where id=appries_manager.deptid) deptname from appries_manager where name= ? and password= ?";
+        final String sql = "select *,(select name from appries_dept where id=appries_manager.deptid) deptname from appries_manager where name= ?";
 
-        final Object[] arg = { userName, pwd };
+        final Object[] arg = { userName };
         try {
-            return this.getJdbcTemplate().queryForMap(sql, arg);
+            Map m = this.getJdbcTemplate().queryForMap(sql, arg);
+            System.out.println(m==null);
+            if (m == null || m.size()==0){
+                if (rst!=null && rst.length==1)
+                    rst[0] = "账号不存在";
+                return null;
+            }
+
+            String dbpwd = m.get("password").toString();
+            if (!dbpwd.equals(pwd)){
+                if (rst!=null && rst.length==1)
+                    rst[0] = "密码错误";
+                return null;
+            }
+            return m;
         }
         catch (Exception e) {
+            rst[0] = "账号不存在";
             return null;
         }
     }
