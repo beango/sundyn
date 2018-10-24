@@ -105,7 +105,7 @@
                 <input type="text" name="dimension" id="dimension" class="layui-input" value="${hall.dimension}"/>
             </div>
         </div>
-    </div>
+    </div>--%>
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">联系人：</label>
@@ -126,6 +126,7 @@
             <input type="text" name="note" id="note" class="layui-input" value="${hall.note}" style="width:524px;"/>
         </div>
     </div>
+    <%--
     <div class="layui-form-item">
         <label class="layui-form-label">办公时间说明：</label>
         <div class="layui-input-inline">

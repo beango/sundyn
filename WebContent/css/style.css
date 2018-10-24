@@ -311,3 +311,5 @@ h2{font-weight:normal;}
 .NormalCss{background-image:url(../images/nor.png);background-repeat:no-repeat;background-position:right center;}
 .SortDescCss{background-image:url(../images/down.png);background-repeat:no-repeat;background-position:right center;}
 .SortAscCss{background-image:url(../images/up.png);background-repeat:no-repeat;background-position:right center;}
+
+.hand{cursor:pointer;}

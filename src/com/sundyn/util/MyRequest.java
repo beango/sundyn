@@ -1,5 +1,7 @@
 package com.sundyn.util;
 
+import net.sf.json.JSONArray;
+
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -486,5 +488,11 @@ public class MyRequest
             obj = sdf.parse(value);
         }
         return obj;
+    }
+
+    public JSONArray getJson(String key) {
+        String value = this.request.getParameter(key);
+        JSONArray ja = new JSONArray();
+        return ja.fromObject(value);
     }
 }

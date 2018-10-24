@@ -234,4 +234,5 @@
     <bean id="queueDetailAction" class="com.sundyn.action.QueueDetailAction" scope="prototype" ></bean>
     <bean id="queueInteAction" class="com.sundyn.action.QueueInteAction" scope="prototype" ></bean>
     <bean id="blackListAction" class="com.sundyn.action.BlackListAction" scope="prototype" ></bean>
+    <bean id="dictAction" class="com.sundyn.action.SysDictAction" scope="prototype" ></bean>
 </beans>

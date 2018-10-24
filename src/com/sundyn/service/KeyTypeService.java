@@ -113,7 +113,17 @@ public class KeyTypeService extends SuperDao
             return null;
         }
     }
-    
+
+    public List findAllKeyInUse() throws SQLException {
+        final String sql = "SELECT * FROM appries_keytype where yes=1 order by keyNo";
+        try {
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
     public String findAllKeyInUse(final Integer yes) throws SQLException {
         final String sql = "select * from appries_keytype where yes=" + yes + " order by keyNo";
         try {

@@ -243,7 +243,7 @@
                         ,cols: [[ //表头
                             {field: 'deptname', title: '服务大厅', width:'33%'}
                             ,{field: 'ename', title: '员工姓名', width:'28%'}
-                            ,{field: 'totalservicetimename', title: '平均办理时间（'+dataservicetime[0].avgservicetimename+"）", sort: true}
+                            ,{field: 'totalservicetimename', title: '平均办理时间'+(dataservicetime.length>0?'（'+dataservicetime[0].avgservicetimename+"）":""), sort: true}
                         ]]
                         ,skin:'nob'
                     });
@@ -257,7 +257,7 @@
                         ,cols: [[ //表头
                             {field: 'deptname', title: '服务大厅', width:'33%'}
                             ,{field: 'ename', title: '员工姓名', width:'28%'}
-                            ,{field: 'keybmyrate', title: '差评率（'+dataservicetime[0].avgtotalkeybmy+"%）", sort: true}
+                            ,{field: 'keybmyrate', title: '差评率'+(dataservicetime.length>0?'（'+dataservicetime[0].avgtotalkeybmy+"%）":0), sort: true}
                         ]]
                         ,skin:'nob'
                     });
@@ -271,7 +271,7 @@
                         ,cols: [[ //表头
                             {field: 'deptname', title: '服务大厅', width:'33%'}
                             ,{field: 'ename', title: '员工姓名', width:'28%'}
-                            ,{field: 'totalpausetimename', title: '暂停时长（'+totalpausetime[0].avgpausetimename+"）", sort: true}
+                            ,{field: 'totalpausetimename', title: '暂停时长'+(totalpausetime.length>0?'（'+totalpausetime[0].avgpausetimename+"）":""), sort: true}
                         ]]
                         ,skin:'nob'
                     });

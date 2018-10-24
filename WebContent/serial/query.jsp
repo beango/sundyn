@@ -24,6 +24,7 @@
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
     <style type="text/css">
         ul.ztree {margin-top: 10px;border: 1px solid #617775;background: #f0f6e4;width:420px;height:360px;overflow-y:scroll;overflow-x:auto;}
+        .layui-btn-xs{text-indent:0px;}
     </style>
 </head>
 <body>
@@ -34,7 +35,8 @@
     }
 
     function serialAdd(id){
-        new dialog().iframe("serialAdd.action?id=" + id, {title: "添加", resize:false, w:"500px", h:"400px"});
+        var action = id==undefined?"增加":"编辑";
+        new dialog().iframe("serialAdd.action?id=" + id, {title: action + "业务", resize:false, w:"500px", h:"400px"});
     }
 
     function serialDel(id){
@@ -93,7 +95,7 @@
     <div class="layui-inline">
         <div class="layui-input-inline">
             <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" class="hand" onclick="serialQuery('')"/>
-            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="serialAdd('')" value="增    加" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="serialAdd()" value="增    加" />
         </div>
     </div>
     <div>
@@ -110,9 +112,9 @@
                 <th>
                     业务名称
                 </th>
-                <th>
+                <%--<th>
                     业务类型
-                </th>
+                </th>--%>
                 <th></th>
             </tr>
             </thead>
@@ -133,9 +135,9 @@
                         <td>
                                 ${data.bizname}
                         </td>
-                        <td>
+                        <%--<td>
                                 ${data.biztypename}
-                        </td>
+                        </td>--%>
                         <td>
                             <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();serialAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i>编辑</a>
                             <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="event.stopPropagation();serialDel('${data.id}','删除');"><i class="layui-icon layui-icon-delete"></i>删除</a>

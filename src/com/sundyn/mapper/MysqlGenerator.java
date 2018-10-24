@@ -35,7 +35,7 @@ public class MysqlGenerator {
      * JDBC相关配置
      */
     private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private static final String URL = "jdbc:sqlserver://localhost:1433;DatabaseName=zxproduct";
+    private static final String URL = "jdbc:sqlserver://192.168.1.112:1433;DatabaseName=zxproduct";
     private static final String USER_NAME = "sa";
     private static final String PASSWORD = "sa123456.";
 
@@ -94,7 +94,7 @@ public class MysqlGenerator {
                                 .setDbColumnUnderline(true)// 全局下划线命名
                                 // .setTablePrefix(new String[]{"unionpay_"})// 此处可以修改为您的表前缀
                                 .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
-                                .setInclude(new String[] {"appries_keytype"}) // 需要生成的表
+                                .setInclude(new String[] {"sys_dictinfo"}) // 需要生成的表
                                 // .setExclude(new String[]{"test"}) // 排除生成的表
                                 // 自定义实体，公共字段
                                 // .setSuperEntityColumns(new String[]{"test_id"})

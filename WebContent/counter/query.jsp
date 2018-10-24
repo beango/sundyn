@@ -25,6 +25,7 @@
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
     <style type="text/css">
         ul.ztree {margin-top: 10px;border: 1px solid #617775;background: #f0f6e4;width:420px;height:360px;overflow-y:scroll;overflow-x:auto;}
+        .layui-btn-xs{text-indent:0px;}
     </style>
     <script type="text/javascript">
         function counterQuery(){
@@ -33,7 +34,8 @@
         }
 
         function counterAdd(id){
-            new dialog().iframe("counterAdd.action?id=" + id, {title: "添加", resize:false, w:"500px", h:"400px"});
+            var action = id==undefined?"增加":"编辑";
+            new dialog().iframe("counterAdd.action?id=" + id, {title: action+"窗口", resize:false, w:"500px", h:"400px"});
         }
 
         function counterDel(id){
@@ -94,7 +96,7 @@
     <div class="layui-inline">
         <div class="layui-input-inline">
             <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" class="hand" onclick="counterQuery('')"/>
-            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="counterAdd('')" value="增    加" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="counterAdd()" value="增    加" />
         </div>
     </div>
     <div>

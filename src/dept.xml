@@ -25,6 +25,15 @@
 		<action name="deptView" class="deptAction" method="deptView">
 			<result name="success">/dept/view.jsp</result>
 		</action>
+        <action name="sysDict" class="dictAction" method="sysDict">
+            <result name="success">/base/dictSet.jsp</result>
+        </action>
+        <action name="dictSave" class="dictAction" method="dictSave">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+
 		<action name="toBindWeburl" class="deptAction" method="toBindWeburl">
 			<result name="ok">/dept/chooseWeburl.jsp</result>
 		</action>

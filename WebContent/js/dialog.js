@@ -21,7 +21,7 @@ function dialog()
     }
 
     this.iframe=function(url, args, cb){
-        layer.open({
+        var index = layer.open({
             type: 2,
             title: args && args.title ? args.title : '',
             shadeClose: true,
@@ -40,6 +40,7 @@ function dialog()
                 }
             }
         });
+        //layer.full(index);
     }
 
     this.warn = function(msg, close){

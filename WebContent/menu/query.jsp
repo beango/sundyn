@@ -535,7 +535,7 @@
         zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes = zTree.getSelectedNodes();
         if (nodes.length>0){
-            dia.iframe("menuEdit.action?parentid=" + nodes[0].id, {title: '添加', resize: false, h: "600px"});
+            dia.iframe("menuEdit.action?parentid=" + nodes[0].id, {title: '添加菜单', resize: false, h: "600px"});
         }
         return true;
     }
@@ -546,7 +546,7 @@
         zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes = zTree.getSelectedNodes();
         if (nodes.length>0){
-            dia.iframe("menuEdit.action?id=" + nodes[0].id, {title: '修改', resize: false, h: "600px"});
+            dia.iframe("menuEdit.action?id=" + nodes[0].id, {title: '修改菜单', resize: false, h: "600px"});
         }
         return true;
     }
@@ -646,19 +646,19 @@
         <li id="m_add" onclick="addMenu();">
             <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
-                添加
+                添加菜单
             </span>
         </li>
         <li id="m_rename" onclick="editMenu();">
             <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
-                修改
+                修改菜单
             </span>
         </li>
         <li id="m_del" onclick="delMenu();">
             <i class="fa fa-close fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
-                删除
+                删除菜单
             </span>
         </li>
     </ul>

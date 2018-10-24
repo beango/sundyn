@@ -24,6 +24,7 @@
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
     <style type="text/css">
         ul.ztree {margin-top: 10px;border: 1px solid #617775;background: #f0f6e4;width:420px;height:360px;overflow-y:scroll;overflow-x:auto;}
+        .layui-btn-xs{text-indent:0px;}
     </style>
 </head>
 <body>
@@ -38,15 +39,33 @@
     }
 
     function hallAdd(id){
-        new dialog().iframe("hallAdd.action?id=" + id, {title: "添加", resize:false, w:"700px", h:"650px"});
+        var action = id==undefined?"增加":"编辑";
+        new dialog().iframe("hallAdd.action?id=" + id, {title: action+"大厅", resize:false, w:"700px", h:"650px"});
     }
 
     function hallSerial(id){
-        parent.openTab("业务配置", "serialQuery.action?hallid=" + id);
+        //弹出即全屏
+        var index = layer.open({
+            title: '业务配置',
+            type: 2,
+            content: "serialQuery.action?hallid=" + id,
+            area: ['320px', '195px']
+            //,maxmin: true
+        });
+        layer.full(index);
+        //openTab("业务配置", "serialQuery.action?hallid=" + id);
     }
 
     function hallCounter(id){
-        parent.openTab("窗口管理", "counterQuery.action?hallid=" + id);
+        var index = layer.open({
+            title: '窗口管理',
+            type: 2,
+            content: "counterQuery.action?hallid=" + id,
+            area: ['320px', '195px']
+            //,maxmin: true
+        });
+        layer.full(index);
+        //openTab("窗口管理", "counterQuery.action?hallid=" + id);
     }
 
     function hallDel(id){
@@ -113,12 +132,12 @@
                 <th>
                     服务厅名称
                 </th>
-                <th>
+                <%--<th>
                     经度
                 </th>
                 <th>
                     纬度
-                </th>
+                </th>--%>
                 <th>
                     负责人
                 </th>
@@ -142,12 +161,12 @@
                         <td>
                                 ${data.hallname}
                         </td>
-                        <td>
+                        <%--<td>
                                 ${data.longitude}
                         </td>
                         <td>
                                 ${data.dimension}
-                        </td>
+                        </td>--%>
                         <td>
                                 ${data.head}
                         </td>
