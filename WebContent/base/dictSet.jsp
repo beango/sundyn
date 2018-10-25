@@ -133,7 +133,7 @@
         }
 
         dojo.xhrPost({url:"dictSave.action",content:{postdata:JSON.stringify(postdata)},load:function (resp, ioArgs){
-                layer.msg(resp, {
+                layer.msg("保存成功", {
                     icon: 1,
                     time: 800
                 }, function(){

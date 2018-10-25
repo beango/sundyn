@@ -22,7 +22,6 @@ public class PowerService extends SuperDao
             return this.getJdbcTemplate().queryForMap(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

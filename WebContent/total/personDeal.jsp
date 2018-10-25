@@ -64,7 +64,7 @@
         <label class="layui-form-label" style="width:120px;"><s:text name='sundyn.query.selectEmployee'/></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
-        <input id="deptSel" class="scinput" type="text" readonly value="<%=request.getParameter("deptname")==null?"":request.getParameter("deptname")%>" style="width:120px;" onclick="showDeptTree(this,null);"/>
+        <input id="deptSel" class="scinput" type="text" readonly value="<%=request.getParameter("deptname")==null||request.getParameter("deptname").equals("")?"全部":request.getParameter("deptname")%>" style="width:120px;" onclick="showDeptTree(this,null);"/>
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">

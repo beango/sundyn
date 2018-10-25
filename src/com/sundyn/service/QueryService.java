@@ -694,8 +694,8 @@ public class QueryService extends SuperDao
     当前人流量-当天业务总量，人流量（取号且未办结）
      */
     public List getQueueDeptAnysle(String deptid) {
-        String sql = "select deptid,deptname,servicedate,SUM(totalservicetime)/SUM(servicecount) totalservicetime," +
-                "SUM(totalservicetime) totalservicetime2,SUM(totalwaittime)/SUM(servicecount) totalwaittime,SUM(totalwaittime) totalwaittime2," +
+        String sql = "select deptid,deptname,servicedate,SUM(totalservicetime)/NULLIF(SUM(servicecount), 0) totalservicetime," +
+                "SUM(totalservicetime) totalservicetime2,SUM(totalwaittime)/nullif(SUM(servicecount),0) totalwaittime,SUM(totalwaittime) totalwaittime2," +
                 "ISNULL(SUM(totalpausetime), 0) totalpausetime,sum(servicecount) servicecount,sum(ticketcount) ticketcount,SUM(totalkeybmy) totalkeybmy,SUM(totalwait) totalwait " +
                 "from rpt_deptdata t1 where DateDiff(dd,servicedate,getdate())=0 ";
         if (StringUtils.isNotBlank(deptid)){
@@ -712,7 +712,7 @@ public class QueryService extends SuperDao
     }
 
     public List getQueueEmployeeAnysle(String deptid) {
-        String sql = "select eno,ename,deptname,servicedate,SUM(totalservicetime)/SUM(servicecount) totalservicetime," +
+        String sql = "select eno,ename,deptname,servicedate,SUM(totalservicetime)/NULLIF(SUM(servicecount), 0) totalservicetime," +
                 "dbo.FN_SecondToString(sum(totalservicetime)/nullif(sum(servicecount),0)) as totalservicetimename, " +
                 "SUM(totalservicetime) totalservicetime2,SUM(totalwaittime)/SUM(servicecount) totalwaittime,SUM(totalwaittime) totalwaittime2," +
                 "ISNULL(SUM(totalpausetime), 0) totalpausetime,sum(servicecount) servicecount,sum(ticketcount) ticketcount,SUM(totalkeybmy) totalkeybmy " +

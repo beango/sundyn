@@ -19,23 +19,23 @@
                     <img src="<s:text name='sundyn.employee.pic.addEmployee' />" width="83" height="25"
                          onclick="employeeAddDialog('<s:text name="sundyn.employee.addEmployee"/>')" class="hand"/>
                 </td>
-                <td style="border-color: #FFFFFF;" align="left">
+                <%--<td style="border-color: #FFFFFF;" align="left">
                     <img src="<s:text name='sundyn.employee.pic.seeFreeEmployee' />" width="108" height="25"
                          onclick="employeeOutView()" class="hand"/>
-                </td>
+                </td>--%>
             </tr>
         </table>
     </div>
     <table width="100%" class="tablelist">
         <thead>
         <tr>
-            <th align="center" background="images/table_bg_03.jpg" bgcolor="#FFFFFF"><s:text
+            <th align="center" style="text-align:center;" background="images/table_bg_03.jpg" bgcolor="#FFFFFF"><s:text
                     name="sundyn.column.name"/></th>
-            <th align="center" background="images/table_bg_03.jpg" bgcolor="#FFFFFF"><s:text
+            <th align="center" style="text-align:center;" background="images/table_bg_03.jpg" bgcolor="#FFFFFF"><s:text
                     name="sundyn.column.sex"/></th>
-            <th align="center" background="images/table_bg_03.jpg" bgcolor="#FFFFFF">工号</th>
-            <th align="center" background="images/table_bg_03.jpg">在线</th>
-            <th align="center" background="images/table_bg_03.jpg"><s:text
+            <th align="center" style="text-align:center;" background="images/table_bg_03.jpg" bgcolor="#FFFFFF">工号</th>
+            <%--<th align="center" background="images/table_bg_03.jpg">在线</th>--%>
+            <th align="center" style="text-align:center;" background="images/table_bg_03.jpg"><s:text
                     name="sundyn.column.operation"/></th>
         </tr>
         </thead>
@@ -54,7 +54,7 @@
                     </c:if>
                 </td>
                 <td align="center">${employee.ext2}</td>
-                <td align="center">
+               <%-- <td align="center">
                     <c:if test="${online!=null}">
                         <c:if test="${fn:contains(online, employee.id)}">
                             在线
@@ -63,13 +63,13 @@
                             不在线
                         </c:if>
                     </c:if>
-                </td>
+                </td>--%>
                 <td align="center"><a
                         href="javascript:employeeEditDialog(${employee.Id},'<s:text name="sundyn.employee.editEmployee" />')"><s:text
                         name="sundyn.modify"/></a> <s:text name="sundyn.separator"/>
                     <a href="javascript:employeeDel(${employee.Id})"><s:text name="sundyn.del"/></a><s:text
                             name="sundyn.separator"/>
-                    <a href="javascript:employeeOut(${employee.Id})"><s:text name="sundyn.employee.out"/></a><s:text
+                    <%--<a href="javascript:employeeOut(${employee.Id})"><s:text name="sundyn.employee.out"/></a>--%><s:text
                             name="sundyn.separator"/>
                     <a href="javascript:employeeReset(${employee.Id})"><s:text
                             name="sundyn.employee.resetPassword"/></a></td>

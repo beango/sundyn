@@ -110,6 +110,8 @@ function onCheck(e, treeId, treeNode) {
     var cityObj = $("#deptSel");
     if (cityObj==null || cityObj.length==0)
         cityObj = btnObj;
+    if (v=="")
+        v = "全部";
     cityObj.attr("value", v);
     if (btnVal != null){
         v = "";

@@ -95,7 +95,6 @@ function querydept(exportexcel) {
     var deptname = getCheckName();
  	var startDate = getStartDate();
 	var endDate =  getEndDate();
-	console.log(deptId);
   	var u = "queryDeptDeal.action?deptId=" + deptId + "&deptname=" + deptname + "&startDate=" + startDate + "&endDate=" + endDate;// + "&deptpath=" + $("#deptId").val();
   	if(exportexcel)
      u += "&export="+exportexcel;
@@ -784,11 +783,11 @@ function deptEditDialog(title, fatherid) {
 // 大厅参数配置
 function deptCfgDialog(title, deptname) {
     var deptId = document.getElementById("deptId").value;
-    new dialog().iframe('hallAdd.action?deptid='+deptId + "&deptName=" + deptname, {title: title, resize:false, w:'700px', h:"650px"});
+    new dialog().iframe('hallAdd.action?deptid='+deptId + "&deptName=" + encodeURI(deptname), {title: title, resize:false, w:'700px', h:"650px"});
 }
 //窗口参数配置
 function counterCfgDialog(title, deptname, fatherId, deptid) {
-    new dialog().iframe('counterAdd.action?deptid='+deptid + "&fatherId="+fatherId + "&deptName=" + deptname, {title: title, resize:false, w:'700px', h:"650px"});
+    new dialog().iframe('counterAdd.action?deptid='+deptid + "&fatherId="+fatherId + "&deptName=" + encodeURI(deptname), {title: title, resize:false, w:'700px', h:"650px"});
 }
 function deptGenCer(mac, batchname){
     dojo.xhrPost({url:"deptGenCer.action", content:{mac:mac, batchname:batchname}, load:function (resp, ioArgs) {

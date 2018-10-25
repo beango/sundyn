@@ -1367,7 +1367,10 @@ public class TotalAction extends MainAction
                         kbm.add(key[Integer.parseInt(k.get("keyNo").toString())]);
                     }
                     mrate = Math.rint(msum * 1.0D / (msum * 1.0D + bmsum * 1.0D) * 10000.0D) * 1.0D / 100.0D;
-                    mrate = Math.rint(msum * 1.0D / servercount * 10000.0D) * 1.0D / 100.0D;
+                    if(servercount!=0)
+                        mrate = Math.rint(msum * 1.0D / servercount * 10000.0D) * 1.0D / 100.0D;
+                    else
+                        mrate = 0;
                     for (int j = 0; j < key.length; j++) {
                         p += key[j].intValue();
                     }
@@ -1389,7 +1392,7 @@ public class TotalAction extends MainAction
                 m.put("servercount", m.get("servercount"));
                 m.put("waittime", m.get("waittime"));
                 m.put("servicetime", m.get("servicetime"));
-                m.put("unkey", Integer.parseInt(m.get("servercount").toString())-msum-bmsum);
+                m.put("unkey", (m.get("servercount")==null?0:Integer.parseInt(m.get("servercount").toString()))-msum-bmsum);
                 m.put("totalkey", msum + bmsum);
                 res.add(m);
             }

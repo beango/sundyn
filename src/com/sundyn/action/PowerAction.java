@@ -85,11 +85,11 @@ public class PowerAction extends MainAction
         }
         System.out.println("name-lowerPowerQuery=" + name);
         name = name.trim();
-        final Map manager = (Map)request.getSession().getAttribute("manager");
-        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
-        final Map power = this.powerService.getUserGroup(groupid);
-        final String deptIdGroup = power.get("deptIdGroup").toString();
-        final String deptGroups = this.deptService.findChildALLStr123(deptIdGroup);
+        //final Map manager = (Map)request.getSession().getAttribute("manager");
+        //final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
+        //final Map power = this.powerService.getUserGroup(groupid);
+        //final String deptIdGroup = power.get("deptIdGroup").toString();
+        final String deptGroups = this.deptService.findChildALLStr123(super.getUserDept().toString());
         final int rowsCount = this.powerService.countLowerPowerByName(name, deptGroups);
         this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage");
         final List list = this.powerService.findLowerPowerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
@@ -149,11 +149,7 @@ public class PowerAction extends MainAction
     
     public String powerAddDialog() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        final Map manager = (Map)request.getSession().getAttribute("manager");
-        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
-        final Map power = this.powerService.getUserGroup(groupid);
-        final String deptIdGroup = power.get("deptIdGroup").toString();
-        final List list = this.deptService.findChildALL(deptIdGroup);
+        final List list = this.deptService.findChildALL(super.getUserDept().toString());
         if (list != null && list.size() > 0) {
             final Map dept = (Map) list.get(0);
             dept.put("fatherId", -1);
@@ -209,12 +205,8 @@ public class PowerAction extends MainAction
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Integer id = Integer.valueOf(request.getParameter("id"));
         final Map m = this.powerService.getUserGroup(id);
-        final Map manager = (Map)request.getSession().getAttribute("manager");
-        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
-        final Map power = this.powerService.getUserGroup(groupid);
-        final String deptIdGroup = power.get("deptIdGroup").toString();
 
-        final List list = this.deptService.findChildALL(deptIdGroup);
+        final List list = this.deptService.findChildALL(super.getUserDept().toString());
         if (list != null && list.size() > 0) {
             final Map dept = (Map) list.get(0);
             dept.put("fatherId", -1);

@@ -461,12 +461,13 @@ public class ManagerAction extends MainAction
         }
         name = name.trim();
         final Map manager = (Map)request.getSession().getAttribute("manager");
-        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
+        //final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final String managerId = manager.get("id").toString();
         request.setAttribute("managerId", (Object)managerId);
-        final Map power = this.powerService.getUserGroup(groupid);
-        final String deptIdGroup = power.get("deptIdGroup").toString();
-        final String deptGroups = this.deptService.findChildALLStr1234(deptIdGroup);
+        //System.out.println("groupid:" + groupid);
+        //final Map power = this.powerService.getUserGroup(groupid);
+        //final String deptIdGroup = power.get("deptIdGroup").toString();
+        final String deptGroups = this.deptService.findChildALLStr1234(super.getUserDept().toString());
         this.pager = new Pager("currentPage", pageSize, 0, request, "lowerManagerPage");
         int[] rowNum = new int[1];
         this.list = this.managerService.findLowerManagerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowNum);

@@ -113,7 +113,7 @@
         <div class="layui-form-mid layui-word-aux">
         </div>
         <div class="layui-input-inline">
-            <input id="deptSel" class="scinput" type="text" readonly value="<%=request.getParameter("deptname")==null?"":request.getParameter("deptname")%>" style="width:120px;" onclick="showDeptTree();" />
+            <input id="deptSel" class="scinput" type="text" readonly value="<%=request.getParameter("deptname")==null||request.getParameter("deptname").equals("")?"全部":request.getParameter("deptname")%>" style="width:120px;" onclick="showDeptTree();" />
         </div>
     </div>
     <div class="layui-inline">

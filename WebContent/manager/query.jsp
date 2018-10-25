@@ -56,9 +56,9 @@
 								${manager.realname}
 							</td>
 							<td style="text-align: center;">
-								<a href="javascript:managerEditDialog(${manager.id},'<s:text name="sundyn.user.editUser" />');"><s:text name='sundyn.modify' /></a>
-								<a href="javascript:managerDel(${manager.id});"><s:text name='sundyn.del' /></a>
-								<a href="javascript:managerReset(${manager.id});"><s:text name='sundyn.employee.resetPassword' /></a>
+								<a href="#" onclick="managerEditDialog(${manager.id},'<s:text name="sundyn.user.editUser" />');"><s:text name='sundyn.modify' /></a>
+								<a href="#" onclick="managerDel(${manager.id});"><s:text name='sundyn.del' /></a>
+								<a href="#" onclick="managerReset(${manager.id});"><s:text name='sundyn.employee.resetPassword' /></a>
 							</td>
 						</tr>
 					</c:forEach>

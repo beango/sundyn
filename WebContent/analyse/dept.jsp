@@ -56,7 +56,7 @@
     <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.query.selectDept'/></label>
     <div class="layui-input-inline" style="width:100px;">
         <input id="deptSel" class="scinput" type="text" readonly
-               value="<%=request.getParameter("deptname")==null?"":request.getParameter("deptname")%>"
+               value="<%=request.getParameter("deptname")==null?"全部":request.getParameter("deptname")%>"
                style="width:120px;cursor: pointer;" onclick="showDeptTree(this,null);"/>
     </div>
 </div>

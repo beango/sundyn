@@ -12,7 +12,15 @@
             $('.loginbox').css({'position': 'absolute', 'left': ($(window).width() - 692) / 2});
             $(window).resize(function () {
                 $('.loginbox').css({'position': 'absolute', 'left': ($(window).width() - 692) / 2});
-            })
+            });
+
+            var root = document.getElementById('loginbody');
+            document.body.addEventListener('keyup', function (e) {
+                console.log(e);
+                if (e.keyCode == '13') {
+                    doclick();
+                }
+            });
         });
         function _$(id){return document.getElementById(id);}
         function doclick(){
@@ -37,7 +45,7 @@
     <span>欢迎登录后台管理界面平台</span>
 </div>--%>
 
-<div class="loginbody">
+<div class="loginbody" id="loginbody">
     <span class="systemlogo"></span>
     <div class="loginbox">
         <form method="post" id="v" action="managerLogin.action" class="form-condensed">

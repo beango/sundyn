@@ -240,14 +240,14 @@ public class BusinessAction extends ActionSupport
                     final Object[] temp3 = new Object[row.getLastCellNum()];
                     for (int k = 0; k < row.getLastCellNum(); ++k) {
                         final HSSFCell cell = row.getCell(k);
-                        if (cell.getCellType() == 1) {
+                        if (cell.getCellType() == CellType.STRING) {
                             temp3[k] = cell.getStringCellValue();
                         }
                         else if (HSSFDateUtil.isCellDateFormatted((Cell)cell)) {
                             temp3[k] = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cell.getDateCellValue());
                         }
                         else {
-                            if (cell.getCellType() != 0) {
+                            if (cell.getCellType() != CellType.NUMERIC) {
                                 this.msg = "\u6570\u636e\u683c\u5f0f\u4e0d\u5bf9,\u8bf7\u4ece\u65b0\u8f93\u5165\u6570\u636e";
                                 return "success";
                             }

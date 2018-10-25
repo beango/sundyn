@@ -392,11 +392,8 @@ public class DeptAction extends MainAction
     
     public String deptView() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        final Map manager = (Map)request.getSession().getAttribute("manager");
-        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
-        final Map power = this.powerService.getUserGroup(groupid);
-        final String deptIdGroup = power.get("deptIdGroup").toString();
-        this.list = this.deptService.findChildALL(deptIdGroup);
+
+        this.list = this.deptService.findChildALL(super.getUserDept().toString());
         if (this.list != null && this.list.size() > 0) {
         	for(final Object m : list){
         		Map dept = (Map) m;

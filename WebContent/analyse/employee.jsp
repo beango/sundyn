@@ -53,7 +53,7 @@
     <div class="layui-form-mid layui-word-aux">
     </div>
     <input id="deptSel" class="scinput" type="text" readonly
-           value="<%=request.getParameter("deptname")==null?"":request.getParameter("deptname")%>"
+           value="<%=request.getParameter("deptname")==null?"全部":request.getParameter("deptname")%>"
            style="width:120px;cursor: pointer;" onclick="showDeptTree(this,null);"/>
 </div>
 <input type="hidden" id="deptId" name="deptId" value="${deptId}"/>

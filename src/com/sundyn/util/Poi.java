@@ -2,10 +2,9 @@ package com.sundyn.util;
 
 import com.xuan.xutils.utils.StringUtils;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.hssf.util.Region;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.util.IOUtils;
-import org.apache.poi.util.StringUtil;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ public class Poi
     }
 
     public void addList(final List ls, boolean isauto) {
+        CellStyle cellStyle = getCellStyle();
         for (int rNum = this.sheet.getLastRowNum(), i = rNum + 1; i < ls.size() + rNum + 1; ++i) {
             final Map m = (Map) ls.get(i - rNum - 1);
             final Iterator ikey = m.keySet().iterator();
@@ -40,43 +40,15 @@ public class Poi
             r.setHeight((short)400);
             while (ikey.hasNext()) {
                 final String temp = (String) ikey.next();
+                final Cell c = (Cell)r.createCell(j);
+                c.setCellType(CellType.STRING);
                 try {
-                    final Cell c = (Cell)r.createCell(j);
-                    c.setCellValue(m.get(temp).toString());
-                    final HSSFCellStyle cellStylename = this.wb.createCellStyle();
-                    cellStylename.setAlignment((short)2);
-                    cellStylename.setBorderBottom((short)1);
-                    cellStylename.setBottomBorderColor((short)8);
-                    cellStylename.setBorderLeft((short)1);
-                    cellStylename.setLeftBorderColor((short)8);
-                    cellStylename.setBorderRight((short)1);
-                    cellStylename.setRightBorderColor((short)8);
-                    cellStylename.setBorderTop((short)1);
-                    cellStylename.setTopBorderColor((short)8);
-                    cellStylename.setFillForegroundColor((short)44);
-                    cellStylename.setFillPattern((short)1);
-                    cellStylename.setVerticalAlignment((short)1);
-                    c.setCellStyle((CellStyle)cellStylename);
-
+                    c.setCellValue(new HSSFRichTextString(m.get(temp).toString()));
                 }
                 catch (Exception e) {
-                    final Cell c2 = (Cell)r.createCell(j);
-                    c2.setCellValue("");
-                    final HSSFCellStyle cellStylename2 = this.wb.createCellStyle();
-                    cellStylename2.setAlignment((short)2);
-                    cellStylename2.setBorderBottom((short)1);
-                    cellStylename2.setBottomBorderColor((short)8);
-                    cellStylename2.setBorderLeft((short)1);
-                    cellStylename2.setLeftBorderColor((short)8);
-                    cellStylename2.setBorderRight((short)1);
-                    cellStylename2.setRightBorderColor((short)8);
-                    cellStylename2.setBorderTop((short)1);
-                    cellStylename2.setTopBorderColor((short)8);
-                    cellStylename2.setFillForegroundColor((short)44);
-                    cellStylename2.setFillPattern((short)1);
-                    cellStylename2.setVerticalAlignment((short)1);
-                    c2.setCellStyle((CellStyle)cellStylename2);
+                    c.setCellValue("");
                 }
+                c.setCellStyle(cellStyle);
                 ++j;
             }
         }
@@ -86,38 +58,65 @@ public class Poi
             }
         }
     }
-    
+
+    /*
+    单元格样式
+     */
+    private CellStyle getCellStyle(){
+        final HSSFCellStyle cellStyle = this.wb.createCellStyle();
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        cellStyle.setBottomBorderColor((short)8);
+        cellStyle.setBorderLeft(BorderStyle.THIN);
+        cellStyle.setLeftBorderColor((short)8);
+        cellStyle.setBorderRight(BorderStyle.THIN);
+        cellStyle.setRightBorderColor((short)8);
+        cellStyle.setBorderTop(BorderStyle.THIN);
+        cellStyle.setTopBorderColor((short)8);
+        cellStyle.setFillForegroundColor((short)44);
+        return cellStyle;
+    }
+
+    /*
+    表头样式
+     */
+    private CellStyle getHeadCellStyle(){
+        final HSSFCellStyle cellStyle = this.wb.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        cellStyle.setBottomBorderColor((short)8);
+        cellStyle.setBorderLeft(BorderStyle.THIN);
+        cellStyle.setLeftBorderColor((short)8);
+        cellStyle.setBorderRight(BorderStyle.THIN);
+        cellStyle.setRightBorderColor((short)8);
+        cellStyle.setBorderTop(BorderStyle.THIN);
+        cellStyle.setTopBorderColor((short)8);
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        java.awt.Color color = new java.awt.Color(211,243,250) ;
+        cellStyle.setFillForegroundColor((short)35);//D3F3FA
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        HSSFFont font = wb.createFont();
+        font.setFontHeightInPoints((short) 14); // 字体高度
+        font.setFontName("黑体"); // 字体
+        cellStyle.setFont(font);
+        return cellStyle;
+    }
+
     public void addListTitle(final Object[] args, final int addRnum) {
         int rNum = this.sheet.getLastRowNum();
         rNum += addRnum;
         this.colnum = args.length;
         final HSSFRow r = this.sheet.createRow(rNum);
         r.setHeight((short) 450);
+        CellStyle headCellStyle = getHeadCellStyle();
         for (int i = 0; i < args.length; ++i) {
             final Cell c = (Cell)r.createCell(i);
-            c.setCellValue(args[i].toString());
-            final HSSFCellStyle cellStylename = this.wb.createCellStyle();
-            cellStylename.setAlignment((short)2);
-            cellStylename.setBorderBottom((short)1);
-            cellStylename.setBottomBorderColor((short)8);
-            cellStylename.setBorderLeft((short)1);
-            cellStylename.setLeftBorderColor((short)8);
-            cellStylename.setBorderRight((short)1);
-            cellStylename.setRightBorderColor((short)8);
-            cellStylename.setBorderTop((short)1);
-            cellStylename.setTopBorderColor((short)8);
-            cellStylename.setFillPattern((short)1);
-            java.awt.Color color = new java.awt.Color(211,243,250) ;
-            cellStylename.setFillForegroundColor((short)35);//D3F3FA
-            cellStylename.setVerticalAlignment((short)1);
-
-            HSSFFont font = wb.createFont();
-            font.setFontHeightInPoints((short) 14); // 字体高度
-            font.setFontName("黑体"); // 字体
-            cellStylename.setFont(font);
-
-            c.setCellStyle((CellStyle)cellStylename);
-
+            c.setCellType(CellType.STRING);
+            c.setCellValue(new HSSFRichTextString(args[i].toString()));
+            c.setCellStyle(headCellStyle);
             sheet.autoSizeColumn((short)i);
         }
     }
@@ -148,7 +147,7 @@ public class Poi
         final HSSFFont fontinfo = this.wb.createFont();
         fontinfo.setFontHeightInPoints((short)24);
         final HSSFCellStyle cellStylename = this.wb.createCellStyle();
-        cellStylename.setAlignment((short)2);
+        cellStylename.setAlignment(HorizontalAlignment.CENTER);
         if (StringUtils.isBlank(subtitle))
             c.setCellValue(title);
         else{
@@ -163,13 +162,14 @@ public class Poi
         cellStylename.setFont(fontinfo);
         cellStylename.setWrapText(true);
         c.setCellStyle(cellStylename);
-        Region region1 = new Region(rNum, (short) 0, rNum, (short) cNum);
+        //CellRangeAddress region1 = new CellRangeAddress(rNum, rNum, (short) 0, (short) cNum);
         //参数1：行号 参数2：起始列号 参数3：行号 参数4：终止列号
-        sheet.addMergedRegion(region1);
+        //sheet.addMergedRegion(region1);
+        addMerge(rNum, (short) 0, rNum, (short) cNum);
     }
 
     public void addMerge(int sRow, int sCol, int eRow, int eCol){
-        Region region1 = new Region(sRow, (short) sCol, eRow, (short) eCol);
+        CellRangeAddress region1 = new CellRangeAddress(sRow, eRow, (short) sCol, (short) eCol);
         //参数1：行号 参数2：起始列号 参数3：行号 参数4：终止列号
         sheet.addMergedRegion(region1);
     }

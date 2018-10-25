@@ -57,8 +57,8 @@
                 <div class="layui-form-mid layui-word-aux">
                 </div>
                 <input id="deptSel" class="scinput" type="text" readonly
-                       value="<%=request.getParameter("deptname")==null?"":request.getParameter("deptname")%>"
-                       style="width:120px;cursor: pointer;" onclick="showDeptTree(this,null);"/>
+                       value="<%=request.getParameter("deptname")==null?"全部":request.getParameter("deptname")%>"
+                       style="width:120px;cursor: pointer;" onclick="showDeptTree(this, null);"/>
             </div>
             <s:text name='sundyn.total.startDate'/>
             <input type="text" id="startDate" class="scinput" <s:text name="sundyn.language.calendar.setDay"/>
