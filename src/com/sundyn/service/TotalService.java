@@ -450,7 +450,7 @@ public class TotalService extends SuperDao
         }
         else
             sql += "order by deptid,counterno";
-        sql += ") as rows,deptid,counterno," +
+        sql += ") as rows,deptid,counterno,counterdeptid,counterdeptname," +
                 "sum(totalkey0) as key0, sum(totalkey1) as key1, sum(totalkey2) as key2, sum(totalkey3) as key3, sum(totalkey4) as key4, sum(totalkey5) as key5, " +
                 "sum(totalkey6) as key6, sum(ticketcount) ticketcount, sum(servicecount) servercount,sum(cancelcount) cancelcount,sum(totalunkey) totalunkey,sum(totalkey) totalkey," +
                 "dbo.FN_SecondToString(sum(totalwaittime)/nullif(sum(servicecount),0)) as waittimeavg, " +
@@ -464,20 +464,20 @@ public class TotalService extends SuperDao
             sql += " and servicedate<='" + endDate + "' " ;
         if(null!=datingId && !"".equals(datingId))
             sql += "and deptid in( " + datingId + ")";
-        sql += " group by deptid,counterno";
+        sql += " group by deptid,counterno,counterdeptid,counterdeptname";
 
         if(rowsCount != null && rowsCount.length==1){
             String totalsql = "select count(*) from ("+sql+") t";
             rowsCount[0] = this.getJdbcTemplate().queryForObject(totalsql,null, java.lang.Integer.class);
         }
         if (start != null && num != null && num>0) {
-            sql = "select t.*,t2.name deptname, t3.countername windowname " +
-                    "from ("+sql+") t left join appries_dept t2 on t.deptid=t2.id left join sys_queuecounter t3 on t3.counterno=t.counterno " +
+            sql = "select t.*,t2.name deptname, t.counterdeptname windowname " +
+                    "from ("+sql+") t left join appries_dept t2 on t.deptid=t2.id " +
                     "where t.rows>" + start + " and t.rows<=" + (num+start);
         }
         else{
-            sql = "select t.*,t2.name deptname, t3.countername windowname " +
-                    "from ("+sql+") t left join appries_dept t2 on t.deptid=t2.id left join sys_queuecounter t3 on t3.counterno=t.counterno ";
+            sql = "select t.*,t2.name deptname, t.counterdeptname windowname " +
+                    "from ("+sql+") t left join appries_dept t2 on t.deptid=t2.id ";
         }
         try {
             logger.debug(sql);

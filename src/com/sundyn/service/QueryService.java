@@ -714,7 +714,7 @@ public class QueryService extends SuperDao
     public List getQueueEmployeeAnysle(String deptid) {
         String sql = "select eno,ename,deptname,servicedate,SUM(totalservicetime)/NULLIF(SUM(servicecount), 0) totalservicetime," +
                 "dbo.FN_SecondToString(sum(totalservicetime)/nullif(sum(servicecount),0)) as totalservicetimename, " +
-                "SUM(totalservicetime) totalservicetime2,SUM(totalwaittime)/SUM(servicecount) totalwaittime,SUM(totalwaittime) totalwaittime2," +
+                "SUM(totalservicetime) totalservicetime2,SUM(totalwaittime)/nullif(SUM(servicecount),0) totalwaittime,SUM(totalwaittime) totalwaittime2," +
                 "ISNULL(SUM(totalpausetime), 0) totalpausetime,sum(servicecount) servicecount,sum(ticketcount) ticketcount,SUM(totalkeybmy) totalkeybmy " +
                 "from rpt_employeedata t1 where DateDiff(dd,servicedate,getdate())=0 ";
         if (StringUtils.isNotBlank(deptid)){
@@ -731,21 +731,30 @@ public class QueryService extends SuperDao
     }
 
     /*
-    前5条评价不满意的记录
+    差评预警 - 月
      */
     public List getEmployeeWarn(String deptid) {
-        String sql = "select eno,ename,deptname," +
-                "SUM(servicecount) servicecount," +
-                "CONVERT(decimal(18, 2),SUM(servicecount)*1.0/COUNT(*)) servicecountavg," +
-                "SUM(totalkeybmy) totalkeybmy," +
-                "SUM(totalmyd) totalmyd from rpt_employeedata where 1=1 " ;
+        String sql = "select eno,ename, deptname,SUM(servicecount) servicecount," +
+                "CONVERT(decimal(18, 2),SUM(servicecount)*1.0/COUNT(*)) servicecountavg, SUM(totalkeybmy) totalkeybmy, SUM(totalmyd) totalmyd" +
+                ",t2.dictvalue avg " +
+                "from rpt_employeedata,(select dictvalue from sys_dictinfo where dictkey='warn_keybmyvalue') t2 " +
+                "where DATEDIFF(d,servicedate,GETDATE())<ISNULL((select dictvalue from sys_dictinfo where dictkey='warn_keybmytime'),30) " ;
         if (StringUtils.isNotBlank(deptid)){
             sql += " and deptid in("+deptid+")";
         }
-        sql += "group by eno,ename,deptname";
+        sql += "group by eno,ename,deptname,t2.dictvalue";
         try {
             logger.debug(sql);
-            return this.getJdbcTemplate().queryForList(sql);
+            List list = this.getJdbcTemplate().queryForList(sql);
+            sql = "select (select ISNULL(dictvalue, 30) from sys_dictinfo where dictkey='warn_keybmytime') as warn_keybmytime" +
+                    ",(select dictvalue from sys_dictinfo where dictkey='warn_keybmyvalue') warn_keybmyvalue";
+            List list2 = this.getJdbcTemplate().queryForList(sql);
+            for (Object o : list) {
+                Map m = (Map)o;Map m2 = (Map)list2.get(0);
+                m.put("warn_keybmytime", m2.get("warn_keybmytime"));
+                m.put("warn_keybmyvalue", m2.get("warn_keybmyvalue"));
+            }
+            return list;
         }
         catch (Exception e) {
             return null;

@@ -16,7 +16,6 @@
 
             var root = document.getElementById('loginbody');
             document.body.addEventListener('keyup', function (e) {
-                console.log(e);
                 if (e.keyCode == '13') {
                     doclick();
                 }

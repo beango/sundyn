@@ -99,7 +99,7 @@ public class AnalyseService extends SuperDao
         else if (analyseType.equals("year")) {
             sql += "left(CONVERT(varchar(30),servicedate,23),4) as serviceDate ";
         }
-        sql += ",ISNULL(sum(totalmyd)/sum(servicecount), 0) d ";
+        sql += ",ISNULL(sum(totalmyd)/nullif(sum(servicecount),0), 0) d ";
         sql +=  "from rpt_deptdata where servicedate>='" + startDate + "' and servicedate<='" + endDate + "' ";
         /*if(StringUtils.isNotBlank(allId))
             sql +=  "and appriseresult in (" + allId + ") ";*/

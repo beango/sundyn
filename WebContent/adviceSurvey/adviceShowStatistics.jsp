@@ -16,6 +16,15 @@
         <script type="text/javascript" src="js/application.js"></script>
 	</head>
 	<body>
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <c:forEach items="${navbar_menuname}" var="menu">
+                <li><a href="#">${menu.name}</a></li>
+            </c:forEach>
+            <c:if test="${deptObj!=null}"><li>${deptObj["name"]}</li></c:if>
+        </ul>
+    </div>
 		<div id="layui-form">
             <input type="hidden" name="managerId" id="managerId" value="${managerId}" />
             <table width="100%" class="layui-table">

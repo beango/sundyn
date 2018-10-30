@@ -165,15 +165,15 @@ public class QueueDetailAction extends MainAction
         Float totalservicetime2 = 0f, totalservicecount = 0f;
         for (Object datum : data2) {
             Map m = (Map) datum;
-            totalservicetime2 += Float.parseFloat(m.get("totalservicetime2").toString());
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
+            totalservicetime2 += StringUtils.toFloat(m.get("totalservicetime2"), 0);
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
         }
         Float avg = totalservicetime2 / totalservicecount;
         int intavg = (int)Math.floor(avg);
         for (Object datum : data2) {
             Map m = (Map) datum;
             m.put("avgservicetimename", DateUtils.secToTime(intavg));
-            if ((int)Math.floor(Float.parseFloat(m.get("totalservicetime").toString())) > intavg)
+            if (m.get("totalservicetime")!=null && (int)Math.floor(StringUtils.toFloat(m.get("totalservicetime"), 0)) > intavg)
                 data2list.add(m);
         }
         Collections.sort(data2list, new SortByServiceCount("totalservicetime", "desc"));
@@ -184,16 +184,17 @@ public class QueueDetailAction extends MainAction
         totalservicecount = 0f;
         for (Object datum : data2) {
             Map m = (Map) datum;
-            totalservicetime2 += Float.parseFloat(m.get("totalkeybmy").toString());//差评数
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
-            m.put("keybmyrate", Float.parseFloat(m.get("totalkeybmy").toString()) / Float.parseFloat(m.get("servicecount").toString()));
+            totalservicetime2 += StringUtils.toFloat(m.get("totalkeybmy"), 0);//差评数
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
+            m.put("keybmyrate", StringUtils.toFloat(m.get("totalservicetime2"), 0) / StringUtils.toFloat(m.get("totalservicetime2"), 0));
         }
         avg = totalservicetime2 * 100.0f / totalservicecount;
         for (Object datum : data2) {
             Map m = (Map) datum;
-            m.put("avgtotalkeybmy", avg);
-            m.put("keybmyrate", String.format("%.2f", Float.parseFloat(m.get("keybmyrate").toString())*100.0f, 2));
-            if (Float.parseFloat(m.get("keybmyrate").toString()) > avg)
+            m.put("avgtotalkeybmy", String.format("%.2f", avg, 2));
+            float rate = StringUtils.toFloat(m.get("keybmyrate"), 0);
+            m.put("keybmyrate", String.format("%.2f", rate*100.0f, 2));
+            if (rate > avg)
                 data2list2.add(m);
         }
         Collections.sort(data2list2, new SortByServiceCount("keybmyrate", "desc"));
@@ -204,16 +205,17 @@ public class QueueDetailAction extends MainAction
         totalservicecount = 0f;
         for (Object datum : data2) {
             Map m = (Map) datum;
-            totalservicetime2 += Float.parseFloat(m.get("totalpausetime").toString());//暂停时长
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
+            totalservicetime2 += StringUtils.toFloat(m.get("totalpausetime"), 0);
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
         }
         avg = totalservicetime2 / data2.size();
         intavg = (int)Math.floor(avg);
         for (Object datum : data2) {
             Map m = (Map) datum;
+            Float f = StringUtils.toFloat(m.get("totalpausetime"), 0);
             m.put("avgpausetimename", DateUtils.secToTime(intavg));
-            m.put("totalpausetimename", DateUtils.secToTime((int)Math.floor(Float.parseFloat(m.get("totalpausetime").toString()))));
-            if ((int)Math.floor(Float.parseFloat(m.get("totalpausetime").toString())) > intavg)
+            m.put("totalpausetimename", DateUtils.secToTime((int)Math.floor(f)));
+            if ((int)Math.floor(f) > intavg)
                 data2list3.add(m);
         }
         Collections.sort(data2list3, new SortByServiceCount("totalpausetime", "desc"));
@@ -229,13 +231,15 @@ public class QueueDetailAction extends MainAction
         Float totalservicecount = 0f;
         for (Object datum : employeeWarn) {
             Map m = (Map) datum;
-            totalservicecount += Float.parseFloat(m.get("totalkeybmy").toString());
+            totalservicecount += StringUtils.toFloat(m.get("totalkeybmy"), 0);
         }
         Float avg = totalservicecount / employeeWarn.size();
+        if (employeeWarn!=null && employeeWarn.size()>0)
+            avg = StringUtils.toFloat(((Map)employeeWarn.get(0)).get("avg"), 0);
         List data2list = new ArrayList();
         for (Object datum : employeeWarn) {
             Map m = (Map) datum;
-            if (Float.parseFloat(m.get("totalkeybmy").toString()) > avg)
+            if (StringUtils.toFloat(m.get("totalkeybmy"), 0) > avg)
                 data2list.add(m);
         }
         Collections.sort(data2list, new SortByServiceCount("totalkeybmy", "desc"));
@@ -245,13 +249,13 @@ public class QueueDetailAction extends MainAction
         totalservicecount = 0f;
         for (Object datum : employeeWarn) {
             Map m = (Map) datum;
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
         }
         avg = totalservicecount / employeeWarn.size();
         data2list = new ArrayList();
         for (Object datum : employeeWarn) {
             Map m = (Map) datum;
-            if (Float.compare(Float.parseFloat(m.get("servicecount").toString()), avg)==-1) {
+            if (Float.compare(StringUtils.toFloat(m.get("servicecount"), 0), avg)==-1) {
                 data2list.add(m);
             }
         }
@@ -262,15 +266,15 @@ public class QueueDetailAction extends MainAction
         float totalmyd = 0f;
         for (Object datum : employeeWarn) {
             Map m = (Map) datum;
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
-            totalmyd += Float.parseFloat(m.get("totalmyd").toString());
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
+            totalmyd += StringUtils.toFloat(m.get("totalmyd"), 0);
         }
         avg = (float)Math.round(totalmyd*10.0 / totalservicecount);
         data2list = new ArrayList();
         for (Object datum : employeeWarn) {
             Map m = (Map) datum;
-            m.put("totalmyd", (int)Math.round(Float.parseFloat(m.get("totalmyd").toString())*10.0/Float.parseFloat(m.get("servicecount").toString())));
-            if (Float.compare(Float.parseFloat(m.get("totalmyd").toString()), avg)==-1)
+            m.put("totalmyd", (int)Math.round(StringUtils.toFloat(m.get("totalmyd"), 0)*10.0/StringUtils.toFloat(m.get("servicecount"), 0)));
+            if (Float.compare(StringUtils.toFloat(m.get("totalmyd"), 0), avg)==-1)
                 data2list.add(m);
         }
         Collections.sort(data2list, new SortByServiceCount("totalmyd", "asc"));
@@ -293,7 +297,7 @@ public class QueueDetailAction extends MainAction
             if (s1.get(field) == null || s2.get(field)==null || !NumberUtils.isNumber(s1.get(field).toString())
                     || !NumberUtils.isNumber(s2.get(field).toString()))
                 return -1;
-            if (Float.parseFloat(s1.get(field).toString()) > Float.parseFloat(s2.get(field).toString()))
+            if (StringUtils.toFloat(s1.get(field), 0) > StringUtils.toFloat(s2.get(field), 0))
                 r = desc.equals("desc") ? -1 : 1;
             else
                 r = desc.equals("desc") ? 1 : -1;
@@ -316,13 +320,13 @@ public class QueueDetailAction extends MainAction
         Float totalservicetime2 = 0f, totalservicecount = 0f;
         for (Object datum : data) {
             Map m = (Map) datum;
-            totalservicetime2 += Float.parseFloat(m.get("totalservicetime2").toString());
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
+            totalservicetime2 += StringUtils.toFloat(m.get("totalservicetime2"), 0f);
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0f);
         }
         Float avg = totalservicetime2 / totalservicecount;
         for (Object datum : data) {
             Map m = (Map) datum;
-            Float f = Float.parseFloat(m.get("ticketcount").toString());
+            Float f = StringUtils.toFloat(m.get("ticketcount"), 0);
             String Color = "60AAA3";
             if (f > avg)
                 Color = "FF0000";
@@ -338,7 +342,7 @@ public class QueueDetailAction extends MainAction
 
         for (Object datum : data) {
             Map m = (Map) datum;
-            Integer f = Integer.parseInt(m.get("totalwait").toString());
+            Integer f = StringUtils.toInt(m.get("totalwait"), 0);
             String Color = "60AAA3";
             if (f > avg)
                 Color = "FF0000";
@@ -360,13 +364,13 @@ public class QueueDetailAction extends MainAction
         totalservicetime2 = 0f; totalservicecount = 0f;
         for (Object datum : data) {
             Map m = (Map) datum;
-            totalservicetime2 += Float.parseFloat(m.get("totalservicetime2").toString());
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
+            totalservicetime2 += StringUtils.toFloat(m.get("totalservicetime2"), 0);
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
         }
         avg = totalservicetime2 / totalservicecount;
         for (Object datum : data) {
             Map m = (Map) datum;
-            Float f = Float.parseFloat(m.get("totalservicetime").toString());
+            Float f = StringUtils.toFloat(m.get("totalservicetime"), 0);
             String Color = "60AAA3";
             if (f>avg)
                 Color="FF0000";
@@ -391,13 +395,13 @@ public class QueueDetailAction extends MainAction
         totalservicecount = 0f;
         for (Object datum : data) {
             Map m = (Map) datum;
-            totalservicetime2 += Float.parseFloat(m.get("totalwaittime2").toString());
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
+            totalservicetime2 += StringUtils.toFloat(m.get("totalwaittime2"), 0);
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
         }
         avg = totalservicetime2 / totalservicecount;
         for (Object datum : data) {
             Map m = (Map) datum;
-            Float f = Float.parseFloat(m.get("totalwaittime").toString());
+            Float f = StringUtils.toFloat(m.get("totalwaittime"), 0);
             String Color = "60AAA3";
             if (f>avg)
                 Color="FF0000";
@@ -422,13 +426,13 @@ public class QueueDetailAction extends MainAction
         totalservicecount = 0f;
         for (Object datum : data) {
             Map m = (Map) datum;
-            totalservicetime2 += Float.parseFloat(m.get("totalkeybmy").toString());
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
+            totalservicetime2 += StringUtils.toFloat(m.get("totalkeybmy"), 0);
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
         }
         avg = totalservicetime2 / data.size();
         for (Object datum : data) {
             Map m = (Map) datum;
-            Float f = Float.parseFloat(m.get("totalkeybmy").toString());
+            Float f = StringUtils.toFloat(m.get("totalkeybmy"), 0);
             String Color = "60AAA3";
             if (f>avg)
                 Color="FF0000";
@@ -453,13 +457,13 @@ public class QueueDetailAction extends MainAction
         totalservicecount = 0f;
         for (Object datum : data) {
             Map m = (Map) datum;
-            totalservicetime2 += Float.parseFloat(m.get("totalpausetime").toString());
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
+            totalservicetime2 += StringUtils.toFloat(m.get("totalpausetime"), 0);
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
         }
         avg = totalservicetime2 / data.size();
         for (Object datum : data) {
             Map m = (Map) datum;
-            Float f = Float.parseFloat(m.get("totalpausetime").toString());
+            Float f = StringUtils.toFloat(m.get("totalpausetime"), 0);
             String Color = "60AAA3";
             if (f>avg)
                 Color="FF0000";
@@ -488,13 +492,13 @@ public class QueueDetailAction extends MainAction
         Float totalservicetime2 = 0f, totalservicecount = 0f;
         for (Object datum : data) {
             Map m = (Map) datum;
-            totalservicetime2 += Float.parseFloat(m.get("totalservicetime2").toString());
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
+            totalservicetime2 += StringUtils.toFloat(m.get("totalservicetime2"), 0);
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
         }
         Float avg = totalservicetime2 / totalservicecount;
         for (Object datum : data) {
             Map m = (Map) datum;
-            Float f = Float.parseFloat(m.get("totalservicetime").toString());
+            Float f = StringUtils.toFloat(m.get("totalservicetime"), 0);
             String Color = "60AAA3";
             if (f>avg)
                 Color="FF0000";
@@ -520,13 +524,13 @@ public class QueueDetailAction extends MainAction
         totalservicecount = 0f;
         for (Object datum : data) {
             Map m = (Map) datum;
-            totalservicetime2 += Float.parseFloat(m.get("totalwaittime2").toString());
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
+            totalservicetime2 += StringUtils.toFloat(m.get("totalwaittime2"), 0);
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
         }
         avg = totalservicetime2 / totalservicecount;
         for (Object datum : data) {
             Map m = (Map) datum;
-            Float f = Float.parseFloat(m.get("totalwaittime").toString());
+            Float f = StringUtils.toFloat(m.get("totalwaittime"), 0);
             String Color = "60AAA3";
             if (f>avg)
                 Color="FF0000";
@@ -552,13 +556,13 @@ public class QueueDetailAction extends MainAction
         totalservicecount = 0f;
         for (Object datum : data) {
             Map m = (Map) datum;
-            totalservicetime2 += Float.parseFloat(m.get("totalkeybmy").toString());
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
+            totalservicetime2 += StringUtils.toFloat(m.get("totalkeybmy"), 0);
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
         }
         avg = totalservicetime2 / data.size();
         for (Object datum : data) {
             Map m = (Map) datum;
-            Float f = Float.parseFloat(m.get("totalkeybmy").toString());
+            Float f = StringUtils.toFloat(m.get("totalkeybmy"), 0);
             String Color = "60AAA3";
             if (f>avg)
                 Color="FF0000";
@@ -584,13 +588,13 @@ public class QueueDetailAction extends MainAction
         totalservicecount = 0f;
         for (Object datum : data) {
             Map m = (Map) datum;
-            totalservicetime2 += Float.parseFloat(m.get("totalpausetime").toString());
-            totalservicecount += Float.parseFloat(m.get("servicecount").toString());
+            totalservicetime2 += StringUtils.toFloat(m.get("totalpausetime"), 0);
+            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
         }
         avg = totalservicetime2 / data.size();
         for (Object datum : data) {
             Map m = (Map) datum;
-            Float f = Float.parseFloat(m.get("totalpausetime").toString());
+            Float f = StringUtils.toFloat(m.get("totalpausetime"), 0);
             String Color = "60AAA3";
             if (f>avg)
                 Color="FF0000";

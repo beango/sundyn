@@ -839,4 +839,25 @@ public abstract class StringUtils {
         return true;
     }
 
+    public static int toInt(Object obj, int def){
+        if (obj == null)
+            return def;
+        try {
+            return Integer.parseInt(obj.toString());
+        }
+        catch (Exception e){
+            return def;
+        }
+    }
+
+    public static float toFloat(Object obj, float def){
+        if (obj == null)
+            return def;
+        try {
+            return Float.parseFloat(obj.toString());
+        }
+        catch (Exception e){
+            return def;
+        }
+    }
 }

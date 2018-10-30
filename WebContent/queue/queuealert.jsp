@@ -22,6 +22,8 @@
         .layui-card-body{padding:3px;}
     </style>
 </head>
+
+<body>
 <div class="place">
     <span>位置：</span>
     <ul class="placeul">
@@ -31,7 +33,6 @@
         <c:if test="${deptObj!=null}"><li>${deptObj["name"]}</li></c:if>
     </ul>
 </div>
-<body>
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
 
@@ -76,7 +77,7 @@
             <div class="layui-row layui-col-space15">
                 <div class="layui-col-sm12">
                     <div class="layui-card">
-                        <div class="layui-card-header">差评预警<span class="layui-badge layui-bg-green layuiadmin-badge">当月</span></div>
+                        <div class="layui-card-header">差评预警<span id="TableMonthDeptBMYHead" class="layui-badge layui-bg-green layuiadmin-badge">当月</span></div>
                         <div class="layui-card-body" style="height:315px;">
                             <table lay-skin="line" id="TableMonthDeptBMY">
                             </table>
@@ -275,13 +276,8 @@
                         ]]
                         ,skin:'nob'
                     });
-                    $("#layoutemployeepausetime tbody").html("");
                     if(totalpausetime.length>0)
                         $("#divemployeepausetime").html(totalpausetime[0].avgpausetimename);
-                    for (var i=0; i<totalpausetime.length && i<15; i++){
-                        var o = totalpausetime[i];
-                        //$("#layoutemployeepausetime tbody").append("<tr><td>"+o.deptname+"</td><td>"+o.ename+"</td><td>" + o.totalpausetimename+"</td></tr>");
-                    }
                 });
             });
         }
@@ -293,11 +289,6 @@
                     var table = layui.table;
                     //差评预警
                     var TableMonthDeptBMY = data.TableMonthDeptBMY;
-                    $("#TableMonthDeptBMY tbody").html("");
-                    for (var i = 0; i < TableMonthDeptBMY.length && i < 15; i++) {
-                        var o = TableMonthDeptBMY[i];
-                        $("#TableMonthDeptBMY tbody").append("<tr><td>"+o.deptname+"</td><td>" + o.ename + "</td><td>" + o.totalkeybmy + "</td></tr>");
-                    }
                     table.render({
                         elem: '#TableMonthDeptBMY'
                         ,height: 310
@@ -310,6 +301,8 @@
                         ]]
                         ,skin:'nob'
                     });
+                    if(TableMonthDeptBMY.length>0)
+                        $("#TableMonthDeptBMYHead").html("最近"+TableMonthDeptBMY[0].warn_keybmytime+"天");
 
                     //工作量较低预警
                     var employeeservicecount = data.employeeservicecount;

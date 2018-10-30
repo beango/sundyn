@@ -160,6 +160,15 @@
     </style>
 </head>
 <body>
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <c:forEach items="${navbar_menuname}" var="menu">
+            <li><a href="#">${menu.name}</a></li>
+        </c:forEach>
+        <c:if test="${deptObj!=null}"><li>${deptObj["name"]}</li></c:if>
+    </ul>
+</div>
 <div class="layui-form">
     <table style="border:0px;">
         <tr>
@@ -216,10 +225,11 @@
             </td>
         </tr>
     </table>
+    <div class="layui-input-inline">
+        <img src="<s:text name='sundyn.pic.save' />" onclick="keyTypeEditAll()" class="hand" />（权值最大为10）
+    </div>
 </div>
-<div class="layui-input-inline">
-    <img src="<s:text name='sundyn.pic.save' />" onclick="keyTypeEditAll()" class="hand" />（权值最大为10）
-</div>
+
 <script src="js/interact.js"></script>
 <script src="js/json2.js"></script>
 <script>
