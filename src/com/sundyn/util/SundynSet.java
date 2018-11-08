@@ -45,7 +45,6 @@ public class SundynSet {
     }
 
     private SundynSet(final String path) throws JDOMException, IOException {
-    	System.out.println(path);
         final SAXBuilder sb = new SAXBuilder();
         final Document doc = sb.build(path);
         String result = null;

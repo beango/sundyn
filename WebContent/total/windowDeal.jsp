@@ -195,15 +195,8 @@
                     <td align="center" valign="middle">${k}</td>
                 </c:forEach>
                 <td align="center" valign="middle">${total.bmsum}</td>
-                <td align="center" valign="middle">${total.servercount-total.msum-total.bmsum}</td>
-                <c:if test="${k7 ==true}">
-                    <td align="center" valign="middle">
-                            ${total.key0+total.key1+total.key2+total.key3+total.key4+total.key5+total.key6}
-                    </td>
-                </c:if>
-                <td align="center" valign="middle">
-                        ${total.msum+total.bmsum}
-                </td>
+                <td align="center" valign="middle">${total.totalunkey}</td>
+                <td align="center" valign="middle">${total.totalkey}</td>
                 <td align="center" valign="middle">${total.mrate}%</td>
                 <td align="center" valign="middle">${total.num}</td>
             </tr>

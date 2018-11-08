@@ -635,9 +635,10 @@ public class QueryService extends SuperDao
         }
         if(num>0)
             sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
-        sql = "select t1.*,dbo.FN_SecondToString(waittime) as waittimename,dbo.FN_SecondToString(servicetime) as servicetimename,t3.countername as hjcountername,t2.videofile,t2.imgfile " +
-                "from("+sql+") t1 left join appries_appries t2 on t1.ywlsh=t2.ywlsh " +
-                "left join sys_queuecounter t3 on t1.hjcounter=t3.counterno order by tickettime desc";
+        sql = "select t1.*,dbo.FN_SecondToString(waittime) as waittimename,dbo.FN_SecondToString(servicetime) as servicetimename," +
+                "t3.countername as hjcountername,null videofile,null imgfile " +
+                "from("+sql+") t1 " +
+                "left join sys_queuecounter t3 on t1.hjcounter=t3.counterno and t1.hallno=t3.hallno order by tickettime desc";
         try {
             logger.info(sql);
             return this.getJdbcTemplate().queryForList(sql);
