@@ -15,7 +15,6 @@ public class M7InfoTimer extends TimerTask
         new Path();
         final String path = Path.getRootPath();
         try {
-            System.out.println("\ufffd\ufffd\u02b1\ufffd\ufffd\ufffd\ufffdM7\ufffd\u013f\u037b\ufffd\ufffd\ufffd\ufffd\ufffd\u03e2IP" + this.index);
             if (this.index++ > 0) {
                 final M7Info info = M7Info.getInstance();
                 M7Info.Save();

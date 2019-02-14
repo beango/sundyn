@@ -16,6 +16,7 @@
 		<default-interceptor-ref name="mydefault" />
 		<global-results>
 			<result name="login">/login.jsp</result>
+            <result name="noauth">/noauth.jsp</result>
 		</global-results>
 		<!--  验证用户登录 结束 -->
         <!--  历史数据 -->
@@ -76,6 +77,16 @@
             </result>
         </action>
 
+        <action name="getstaffinfo" class="queueInteAction" method="getstaffinfo">
+            <interceptor-ref name="params" />
+            <interceptor-ref name="mydefault"></interceptor-ref>
+            <result name="error" type="redirect">
+                /inte_err
+            </result>
+            <result name="success" type="json">
+                <param name="root">DATA</param>
+            </result>
+        </action>
     </package>
 
     <package name="sysInte2" extends="json-default">

@@ -5,6 +5,7 @@ import com.sundyn.cache.CacheManager1;
 import com.sundyn.dao.SuperDao;
 import com.sundyn.utils.StringUtils;
 import com.sundyn.vo.DeptVo;
+import org.jsoup.helper.StringUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -812,4 +813,19 @@ public class DeptService extends SuperDao
             return null;
         }
     }
+
+
+    public List getAllHall(String hallno) {
+        String sql = "select t1.*,t2.hallname,t2.hallno from appries_dept t1 join sys_queuehall t2 on t1.id=t2.deptid where 1=1 and deptType=1 ";
+        if (!StringUtil.isBlank(hallno)){
+            sql += "and hallno='"+hallno+"'";
+        }
+        try {
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
 }

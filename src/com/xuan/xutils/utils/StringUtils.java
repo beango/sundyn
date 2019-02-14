@@ -777,6 +777,10 @@ public abstract class StringUtils {
         return BOOLEAN_FALSE_NUMBER.equals(value) || BOOLEAN_FALSE_STRING.equalsIgnoreCase(value);
     }
 
+    public static boolean isInt(String value) {
+        return org.apache.commons.lang.math.NumberUtils.isDigits(value);
+    }
+
     /**
      * 判断两个字符串是否equals,如果字符串是null,就直接返回false
      *

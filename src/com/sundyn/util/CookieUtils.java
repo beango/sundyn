@@ -56,8 +56,6 @@ public class CookieUtils {
                             }
                             user.put("powers", cookieMapPowerStr);
                             String DEPTIDS = deptService.findChildALLStr1234(null);
-                            System.out.println("CookieUtils>>>>>>>>>>>>>>>>>登录用户角色:" + cookieMapPowerStr);
-                            System.out.println("CookieUtils>>>>>>>>>>>>>>>>>登录用户角部门:" + DEPTIDS);
                             user.put("deptids", DEPTIDS);
                             HttpSession session = request.getSession();
                             if(user == null)

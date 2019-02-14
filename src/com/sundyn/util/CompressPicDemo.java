@@ -43,7 +43,6 @@ public class CompressPicDemo
             }
             final Image img = ImageIO.read(this.file);
             if (img.getWidth(null) == -1) {
-                System.out.println(" can't read,retry!<BR>");
                 return "no";
             }
             int newHeight;
@@ -96,7 +95,6 @@ public class CompressPicDemo
     
     public static void main(final String[] arg) {
         final CompressPicDemo mypic = new CompressPicDemo();
-        System.out.println("\u8f93\u5165\u7684\u56fe\u7247\u5927\u5c0f\uff1a" + mypic.getPicSize("e:\\1.jpg") / 1024L + "KB");
         int count = 0;
         for (int i = 0; i < 2; ++i) {
             final int start = (int)System.currentTimeMillis();
@@ -104,10 +102,7 @@ public class CompressPicDemo
             final int end = (int)System.currentTimeMillis();
             final int re = end - start;
             count += re;
-            System.out.println("\u7b2c" + (i + 1) + "\u5f20\u56fe\u7247\u538b\u7f29\u5904\u7406\u4f7f\u7528\u4e86: " + re + "\u6beb\u79d2");
-            System.out.println("\u8f93\u51fa\u7684\u56fe\u7247\u5927\u5c0f\uff1a" + mypic.getPicSize("e:\\test\\r1" + i + ".jpg") / 1024L + "KB");
         }
-        System.out.println("\u603b\u5171\u7528\u4e86\uff1a" + count + "\u6beb\u79d2");
     }
     
     public void setInputDir(final String inputDir) {

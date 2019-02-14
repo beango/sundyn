@@ -1242,7 +1242,7 @@ function managerAddDialog() {
 // 添加低等级用户对话框
 function lowerManagerAddDialog(title) {
     var dia = new dialog();
-    dia.iframe("lowerManagerAddDialog.action",{title:title,h:"500px",resize:true});
+    dia.iframe("lowerManagerAddDialog.action",{title:title, resize:true});
 }
 // 验证用户不为空
 function managerCheck(){
@@ -1284,6 +1284,8 @@ function managerAdd() {
 	var userGroupId = document.getElementById("userGroupId").value;
     var powers = "";
     var managerPowers = $("input[name=managerPowers]");
+    var localuser = $('input:radio[name="localuser"]:checked').val();
+
     for (var i=0; i<managerPowers.length; i++){
         if(managerPowers[i].checked){
             powers += (managerPowers[i].value) + ",";
@@ -1298,7 +1300,7 @@ function managerAdd() {
         alert("选择部门机构");
         return false;
     }
-	dojo.xhrPost({url:"managerAdd.action", content:{name:name, powers:powers, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId, dept:v}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"managerAdd.action", content:{name:name, powers:powers, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId, dept:v, localuser:localuser}, load:function (resp, ioArgs) {
 		if (resp.trim() == "") {
             layer.msg('添加成功', {
                 icon: 1,
@@ -1321,7 +1323,7 @@ function managerAdd() {
 // 修改用户对话框
 function managerEditDialog(data, title) {
     var dia = new dialog();
-    dia.iframe("managerEditDialog.action?id="+data, {title: title, resize: false, h: "500px"});
+    dia.iframe("managerEditDialog.action?id="+data, {title: title, resize: false});
 }
 // 修改用户
 function managerEdit() {
@@ -1342,6 +1344,7 @@ function managerEdit() {
 	var userGroupId = document.getElementById("userGroupId").value;
 	var powers = "";
 	var managerPowers = $("input[name=managerPowers]");
+    var localuser = $('input:radio[name="localuser"]:checked').val();
 	for (var i=0; i<managerPowers.length; i++){
         if(managerPowers[i].checked){
             powers += (managerPowers[i].value) + ",";
@@ -1357,7 +1360,7 @@ function managerEdit() {
         return false;
     }
 
-	dojo.xhrPost({url:"managerEdit.action", content:{id:id, name:name, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId, powers:powers, dept:v}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"managerEdit.action", content:{id:id, name:name, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId, powers:powers, dept:v, localuser: localuser}, load:function (resp, ioArgs) {
             if(resp.trim()==""){
                 layer.msg('修改成功', {
                     icon: 1,
@@ -1494,7 +1497,7 @@ function powerDel(data) {
 }
 // 添加角色对话框
 function powerAddDialog(title) {
-    new dialog().iframe("powerAddDialog.action", {title: title, h:"500px",resize:false});
+    new dialog().iframe("powerAddDialog.action", {title: title});
 }
 // 判断该角色名是否存在
 function powerExist(){
@@ -1555,7 +1558,19 @@ function powerAdd() {
 }
 // 修改角色对话框
 function powerEditDialog(data, title) {
-    new dialog().iframe("powerEditDialog.action?id="+data, {title: title, w:"600px", h:"500px",resize:false});
+    new dialog().iframe("powerEditDialog.action?id="+data, {title: title});
+}
+function powerCopy(data, title) {
+     if (confirm("确认要复制该角色吗？")){
+         dojo.xhrPost({url:"powerCopy.action", content:{id:data},load:function(res){
+             layer.msg('修改成功', {
+                 icon: 1,
+                 time: 800
+             }, function(){
+                 refreshTab();
+             });
+         }});
+     }
 }
  function powerEdit() {
 	var id = document.getElementById("id").value;
@@ -1649,8 +1664,9 @@ function totalBizDeal(isExport, sort) {
     var deptId = getCheck();
     var deptname = getCheckName();
     var bizname = document.getElementById("bizname").value;
+    var isproxy = document.getElementById("isproxy").checked;
     window.location.href = "?startDate=" + startDate + "&endDate=" + endDate + "&deptId=" + deptId + "&export=" + (isExport==undefined?false:isExport)
-        + "&deptname=" + deptname + "&bizname=" + bizname + "&sort=" + (sort==undefined?"":sort);
+        + "&deptname=" + deptname + "&bizname=" + bizname + "&sort=" + (sort==undefined?"":sort) + "&isproxy=" + isproxy;
 }
 // 个人汇总
 function totalPersonAjax(data) {
@@ -1691,7 +1707,17 @@ function totalProxyDeal(isExport, sort) {
     var endDate = document.getElementById("endDate").value;
     var cardname = document.getElementById("cardname").value;
     window.location.href = "?startDate=" + startDate + "&endDate=" + endDate
-        + "&cardname=" + cardname + "&export=" + (isExport==undefined?false:isExport) + "&sort=" + (sort==undefined?"":sort) ;
+        + "&cardname=" + cardname + "&export=" + (isExport==undefined?false:isExport) + "&sort=" + (sort==undefined?"":sort);
+}
+function totalProxyBizDeal(isExport, sort) {
+    if(sort=='null')
+        sort = null;
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+    var cardname = document.getElementById("cardname").value;
+    var cardid = document.getElementById("cardid").value;
+    window.location.href = "?startDate=" + startDate + "&endDate=" + endDate
+        + "&cardname=" + cardname + "&cardid=" + cardid + "&export=" + (isExport==undefined?false:isExport) + "&sort=" + (sort==undefined?"":sort);
 }
 function totalBusinessDeal() {
 	var startDate = document.getElementById("startDate").value;

@@ -48,9 +48,8 @@
 				    </tr>
 				   	<c:forEach items="${pager.pageList}" var="manager">
 						<tr>
-
 							<td style="text-align: center;">
-								${manager.name}
+								${manager.name}(${manager.localuser?"本地用户":"异地用户"})
 							</td>
 							<td style="text-align: center;">
 								${manager.realname}

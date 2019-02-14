@@ -42,7 +42,6 @@ public class NoticeAction extends ActionSupport
             this.msg = "内容不能为空!";
             return "msg";
         }
-        System.out.println("content.length():" + content.length());
         if (content.length()>4000){
             this.msg = "内容不能超过4000字!";
             return "msg";

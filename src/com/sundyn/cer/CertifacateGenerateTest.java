@@ -132,7 +132,6 @@ public class CertifacateGenerateTest {
         PKCS12BagAttributeCarrier bagAttr = (PKCS12BagAttributeCarrier)certificate;
         bagAttr.setBagAttribute(PKCSObjectIdentifiers.pkcs_9_at_friendlyName, new DERBMPString("Kingyea Coperation Certificate"));
         writeFile("D:/certtest/zxroot.cer", certificate.getEncoded());
-        System.out.println(certificate);
     }
 
     /**
@@ -198,7 +197,6 @@ public class CertifacateGenerateTest {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509","BC");
         FileInputStream inStream = new FileInputStream("D:/certtest/ca.cer");
         X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(inStream);
-        System.out.println(certificate);
         Signature signature = Signature.getInstance(certificate.getSigAlgName());
         signature.initVerify(certificate);
         signature.update(certificate.getTBSCertificate());

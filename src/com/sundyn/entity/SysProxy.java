@@ -84,7 +84,25 @@ public class SysProxy extends Model<SysProxy> {
     private String name;
     private Date ctime;
     private String note;
+    private int ispause;
 
+    public int getIspause() {
+        return ispause;
+    }
+
+    public void setIspause(int ispause) {
+        this.ispause = ispause;
+    }
+
+    public String getOrgcode() {
+        return orgcode;
+    }
+
+    public void setOrgcode(String orgcode) {
+        this.orgcode = orgcode;
+    }
+
+    private String orgcode;
 
     public static final String ID = "id";
 

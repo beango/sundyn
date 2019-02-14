@@ -90,6 +90,7 @@ public class InteUnlogin extends Model<InteUnlogin> {
     public void setCtime(Date ctime) {
         this.ctime = ctime;
     }
+
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String hallno;

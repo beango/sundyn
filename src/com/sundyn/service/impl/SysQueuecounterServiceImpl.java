@@ -10,6 +10,8 @@ import com.sundyn.service.ISysQueuecounterService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务实现类
@@ -28,5 +30,10 @@ public class SysQueuecounterServiceImpl extends ServiceBaseImpl<SysQueuecounterD
             wrapper = wrapper.in("deptid", filterDept.split(","));
         }
         return page.setRecords(baseMapper.selectListEx(page, wrapper));
+    }
+
+    @Override
+    public Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper) {
+        return null;
     }
 }

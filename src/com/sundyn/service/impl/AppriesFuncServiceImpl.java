@@ -1,6 +1,7 @@
 package com.sundyn.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.sundyn.dao.AppriesFuncDao;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * <p>
@@ -68,5 +70,10 @@ public class AppriesFuncServiceImpl extends ServiceImpl<AppriesFuncDao, AppriesF
         isdel = powerFuncService.delete(ew2); //删除角色分配表中所有该权限码的记录
 
         return true;
+    }
+
+    @Override
+    public Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper) {
+        return null;
     }
 }

@@ -4,7 +4,13 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, idtype, idcard, name, ctime, note
+        id, idtype, idcard, name, ctime, note, orgcode, ispause
     </sql>
+
+    <select id="querypagemap" resultType="Map">
+       SELECT * FROM (SELECT sys_proxy.*, sys_proxyorg.orgname
+        FROM sys_proxy LEFT JOIN sys_proxyorg on sys_proxy.orgcode=sys_proxyorg.orgcode) t
+        WHERE 1=1 ${ew.sqlSegment}
+    </select>
 
 </mapper>

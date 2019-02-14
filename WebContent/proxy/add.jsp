@@ -22,7 +22,7 @@
         function formPost(){
             $("#hallid").val($("#hallsele").val());
             $('form').ajaxForm({
-                beforeSubmit:  validate,    // 提交前，验证
+                beforeSubmit: validate,    // 提交前，验证
                 success: function(resp) {
                     if(resp.trim()==""){
                         layer.msg('修改成功', {
@@ -67,13 +67,19 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">代理人号码：</label>
+        <label class="layui-form-label">身份识别号码：</label>
         <div class="layui-input-inline">
             <input type="text" name="idcard" id="idcard" class="layui-input" value="${entity.idcard}" />
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">代理人类型：</label>
+        <label class="layui-form-label">所属机构编码：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="orgcode" id="orgcode" class="layui-input" value="${entity.orgcode}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">号码类型：</label>
         <div class="layui-inline">
             <input type="text" name="idtype" id="idtype" class="layui-input" value="${entity.idtype}" />
         </div>

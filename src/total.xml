@@ -19,6 +19,7 @@
 		<default-interceptor-ref name="mydefault" />
 		<global-results>
 			<result name="login">/login.jsp</result>
+            <result name="noauth">/noauth.jsp</result>
 			<result name="register">base/register.jsp</result>
 		</global-results>
 		<!--  验证用户登录 结束 -->
@@ -49,6 +50,16 @@
         <action name="totalProxyDealRpt" class="totalAction"
                 method="totalProxyDealRpt">
             <result name="success">/total/proxyDeal.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+        </action>
+        <action name="proxyBizDealRpt" class="totalAction"
+                method="proxyBizDealRpt">
+            <result name="success">/total/proxyBizDeal.jsp</result>
             <result name="excel" type="stream">
                 <param name="contentType">application/vnd.ms-excel</param>
                 <param name="inputName">excel</param>

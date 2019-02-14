@@ -139,7 +139,6 @@ public class CertifacateGenerate {
         PKCS12BagAttributeCarrier bagAttr = (PKCS12BagAttributeCarrier)certificate;
         bagAttr.setBagAttribute(PKCSObjectIdentifiers.pkcs_9_at_friendlyName, new DERBMPString("Kingyea Coperation Certificate"));
         writeFile(rootpath + "/cer/zxroot.cer", certificate.getEncoded());
-        System.out.println(certificate);
     }
 
     /**
@@ -207,12 +206,11 @@ public class CertifacateGenerate {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509","BC");
         FileInputStream inStream = new FileInputStream("D:/certtest/ca.cer");
         X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(inStream);
-        System.out.println(certificate);
+
         Signature signature = Signature.getInstance(certificate.getSigAlgName());
         signature.initVerify(certificate);
         signature.update(certificate.getTBSCertificate());
         boolean legal = signature.verify(certificate.getSignature());
-        System.out.println(legal);
     }
 
     /**
@@ -223,12 +221,11 @@ public class CertifacateGenerate {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509","BC");
         FileInputStream inStream = new FileInputStream("D:/certtest/zhangsan.cer");//CCB8A8DB14F8
         X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(inStream);
-        System.out.println(certificate);
+
         Signature signature = Signature.getInstance(certificate.getSigAlgName(),"BC");
         signature.initVerify(getRootPublicKey());
         signature.update(certificate.getTBSCertificate());
         boolean legal = signature.verify(certificate.getSignature());
-        System.out.println(legal);
     }
 
 
@@ -261,7 +258,7 @@ public class CertifacateGenerate {
         RSAPublicKeySpec keySpec = new RSAPublicKeySpec(parameter.getModulus(), parameter.getExponent());
         String algorithm = algorithmMap.get(certificationRequest.getSubjectPublicKeyInfo().getAlgorithm().getAlgorithm().toString());
         PublicKey publicKey = KeyFactory.getInstance(algorithm).generatePublic(keySpec);
-        System.out.println(certificationRequest.getSubject());
+
         X509V3CertificateGenerator certGen = new X509V3CertificateGenerator();
         certGen.setIssuerDN(new X500Principal(DN_CA));
         certGen.setNotAfter(new Date(System.currentTimeMillis()+ 100 * 24 * 60 * 60 * 1000));
@@ -292,24 +289,17 @@ public class CertifacateGenerate {
     public void verify2() throws Exception {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509","BC");
 
-        //FileInputStream inStream = new FileInputStream("D:/certtest/ca.cer");
-        //X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(inStream);
-        //System.out.println(certificate.getPublicKey().toString());
-
         FileInputStream inStream2 = new FileInputStream("D:/certtest/zhangsan.cer");//D:/certtest/CCB8A8DB14F8.cer
         X509Certificate certificate2 = (X509Certificate) certificateFactory.generateCertificate(inStream2);
-        System.out.println(certificate2.getPublicKey().toString());
 
         Signature signature2 = Signature.getInstance(certificate2.getSigAlgName(),"BC");
         signature2.initVerify(getRootPublicKey());
         signature2.update(certificate2.getTBSCertificate());
         boolean legal2 = signature2.verify(certificate2.getSignature());
-        System.out.println(legal2);
 
         certificate2.verify(getRootPublicKey());
 
         legal2 = verify(certificate2,certificate2.getTBSCertificate(),certificate2.getSignature());
-        System.out.println(legal2);
     }
 
     public static boolean verify(X509Certificate certificate, byte[] decodedText, final byte[] receivedignature) {

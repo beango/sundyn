@@ -105,7 +105,6 @@ public class TokenHelper {
 
             // v2-{AK}-{ExpireTime}-{Signature}
             token = String.format("%s-%s", TOKEN_VERSION, new String(Hex.encodeHex(digest.digest())));
-            System.out.println("token:" + token);
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException("Bad encoded url path or query string");
@@ -149,7 +148,6 @@ public class TokenHelper {
      */
     public boolean verifyToken(String token, String urlPath, String method, String queryParam, String body) {
         if (StringUtils.isBlank(token)) {
-            System.out.println("token is null");
             return false;
         }
         try {

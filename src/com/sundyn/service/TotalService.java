@@ -378,6 +378,62 @@ public class TotalService extends SuperDao
         }
     }
 
+    public List totalBizProxy(final String datingId, String bizname, final String startDate, final String endDate, String isproxy, final Integer start, final Integer num, int[] rowsCount) {
+        String sql = "select row_number() over(order by deptid,bizid) as rows,bizid, bizname,deptid," +
+                "sum(key0) as key0, sum(key1) as key1, sum(key2) as key2, sum(key3) as key3, " +
+                "sum(key4) as key4, sum(key5) as key5,sum(key6) as key6," +
+                "sum(totalmy) as totalmy,sum(totalbmy) as totalbmy, sum(totalmy+totalbmy) as totalkey, count(*) ticketcount, " +
+                "sum(case when status=2 then 1 else 0 end) servercount,sum(cancelcount) cancelcount," +
+                "sum(case when status=2 then waittime else 0 end) as totalwaittime, " +
+                "sum(case when status=2 then servicetime else 0 end) as totalservicetime from(" +
+                "select t1.hallno, t1.hjcounter,t1.bizid,t2.bizname,t2.deptid,t2.deptname," +
+                "(case when t4.yes=1 and t4.isJoy='on' and appriseresult=0 and ishj=1 and status=2 THEN 1 else 0 end) as key0," +
+                "(case when t4.yes=1 and t4.isJoy='on' and appriseresult=1 and ishj=1 and status=2 THEN 1 else 0 end) as key1," +
+                "(case when t4.yes=1 and t4.isJoy='on' and appriseresult=2 and ishj=1 and status=2 THEN 1 else 0 end) as key2," +
+                "(case when t4.yes=1 and t4.isJoy='on' and appriseresult=3 and ishj=1 and status=2 THEN 1 else 0 end) as key3, " +
+                "(case when t4.yes=1 and t4.isJoy='on' and appriseresult=4 and ishj=1 and status=2 THEN 1 else 0 end) as key4," +
+                "(case when t4.yes=1 and t4.isJoy='on' and appriseresult=5 and ishj=1 and status=2 THEN 1 else 0 end) as key5," +
+                "(case when t4.yes=1 and t4.isJoy='on' and appriseresult=6 THEN 1 else 0 end ) as key6," +
+                "(case when t4.yes=1 and t4.isJoy='on' THEN 1 else 0 end ) as totalmy,\n" +
+                "(case when t4.yes=1 and t4.isJoy='' THEN 1 else 0 end ) as totalbmy," +
+                "(case when status=-1 THEN 1 else 0 end) as cancelcount,waittime,servicetime,status " +
+                "from v_queuedetail t1 left join sys_queueserial t2 on t1.bizid=t2.bizid and t1.deptid=t2.deptid " +
+                "left join appries_keytype t4 on t4.keyNo=t1.appriseresult ";
+        if (isproxy.equals("true")){
+            sql += "left join sys_proxy t3 on t1.cardid=t3.idcard and t1.isagent=1 ";
+        }
+        sql += "where t1.bizid!='' ";
+        if (isproxy.equals("true")){
+            sql += "and t1.isagent=1 ";
+        }
+        if(null!=startDate)
+            sql += " and tickettime>='" + startDate + "' ";
+        if(null!=endDate)
+            sql += " and tickettime<='" + endDate + "' " ;
+        if(null!=datingId && !"".equals(datingId))
+            sql += "and t1.deptid in( " + datingId + ") ";
+        if (StringUtils.isNotBlank(bizname))
+            sql += "and t2.bizname like '%"+bizname+"%' ";
+        sql += ") t1 group by t1.bizid,t1.bizname,deptid";
+
+        if(rowsCount != null && rowsCount.length==1){
+            String totalsql = "select count(*) from ("+sql+") t";
+            rowsCount[0] = this.getJdbcTemplate().queryForObject(totalsql,null, java.lang.Integer.class);
+        }
+        if (start != null && num != null) {
+            sql = "select t2.name as deptname,t1.*,dbo.FN_SecondToString(case when servercount=0 then 0 else t1.totalwaittime/t1.servercount end) as waittimeavg" +
+                    ",dbo.FN_SecondToString((case when servercount=0 then 0 else t1.totalservicetime/t1.servercount end)) as servicetimeavg from ("
+                    +sql+") t1 left join appries_dept t2 on t1.deptid=t2.id where t1.rows>" + start + " and t1.rows<=" + (num+start);
+        }
+        try {
+            logger.debug(sql);
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
     public List totalBizRpt(final String datingId, String sort, String bizname, final String startDate, final String endDate, final Integer start, final Integer num, int[] rowsCount) {
         String sql = "select row_number() over(";
         if (StringUtils.isNotBlank(sort)){
@@ -404,7 +460,7 @@ public class TotalService extends SuperDao
                 "dbo.FN_SecondToString(sum(totalservicetime)/nullif(sum(servicecount),0)) as servicetimeavg, " +
                 "dbo.FN_SecondToString(sum(totalpausetime)) as pausetime," +
                 "sum(totalkeymy)*1.0/nullif(sum(servicecount),0) myl,sum(totalmyd)/nullif(sum(servicecount),0) myd " +
-                "from rpt_bizdata where 1=1 ";
+                "from rpt_bizdata where bizid!='' ";
         if(null!=startDate)
             sql += " and servicedate>='" + startDate + "' ";
         if(null!=endDate)
@@ -722,7 +778,61 @@ public class TotalService extends SuperDao
         catch (Exception e) {
             return null;
         }
+    }
 
+    public List totalProxyBizRpt(final String windowId, final String sort, final String cardname,final String cardid,
+                                 final String startDate, final String endDate, final Integer start, final Integer num, Integer[] totalrows) {
+        String sql = "select row_number() over(";
+        if (StringUtils.isNotBlank(sort)){
+            if(sort.startsWith("servicecount,") || sort.startsWith("cancelcount,") || sort.startsWith("totalunkey,") || sort.startsWith("totalkey,") || sort.startsWith("ticketcount,"))
+                sql += "order by sum(" + sort.replace(",", ") ");//order by sum(servicecount) desc
+            else if(sort.startsWith("key0,")|| sort.startsWith("key1,")|| sort.startsWith("key2,")|| sort.startsWith("key3,")
+                    || sort.startsWith("key4,")|| sort.startsWith("key5,") || sort.startsWith("key6,")
+                    || sort.startsWith("keymy,") || sort.startsWith("keybmy,"))
+                sql += "order by sum(total" + sort.replace(",", ") ");//order by sum(servicecount) desc
+            else if(sort.startsWith("waittime,") || sort.startsWith("servicetime,") || sort.startsWith("pausetime,")
+                    || sort.startsWith("myd,"))
+                sql += "order by sum(total" + sort.replace(",", ")/nullif(sum(servicecount),0) ");
+            else if(sort.startsWith("keymyl,"))
+                sql += "order by 1.0*sum(totalkeymy)/nullif(sum(servicecount),0) " + sort.split(",")[1];
+            else
+                sql += "order by " + sort.replace(",", " ");
+        }
+        else
+            sql += "order by cardtype,cardid,cardname";
+        sql += ") as rows,cardtype,cardid,cardname,bizid,bizname,sum(totalkey0) as key0, sum(totalkey1) as key1, " +
+                "sum(totalkey2) as key2, sum(totalkey3) as key3, sum(totalkey4) as key4, sum(totalkey5) as key5, " +
+                "sum(totalkey6) as key6, sum(ticketcount) ticketcount, sum(servicecount) servercount,sum(cancelcount) cancelcount," +
+                "sum(totalkeymy) msum,sum(totalkeybmy) bmsum,sum(totalunkey) totalunkey,sum(totalkey) totalkey," +
+                "dbo.FN_SecondToString(sum(totalwaittime)/nullif(sum(servicecount),0)) as waittimeavg, " +
+                "dbo.FN_SecondToString(sum(totalservicetime)/nullif(sum(servicecount),0)) as servicetimeavg," +
+                "dbo.FN_SecondToString(sum(totalpausetime)) pausetime," +
+                "sum(totalkeymy)*1.0/nullif(sum(servicecount),0) myl,sum(totalmyd)/nullif(sum(servicecount),0) myd " +
+                "from rpt_proxybizdata where 1=1 ";
+        if(null!=startDate)
+            sql += " and servicedate>='" + startDate + "' ";
+        if(null!=endDate)
+            sql += " and servicedate<='" + endDate + "' " ;
+        if(StringUtils.isNotBlank(cardname))
+            sql += "and cardname like '%" + cardname + "%' ";
+        if(StringUtils.isNotBlank(cardid))
+            sql += "and cardid like '%" + cardid + "%' ";
+        sql += " group by cardtype,cardid,cardname,bizid,bizname";
+
+        if(totalrows != null && totalrows.length==1){
+            String totalsql = "select count(*) from ("+sql+") t";
+            totalrows[0] = this.getJdbcTemplate().queryForObject(totalsql,null, java.lang.Integer.class);
+        }
+        if (start != null && num != null && num > 0) {
+            sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
+        }
+        try {
+            logger.debug(sql);
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     public List totalPerson(final String employeeId, final String startDate, final String endDate) {

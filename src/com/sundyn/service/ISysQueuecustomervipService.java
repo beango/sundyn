@@ -1,7 +1,6 @@
 package com.sundyn.service;
 
 import com.sundyn.entity.SysQueuecustomervip;
-import com.baomidou.mybatisplus.service.IService;
 
 /**
  * <p>

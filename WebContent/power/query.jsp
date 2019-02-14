@@ -73,6 +73,7 @@
 								${power.deptname}
 							</td>
 								<td style="text-align: center;">
+                                    <a href="javascript:powerCopy(${power.id});">复制</a>
 								<a href="javascript:powerEditDialog(${power.id},'<s:text name="sundyn.role.editRole" />');"><s:text name='sundyn.modify' /></a>
 								<a href="javascript:powerDel(${power.id});"><s:text name='sundyn.del' /></a>
 							</td>

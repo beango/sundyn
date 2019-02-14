@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.WarnOntimedetailDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, type, objid, ywlsh, title, describe, ctime, isread, notifyuser
+    </sql>
+
+    <select id="querypagemap" resultType="Map">
+      select warn_ontimedetail.*, appries_employee.name nofityname from warn_ontimedetail left join appries_employee on warn_ontimedetail.notifyuser=appries_employee.CardNum
+       WHERE 1=1 ${ew.sqlSegment}
+    </select>
+
+</mapper>

@@ -19,6 +19,16 @@ public class EmployeeVo
     private String ext1;
     private String ext2;
     private String PassWord;
+
+    public String getPassWord2() {
+        return PassWord2;
+    }
+
+    public void setPassWord2(String passWord2) {
+        PassWord2 = passWord2;
+    }
+
+    private String PassWord2;
     private String job_desc;
     private String showDeptName;
     private String showWindowName;

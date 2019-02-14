@@ -87,8 +87,11 @@
         <label class="layui-form-label">业务名称：</label>
         <div class="layui-input-inline">
             <input type="text" class="scinput" id="bizname" name="bizname" value="<%=request.getParameter("bizname")==null?"":request.getParameter("bizname")%>" />
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input name="isproxy" id="isproxy" title="代理人" type="checkbox"<%=request.getParameter("isproxy")!=null&&request.getParameter("isproxy").equals("true")?" checked=\"\"":""%>>
         </div>
     </div>
+
     <div class="layui-inline">
         <div class="layui-input-inline">
             <div style="float: left; height: 25px; margin-left:10px; border-color:#FFFFFF;" onclick="totalBizDeal()">
@@ -193,11 +196,11 @@
                 <c:forEach items="${total.km}" var="k">
                     <td align="center" valign="middle">${k}</td>
                 </c:forEach>
-                <td align="center" valign="middle">${total.msum}</td>
+                <td align="center" valign="middle">${total.msum==""?total.totalmy:total.msum}</td>
                 <c:forEach items="${total.kbm}" var="k">
                     <td align="center" valign="middle">${k}</td>
                 </c:forEach>
-                <td align="center" valign="middle">${total.bmsum}</td>
+                <td align="center" valign="middle">${total.bmsum}-${total.totalbmy}</td>
                 <td align="center" valign="middle">${total.totalunkey}</td>
                 <c:if test="${k7 ==true}">
                     <td align="center" valign="middle">

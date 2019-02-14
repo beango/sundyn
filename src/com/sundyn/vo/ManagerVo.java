@@ -13,6 +13,16 @@ public class ManagerVo
     private String ext2;
     private int deptid;
 
+    public int getLocaluser() {
+        return localuser;
+    }
+
+    public void setLocaluser(int localuser) {
+        this.localuser = localuser;
+    }
+
+    private int localuser;
+
     public String getDeptName() {
         return deptName;
     }

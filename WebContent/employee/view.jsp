@@ -37,7 +37,9 @@
                 <script type="text/javascript">
                     d = new dTree('d');
                     <c:forEach items="${list}" var="dept">
+                    <c:if test="${dept.depttype!=0}">
                     d.add(${dept.id}, ${dept.fatherId}, '${dept.name}', 'javascript:employeeManage(${dept.id})');
+                    </c:if>
                     </c:forEach>
                     document.write(d);
                 </script>

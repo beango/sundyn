@@ -18,6 +18,7 @@
 		<default-interceptor-ref name="mydefault" />
 		<global-results>
 			<result name="login">/login.jsp</result>
+            <result name="noauth">/noauth.jsp</result>
 		</global-results>
 		<!--  验证用户登录 结束 -->
 		<action name="queryDept" class="queryAction"
@@ -198,6 +199,10 @@
 		        <param name="bufferSize">4096</param>
 		    </result>
 		</action>
+        <action name="warnQuery" class="queryAction"
+                method="warnQuery">
+            <result name="success">/query/queryWarn.jsp</result>
+        </action>
 	</package>
 	<package name="queryOther" extends="struts-default">
 		<action name="queryEmployee" class="queryAction"

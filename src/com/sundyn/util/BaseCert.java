@@ -129,7 +129,6 @@ public class BaseCert {
             certGen.setSignatureAlgorithm(CAConfig.CA_SHA);
             cert = certGen.generateX509Certificate(priKey, "BC");
         } catch (Exception e) {
-            System.out.println(e.getClass() + e.getMessage());
         }
         return cert;
     }

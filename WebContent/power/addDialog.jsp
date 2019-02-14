@@ -59,9 +59,9 @@
             </td>
         </tr>
         <tr>
-            <td></td>
+            <td>权限：</td>
             <td>
-                <div class="kuang">
+                <div style="overflow:auto;height:280px;">
                     <ul id="zTreeMenuContent" class="ztree"></ul>
                 </div>
             </td>

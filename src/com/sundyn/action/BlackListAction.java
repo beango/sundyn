@@ -3,6 +3,7 @@ package com.sundyn.action;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.sundyn.entity.InteLog;
 import com.sundyn.entity.SysBlacklist;
 import com.sundyn.entity.SysProxy;
 import com.sundyn.service.DeptService;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+import java.util.Map;
 
 public class BlackListAction extends MainAction
 {
@@ -127,14 +129,12 @@ public class BlackListAction extends MainAction
     public String proxyQuery() throws Exception {
         String key_idcard = req.getString("idcard");
         String key_name = req.getString("name");
-        Wrapper<SysProxy> ew =new EntityWrapper<>();
+        Wrapper<Map> ew =new EntityWrapper<>();
         if (null!=key_idcard && !"".equals(key_idcard))
             ew = ew.where("idcard={0}", key_idcard);
         if (null!=key_name && !"".equals(key_name))
             ew = ew.like("name", key_name);
-        Page<SysProxy> queryData = sysProxyService.selectPage(new Page<SysProxy>(pageindex, pageSize), ew.orderBy("id desc"));
-        String spath = ServletActionContext.getServletContext().getRealPath("/");
-
+        Page<Map> queryData = sysProxyService.querypagemap(new Page<Map>(pageindex, pageSize), ew.orderBy("id desc"));
         request.setAttribute("queryData", queryData);
         return "success";
     }
@@ -165,6 +165,7 @@ public class BlackListAction extends MainAction
         SysProxy entity = new SysProxy();
         try {
             BeanUtils.populate(entity, request.getParameterMap());
+            System.out.println("null:" + (entity==null) + ":" + (new org.json.JSONObject(request.getParameterMap()).toString()));
             ValidateUtil.validate(entity);
             boolean succ = false;
             System.out.println("++++" + JSONObject.fromObject(entity).toString());

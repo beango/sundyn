@@ -18,6 +18,5 @@ public class InitDbUpdate implements ServletContextListener {
         ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext());
         ManagerService managerService = (ManagerService)ctx.getBean("managerService");
         int count = managerService.countByName("admin");
-        System.out.println("webinit ... count:" + count);
     }
 }

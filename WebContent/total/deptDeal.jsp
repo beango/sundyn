@@ -163,11 +163,11 @@
                     <c:forEach items="${total.km}" var="k">
                         <td align="center" valign="middle">${k}</td>
                     </c:forEach>
-                    <td align="center" valign="middle">${total.totalkeymy}</td>
+                    <td align="center" valign="middle">${total.msum}</td>
                     <c:forEach items="${total.kbm}" var="k">
                         <td align="center" valign="middle">${k}</td>
                     </c:forEach>
-                    <td align="center" valign="middle">${total.totalkeybmy}</td>
+                    <td align="center" valign="middle">${total.bmsum}</td>
                     <td align="center" valign="middle">${total.totalunkey}</td>
                     <td align="center" valign="middle">${total.totalkey}</td>
                     <td align="center" valign="middle">${total.mrate}%</td>

@@ -786,7 +786,7 @@ public class TotalAction extends MainAction
         boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
-            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+            startDate = dateHelper.getDataString_1(dateHelper.getWeekFirstDate());
         }
         if(endDate == null) {
             endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
@@ -1215,7 +1215,7 @@ public class TotalAction extends MainAction
         boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
-            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+            startDate = dateHelper.getDataString_1(dateHelper.getWeekFirstDate());
         }
         if(endDate == null) {
             endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
@@ -2107,7 +2107,7 @@ public class TotalAction extends MainAction
         boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
-            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+            startDate = dateHelper.getDataString_1(dateHelper.getWeekFirstDate());
         }
         if(endDate == null) {
             endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
@@ -2288,7 +2288,7 @@ public class TotalAction extends MainAction
         boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
-            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+            startDate = dateHelper.getDataString_1(dateHelper.getWeekFirstDate());
         }
         if(endDate == null) {
             endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
@@ -2301,6 +2301,9 @@ public class TotalAction extends MainAction
         final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
         final Map power2 = this.powerService.getUserGroup(groupid2);
         final String deptIdGroup2 = power2.get("deptIdGroup").toString();
+        int isproxy = req.getInt("isproxy");
+        if (isproxy == 1)
+            isRpt = false;
         final List deptList2 = new ArrayList();
         final Map dept2 = this.deptService.findDeptById(Integer.valueOf(deptIdGroup2));
         deptList2.add(dept2);
@@ -2319,6 +2322,175 @@ public class TotalAction extends MainAction
             if (exportExcel != null && exportExcel.toLowerCase().equals("true"))
                 this.pager.setPageSize(0);
             this.list = this.totalService.totalProxyRpt(ids, sort, req.getString("cardname"), this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), totalrows);
+        }
+        final int rowsCount = totalrows[0];
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+
+        this.list = this.getPandM(this.list);
+        this.list = this.getStar(this.list);
+        this.list = this.getD(this.list);
+        final List ls = new ArrayList();
+        final SundynSet sundynSet = SundynSet.getInstance(path);
+        final String standard = sundynSet.getM_content().get("standard").toString();
+        /*final Map m1 = new HashMap();
+        m1.put("num", standard);
+        m1.put("category", "感知");
+        m1.put("item", "标准");
+        ls.add(m1);
+        for (int i = 0; i < this.list.size(); ++i) {
+            final Map temp = (Map) this.list.get(i);
+            final Map j = new HashMap();
+            j.put("num", temp.get("num"));
+            j.put("category", "感知");
+            j.put("item", temp.get("employeeName"));
+            ls.add(j);
+        }*/
+        //final JfreeChart jfreeChart = new JfreeChart();
+        //jfreeChart.createBar("人员满意度指数", "感知项", "满意度", ls, String.valueOf(path) + "pubpic.jpg");
+        this.pager.setPageList(this.list);
+        request.setAttribute("deptId", (Object)deptId);
+
+        if (exportExcel != null && exportExcel.toLowerCase().equals("true")) {
+            List ls2 = new ArrayList();
+            for (int i = 0; i < list.size(); ++i) {
+                final Map m = new LinkedHashMap();
+                final Map temp = (Map) list.get(i);
+                int j = 0;
+                m.put("m" + (j++), temp.get("cardname"));
+                m.put("m" + (j++), temp.get("ticketcount"));
+                m.put("m" + (j++), temp.get("servercount"));
+                m.put("m" + (j++), temp.get("cancelcount"));
+                m.put("m" + (j++), temp.get("waittimeavg")==null?"":temp.get("waittimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                m.put("m" + (j++), temp.get("servicetimeavg")==null?"":temp.get("servicetimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                for (Object item: (ArrayList)(temp.get("km"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("msum"));
+                for (Object item: (ArrayList)(temp.get("kbm"))){
+                    m.put("m" + (j++), item);
+                }
+                m.put("m" + (j++), temp.get("bmsum"));//不满意合计
+                m.put("m" + (j++), temp.get("totalunkey"));//未评价
+                m.put("m" + (j++), temp.get("totalkey"));//评价合计
+                m.put("m" + (j++), temp.get("mrate")+"%");//满意率
+                m.put("m" + (j++), temp.get("num"));//满意度
+                ls2.add(m);
+            }
+            final Poi poi = new Poi();
+            /*****************************************
+             * 开始添加第一个标题行
+             *****************************************/
+            List<String> args = new ArrayList<String>();
+            args.add("代理人");
+            args.add("取号量");
+            args.add("业务量");
+            args.add("弃号量");
+            args.add("平均等待时长");
+            args.add("平均办理时长");
+
+            for (Object item : mls){
+                args.add(this.getText("sundyn.column.content"));
+            }
+            args.add(this.getText("sundyn.column.content"));
+            for (Object item : bmls){
+                args.add(this.getText("sundyn.column.nocontent"));
+            }
+            args.add(this.getText("sundyn.column.nocontent"));
+            args.add(this.getText("sundyn.column.noappries"));
+            args.add("评价"+this.getText("sundyn.column.sum"));
+            args.add(this.getText("sundyn.column.contentRate"));
+            args.add(this.getText("sundyn.column.contentDegree"));
+
+            String deptname = req.getString("deptname");
+            String deptNamT = "";
+            if (StringUtils.isNotBlank(deptname))
+                deptNamT = "（" + deptname + "）";
+            poi.addTitle("按照代理人统计" + deptNamT,  this.startDate + " 至 " + this.endDate, 1, args.size()-1); //添加报表标题，合并
+            poi.addListTitle(args.toArray(), 1);
+            int mergStepN = 6;//需要合并行（不是列）的n列，如机构名称，业务量，弃号量等
+            poi.addMerge(2,mergStepN,2,mergStepN + mls.size());
+            poi.addMerge(2,mergStepN+mls.size()+1,2,mergStepN + mls.size()+1 + bmls.size());
+
+            /*****************************************
+             * 开始添加第二个标题行
+             *****************************************/
+            List<String> args2 = new ArrayList<String>();
+            for (int i = 0; i < mergStepN; i++) {//补第二行 mergStepN列的空数据，会合并掉，所以补空白即可
+                args2.add("");
+            }
+            for (Object item : mls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.contentTotal"));
+            for (Object item : bmls){
+                args2.add(String.valueOf(((Map)item).get("name").toString()));
+            }
+            args2.add(this.getText("sundyn.column.nocontentTotal"));
+            args2.add("");//补满意，不满意后面4列的空白数据，会合并掉，所以补空白即可
+            args2.add("");
+            args2.add("");
+            args2.add("");
+            poi.addListTitle(args2.toArray(), 1);
+
+            for (int i = 0; i < mergStepN; i++) {//合并标题行-机构名称、业务量、弃号量等
+                poi.addMerge(2, i,3, i);
+            }
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1,3,mergStepN+mls.size() +1+ bmls.size()+1);//合并标题行-满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1);//合并标题行-不满意
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1);//未评价
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1);//评价合计
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1);//满意率
+            poi.addMerge(2,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1,3,mergStepN+mls.size() +1+ bmls.size()+1+1+1+1+1+1);//满意度
+            poi.addList(ls2, false);
+
+            poi.createFile(String.valueOf(path) + "standard.xls");
+            this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
+            this.fileName = new String("按照代理人统计报表.xls".getBytes("gb2312"), "iso8859-1");;
+            return "excel";
+        }
+
+        return "success";
+    }
+
+    public String proxyBizDealRpt() throws Exception {
+        boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
+        DateHelper dateHelper = DateHelper.getInstance();
+        if(startDate == null) {
+            startDate = dateHelper.getDataString_1(dateHelper.getWeekFirstDate());
+        }
+        if(endDate == null) {
+            endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
+        }
+
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String path = ServletActionContext.getServletContext().getRealPath("/");
+
+        final Map manager2 = (Map)request.getSession().getAttribute("manager");
+        final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
+        final Map power2 = this.powerService.getUserGroup(groupid2);
+        final String deptIdGroup2 = power2.get("deptIdGroup").toString();
+        String cardid = req.getString("cardid");
+        int isproxy = req.getInt("isproxy");
+        if (isproxy == 1)
+            isRpt = false;
+        final List deptList2 = new ArrayList();
+        final Map dept2 = this.deptService.findDeptById(Integer.valueOf(deptIdGroup2));
+        deptList2.add(dept2);
+        request.setAttribute("deptList", (Object)deptList2);
+        this.deptJSON = this.deptService.findChildALL(deptIdGroup2);
+
+        String deptId = request.getParameter("deptId");
+        final String ids = this.deptService.findChildALLStr1234(deptId);
+        this.pager = new Pager("currentPage", pageSize, 0, request);
+        Integer[] totalrows = new Integer[1];
+        String sort = req.getString("sort");
+        String exportExcel = request.getParameter("export");
+
+        this.list = null;
+        if(isRpt) {
+            if (exportExcel != null && exportExcel.toLowerCase().equals("true"))
+                this.pager.setPageSize(0);
+            this.list = this.totalService.totalProxyBizRpt(ids, sort, req.getString("cardname"),cardid, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), totalrows);
         }
         final int rowsCount = totalrows[0];
         this.pager = new Pager("currentPage", pageSize, rowsCount, request);
@@ -2684,7 +2856,7 @@ public class TotalAction extends MainAction
         boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
-            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+            startDate = dateHelper.getDataString_1(dateHelper.getWeekFirstDate());
         }
         if(endDate == null) {
             endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
@@ -2859,7 +3031,7 @@ public class TotalAction extends MainAction
         boolean isRpt = request.getRequestURI().toLowerCase().contains("rpt");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
-            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+            startDate = dateHelper.getDataString_1(dateHelper.getWeekFirstDate());
         }
         if(endDate == null) {
             endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
@@ -2868,6 +3040,7 @@ public class TotalAction extends MainAction
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final String deptId = request.getParameter("deptId");
         String bizname = req.getString("bizname");
+        String isproxy = req.getString("isproxy");
 
         final Map manager2 = (Map)request.getSession().getAttribute("manager");
         final Integer groupid2 = Integer.valueOf(manager2.get("userGroupId").toString());
@@ -2883,13 +3056,19 @@ public class TotalAction extends MainAction
         this.pager = new Pager("currentPage", pageSize, 0, request);
         final String ids2 = this.deptService.findChildALLStr1234(deptId);
         this.list = null;
-        if(isRpt){
-            if (exportExcel != null && exportExcel.toLowerCase().equals("true"))
-                this.pager.setPageSize(0);
-            list = this.totalService.totalBizRpt(ids2, sort, bizname, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
+        if (isproxy.equals("true"))
+        {
+            list = this.totalService.totalBizProxy(ids2, bizname, this.startDate, this.endDate, isproxy, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
         }
-        else
-            list = this.totalService.totalBiz(ids2, bizname, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
+        else{
+            if(isRpt){
+                if (exportExcel != null && exportExcel.toLowerCase().equals("true"))
+                    this.pager.setPageSize(0);
+                list = this.totalService.totalBizRpt(ids2, sort, bizname, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
+            }
+            else
+                list = this.totalService.totalBiz(ids2, bizname, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
+        }
         this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);

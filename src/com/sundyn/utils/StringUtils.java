@@ -62,6 +62,5 @@ public class StringUtils
         ids.add(1);
         ids.add(3);
         ids.add(8);
-        System.out.println(getInString(ids));
     }
 }

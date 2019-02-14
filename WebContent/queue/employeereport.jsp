@@ -37,6 +37,14 @@
         window.location.href = "queueEmployeeReport.action?hallid="+hallid + "&action=" + action + "&ename=" + ename;
     }
 </script>
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <c:forEach items="${navbar_menuname}" var="menu">
+            <li><a href="#">${menu.name}</a></li>
+        </c:forEach>
+    </ul>
+</div>
 <input type="hidden" id="deptId" value="${deptId}"/>
 <div class="layui-form">
     <div class="layui-inline">

@@ -1,18 +1,25 @@
 package com.sundyn.action;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.opensymphony.xwork2.ActionContext;
 import com.sundyn.entity.QueueDetail;
+import com.sundyn.entity.SysProxyorg;
+import com.sundyn.entity.WarnOntimedetail;
 import com.sundyn.service.*;
 import com.sundyn.util.*;
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONObject;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.Socket;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -431,7 +438,7 @@ public class QueryAction extends MainAction
     public String queryDeptDeal() throws Exception {
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
-            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+            startDate = dateHelper.getDataString_1(dateHelper.getWeekFirstDate());
         }
         if(endDate == null) {
             endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
@@ -834,7 +841,7 @@ public class QueryAction extends MainAction
         final HttpServletRequest request = ServletActionContext.getRequest();
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
-            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+            startDate = dateHelper.getDataString_1(dateHelper.getWeekFirstDate());
         }
         if(endDate == null) {
             endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
@@ -962,7 +969,7 @@ public class QueryAction extends MainAction
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
-            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+            startDate = dateHelper.getDataString_1(dateHelper.getWeekFirstDate());
         }
         if(endDate == null) {
             endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
@@ -1221,7 +1228,7 @@ public class QueryAction extends MainAction
     public String queryZhDealAjax() throws Exception {
         DateHelper dateHelper = DateHelper.getInstance();
         if(startDate == null) {
-            startDate = dateHelper.getDataString_1(dateHelper.getMonthFirstDate());
+            startDate = dateHelper.getDataString_1(dateHelper.getWeekFirstDate());
         }
         if(endDate == null) {
             endDate = dateHelper.getDataString_1(dateHelper.getTodayLastSecond());
@@ -1502,5 +1509,34 @@ public class QueryAction extends MainAction
             return temp2;
         }
         return null;
+    }
+
+    @Resource
+    private IWarnOntimedetailService warnDetailService;
+
+    public String warnQuery(){
+        try {
+            String orgcode = req.getString("orgcode");
+            String orgname = req.getString("orgname");
+            String type = req.getString("type");
+            String nofityname = req.getString("nofityname", "");
+            Wrapper<Map> ew =new EntityWrapper<>();
+
+            if (null!=orgname && !"".equals(orgname))
+                ew = ew.where("orgname like '%"+orgname+"%'");
+            if (null!=orgcode && !"".equals(orgcode))
+                ew = ew.where("orgcode like '%"+orgcode+"%'");
+            if (null!=nofityname && !"".equals(nofityname))
+                ew = ew.where("appries_employee.name like '%"+nofityname+"%'");
+            if (null!=type && !"".equals(type))
+                ew = ew.where("type='"+type+"'");
+
+            Page<Map> queryData = warnDetailService.querypagemap(new Page<Map>(pageindex, pageSize), ew.orderBy("ctime desc"));
+            request.setAttribute("nofityname", nofityname);
+            request.setAttribute("queryData", queryData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return SUCCESS;
     }
 }

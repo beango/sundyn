@@ -6,6 +6,7 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import com.sundyn.entity.AppriesMenu;
 import com.sundyn.entity.SysLog;
 import com.sundyn.service.IAppriesMenuService;
+import com.sundyn.service.ManagerService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -16,14 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.URLDecoder;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OperationInterceptor extends AbstractInterceptor {
 
     public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
     @Resource
     private IAppriesMenuService appriesMenuService;
-
+    @Resource
+    private ManagerService managerService;
     //无须记录Action调用日志的方法
     private static String[] unRecordLogResources={"validateTeaSnapNum",//校验教师创建的快照数量是否超过场景限制
             "validateServSnapNum",//校验应用服务创建的快照数量是否超过场景限制
@@ -47,12 +51,11 @@ public class OperationInterceptor extends AbstractInterceptor {
             "buildTerLoginRelation"//添加终端登录关系
     };
 
-    private static HashMap<String,String> actionNameMap = new HashMap<String, String>(){
-        {
+    private static HashMap<String,String> actionNameMap = new HashMap<String, String>(){{
             put("managerLogin", "用户登录");
-            put("managerLogout", "用户退出");
-        }
+            put("managerLogout", "用户退出"); }
     };
+
     public String intercept(ActionInvocation invocation) throws Exception {
         HttpServletRequest req = ServletActionContext.getRequest();
         String ipaddr = getRemoteIpAddr(req);//获取系统操作远程ip
@@ -60,6 +63,18 @@ public class OperationInterceptor extends AbstractInterceptor {
         Map UserManager = (Map)req.getSession().getAttribute("manager");
         if(null!=UserManager) {
             userid = (Integer) UserManager.get("id");
+        }
+        else
+            System.out.println("usermanager==null");
+        try{
+            if (userid==0 && req.getParameter("managerVo.name")!=null){
+                System.out.println("没有便用户ID" + req.getParameter("managerVo.name"));
+                Map managermap = managerService.findByName(req.getParameter("managerVo.name"));
+                userid = Integer.valueOf(managermap.get("id").toString());
+            }
+        }
+        catch (Exception e){
+
         }
         String actionClass = invocation.getProxy().getAction().getClass().getName();
         if(actionClass.indexOf("$") != -1){
@@ -78,6 +93,7 @@ public class OperationInterceptor extends AbstractInterceptor {
         }
 
         Date startTime = new Date();
+        String menuName = "";
         try{
             String reqmethod = req.getMethod();
             if (reqmethod.toLowerCase().equals("get")){
@@ -95,10 +111,10 @@ public class OperationInterceptor extends AbstractInterceptor {
                     JSONObject jo = new JSONObject();
                     jo.put("name", menu.getMenuName());
                     jo.put("url", menu.getNav());
+                    menuName = menu.getMenuName();
                     menuStrs.add(jo);
                 }
                 req.setAttribute("navbar_menuname", menuStrs);
-                //System.out.println(menu.getMenuName());
             }
             //实际方法执行阶段
             invocation.invoke();
@@ -116,7 +132,7 @@ public class OperationInterceptor extends AbstractInterceptor {
                 while(param.length()>0){
                     SysLog log = new SysLog();
                     log.setAction(actionName);
-                    log.setActionname(actionNameMap.containsKey(actionName)?actionNameMap.get(actionName).toString():"");
+                    log.setActionname(actionNameMap.containsKey(actionName)?actionNameMap.get(actionName).toString():menuName);
                     log.setActiontime(startTime);
                     log.setActionurl(url);
                     if (param.length()>len){
@@ -149,7 +165,6 @@ public class OperationInterceptor extends AbstractInterceptor {
         return false;
     }
 
-
     protected String getRemoteIpAddr(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
@@ -181,6 +196,5 @@ public class OperationInterceptor extends AbstractInterceptor {
             }
         }
         return ip.split(",")[0];
-
     }
 }

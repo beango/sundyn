@@ -19,7 +19,7 @@
 
 <body>
 <div class="layui-form">
-    <table width="100%" height="173" border="0" cellpadding="0" cellspacing="0" style="border-color: #e9f5fd;">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-color: #e9f5fd;">
         <tr>
             <td style="border-color: #e9f5fd;" width="12%" align="right">
                 <s:text name='sundyn.role.roleName' /><s:text name="sundyn.colon" />
@@ -60,9 +60,9 @@
             </td>
         </tr>
         <tr>
-            <td></td>
+            <td>权限：</td>
             <td>
-                <div>
+                <div style="overflow:auto;height:300px;">
                     <ul id="zTreeMenuContent" class="ztree"></ul>
                 </div>
             </td>

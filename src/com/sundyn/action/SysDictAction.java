@@ -23,9 +23,11 @@ public class SysDictAction extends MainAction {
      */
     public String sysDict() {
         try {
-            List<SysDictinfo> dictinfos = dictinfoService.selectList(new EntityWrapper<SysDictinfo>().where("isEnable=1"));
+            List<SysDictinfo> dictinfos_config = dictinfoService.selectList(new EntityWrapper<SysDictinfo>().where("dictgroup = 'config' and isEnable=1"));
+            request.setAttribute("dictinfos_config", dictinfos_config);
+            List<SysDictinfo> dictinfos_inte = dictinfoService.selectList(new EntityWrapper<SysDictinfo>().where("dictgroup = 'inte' and isEnable=1"));
+            request.setAttribute("dictinfos_inte", dictinfos_inte);
 
-            request.setAttribute("dictinfos", dictinfos);
             request.setAttribute("KeyTypeList", keyTypeService.findAllKeyInUse());
             request.setAttribute("unkeydef", "1");
         } catch (SQLException e) {
@@ -44,9 +46,20 @@ public class SysDictAction extends MainAction {
             for (Object postdatum : postdata) {
                 JSONObject jo = (JSONObject)postdatum;
                 SysDictinfo info = new SysDictinfo();
-                info.setId(Integer.parseInt(jo.get("dictkey").toString()));
-                info.setDictvalue(jo.get("dictvalue").toString());
-                dictinfos.add(info);
+                if (jo.containsKey("dictkey"))
+                {
+                    info.setId(Integer.parseInt(jo.get("dictkey").toString()));
+                    info.setDictvalue(jo.get("dictvalue").toString());
+                    dictinfos.add(info);
+                }
+                if (jo.containsKey("ssointe"))
+                {
+                    System.out.println("ssointe:" + jo.get("ssointe"));
+                }
+                if (jo.containsKey("appriesinte"))
+                {
+                    System.out.println("appriesinte:" + jo.get("appriesinte"));
+                }
             }
         }
         dictinfoService.updateBatchById(dictinfos);

@@ -7,4 +7,10 @@
         id, managerid, powerid, powrName
     </sql>
 
+    <select id="selectListEx" resultType="AppriesManagerpower">
+        SELECT t1.*, (select top 1 name from appries_power t2 where t2.id=t1.powerid) powerName from appries_managerpower t1
+        <where>
+            ${ew.sqlSegment}
+        </where>
+    </select>
 </mapper>

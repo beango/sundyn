@@ -229,12 +229,12 @@ public class PasswordHash {
      * @param args ignored
      */
     public static void main(String[] args) {
-        String 明文 = "12345";
+        /*String 明文 = "12345";
         String 密文 = PasswordHash.createHash("12345", UUIDUtils.uuid());
         System.out.println("明文:" + 明文);
         System.out.println("密文:" + 密文);
         //校验
-        System.out.println(PasswordHash.validatePassword("12345", "1000:402880e4571c7e2701571c7e27640000:8c20eadbed225781e461d6802cbb3572ed1f7a02b281cf63"));
+        System.out.println(PasswordHash.validatePassword("12345", "1000:402880e4571c7e2701571c7e27640000:8c20eadbed225781e461d6802cbb3572ed1f7a02b281cf63"));*/
     }
 
 }

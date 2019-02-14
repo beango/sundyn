@@ -27,36 +27,23 @@ import java.util.List;
 import java.util.Map;
 
 public class ServiceBaseImpl<dao extends BaseMapper<T>, T> extends ServiceImpl<dao, T> {
+    public boolean isFILTERDEPT() {
+        return FILTERDEPT;
+    }
+
+    public void setFILTERDEPT(boolean FILTERDEPT) {
+        this.FILTERDEPT = FILTERDEPT;
+    }
+
+    private boolean FILTERDEPT = true;
     @Resource
     private CacheManager dCacheManager;
     @Resource
     private DeptService deptService;
 
-    private com.xuan.xutils.cache.Cache initManagerCache(String userName) {
-        String MANAGERKEY = "MANAGER-" + userName;
-        com.xuan.xutils.cache.Cache cache = dCacheManager.getCache(MANAGERKEY);
-        if (null == cache){
-            cache = new SimpleCache();
-            dCacheManager.addCache(MANAGERKEY, cache);
-            try {
-                cache.add("KEY-MANAGER-DEPTIDS", deptService.findChildALLStr1234(null)); //用户有权限查看的所有部门，逗号隔开
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        else{
-            if (cache.get("KEY-MANAGER-DEPTIDS")==null){
-                try {
-                    cache.add("KEY-MANAGER-DEPTIDS", deptService.findChildALLStr1234(null)); //用户有权限查看的所有部门，逗号隔开
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return cache;
-    }
-
     protected String USERDATA_DEPTIDS() {
+        if(!FILTERDEPT)
+            return null;
         HttpSession session = ServletActionContext.getRequest().getSession();
         Map user = (Map) session.getAttribute("manager");
         if(user == null){
@@ -233,6 +220,7 @@ public class ServiceBaseImpl<dao extends BaseMapper<T>, T> extends ServiceImpl<d
 
     @Override
     public int selectCount(Wrapper<T> wrapper) {
+        System.out.println("FILTERDEPT:" + this.FILTERDEPT);
         String filterDept = USERDATA_DEPTIDS();
         if (filterDept !=null && !"".equals(filterDept)){
             if (wrapper == null)

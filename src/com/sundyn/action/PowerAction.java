@@ -83,7 +83,6 @@ public class PowerAction extends MainAction
         if (name == null) {
             name = "";
         }
-        System.out.println("name-lowerPowerQuery=" + name);
         name = name.trim();
         //final Map manager = (Map)request.getSession().getAttribute("manager");
         //final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
@@ -103,7 +102,6 @@ public class PowerAction extends MainAction
         if (name == null) {
             name = "";
         }
-        System.out.println("name-lowerPowerQueryAjax=" + name);
         name = name.trim();
         final Map manager = (Map)request.getSession().getAttribute("manager");
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
@@ -291,6 +289,14 @@ public class PowerAction extends MainAction
         else {
             this.msg = "";
         }
+        return "success";
+    }
+
+    public String powerCopy(){
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final String id = request.getParameter("id");
+        boolean succ = this.powerService.copyService(id);
+        this.msg = "复制成功";
         return "success";
     }
 }

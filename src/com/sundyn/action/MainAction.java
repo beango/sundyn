@@ -106,7 +106,6 @@ public class MainAction extends ActionSupport {
             else{
                 try{
                     DEPTIDS = deptService.findChildALLStr1234(null);
-                    System.out.println("获取数据库：" + DEPTIDS);
                     Cache1 c = new Cache1();
                     c.setValue(DEPTIDS);
                     CacheManager1.AddKey(Key);

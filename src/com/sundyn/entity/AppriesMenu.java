@@ -56,9 +56,12 @@ public class AppriesMenu extends Model<AppriesMenu> {
     @Size(min=1,max=30,message="菜单名不能为空")
     @TableField("menuName")
     private String menuName;
+
     private String nav;
+
     @TableField("parentId")
     private Integer parentId;
+
     @TableField(exist = false)
     private String parentName;
 
@@ -80,8 +83,10 @@ public class AppriesMenu extends Model<AppriesMenu> {
 
     @TableField(exist = false)
     private String funcId;
+
     @TableField("funcCode")
     private String funcCode;
+
     public String getNav() {
         return nav;
     }
@@ -153,4 +158,6 @@ public class AppriesMenu extends Model<AppriesMenu> {
         return this.id;
     }
 
+    @TableField(exist = false)
+    public boolean FILTERDEPT = false;
 }

@@ -44,10 +44,10 @@ public class EmployeeService extends SuperDao
     }
 
     public boolean addEmployee(final EmployeeVo emp) {
-        final String sql = "insert into appries_employee (name,deptid,sex,job_desc,phone,cardnum,Password,picture,ext2,remark,showDeptName,showWindowName,companyName,ext3,ext4) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        final String sql = "insert into appries_employee (name,deptid,sex,job_desc,phone,cardnum,Password,Password2,picture,ext2,remark,showDeptName,showWindowName,companyName,ext3,ext4) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         final Object[] arg = { StringUtils.getNotNullString(emp.getName()), emp.getDeptid(), StringUtils.getNotNullString(emp.getSex()),
                 StringUtils.getNotNullString(emp.getJob_desc()), StringUtils.getNotNullString(emp.getPhone()), StringUtils.getNotNullString(emp.getCardnum()),
-                StringUtils.getNotNullString(emp.getPassWord()), StringUtils.getNotNullString(emp.getPicture()), StringUtils.getNotNullString(emp.getExt2()),
+                StringUtils.getNotNullString(emp.getPassWord()),StringUtils.getNotNullString(emp.getPassWord2()), StringUtils.getNotNullString(emp.getPicture()), StringUtils.getNotNullString(emp.getExt2()),
                 StringUtils.getNotNullString(emp.getRemark()), StringUtils.getNotNullString(emp.getShowDeptName()), StringUtils.getNotNullString(emp.getShowWindowName()),
                 StringUtils.getNotNullString(emp.getCompanyName()), StringUtils.getNotNullString(emp.getExt3()), StringUtils.getNotNullString(emp.getExt4()) };
         try {
@@ -162,7 +162,7 @@ public class EmployeeService extends SuperDao
     }
 
     public String findEmployeeByDeptId(final String deptId) {
-        final String sql = "select *  from appries_employee where deptid in (" + deptId + ") order by  id ,job_desc  ";
+        final String sql = "select * from appries_employee where deptid in (" + deptId + ") order by  id ,job_desc  ";
         try {
             List list = this.getJdbcTemplate().queryForList(sql);
             if (list!=null && list.size()>0){
@@ -253,7 +253,7 @@ public class EmployeeService extends SuperDao
     }
 
     public boolean passwordReSet(final Integer employeeId) {
-        final String sql = "update appries_employee set PassWord='49BA59ABBE56E057' where id='" + employeeId + "'";
+        final String sql = "update appries_employee set PassWord='49BA59ABBE56E057',PassWord2='123456' where id='" + employeeId + "'";
         try {
             final int num = this.getJdbcTemplate().update(sql);
             return num > 0;

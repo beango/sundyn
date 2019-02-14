@@ -24,12 +24,6 @@ public class QueueEmployeereportServiceImpl extends ServiceBaseImpl<QueueEmploye
 
     @Override
     public Page<QueueEmployeereport> report_queueemployee(Page<QueueEmployeereport> page, @Param("ew") Wrapper<QueueEmployeereport> wrapper) {
-        String filterDept = USERDATA_DEPTIDS();
-        if (filterDept !=null && !"".equals(filterDept)){
-            if (wrapper == null)
-                wrapper = new EntityWrapper<>();
-            wrapper = wrapper.in("deptid", filterDept.split(","));
-        }
         return page.setRecords(baseMapper.report_queueemployee(page, wrapper));
     }
 }

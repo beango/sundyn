@@ -155,7 +155,6 @@ public class PowerService extends SuperDao
     
     public int countLowerPowerByName(final String name, final String deptgroup) {
         final String sql = "select count(*) from appries_power where  name like '%" + name + "%' and deptIdGroup in (" + deptgroup + ")";
-        System.out.println("sql-countLowerPowerByName=" + sql);
         try {
             return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
@@ -174,7 +173,20 @@ public class PowerService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean copyService(String id) {
+        String sql = "INSERT INTO [dbo].[appries_power]([name],[baseSet],[dataManage],[deptIdGroup])" +
+                "select [name]+' 复制',[baseSet],[dataManage],[deptIdGroup] from [dbo].[appries_power] where id=" + id;
+        sql += ";INSERT INTO [dbo].[appries_powerfunc]([funcCode],[powerName])" +
+                "     select [funcCode],[powerName]+' 复制' from [dbo].[appries_powerfunc] where powerName=(select name from [dbo].[appries_power] where id="+id+")";
+        try {
+            this.getJdbcTemplate().execute(sql);
+            return true;
+        }
+        catch (Exception e) {
             return false;
         }
     }

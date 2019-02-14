@@ -37,11 +37,24 @@
                 </td>
             </tr>
         <tr>
-            <td style="border-color: #e9f5fd;" align="right">
-                部门（机构）
+            <td>
+
             </td>
-            <td align="left" style="border-color: #e9f5fd;">
+            <td>
+                <div class="layui-input-inline" style="width:400px;">
+                    <input type="radio" name="localuser" value="1" title="本地用户" <c:if test="${data.keyNo==dictinfo.dictvalue}"> checked="checked"</c:if>>
+                    <input type="radio" name="localuser" value="0" title="异地用户" <c:if test="${data.keyNo==dictinfo.dictvalue}"> checked="checked"</c:if>>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="border-color: #e9f5fd;" align="right">
+                部门（机构）<s:text name="sundyn.colon" />
+            </td>
+            <td align="left">
+                <div style="overflow:auto;height:250px;">
                 <ul id="zTreeMenuContent" class="ztree"></ul>
+                </div>
             </td>
         </tr>
             <tr>

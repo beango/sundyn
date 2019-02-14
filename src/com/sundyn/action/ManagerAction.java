@@ -85,6 +85,7 @@ public class ManagerAction extends MainAction
         final HttpServletRequest request = ServletActionContext.getRequest();
         String name = req.getString("name");
         int dept = req.getInt("dept", 0);
+        int localuser = req.getInt("localuser");
         (this.managerVo = new ManagerVo()).setSkinid(0);
         this.managerVo.setName(name);
         String powers = req.getString("powers");
@@ -105,6 +106,7 @@ public class ManagerAction extends MainAction
         this.managerVo.setExt1(request.getParameter("ext1"));
         this.managerVo.setExt2(request.getParameter("ext2"));
         this.managerVo.setDeptid(dept);
+        this.managerVo.setLocaluser(localuser);
         boolean addsucc = this.managerService.AddManager(this.managerVo);
 
         if (powers!=null){
@@ -199,9 +201,6 @@ public class ManagerAction extends MainAction
         final String oldpsw = request.getParameter("oldPsw");
         final String newpsw = request.getParameter("newPsw");
         final String newpsw2 = request.getParameter("newPsw2");
-        System.out.println("oldPsw=" + oldpsw);
-        System.out.println("newPsw=" + newpsw);
-        System.out.println("newPsw2=" + newpsw2);
         if (newpsw.length() > 50) {
             this.msg = "your code over 50!";
             this.type = "input";
@@ -264,6 +263,7 @@ public class ManagerAction extends MainAction
         (this.managerVo = new ManagerVo()).setId(id);
         String name = request.getParameter("name");
         String powers = req.getString("powers");
+        int localuser = req.getInt("localuser");
         if (this.managerService.manageExist(request.getParameter("id"), name)) {
             this.msg = "";
         }
@@ -280,6 +280,7 @@ public class ManagerAction extends MainAction
         this.managerVo.setExt1(request.getParameter("ext1"));
         this.managerVo.setExt2(request.getParameter("ext2"));
         this.managerVo.setDeptid(dept);
+        this.managerVo.setLocaluser(localuser);
         this.managerService.UpdateManage(this.managerVo);
 
         if (powers!=null){
@@ -340,7 +341,6 @@ public class ManagerAction extends MainAction
         final Map manager = this.managerService.findManageBy(this.managerVo.getName(), this.managerVo.getPassword(), loginrst);
         if (manager==null){
             this.msg = loginrst[0];
-            System.out.println("login:" + loginrst[0]);
             return "input";
         }
         final HttpServletRequest request = ServletActionContext.getRequest();
@@ -401,6 +401,7 @@ public class ManagerAction extends MainAction
             this.msg = this.getText("login.identifyingCodeError");
             return "input";
         }*/
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
         if (manager != null) {
             CookieUtils cookieUtils = new CookieUtils();
             List<AppriesManagerpower> managerPowers = managerpowerService.selectListEx(new EntityWrapper<AppriesManagerpower>().where("managerId={0}",manager.get("id").toString()));
@@ -421,9 +422,12 @@ public class ManagerAction extends MainAction
             response.addCookie(cookie);// 添加cookie到response中
             cookie = cookieUtils.addCookie2(deptService.findChildALLStr1234(null));
             response.addCookie(cookie);
-
+            System.out.println("登录：" + (manager == null));
             session.setAttribute("manager", (Object)manager);
             return "success";
+        }
+        else{
+            System.out.println("登录失败");
         }
         this.msg = "登录失败";
         return "input";

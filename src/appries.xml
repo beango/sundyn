@@ -66,6 +66,7 @@
 		</interceptors>
 		<default-interceptor-ref name="mydefault" />
 		<global-results>
+            <result name="noauth">/noauth.jsp</result>
 			<result name="login" type="redirect">/login.jsp</result>
 		</global-results>
 		<!--  验证用户登录 结束 -->

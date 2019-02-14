@@ -34,7 +34,7 @@ public class UserCheck extends HttpServlet implements Filter
 
                 final Object mm = session.getAttribute("manager");
                 if (mm == null) {
-                    resp.sendRedirect("login.jsp?r=userCheck");
+                    resp.sendRedirect("login.jsp");
                 }
                 else {
                     filterchain.doFilter(request, response);

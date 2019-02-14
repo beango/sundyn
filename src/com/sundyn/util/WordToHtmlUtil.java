@@ -52,7 +52,6 @@ public class WordToHtmlUtil
                 catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.out.println(suggestedName);
                 return suggestedName;
             }
         });
@@ -87,7 +86,6 @@ public class WordToHtmlUtil
         for (final Element e : es) {
             final String src = e.attr("src");
             final int i = src.lastIndexOf("/word/");
-            System.out.println(i);
             final String imgpath = src.substring(i + 1);
             e.attr("src", imgpath);
         }

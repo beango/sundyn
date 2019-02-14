@@ -72,12 +72,6 @@
             <input type="radio" name="type" value="month" title="<s:text name='sundyn.analyse.month'/>"/>
             <input type="radio" name="type" value="year" title="<s:text name='sundyn.analyse.year'/>"/>
             <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" style="cursor:pointer;" onclick="query()"/>
-            <%--<img src="<s:text name='sundyn.analyse.businessNumAnalyse' />" width="94" height="25"
-                 onclick="analyseTotalAjax(w, 'servicecount')" style="cursor: pointer; vertical-align: middle;"/>
-            <img src="<s:text name="sundyn.analyse.contentNumAnalyse" />" onclick="analyseTotalAjax(w,'totalkeymy')"
-                 style="cursor: pointer; vertical-align: middle;"/>
-            <input type="button" class="button" style="background: url(images/button_bg.gif)"
-                   onclick="analyseTotalAjax(w,'totalmyd')" value="满意度分析"/>--%>
         </td>
     </tr>
 </table>

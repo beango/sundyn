@@ -235,4 +235,6 @@
     <bean id="queueInteAction" class="com.sundyn.action.QueueInteAction" scope="prototype" ></bean>
     <bean id="blackListAction" class="com.sundyn.action.BlackListAction" scope="prototype" ></bean>
     <bean id="dictAction" class="com.sundyn.action.SysDictAction" scope="prototype" ></bean>
+    <bean id="sysLogAction" class="com.sundyn.action.SysLogAction" scope="prototype" ></bean>
+    <bean id="sysProxyorgAction" class="com.sundyn.action.SysProxyorgAction" scope="prototype" ></bean>
 </beans>

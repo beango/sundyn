@@ -19,6 +19,7 @@
 		<default-interceptor-ref name="mydefault" />
 		<global-results>
 			<result name="login">/login.jsp</result>
+            <result name="noauth">/noauth.jsp</result>
 		</global-results>
 		<!--  验证用户登录 结束 -->
         <!--  大厅 -->
@@ -130,6 +131,38 @@
         </action>
         <action name="proxyDel" class="blackListAction"
                 method="proxyDel">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="proxyOrgQuery" class="sysProxyorgAction"
+                method="proxyOrgQuery">
+            <result name="success">/proxy/proxyOrgQuery.jsp</result>
+        </action>
+        <action name="proxyOrgAdd" class="sysProxyorgAction"
+                method="proxyOrgAdd">
+            <result name="success">/proxy/orgadd.jsp</result>
+        </action>
+        <action name="proxyOrgPost" class="sysProxyorgAction"
+                method="proxyOrgPost">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="proxyOrgDel" class="sysProxyorgAction"
+                method="proxyOrgDel">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="proxyOrgReview" class="sysProxyorgAction"
+                method="proxyOrgReview">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="proxyOrgCancel" class="sysProxyorgAction"
+                method="proxyOrgCancel">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="proxyOrgPause" class="sysProxyorgAction"
+                method="proxyOrgPause">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="proxyOrgRestore" class="sysProxyorgAction"
+                method="proxyOrgRestore">
             <result name="success">/msg.jsp</result>
         </action>
     </package>

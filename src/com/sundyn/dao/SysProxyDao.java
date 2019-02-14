@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author huangding
  * @since 2018-09-14
  */
-public interface SysProxyDao extends BaseMapper<SysProxy> {
+public interface SysProxyDao extends MainDao<SysProxy> {
 
 }

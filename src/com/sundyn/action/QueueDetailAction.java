@@ -187,6 +187,7 @@ public class QueueDetailAction extends MainAction
             totalservicetime2 += StringUtils.toFloat(m.get("totalkeybmy"), 0);//差评数
             totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
             m.put("keybmyrate", StringUtils.toFloat(m.get("totalservicetime2"), 0) / StringUtils.toFloat(m.get("totalservicetime2"), 0));
+            m.put("keybmyrate", totalservicetime2 / totalservicecount);
         }
         avg = totalservicetime2 * 100.0f / totalservicecount;
         for (Object datum : data2) {

@@ -99,6 +99,10 @@
     <bean id="keytypeServiceEx" class="com.sundyn.service.impl.AppriesKeytypeServiceImpl"/>
     <bean id="deptServiceEx" class="com.sundyn.service.impl.AppriesDeptServiceImpl"/>
     <bean id="dictinfoService" class="com.sundyn.service.impl.SysDictinfoServiceImpl"/>
+    <bean id="sysProxyorgService" class="com.sundyn.service.impl.SysProxyorgServiceImpl"/>
+    <bean id="warnDetailService" class="com.sundyn.service.impl.WarnOntimedetailServiceImpl"/>
+    <bean id="sysLogService" class="com.sundyn.service.impl.SysLogServiceImpl"/>
+    <bean id="sysDevicesService" class="com.sundyn.service.impl.SysDevicesServiceImpl"/>
 
     <bean id="managerService" class="com.sundyn.service.ManagerService" parent="superDao"/>
 	<bean id="menuService" class="com.sundyn.service.MenuService" parent="superDao"/>

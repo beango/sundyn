@@ -61,11 +61,12 @@
     </div>
     <input type="hidden" id="deptId" name="deptId" value="${deptId}"/>
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label" style="width:120px;">代理人姓名：</label>
+        <label class="layui-form-label" style="width:90px;">代理人姓名：</label>
         <div class="layui-form-mid layui-word-aux">
         </div>
         <input type="text" class="scinput" id="cardname" name="cardname" value="<%=request.getParameter("cardname")==null?"":request.getParameter("cardname")%>" />
     </div>
+
     <div class="layui-inline">
         <div class="layui-input-inline">
             <div style="float:left; height:25px;background:url('<s:text
@@ -83,7 +84,7 @@
         <table width="100%" cellpadding="0" cellspacing="0" class="tablelist" id="table123">
             <tr>
                 <td rowspan="2" align="center" valign="middle"
-                    background="images/03_02_07.jpg" class="px13_1">代理人</td>
+                    background="images/03_02_07.jpg" class="px13_1">代理人 / 识别码</td>
                 <td rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg"
                     class="px13_1" sort="ticketcount">取号量<img src="../images/nor.png" /></td>
                 <td rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg"
@@ -146,7 +147,7 @@
             <c:forEach items="${list}" var="total" varStatus="status">
                 <tr>
                     <td align="center" valign="middle">
-                            ${total.cardname}
+                            ${total.cardname} / ${total.cardid}
                     </td>
                     <td align="center" valign="middle">${total.ticketcount}</td>
                     <td align="center" valign="middle">${total.servercount}</td>

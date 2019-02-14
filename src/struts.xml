@@ -11,8 +11,10 @@
   	<!--
 	<constant name="struts.custom.i18n.resources" value="set"></constant>
 	 -->
+
 	<constant name= "struts.multipart.maxSize" value="104857600" />
 	<!-- 管理员控制器-->
+    <include file="system.xml"></include>
 	<include file="manager.xml"></include>
 	<include file="duibi.xml"></include>
 	<!-- 快速查询控制器-->

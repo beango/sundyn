@@ -73,11 +73,11 @@
 <input type="hidden" id="deptId" value="${deptId}"/>
 <div class="layui-form" lay-filter="f">
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label" style="width:100px;">代理人号码：</label>
+        <label class="layui-form-label" style="width:100px;">身份识别号码：</label>
         <div class="layui-form-mid layui-word-aux">
         </div>
         <div class="layui-input-inline">
-            <input id="idcard" class="scinput" type="text" value="<%=request.getParameter("idcard")==null?"":request.getParameter("idcard")%>" style="width:120px;" />
+            <input id="idcard" class="scinput" type="text" value="<%=request.getParameter("idcard")==null?"":request.getParameter("idcard")%>" style="width:150px;" />
         </div>
     </div>
     <div class="layui-select-cus layui-inline">
@@ -103,10 +103,13 @@
                     代理人姓名
                 </th>
                 <th>
-                    代理人号码
+                    身份识别号码
                 </th>
                 <th>
-                    代理人类型
+                    所属机构
+                </th>
+                <th>
+                    号码类型
                 </th>
                 <th></th>
             </tr>
@@ -124,6 +127,9 @@
                         </td>
                         <td>
                                 ${data.idcard}
+                        </td>
+                        <td>
+                                ${data.orgcode}
                         </td>
                         <td>
                                 ${data.idtype}

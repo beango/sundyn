@@ -71,11 +71,12 @@
     <div class="layui-tab layui-tab-brief">
         <ul class="layui-tab-title">
             <li class="layui-this">参数配置</li>
+            <li>接口地址</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
                 <form class="layui-form" action="dictSave.action" method="post">
-                        <c:forEach items="${dictinfos}" var="dictinfo">
+                        <c:forEach items="${dictinfos_config}" var="dictinfo">
                     <div class="layui-form-item">
                         <label class="layui-form-label" style="width:120px;">${dictinfo.dictname}：</label>
                         <c:if test="${dictinfo.dictkey=='unkeydef'}">
@@ -95,6 +96,17 @@
                         </c:forEach>
                 </form>
             </div>
+            <div class="layui-tab-item">
+                <c:forEach items="${dictinfos_inte}" var="dictinfo">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:120px;">${dictinfo.dictname}：</label>
+                        <div class="layui-input-inline">
+                            <input isdict="true" dictid="${dictinfo.id}" type="input" name="${dictinfo.dictkey}" value="${dictinfo.dictvalue}" class="scinput" style="width:300px;">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">${dictinfo.note}</div>
+                    </div>
+                </c:forEach>
+            </div>
         </div>
     </div>
 
@@ -110,7 +122,6 @@
 <script>
     var employeeInfoSetArr = new Array();
     layui.use(['form', 'element'], function () {
-        var form = layui.form;
     });
 
     function save(){
@@ -131,7 +142,6 @@
                 }
             }
         }
-
         dojo.xhrPost({url:"dictSave.action",content:{postdata:JSON.stringify(postdata)},load:function (resp, ioArgs){
                 layer.msg("保存成功", {
                     icon: 1,

@@ -22,7 +22,6 @@ public class ManagerService extends SuperDao
         final Object[] arg = { userName };
         try {
             Map m = this.getJdbcTemplate().queryForMap(sql, arg);
-            System.out.println(m==null);
             if (m == null || m.size()==0){
                 if (rst!=null && rst.length==1)
                     rst[0] = "账号不存在";
@@ -38,7 +37,8 @@ public class ManagerService extends SuperDao
             return m;
         }
         catch (Exception e) {
-            rst[0] = "账号不存在";
+            e.printStackTrace();
+            rst[0] = "系统错误";
             return null;
         }
     }
@@ -61,7 +61,7 @@ public class ManagerService extends SuperDao
     }
 
     public Map findManageById(final Integer id) {
-        final String sql = "select id,name,password,realname,userGroupId,remark,ext1,ext2,deptid from appries_manager where id=" + id;
+        final String sql = "select id,name,password,realname,userGroupId,remark,ext1,ext2,deptid,localuser from appries_manager where id=" + id;
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }
@@ -82,8 +82,8 @@ public class ManagerService extends SuperDao
     }
 
     public boolean AddManager(final ManagerVo form) throws SQLException {
-        final String sql = "insert into appries_manager (name,realname,password,skinid,userGroupId,remark,ext1,ext2,deptid) values(?,?,?,?,?,?,?,?,?)";
-        final Object[] arg = { form.getName(), form.getRealname(), form.getPassword(), form.getSkinid(), form.getUserGroupId(), form.getRemark(), form.getExt1(), form.getExt2(), form.getDeptid() };
+        final String sql = "insert into appries_manager (name,realname,password,skinid,userGroupId,remark,ext1,ext2,deptid,localuser) values(?,?,?,?,?,?,?,?,?,?)";
+        final Object[] arg = { form.getName(), form.getRealname(), form.getPassword(), form.getSkinid(), form.getUserGroupId(), form.getRemark(), form.getExt1(), form.getExt2(), form.getDeptid(), form.getLocaluser() };
         try {
             return this.getJdbcTemplate().update(sql, arg) > 0;
         }
@@ -93,8 +93,8 @@ public class ManagerService extends SuperDao
     }
 
     public boolean UpdateManage(final ManagerVo form) throws SQLException {
-        final String sql = "update appries_manager set  name=?,realname=?,skinid=?,userGroupId=?,remark=?,deptid=?,ext1=?,ext2=? where id =?";
-        final Object[] arg = { form.getName(), form.getRealname(), form.getSkinid(), form.getUserGroupId(), form.getRemark(), form.getDeptid(), form.getExt1(), form.getExt2(), form.getId() };
+        final String sql = "update appries_manager set  name=?,realname=?,skinid=?,userGroupId=?,remark=?,deptid=?,ext1=?,ext2=?,localuser=? where id =?";
+        final Object[] arg = { form.getName(), form.getRealname(), form.getSkinid(), form.getUserGroupId(), form.getRemark(), form.getDeptid(), form.getExt1(), form.getExt2(), form.getLocaluser(), form.getId() };
         try {
             final int num = this.getJdbcTemplate().update(sql, arg);
             return num > 0;
@@ -158,6 +158,16 @@ public class ManagerService extends SuperDao
         final String sql = "select * from appries_manager ";
         try {
             return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Map findByName(final String name) {
+        final String sql = "select top 1 * from appries_manager where name ='" + name + "'";
+        try {
+            return this.getJdbcTemplate().queryForMap(sql);
         }
         catch (Exception e) {
             return null;

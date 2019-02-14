@@ -695,7 +695,7 @@ public class QueryService extends SuperDao
     当前人流量-当天业务总量，人流量（取号且未办结）
      */
     public List getQueueDeptAnysle(String deptid) {
-        String sql = "select deptid,deptname,servicedate,SUM(totalservicetime)/NULLIF(SUM(servicecount), 0) totalservicetime," +
+        String sql = "select deptid c1,servicedate,SUM(totalservicetime)/NULLIF(SUM(servicecount), 0) totalservicetime," +
                 "SUM(totalservicetime) totalservicetime2,SUM(totalwaittime)/nullif(SUM(servicecount),0) totalwaittime,SUM(totalwaittime) totalwaittime2," +
                 "ISNULL(SUM(totalpausetime), 0) totalpausetime,sum(servicecount) servicecount,sum(ticketcount) ticketcount,SUM(totalkeybmy) totalkeybmy,SUM(totalwait) totalwait " +
                 "from rpt_deptdata t1 where DateDiff(dd,servicedate,getdate())=0 ";
@@ -704,6 +704,7 @@ public class QueryService extends SuperDao
         }
          sql += " group by deptid,deptname,servicedate";
         try {
+            sql = "select t1.id deptid,t1.name deptname,t2.* from appries_dept t1 left join ("+sql+") t2 on t1.id=t2.c1 where t1.deptType=1";
             logger.debug(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }

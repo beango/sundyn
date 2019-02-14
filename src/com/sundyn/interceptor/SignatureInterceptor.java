@@ -61,7 +61,7 @@ public class SignatureInterceptor extends AbstractInterceptor {
                     if(name.equals("sign")){
                         sign = value;
                     }else{
-                        signParam.put(name,value);
+                        signParam.put(name, value);
                     }
                 }
             }
@@ -71,11 +71,11 @@ public class SignatureInterceptor extends AbstractInterceptor {
             String password = signParam.getString("password");
 
             if(tt == null || "".equals(tt) || password == null || "".equals(password)){
-                LOG.warn("签名字段不存在，验证不通过");
-                logService.updateForSet("status=-1, [note]='签名字段不存在，验证不通过'", new EntityWrapper<InteLog>().where("id={0}", logid));
+                LOG.warn("签名参数不存在，验证不通过");
+                logService.updateForSet("status=-1, [note]='签名参数不存在，验证不通过'", new EntityWrapper<InteLog>().where("id={0}", logid));
                 JSONObject j = new JSONObject();
                 j.put("succ", false);
-                j.put("msg", "签名字段不存在，验证不通过");
+                j.put("msg", "签名参数不存在，验证不通过");
                 this.returnJson(response, j.toString());
                 return Action.ERROR;
             }
@@ -93,6 +93,7 @@ public class SignatureInterceptor extends AbstractInterceptor {
             }
             logService.updateForSet("status=1, [note]='签名正确，验证通过'", new EntityWrapper<InteLog>().where("id={0}", logid));
             request.setAttribute("id", logid);
+            request.setAttribute("data", sb.toString());
             return invocation.invoke();
         }
         catch (Exception e){

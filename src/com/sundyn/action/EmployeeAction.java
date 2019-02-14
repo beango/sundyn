@@ -213,6 +213,7 @@ public class EmployeeAction extends MainAction
         employeeVo.setShowWindowName(showWindowName);
         employeeVo.setCompanyName(unitName);
         employeeVo.setPassWord("49BA59ABBE56E057");
+        employeeVo.setPassWord2("123456");
         employeeVo.setRemark(remark);
         if (imgName != null && !imgName.equals("")) {
             final MD5toPic md5 = new MD5toPic();

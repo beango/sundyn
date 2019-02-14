@@ -47,7 +47,7 @@ public class SysDictinfo extends Model<SysDictinfo> {
      */
     private String note;
     private Boolean isenable;
-
+    private String dictgroup;
 
     public static final String ID = "id";
 
@@ -60,6 +60,8 @@ public class SysDictinfo extends Model<SysDictinfo> {
     public static final String NOTE = "note";
 
     public static final String ISENABLE = "isenable";
+
+    public static final String DICTGROUP = "dictgroup";
 
     @Override
     protected Serializable pkVal() {
