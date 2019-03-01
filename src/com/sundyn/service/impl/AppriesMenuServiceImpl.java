@@ -2,12 +2,13 @@ package com.sundyn.service.impl;
 
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.sundyn.entity.AppriesMenu;
-import com.sundyn.dao.AppriesMenuDao;
-import com.sundyn.service.IAppriesMenuService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.sundyn.dao.AppriesMenuDao;
+import com.sundyn.entity.AppriesMenu;
+import com.sundyn.service.IAppriesMenuService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,8 +21,8 @@ import java.util.Map;
  */
 @Service
 public class AppriesMenuServiceImpl extends ServiceImpl<AppriesMenuDao, AppriesMenu> implements IAppriesMenuService {
-    public AppriesMenu selectById(Integer id){
-        return baseMapper.selectById(id);
+    public HashMap selectByIdEx(Integer id){
+        return baseMapper.selectByIdEx(id);
     }
 
     @Override
@@ -29,10 +30,6 @@ public class AppriesMenuServiceImpl extends ServiceImpl<AppriesMenuDao, AppriesM
         baseMapper.updateAllFuncCode(oldFunc, newFunc);
     }
 
-    @Override
-    public AppriesMenu selectByIdEx(int id) {
-        return baseMapper.selectByIdEx(id);
-    }
 
     @Override
     public Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper) {

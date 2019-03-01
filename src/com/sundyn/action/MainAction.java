@@ -43,6 +43,7 @@ public class MainAction extends ActionSupport {
     public MyRequest req;
     private Map UserManager = null;
     protected String UserName = null;
+    protected Integer UserID = null;
     protected String UserDeptIds = null;
     protected String[] POWERS = null;
     protected String DEPTIDS = null;
@@ -81,6 +82,7 @@ public class MainAction extends ActionSupport {
             UserManager = (Map)request.getSession().getAttribute("manager");
             if(null!=UserManager){
                 UserName = (String) UserManager.get("name");
+                UserID = (int) UserManager.get("id");
                 if (UserManager.get("POWERS") != null){
                     POWERS = UserManager.get("POWERS").toString().split("\\|");
                 }

@@ -3,7 +3,7 @@ package com.sundyn.service;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
-import com.sundyn.entity.SysQueuecustomervip;
+import com.sundyn.entity.JxEmployee;
 
 import java.util.Map;
 
@@ -12,9 +12,9 @@ import java.util.Map;
  *  服务类
  * </p>
  *
- * @author oKong
- * @since 2018-09-11
+ * @author huangding
+ * @since 2019-02-26
  */
-public interface ISysQueuecustomervipService extends IService<SysQueuecustomervip> {
-    Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper);
+public interface IJxEmployeeService extends IMainService<JxEmployee> {
+
 }

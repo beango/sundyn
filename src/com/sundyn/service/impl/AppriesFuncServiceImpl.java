@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,6 +36,11 @@ public class AppriesFuncServiceImpl extends ServiceImpl<AppriesFuncDao, AppriesF
     public Page<AppriesFunc> selectListExt(Page<AppriesFunc> page) {
         page.setRecords(baseMapper.selectListExt(page));
         return page;
+    }
+
+    @Override
+    public List<Map> selectListExt(Wrapper<Map> wrapper) {
+        return baseMapper.selectListExt(wrapper);
     }
 
     public AppriesFunc selectById(Integer id){

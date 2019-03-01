@@ -1,6 +1,11 @@
 package com.sundyn.service;
 
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.IService;
 import com.sundyn.entity.WarnOntimedetail;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -10,6 +15,6 @@ import com.sundyn.entity.WarnOntimedetail;
  * @author huangding
  * @since 2019-01-18
  */
-public interface IWarnOntimedetailService extends IServiceBase<WarnOntimedetail> {
-
+public interface IWarnOntimedetailService extends IService<WarnOntimedetail> {
+    Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper);
 }

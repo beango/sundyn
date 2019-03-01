@@ -709,7 +709,7 @@ public class TotalService extends SuperDao
         if(windowId!=null && windowId!="")
             sql += "and deptId in (" + windowId + ") ";
         if(cardnum!=null && cardnum!="")
-            sql += "and eno in (" + cardnum + ") ";
+            sql += "and eno in ('" + cardnum + "') ";
         sql += " group by deptid,deptname,eno,ename";
 
         if(totalrows != null && totalrows.length==1){

@@ -5,6 +5,8 @@ import com.sundyn.entity.AppriesMenu;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.HashMap;
+
 /**
  * <p>
  *  Mapper 接口
@@ -14,10 +16,9 @@ import org.apache.ibatis.annotations.Select;
  * @since 2018-08-22
  */
 public interface AppriesMenuDao extends BaseMapper<AppriesMenu> {
-    @Select("selectById")
-    AppriesMenu selectById(Integer id);
+    @Select("selectByIdEx")
+    HashMap selectByIdEx(Integer id);
+
     @Select("updateAllFuncCode")
     void updateAllFuncCode(@Param("oldCold") String oldCold,@Param("newCold")  String newCold);
-    @Select("selectByIdEx")
-    AppriesMenu selectByIdEx(int id);
 }

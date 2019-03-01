@@ -7,4 +7,7 @@
         id, menuName, nav, parentId, iconCls, isshow, menuorder, funcCode
     </sql>
 
+    <select id="selectByIdEx" resultType="Map">
+        SELECT *,(select menuName from appries_menu t where t.id=appries_menu.parentId) parentName,(select id from appries_func t where t.funcCode=appries_menu.funcCode) funcId FROM appries_menu WHERE id=#{id}
+    </select>
 </mapper>

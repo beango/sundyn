@@ -28,7 +28,7 @@ public class UserCheckR extends AbstractInterceptor
         //ipaddr = "68.36.18.226";
         SysDictinfo enableAccessIP = dictinfoService.selectOne(new EntityWrapper<SysDictinfo>().where("isEnable=1 and dictkey='enableAccessIP'"));
         if (enableAccessIP==null){
-            System.out.println("没有找到参数");
+            logger.info("没有找到IP过滤参数");
         }
         else
         {
@@ -80,7 +80,7 @@ public class UserCheckR extends AbstractInterceptor
     }
 
     public static void main(String[] arg1){
-        boolean hasauth = new UserCheckR().checkAuthIp("192.168.0.1", "68.36.*,68.36.18.*");
+        boolean hasauth = new UserCheckR().checkAuthIp("121.32.198.243", "68.36.28.*,68.36.18.*");
         System.out.println("结果：" + hasauth);
     }
 
@@ -105,12 +105,10 @@ public class UserCheckR extends AbstractInterceptor
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
-
-        if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip)) {
+        if ("0:0:0:0:0:0:0:1".equals(ip)) { //"127.0.0.1".equals(ip) ||
             try {
                 ip= InetAddress.getLocalHost().getHostAddress();
             } catch (UnknownHostException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

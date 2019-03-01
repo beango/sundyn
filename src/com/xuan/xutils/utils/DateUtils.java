@@ -16,6 +16,18 @@ public abstract class DateUtils {
 
     private static final int[] DAY_OF_MONTH = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
+    public static Date addMonth(Date date, int dayAmount) {
+        if (date == null) {
+            return null;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, dayAmount);
+        return calendar.getTime();
+    }
+
+
     /**
      * 取得指定天数后的时间
      *
@@ -328,7 +340,6 @@ public abstract class DateUtils {
      * @return 该天的结束时间
      */
     public static Date getEndDate(Date date) {
-
         if (date == null) {
             return null;
         }
@@ -565,5 +576,23 @@ public abstract class DateUtils {
         else
             retStr = "" + i;
         return retStr;
+    }
+
+    public static Date getPreMonth(){
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DATE, cal.get(Calendar.DATE));
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        cal.add(Calendar.MONTH, -1);
+        return cal.getTime();
+    }
+
+    public static void main(String[] arg){
+        System.out.println(date2String(getPreMonth()));
+        System.out.println(date2String(getPreMonth(), "yyyy-MM-dd sss"));
     }
 }

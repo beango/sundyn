@@ -103,6 +103,8 @@
     <bean id="warnDetailService" class="com.sundyn.service.impl.WarnOntimedetailServiceImpl"/>
     <bean id="sysLogService" class="com.sundyn.service.impl.SysLogServiceImpl"/>
     <bean id="sysDevicesService" class="com.sundyn.service.impl.SysDevicesServiceImpl"/>
+    <bean id="sysJxdataService" class="com.sundyn.service.impl.SysJxdataServiceImpl"/>
+    <bean id="jxEmployeeService" class="com.sundyn.service.impl.JxEmployeeServiceImpl"/>
 
     <bean id="managerService" class="com.sundyn.service.ManagerService" parent="superDao"/>
 	<bean id="menuService" class="com.sundyn.service.MenuService" parent="superDao"/>

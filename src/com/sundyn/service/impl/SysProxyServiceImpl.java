@@ -28,7 +28,7 @@ public class SysProxyServiceImpl extends ServiceBaseImpl<SysProxyDao, SysProxy> 
         if (filterDept !=null && !"".equals(filterDept)){
             if (wrapper == null)
                 wrapper = new EntityWrapper<>();
-            wrapper = wrapper.in("deptid", filterDept.split(","));
+            //wrapper = wrapper.in("deptid", filterDept.split(","));
         }
         return page.setRecords(baseMapper.querypagemap(page, wrapper));
     }

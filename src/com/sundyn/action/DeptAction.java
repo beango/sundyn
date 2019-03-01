@@ -13,9 +13,11 @@ import com.sundyn.utils.CitysUtils;
 import com.sundyn.vo.DeptVo;
 import com.sundyn.vo.WeburlVo;
 import com.xuan.xutils.cache.CacheManager;
+import com.xuan.xutils.utils.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
+import org.jsoup.helper.StringUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -448,7 +450,7 @@ public class DeptAction extends MainAction
         JSONArray jroot = initDeptTree(","+rootDept + ",", pid, depttype);
 
         if (isOnlyLeaf){
-            hasChildren(jroot);
+            hasChildren(jroot, depttype);
         }
         if(rootDept!=null) {
             expChildren("," + rootDept + ",", jroot);
@@ -459,7 +461,8 @@ public class DeptAction extends MainAction
         return "success";
     }
 
-    private void hasChildren(JSONArray jroot) {
+    //depttype 3:员工
+    private void hasChildren(JSONArray jroot, int depttype) {
         if(jroot!=null ){
             for (int i=0; i< jroot.size(); i++){
                 JSONObject jo = (JSONObject)jroot.get(i);
@@ -467,8 +470,16 @@ public class DeptAction extends MainAction
                     JSONArray j = (JSONArray)jo.get("children");
                     if (j!=null && j.size()>0){
                         jo.put("nocheck",true);
-                        hasChildren(j);
+                        hasChildren(j, depttype);
                     }
+                    else{//非子节点，如果选择类型为员工，当前节点是部门时不可选
+                        if(depttype==3 && jo.containsKey("type") && jo.get("type").toString().equalsIgnoreCase("dept"))
+                            jo.put("nocheck",true);
+                    }
+                }
+                else{//非子节点，如果选择类型为员工，当前节点是部门时不可选
+                    if(depttype==3 && jo.containsKey("type") && jo.get("type").toString().equalsIgnoreCase("dept"))
+                        jo.put("nocheck",true);
                 }
             }
         }
@@ -527,19 +538,16 @@ public class DeptAction extends MainAction
                     continue;
                 }
             }
-            /*System.out.println(dept.get("id").toString() + "---" + rootDept.indexOf(","+dept.get("id").toString()+","));
-            if (rootDept.indexOf(","+dept.get("id").toString()+",")>-1){
-
-            }
-                continue;*/
             JSONObject jo2 = new JSONObject();
             jo2.put("id", dept.get("id"));
             jo2.put("name", dept.get("name"));
             jo2.put("parentId", dept.get("fatherId"));
+            jo2.put("type", "dept");
 
             boolean open = true;
             if(depttype == 3) { //显示员工
                 if (_deptType == 1) {//大厅
+                    String searE = req.getString("employeekey");
                     List eList = this.employeeService.findEmployeeByDeptId(Integer.valueOf(dept.get("id").toString()));
                     if(eList!=null && eList.size()>0){
                         JSONArray employeeJ = new JSONArray();
@@ -547,10 +555,18 @@ public class DeptAction extends MainAction
                             JSONObject jo3 = new JSONObject();
                             Map m = (Map)eList.get(i);
                             jo3.put("id", "e"+m.get("id"));
-                            jo3.put("name", m.get("name"));
+                            jo3.put("name", m.get("name") + "/" + m.get("cardnum"));
                             jo3.put("parentId", dept.get("id"));
                             jo3.put("open", false);
-                            employeeJ.add(jo3);
+                            jo3.put("type", "employee");
+                            jo3.put("deptid", dept.get("id"));
+                            if (StringUtils.isNotBlank(searE)){
+                                if(m.get("name").toString().contains(searE) || m.get("cardnum").toString().contains(searE)){
+                                    employeeJ.add(jo3);
+                                }
+                            }
+                            else
+                                employeeJ.add(jo3);
                         }
                         if (employeeJ.size()>0)
                             jo2.put("children", employeeJ);

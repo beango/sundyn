@@ -97,8 +97,6 @@
 		<action name="staffMobilityDetail" class="employeeAction" method="staffMobilityDetail">
 			<result name="success">/employee/staffMobilityDetail.jsp</result>
 		</action>
-
-
 	</package>
 	<package name="employeeM7" extends="struts-default">
 		<action name="employeeLogin" class="employeeAction"
@@ -247,4 +245,11 @@
 			<result name="employeeVoInfo">/query/detailzonghe.jsp</result>
 		</action>
 	</package>
+    <package name="employeejson" extends="json-default">
+        <action name="getemployeeentity" class="employeeAction" method="getemployeeentity">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+    </package>
 </struts>

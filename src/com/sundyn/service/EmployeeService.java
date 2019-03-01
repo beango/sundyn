@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -274,6 +275,63 @@ public class EmployeeService extends SuperDao
         }
     }
 
+    public Map employeeLogin(final String cardnum, final String psw, String hallno, String[] rst) {
+        final String sql = "select top 1 *," +
+                "(select t3.hallno+','+t3.hallname from FN_GetDeptAndChild(t1.deptid) t2 join sys_queuehall t3 on t2.id=t3.deptid where t3.hallno=?) hall " +
+                "from appries_employee t1 where CardNum=?";
+        try {
+            final Object[] arg = {hallno, cardnum};
+            Map m = this.getJdbcTemplate().queryForMap(sql, arg);
+            if (m == null || m.size()==0){
+                if (rst!=null && rst.length==1)
+                    rst[0] = "账号不存在";
+                return null;
+            }
+
+            String dbpwd = m.get("PassWord").toString();
+            if (!dbpwd.equalsIgnoreCase(psw)){
+                if (rst!=null && rst.length==1)
+                    rst[0] = "密码错误";
+                return null;
+            }
+
+            Object hall = m.get("hall");
+            if (com.xuan.xutils.utils.StringUtils.isNotBlank(hallno) && null == hall) {
+                rst[0] = "用户不属于该营业厅";
+                return null;
+            }
+            return m;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Map employeeUnLogin(final String cardnum, String hallno, String[] rst) {
+        final String sql = "select top 1 *," +
+                "(select t3.hallno+','+t3.hallname from FN_GetDeptAndChild(t1.deptid) t2 join sys_queuehall t3 on t2.id=t3.deptid where t3.hallno=?) hall " +
+                "from appries_employee t1 where CardNum=?";
+        try {
+            final Object[] arg = {hallno, cardnum};
+            Map m = this.getJdbcTemplate().queryForMap(sql, arg);
+            if (m == null || m.size()==0){
+                if (rst!=null && rst.length==1)
+                    rst[0] = "账号不存在";
+                return null;
+            }
+
+            Object hall = m.get("hall");
+            if (com.xuan.xutils.utils.StringUtils.isNotBlank(hallno) && null == hall) {
+                rst[0] = "用户不属于该营业厅";
+                return null;
+            }
+            return m;
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
     public Map employeeLogin2(final String name, final String psw) {
         final String sql = "select top 1 * from appries_employee where ext2='" + name + "' and PassWord='" + psw + "'";
         try {
@@ -351,8 +409,29 @@ public class EmployeeService extends SuperDao
         }
     }
 
+    public List findByKey(final String keyword) {
+        String sql = "select t1.Name,t1.CardNum,t2.Name DeptName from appries_employee t1 join appries_dept t2 on t1.deptid=t2.id " +
+                "where t1.Name like '%" + keyword + "%' or t1.CardNum like '%" + keyword + "%'";
+        try {
+            return this.getJdbcTemplate().queryForList(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
     public Map findByCardnum(final String cardNum) {
-        final String sql = "select top 1 id, Name,CardNum from appries_employee where CardNum = '" + cardNum + "'";
+        final String sql = "select top 1 id, Name,CardNum, deptid from appries_employee where CardNum = '" + cardNum + "'";
+        try {
+            return this.getJdbcTemplate().queryForMap(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Map findByCardnumAndDeptID(final String cardNum, String deptid) {
+        final String sql = "select top 1 id, Name,CardNum, deptid from appries_employee where CardNum = '" + cardNum + "' and deptid = '" + deptid + "'";
         try {
             return this.getJdbcTemplate().queryForMap(sql);
         }

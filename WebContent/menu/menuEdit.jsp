@@ -148,6 +148,7 @@
         callback: {
             onAsyncSuccess: function(){
                 var funcid = "${model.funcId}";
+                console.log("ID:" + funcid + "${model.parentName}");
                 if (funcid!=null && funcid != ""){
                     var node = zTree.getNodeByParam("id", funcid);
                     if(node){

@@ -121,7 +121,7 @@
                 method="proxyQuery">
             <result name="success">/proxy/query.jsp</result>
         </action>
-        <action name="proxyAdd" class="blackListAction"
+        <action name="nullif(sum(servicecount),0)dd" class="blackListAction"
                 method="proxyAdd">
             <result name="success">/proxy/add.jsp</result>
         </action>

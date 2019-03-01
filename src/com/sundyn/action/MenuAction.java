@@ -13,8 +13,9 @@ import org.apache.struts2.ServletActionContext;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MenuAction extends MainAction {
     @Resource
@@ -104,14 +105,14 @@ public class MenuAction extends MainAction {
         int id = req.getInt("id");
         Integer parentid = req.getInt("parentid");
         if (id!=0){ //修改
-            AppriesMenu menu = appriesMenuService.selectById(id);
+            HashMap menu = appriesMenuService.selectByIdEx(id);
             if (menu!=null){
                 request.setAttribute("model", menu);
-                request.setAttribute("funcList", appriesFuncService.selectList(new EntityWrapper<AppriesFunc>().where("","")));
+                request.setAttribute("funcList", appriesFuncService.selectListExt(new EntityWrapper<Map>().where("","")));
             }
         }
         if (parentid!=null){ //添加
-            AppriesMenu parentM = appriesMenuService.selectById(parentid);
+            HashMap parentM = appriesMenuService.selectByIdEx(parentid);
             if (parentM!=null){
                 request.setAttribute("parentModel", parentM);
             }

@@ -43,6 +43,73 @@ public class ManagerService extends SuperDao
         }
     }
 
+    public Map findManageBy(final String userName, final String pwd, final String hallno, String[] rst) throws SQLException {
+        if(userName==null || userName.equals(""))
+            return null;
+        final String sql = "select *, CONVERT(VARCHAR(32), HashBytes('MD5', CONVERT(VARCHAR(50),password)), 2) passwordmd5, " +
+                "(select t3.hallno+','+t3.hallname from FN_GetDeptAndChild(t1.deptid) t2 join sys_queuehall t3 on t2.id=t3.deptid where t3.hallno=?) hall " +
+                "from appries_manager t1 where name= ?";
+
+        final Object[] arg = { hallno, userName };
+        try {
+            Map m = this.getJdbcTemplate().queryForMap(sql, arg);
+            if (m == null || m.size()==0){
+                if (rst!=null && rst.length==1)
+                    rst[0] = "账号不存在";
+                return null;
+            }
+
+            String dbpwd = m.get("passwordmd5").toString();
+            if (!dbpwd.equalsIgnoreCase(pwd)){
+                if (rst!=null && rst.length==1)
+                    rst[0] = "密码错误";
+                return null;
+          }
+
+            Object hall = m.get("hall");
+            if (StringUtils.isNotBlank(hallno) && null == hall) {
+                rst[0] = "用户不属于该营业厅";
+                return null;
+            }
+          return m;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            rst[0] = "系统错误";
+            return null;
+        }
+    }
+
+    public Map managerUnLogin(final String userName, final String hallno, String[] rst) throws SQLException {
+        if(userName==null || userName.equals(""))
+            return null;
+        final String sql = "select *, CONVERT(VARCHAR(32), HashBytes('MD5', password), 2) passwordmd5, " +
+                "(select t3.hallno+','+t3.hallname from FN_GetDeptAndChild(t1.deptid) t2 join sys_queuehall t3 on t2.id=t3.deptid where t3.hallno=?) hall " +
+                "from appries_manager t1 where name= ?";
+
+        final Object[] arg = { hallno, userName };
+        try {
+            Map m = this.getJdbcTemplate().queryForMap(sql, arg);
+            if (m == null || m.size()==0){
+                if (rst!=null && rst.length==1)
+                    rst[0] = "账号不存在";
+                return null;
+            }
+
+            Object hall = m.get("hall");
+            if (StringUtils.isNotBlank(hallno) && null == hall) {
+                rst[0] = "用户不属于该营业厅";
+                return null;
+            }
+            return m;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            rst[0] = "系统错误";
+            return null;
+        }
+    }
+
     public boolean manageExist(final String id, final String userName) throws SQLException {
         String sql = "select count(*) from appries_manager where name= ? ";
         if (id!=null)

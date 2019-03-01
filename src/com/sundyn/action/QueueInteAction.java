@@ -10,6 +10,7 @@ import freemarker.template.utility.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.sf.ezmorph.object.DateMorpher;
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.util.JSONUtils;
@@ -45,6 +46,8 @@ public class QueueInteAction extends ActionSupport {
     private ISysQueuecounterService counterService;
     @Resource
     private EmployeeService employeeService;
+    @Resource
+    private ManagerService managerService;
     @Resource
     private DeptService deptService;
     @Resource
@@ -159,6 +162,12 @@ public class QueueInteAction extends ActionSupport {
             HashMap m = null;
 
             switch (service){
+                case "employeelogin":
+                    m = employeelogin(jo);
+                    break;
+                case "employeeunlogin":
+                    m = employeeunlogin(jo);
+                    break;
                 case "login":
                     m = login(jo);
                     break;
@@ -205,9 +214,15 @@ public class QueueInteAction extends ActionSupport {
                 logService.updateForSet("status=2,note='数据转储成功'", new EntityWrapper<InteLog>().where("id={0}", logid));
                 jsonData.put("code", "1");
                 jsonData.put("msg", errMsg);
-                if (m.containsKey("staffarray")){
-                    jsonData.put("staffarray", m.get("staffarray"));
+                Iterator iterator = m.keySet().iterator();
+                while (iterator.hasNext()) {
+                    Object key = iterator.next();
+                    if (!key.toString().equalsIgnoreCase("succ") && !key.toString().equalsIgnoreCase("msg"))
+                        jsonData.put(key.toString(), m.get(key));
                 }
+                /*if (m.containsKey("staffarray")){
+                    jsonData.put("staffarray", m.get("staffarray"));
+                }*/
             }
             else{
                 jsonData.put("code", "0");
@@ -420,6 +435,92 @@ public class QueueInteAction extends ActionSupport {
     }
 
     Map<String,Object> jsonData = new HashMap<String,Object>();
+
+    private HashMap employeelogin(JSONObject jo) {
+        HashMap m = new HashMap<String, Object>();
+        try {
+            int userrole = jo.getInt("userrole");
+            String userid = jo.getString("userid");
+            String userpwd = jo.getString("userpwd");
+            String hallNo = jo.getString("hallNo");
+            String[] loginrst = new String[1];
+            if (userrole == 1){//终端员工登录
+                final Map employee = this.employeeService.employeeLogin(userid, userpwd, hallNo, loginrst);
+                if (employee != null){
+                    m.put("succ", true);
+                    m.put("msg", "登录成功");
+                    m.put("userNo", userid);
+                    m.put("username", employee.get("name"));
+                }
+                else{
+                    m.put("succ", false);
+                    m.put("msg", "登录失败：" + loginrst[0]);
+                }
+            }
+            else{//后台管理员登录
+                final Map manager = this.managerService.findManageBy(userid, userpwd, hallNo, loginrst);
+                if (manager!=null){
+                    //this.hallService.selectOne(new EntityWrapper<SysQueuehall>().where(""));
+                    m.put("succ", true);
+                    m.put("msg", "登录成功");
+                }
+                else{
+                    m.put("succ", false);
+                    m.put("msg", "登录失败：" + loginrst[0]);
+                }
+            }
+
+            return m;
+        }
+        catch (Exception e){
+            m.put("succ", false);
+            m.put("msg",  "登录失败：系统错误");
+            e.printStackTrace();
+        }
+        return m;
+    }
+
+    //退出登录
+    private HashMap employeeunlogin(JSONObject jo) {
+        HashMap m = new HashMap<String, Object>();
+        try {
+            int userrole = jo.getInt("userrole");
+            String userid = jo.getString("userid");
+            String hallNo = jo.getString("hallNo");
+            String[] loginrst = new String[1];
+
+            if (userrole == 1){//终端员工
+                final Map employee = this.employeeService.employeeUnLogin(userid, hallNo, loginrst);
+                if (employee != null){
+                    m.put("succ", true);
+                    m.put("msg", "退出成功");
+                }
+                else{
+                    m.put("succ", false);
+                    m.put("msg", "退出失败：" + loginrst[0]);
+                }
+            }
+            else{//后台管理员
+                final Map manager = this.managerService.managerUnLogin(userid, hallNo, loginrst);
+                if (manager!=null){
+                    m.put("succ", true);
+                    m.put("msg", "退出成功");
+                }
+                else{
+                    m.put("succ", false);
+                    m.put("msg", "退出失败：" + loginrst[0]);
+                }
+            }
+
+            return m;
+        }
+        catch (Exception e){
+            m.put("succ", false);
+            m.put("msg",  "退出失败：系统错误");
+            e.printStackTrace();
+        }
+        return m;
+    }
 
     private HashMap login(JSONObject jo) {
         HashMap m = new HashMap<String, Object>();

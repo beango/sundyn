@@ -401,7 +401,6 @@ public class ManagerAction extends MainAction
             this.msg = this.getText("login.identifyingCodeError");
             return "input";
         }*/
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
         if (manager != null) {
             CookieUtils cookieUtils = new CookieUtils();
             List<AppriesManagerpower> managerPowers = managerpowerService.selectListEx(new EntityWrapper<AppriesManagerpower>().where("managerId={0}",manager.get("id").toString()));
@@ -422,7 +421,6 @@ public class ManagerAction extends MainAction
             response.addCookie(cookie);// 添加cookie到response中
             cookie = cookieUtils.addCookie2(deptService.findChildALLStr1234(null));
             response.addCookie(cookie);
-            System.out.println("登录：" + (manager == null));
             session.setAttribute("manager", (Object)manager);
             return "success";
         }

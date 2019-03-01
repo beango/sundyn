@@ -25,7 +25,7 @@ public class MysqlGenerator {
     /**
      * 输出文件的路径
      */
-    private static final String OUT_PATH = "D:\\workspace\\gencode";
+    private static final String OUT_PATH = "/work/gencode";
     /**
      * 代码生成者
      */
@@ -35,7 +35,7 @@ public class MysqlGenerator {
      * JDBC相关配置
      */
     private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private static final String URL = "jdbc:sqlserver://localhost:1433;DatabaseName=ZXProduct-20181219";
+    private static final String URL = "jdbc:sqlserver://localhost:1433;DatabaseName=CGS";
     private static final String USER_NAME = "sa";
     private static final String PASSWORD = "sa123456.";
 
@@ -90,7 +90,7 @@ public class MysqlGenerator {
                                 .setDbColumnUnderline(true)// 全局下划线命名
                                 // .setTablePrefix(new String[]{"unionpay_"})// 此处可以修改为您的表前缀
                                 .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
-                                .setInclude(new String[] {"sys_devices"}) // 需要生成的表
+                                .setInclude(new String[] {"jx_employee"}) // 需要生成的表
                                 // .setExclude(new String[]{"test"}) // 排除生成的表
                                 // 自定义实体，公共字段
                                 // .setSuperEntityColumns(new String[]{"test_id"})
@@ -120,7 +120,7 @@ public class MysqlGenerator {
                 ).setPackageInfo(
                         // 包配置
                         new PackageConfig().setModuleName(MODULE_NAME).setParent(PACKAGE_NAME)// 自定义包路径
-                                .setController("controller")// 这里是控制器包名，默认 web
+                                //.setController("controller")// 这里是控制器包名，默认 web
                                 .setXml("mapper").setMapper("dao")
 
                 ).setCfg(

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.JxEmployeeDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, deptid, deptname, eno, ename, servicedate, ypfj, fjdesc, servicetime, servicecount, deptservicetimeavg, servicetime3m, servicecount3m, serviceavgtime3m, fwpjl, fwzl, employeefwxn, deptfwxn, ykq, qzby, rcxc, ctime, cuser
+    </sql>
+
+    <select id="querypagemap" resultType="Map">
+      select jx_employee.*,dbo.FN_SecondToString(jx_employee.servicetime) servicetimename,dbo.FN_SecondToString(jx_employee.deptservicetimeavg) deptservicetimeavgname
+      from jx_employee
+      WHERE 1=1 ${ew.sqlSegment}
+    </select>
+</mapper>

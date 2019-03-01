@@ -212,12 +212,14 @@ infosoftglobal.FusionCharts.prototype = {
 		if((this.detectFlashVersion==1) && (this.installedVer.major < 6)){
 			if (this.autoInstallRedirect==1){
 				//If we can auto redirect to install the player?
-				var installationConfirm = window.confirm("You need Adobe Flash Player 6 (or above) to view the charts. It is a free and lightweight installation from Adobe.com. Please click on Ok to install the same.");
+				/*var installationConfirm = window.confirm("You need Adobe Flash Player 6 (or above) to view the charts. It is a free and lightweight installation from Adobe.com. Please click on Ok to install the same.");
 				if (installationConfirm){
 					window.location = "http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash";
 				}else{
 					return false;
-				}
+				}*/
+                var n = (typeof elementId == 'string') ? document.getElementById(elementId) : elementId;
+                n.innerHTML = "<div style='color:#e4e4e4'>Flash未安装或未启用</div>";
 			}else{
 				//Else, do not take an action. It means the developer has specified a message in the DIV (and probably a link).
 				//So, expect the developers to provide a course of way to their end users.

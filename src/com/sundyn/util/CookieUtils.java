@@ -21,12 +21,12 @@ public class CookieUtils {
     public static final String USER_COOKIE2= "user.cookie2";
     public Cookie addCookie(Map user) {
         Cookie cookie = new Cookie(USER_COOKIE, user.get("name") + "," + user.get("password") + "," + user.get("powers"));
-        cookie.setMaxAge(60 * 60 * 24 * 14);
+        cookie.setMaxAge(60 * 60 * 24);
         return cookie;
     }
     public Cookie addCookie2(String value) {
         Cookie cookie = new Cookie(USER_COOKIE2, value);
-        cookie.setMaxAge(60 * 60 * 24 * 14);
+        cookie.setMaxAge(60 * 60 * 24);
         return cookie;
     }
     // 得到cookie

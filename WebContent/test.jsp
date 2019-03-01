@@ -1,44 +1,39 @@
 <%@ page   pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-  <head>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<script type="text/javascript" src="js/dojo.js"></script>
-	<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
-		<script type="text/javascript" src="js/layer/layer.js"></script>
-	<script type="text/javascript">
-	var i=0
-			function testDll(){
-				dojo.xhrGet({url:"deptView.action",   load:function (resp, ioArgs) {
-					  var msg=document.getElementById("msg");
-					  msg.innerHTML=msg.innerHTML+(++i)+"<br/>"
-					 
-				}});
-			}
-	</script>
-  </head>
-  <body>
-      <div id="msg">
-      <a onclick="showRemark('xxx')">xxx</a>
-      </div>
-  </body>
-  <script type="text/javascript">
-  // window.setInterval("testDll()",50);
-  
-  
-			function showRemark(content){
-				
-					  layer.alert(content, {
-					    skin: 'layui-layer-lan'
-					    ,closeBtn: 0
-					    ,shift: 4 //动画类型
-					  });
-				
-				
-			}
-  </script>
+<head>
+    <title>Threads in ldcstudy.com</title>
+    <style>
+        body {font-size:8pt;}
+        ol {line-height:18px;}
+    </style>
+</head>
+<body>
+<strong>java.io.tmpdir:</strong>
+<ul>
+    <li><%=System.getProperty("java.io.tmpdir")%></li>
+</ul>
+<br/>
+<strong>Memory:</strong>
+<ol>
+    <li>freeMemory=<%=Runtime.getRuntime().freeMemory()/(1024*1024)%>M</li>
+    <li>totalMemory=<%=Runtime.getRuntime().totalMemory()/(1024*1024)%>M</li>
+    <li>maxMemory=<%=Runtime.getRuntime().maxMemory()/(1024*1024)%>M</li>
+</ol>
+<br/>
+<strong>Thread:</strong>
+<ol>
+    <%for(Thread t : list_threads()){%>
+    <li><%=t.getName()%>(<b><%=t.getState()%></b>) : <%=t.getClass().getName()%></li>
+    <%}%>
+</ol>
+<%!
+    public static java.util.List<Thread> list_threads(){
+        int tc = Thread.activeCount();
+        Thread[] ts = new Thread[tc];
+        Thread.enumerate(ts);
+        return java.util.Arrays.asList(ts);
+    }
+%>
+</body>
 </html>

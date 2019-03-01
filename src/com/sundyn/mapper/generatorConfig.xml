@@ -15,7 +15,7 @@
 
         <!-- 数据库链接URL、用户名、密码 -->
         <jdbcConnection driverClass="com.microsoft.jdbc.sqlserver.SQLServerDriver"
-                        connectionURL="jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=zxproduct"
+                        connectionURL="jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=CGS"
                         userId="sa"
                         password="sa123456.">
         </jdbcConnection>

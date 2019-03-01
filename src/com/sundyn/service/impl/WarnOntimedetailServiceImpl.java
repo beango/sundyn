@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @Service
 public class WarnOntimedetailServiceImpl extends ServiceBaseImpl<WarnOntimedetailDao, WarnOntimedetail> implements IWarnOntimedetailService {
-
+    @Override
     public Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper) {
         String filterDept = USERDATA_DEPTIDS();
         if (filterDept !=null && !"".equals(filterDept)){

@@ -237,4 +237,6 @@
     <bean id="dictAction" class="com.sundyn.action.SysDictAction" scope="prototype" ></bean>
     <bean id="sysLogAction" class="com.sundyn.action.SysLogAction" scope="prototype" ></bean>
     <bean id="sysProxyorgAction" class="com.sundyn.action.SysProxyorgAction" scope="prototype" ></bean>
+    <bean id="sysJxDataAction" class="com.sundyn.action.SysJxDataAction" scope="prototype" ></bean>
+    <bean id="jxEmployeeAction" class="com.sundyn.action.JxEmployeeAction" scope="prototype" ></bean>
 </beans>

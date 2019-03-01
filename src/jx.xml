@@ -1,0 +1,56 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="jx" extends="json-default">
+		<!-- 验证用户登录 开始-->
+        <interceptors>
+            <interceptor name="userCheckR" class="com.sundyn.util.UserCheckR"></interceptor>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
+            <interceptor name="registerCheck"
+                         class="registerCheck">
+            </interceptor>
+            <interceptor-stack name="mydefault">
+                <interceptor-ref name="operationInterceptor" />
+                <interceptor-ref name="userCheckR" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+            <result name="noauth">/noauth.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+
+        <!--  员工绩效数据管理 -->
+        <action name="jxDataQuery" class="sysJxDataAction"
+                method="jxDataQuery">
+            <result name="success">/jxdata/query.jsp</result>
+        </action>
+        <action name="jxDataAdd" class="sysJxDataAction"
+                method="jxDataAdd">
+            <result name="success">/jxdata/add.jsp</result>
+        </action>
+        <action name="jxDataPost" class="sysJxDataAction"
+                method="jxDataPost">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="jxDataDel" class="sysJxDataAction"
+                method="jxDataDel">
+            <result name="success">/msg.jsp</result>
+        </action>
+
+        <!--  员工绩效统计 -->
+        <action name="jxEmployeeQuery" class="jxEmployeeAction"
+                method="jxEmployeeQuery">
+            <result name="success">/jxdata/jxEmployeeQuery.jsp</result>
+            <result name="excel" type="stream">
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">excel</param>
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+        </action>
+    </package>
+</struts>

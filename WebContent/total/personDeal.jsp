@@ -5,6 +5,7 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <%@ page import="java.util.List,java.util.Map" %>
+<%@ page import="org.apache.commons.lang3.StringUtils" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -26,7 +27,7 @@
     <script language="javascript" type="text/javascript" src="lib/util/TableSorterV2.js"></script>
     <script language="javascript">
         $(document).ready(function () {
-            initTree("?depttype=3", '<%=request.getParameter("deptId")%>');
+            initTree("?depttype=3", '<%=StringUtils.isNotBlank(request.getParameter("deptId"))?request.getParameter("deptId"):"e" + request.getParameter("employeeId")%>');
             new TableSorter("table123", tableSortCallback, '<%=request.getParameter("sort")%>');
         });
         function tableSortCallback(sort){

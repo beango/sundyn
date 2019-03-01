@@ -1,7 +1,11 @@
 package com.sundyn.service;
 
-import com.sundyn.entity.SysDevices;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
+import com.sundyn.entity.SysDevices;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -11,6 +15,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @author huangding
  * @since 2019-01-22
  */
-public interface ISysDevicesService extends IServiceBase<SysDevices> {
+public interface ISysDevicesService extends IMainService<SysDevices> {
 
 }

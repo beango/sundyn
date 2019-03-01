@@ -19,6 +19,7 @@ function TableSorter(table, cb, querySort)
     {
         return;
     }
+
     var args = [];
     if(arguments.length > 1)
     {
@@ -42,8 +43,6 @@ TableSorter.prototype = {
                 arr1.indexOf(arr2[i]) === -1 ? arr1.push(arr2[i]) : 0;
             }
         };
-        // concat arbitrary arrays.
-        // Instead of alter supplied arrays, return a new one.
         return function(arr) {
             var result = arr.slice();
             for (var i=arguments.length-1;i>=1;i--) {
@@ -62,17 +61,6 @@ TableSorter.prototype = {
         this.SortAscCss = "SortAscCss";
         this.SortDescCss = "SortDescCss";
 
-        /*for(var x = 0; x < this.Table.rows.length; x++)
-        {
-            this.Rows.push(this.Table.rows[x]);
-        }
-        //this.Header = this.Rows[0].cells;//this.Header.concat(, this.Rows[1].cells);
-        //console.log(this.Header.length, this.Rows[1].cells.length);
-        //this.Header.concat(this.Rows[1].cells);
-        for(var x = 0; x < this.Rows[0].cells; x++)
-        {
-            this.Header.push(this.Rows[0].cells[x]);
-        }*/
         this.Header = $(this.Table).find("[sort]");
         for(var x = 0; x < (args.length ? args.length : this.Header.length); x++)
         {

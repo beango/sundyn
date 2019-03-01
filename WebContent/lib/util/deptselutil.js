@@ -6,7 +6,7 @@ var getQueryString = function(name) {
 
 //初始化
 var rMenu,zTree;
-function initTree(param, seleVal, check, onclick){
+function initTree(param, seleVal, check, _onclick, _oncheck){
     var treeDataURL = "authDeptTree.action";
     treeDataURL = treeDataURL + (param ? param : "");
     var setting = {
@@ -38,15 +38,16 @@ function initTree(param, seleVal, check, onclick){
         },
         callback: {
             onAsyncSuccess: function(){
-                if (seleVal!=null){
+                console.log("callbs:" + seleVal)
+                if (seleVal!=null && seleVal!='null'){console.log("callbs２:" + seleVal)
                     var node = zTree.getNodeByParam("id", seleVal);
                     if(node){
                         zTree.checkNode(node, true, null, null);
                     }
                 }
             },
-            onClick: onclick===undefined?onClick:onclick,
-            onCheck: onCheck
+            onClick: _onclick===undefined?onClick:_onclick,
+            onCheck: _oncheck===undefined?onCheck:_oncheck
         }
     };
     var IDMark_A = "_a";
@@ -107,19 +108,21 @@ function onCheck(e, treeId, treeNode) {
         v += nodes[i].name + ",";
     }
     if (v.length > 0 ) v = v.substring(0, v.length-1);
+
     var cityObj = $("#deptSel");
     if (cityObj==null || cityObj.length==0)
         cityObj = btnObj;
+
     if (v=="")
         v = "全部";
-    cityObj.attr("value", v);
-    if (btnVal != null){
+    cityObj.val(v);
+    if (btnVal != null && $(btnVal).length>0){
         v = "";
         for (var i=0, l=nodes.length; i<l; i++) {
             v += nodes[i].id + ",";
         }
         if (v.length > 0 ) v = v.substring(0, v.length-1);
-        btnVal.attr("value", v);
+        btnVal.val(v);
     }
     hideMenu();
 }
@@ -155,8 +158,9 @@ function showDeptTree(btnSele, _btnValue, seleVal) {
     btnObj =cityObj;
     btnVal = $(_btnValue);
     var cityOffset = cityObj.offset();
-    $("#treeContent").css({left:cityOffset.left + "px", top:cityOffset.top + cityObj.outerHeight() + "px"}).slideDown("fast");
 
+    $("#treeContent").css({left:cityOffset.left + "px", top:cityOffset.top + cityObj.outerHeight() + "px"}).slideDown("fast");
+    $("#treeContent").show()
     $("body").bind("mousedown", onBodyDown);
     if(seleVal){
         var node = zTree.getNodeByParam("id", seleVal);

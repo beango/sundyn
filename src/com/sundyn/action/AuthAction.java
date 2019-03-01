@@ -61,7 +61,7 @@ public class AuthAction extends MainAction
 
             ew=new EntityWrapper();
             ew.where("parentId = {0}", Integer.valueOf(menus.get(i).getId()));
-            List<AppriesFunc> menuChild = appriesFuncService.selectList(ew);//.selectChildList(Integer.valueOf(menus.get(i).ID));
+            List<AppriesFunc> menuChild = appriesFuncService.selectList(ew); //.selectChildList(Integer.valueOf(menus.get(i).ID));
             JSONArray ja2 = new JSONArray();
             for(int j=0; j<menuChild.size(); j++) {
                 JSONObject subjo2 = new JSONObject();

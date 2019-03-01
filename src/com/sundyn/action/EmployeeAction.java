@@ -5,6 +5,8 @@ import com.sundyn.service.*;
 import com.sundyn.util.*;
 import com.sundyn.vo.AttendanceVo;
 import com.sundyn.vo.EmployeeVo;
+import lombok.Getter;
+import lombok.Setter;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.LinkedMap;
 import org.apache.log4j.Logger;
@@ -369,9 +371,21 @@ public class EmployeeAction extends MainAction
         }
         this.list = this.employeeService.findByCardnumOrName(keyword);
         if (this.list != null) {
-            for (int i = 0; i < this.list.size(); ++i) {}
+            for (int i = 0; i < this.list.size(); ++i) {
+
+            }
         }
         return "success";
+    }
+
+    /*
+    JSON范例
+     */
+    public String getemployeeentity(){
+        String key = req.getString("key");
+        List employeeEntity = employeeService.findByKey(key);
+        jsonData.put("employee", employeeEntity);
+        return Action.SUCCESS;
     }
 
     private String getStar(final Double mrate) {
