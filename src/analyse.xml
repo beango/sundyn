@@ -156,6 +156,11 @@
                 <interceptor-ref name="defaultStack" />
             </interceptor-stack>
         </interceptors>
+        <global-results>
+            <result name="login">login.jsp</result>
+            <result name="noauth">/noauth.jsp</result>
+            <result name="register">base/register.jsp</result>
+        </global-results>
         <action name="getQueueDeptAnysleAjax" class="queueDetailAction" method="getQueueDeptAnysleAjax">
             <interceptor-ref name="params" />
             <interceptor-ref name="mydefault"></interceptor-ref>
