@@ -1,10 +1,13 @@
 package com.sundyn.util;
 
-import javax.imageio.*;
-import java.awt.image.*;
-import java.io.*;
-import java.awt.*;
 import com.sun.image.codec.jpeg.*;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class CompressPicDemo
 {

@@ -35,6 +35,5 @@ public class ConfigHelper implements Serializable {
     {
         String v = ConfigHelper.getValue("retime");
         long l = Long.parseLong(v);
-        System.out.println(l);
     }
 }

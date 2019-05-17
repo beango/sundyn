@@ -2,35 +2,25 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <!--<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
                 <value>classpath*:/config/config.properties</value>
             </list>
         </property>
-    </bean>
-	<!--<bean id="dataSource1"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName">
-			<value>org.logicalcobwebs.proxool.ProxoolDriver</value>
-		</property>
-		<property name="url">
-			<value>proxool.DbPool</value>
-		</property>
-	</bean>-->
-    <!-- dataSource -->
-    <!--<bean id="dataSource2" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${jdbc.driverClassName}" />
-        <property name="url" value="${jdbc.url}" />
-        <property name="username" value="${jdbc.username}" />
-        <property name="password" value="${jdbc.password}" />
-
-        <property name="minEvictableIdleTimeMillis" value="900000" />
-        <property name="timeBetweenEvictionRunsMillis" value="900000" />
-        <property name="maxActive" value="20" />
-        <property name="maxIdle" value="20" />
-        <property name="maxWait" value="60000" />
     </bean>-->
+
+    <bean id= "configReader" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath*:/config/config.properties</value>
+            </list>
+        </property>
+        <property name="propertiesPersister">
+            <bean class="com.sundyn.security.MyPropertiesPersist" />
+        </property>
+        <property name ="ignoreResourceNotFound" value="true"/>
+    </bean>
 
     <!-- dataSource -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -45,6 +35,15 @@
         <property name="maxIdle" value="20" />
         <property name="maxWait" value="60000" />
     </bean>
+
+    <!-- 对JDBC配置进行解密  -->
+    <!--<bean id="propertyConfigurer" class="com.sundyn.security.EncryptablePropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:config/config.properties</value>
+            </list>
+        </property>
+    </bean>-->
 
     <bean id="jdbcTemp"
 		class="org.springframework.jdbc.core.JdbcTemplate">

@@ -135,7 +135,33 @@ public class AppriesMenu extends Model<AppriesMenu> {
     private String iconCls;
     private Integer isshow;
     private Integer menuorder;
+    private Integer iscore;
+    private Integer isnotgeneral;
+    private Integer isjy;
 
+    public Integer getIscore() {
+        return iscore;
+    }
+
+    public void setIscore(Integer iscore) {
+        this.iscore = iscore;
+    }
+
+    public Integer getIsnotgeneral() {
+        return isnotgeneral;
+    }
+
+    public void setIsnotgeneral(Integer isnotgeneral) {
+        this.isnotgeneral = isnotgeneral;
+    }
+
+    public Integer getIsjy() {
+        return isjy;
+    }
+
+    public void setIsjy(Integer isjy) {
+        this.isjy = isjy;
+    }
 
     public static final String ID = "id";
 

@@ -13,10 +13,9 @@
     <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
-    <script type="text/javascript" src="lib/layui/layui.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.all.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
     <script type="text/javascript" src="js/application.js?1"></script>
     <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
@@ -174,10 +173,13 @@
                                 ${data.headtel}
                         </td>
                         <td>
-                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();hallAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();hallSerial('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i>业务配置</a>
-                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();hallCounter('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i>窗口配置</a>
+                            <c:if test="${data.checkdigited==0 || data.checkdigited==null}">
+                                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();hallAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();hallSerial('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i>业务配置</a>
+                                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();hallCounter('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i>窗口配置</a>
+                            </c:if>
                             <%--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="event.stopPropagation();hallDel('${data.id}','删除');"><i class="layui-icon layui-icon-delete"></i>删除</a>--%>
+                            <font style="color:red;">${data.checkdigited==1?"数据被篡改":""}</font>
                         </td>
                     </tr>
                 </c:forEach>

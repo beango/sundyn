@@ -11,6 +11,11 @@ import java.util.Map;
 
 public interface MainDao<T> extends BaseMapper<T> {
     @Select("querypagemap")
+    List<Map> querypagemap(@Param("ew") Wrapper<Map> wrapper);
+
+    @Select("querypagemap")
     List<Map> querypagemap(Page<Map> page, @Param("ew") Wrapper<Map> wrapper);
-//public class MainDao extends BaseMapper<T> {//<dao extends BaseMapper<T>, T> extends ServiceImpl<dao, T>
+
+    @Select("querymap")
+    List<Map> querymap(@Param("ew") Wrapper<Map> wrapper);
 }

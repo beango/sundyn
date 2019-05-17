@@ -1,5 +1,7 @@
 package com.xuan.xutils.utils;
 
+import com.sundyn.utils.NumberUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -106,7 +108,6 @@ public abstract class DateUtils {
         cal.setTime(anotherDate);
         int hourOfDay2 = cal.get(Calendar.HOUR_OF_DAY);
         int minute2 = cal.get(Calendar.MINUTE);
-
         if (hourOfDay1 > hourOfDay2) {
             return 1;
         } else if (hourOfDay1 == hourOfDay2) {
@@ -140,6 +141,40 @@ public abstract class DateUtils {
         date = cal.getTime();
 
         cal.setTime(anotherDate);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        anotherDate = cal.getTime();
+
+        return date.compareTo(anotherDate);
+    }
+
+    /**
+     * 比较两日期对象的大小, 忽略秒, 只精确到分钟.
+     *
+     * @param date        日期对象1, 如果为 <code>null</code> 会以当前时间的日期对象代替
+     * @param anotherDate 日期对象2, 如果为 <code>null</code> 会以当前时间的日期对象代替
+     * @return 如果日期对象1大于日期对象2, 则返回大于0的数; 反之返回小于0的数; 如果两日期对象相等, 则返回0.
+     */
+    public static int compareDate(Date date, Date anotherDate) {
+        if (date == null) {
+            date = new Date();
+        }
+
+        if (anotherDate == null) {
+            anotherDate = new Date();
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        date = cal.getTime();
+
+        cal.setTime(anotherDate);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         anotherDate = cal.getTime();
@@ -484,6 +519,7 @@ public abstract class DateUtils {
         return string2Date(str, "yyyy-MM-dd HH:mm:ss");
     }
 
+
     /**
      * 取得一年中的第几周。
      *
@@ -592,7 +628,57 @@ public abstract class DateUtils {
     }
 
     public static void main(String[] arg){
-        System.out.println(date2String(getPreMonth()));
-        System.out.println(date2String(getPreMonth(), "yyyy-MM-dd sss"));
+
+        String[] dictarr2 = "13:00~23:59,14:00~18:00".split(",");
+
+        if(dictarr2!=null){
+            for (String times : dictarr2) {
+                if (com.xuan.xutils.utils.StringUtils.isNotBlank(times)){
+                    String[] dictarr = times.split("~");
+                    if (dictarr!=null && dictarr.length==2){
+                        if (DateUtils.compareHourAndMinute(new Date(), DateUtils.string2Date(dictarr[0],"HH:mm"))>0
+                                && DateUtils.compareHourAndMinute(new Date(), DateUtils.string2Date(dictarr[1],"HH:mm"))<0) {
+                            String m = "在特殊时间段" + dictarr[0] + "~" + dictarr[1] + "访问系统";
+                            System.out.println(m);
+                        }
+                    }
+                }
+            }
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        try {
+            Date d = dateFormat.parse("124:812");
+            System.out.println(d.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //if (!(DateUtils.compareHourAndMinute(new Date(), DateUtils.string2Date(dictarr[0],"HH:mm"))>0
+        //        && DateUtils.compareHourAndMinute(DateUtils.string2Date(dictarr[1],"HH:mm"), new Date())<0))
+    }
+
+    public static boolean isTime(String s) {
+        String[] sarr = s.split(":");
+        if (sarr == null || sarr.length!=2)
+            return false;
+        if (!NumberUtils.isNumber(sarr[0]))
+            return false;
+        if (!NumberUtils.isNumber(sarr[1]))
+            return false;
+        Date date = new Date();
+
+        try{
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            cal.set(Calendar.MINUTE, Integer.valueOf(sarr[1]));
+            cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(sarr[0]));
+            date = cal.getTime();
+
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }

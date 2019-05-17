@@ -7,7 +7,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 		<link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
-		<title><s:text name='sundyn.title'/></title>
+		<title><s:text name='zx.title'/></title>
 		<style>
 a:link {
 	color: #464646;
@@ -124,7 +124,7 @@ td {
 } /*图片路径可以改成自己的*/ /*Date*/
 
 </style>
-<script type="text/javascript" src="js/jquery-1.4.3.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/WebCalendar.js"></script>
 <script type="text/javascript" src="js/dojo.js"></script>
 <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>

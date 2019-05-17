@@ -6,7 +6,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 		<link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
-		<title><s:text name='sundyn.title'/></title>
+		<title><s:text name='zx.title'/></title>
 		<style>
 a:link {
 	color: #464646;

@@ -6,32 +6,42 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title><s:text name='sundyn.notice.list' /></title>
-        <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
+        <link rel="stylesheet" href="css/style.css" type="text/css"/>
         <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
-
+        <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
         <script type="text/javascript" src="js/dojo.js"></script>
-        <script type="text/javascript" src="js/dialog.js"></script>
-        <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
-        <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-        <script type="text/javascript" src="lib/layer/layer.js"></script>
         <script type="text/javascript" src="lib/layui/layui.js"></script>
+        <script type="text/javascript" src="js/dialog.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+
         <script type="text/javascript" src="js/myAjax.js"></script>
         <script type="text/javascript" src="js/application.js?1"></script>
 	</head>
 	<body>
-		<div class="layui-main">
-			<div style="width:638px; height:290px;">
-				    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-color:#FFFFFF;">
-				       <tr>
-                           <td style="border-color:#FFFFFF;" align="left"><img src="<s:text name='sundyn.pic.add' />" width="55" height="25" onclick="noticToAdd('<s:text name='sundyn.notice.add' />');" class="hand"/></td>
-                       </tr>
-                    </table>
-				<table class="layui-table">
-				  <tr>
-                      <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.index' /></td>
-                      <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.notice.title' /></td>
-                      <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.operation' /></td>
-                  </tr>
+    <div class="place">
+        <span>位置：</span>
+        <ul class="placeul">
+            <c:forEach items="${navbar_menuname}" var="menu">
+                <li><a href="#">${menu.name}</a></li>
+            </c:forEach>
+        </ul>
+    </div>
+    <div class="layui-form" lay-filter="f">
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <img src="<s:text name='sundyn.pic.add' />" width="55" height="25" onclick="noticToAdd('<s:text name='sundyn.notice.add' />');" class="hand"/>
+            </div>
+        </div>
+			<div>
+                <table class="tablelist" lay-filter="tbl" id="demo">
+                    <thead>
+                      <tr>
+                          <th><s:text name='sundyn.column.index' /></th>
+                          <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.notice.title' /></td>
+                          <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.operation' /></td>
+                      </tr>
+                    </thead>
                     <c:if test="${notices==null}"><s:text name='sundyn.nodate' /> </c:if>
 				    <c:if test="${notices!=null}">
                         <c:forEach items="${notices}" var="notice" varStatus="index">
@@ -56,6 +66,7 @@
         <div id="dialog" style="width: 600px; display: none;"></div>
 	</body>
     <script type="text/javascript">
+        layui.use('layer', function() {});
         initPager(${pager.getRowsCount()}, <%=request.getParameter("currentPage")==null?1:request.getParameter("currentPage")%>,<%=request.getParameter("pageSize")==null?20:request.getParameter("pageSize")%>);
     </script>
 </html>

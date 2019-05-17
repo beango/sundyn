@@ -5,6 +5,7 @@ import com.sundyn.entity.AppriesFunc;
 import com.sundyn.service.IAppriesFuncService;
 import com.sundyn.service.IAppriesPowerfuncService;
 import com.sundyn.util.ValidateUtil;
+import com.xuan.xutils.utils.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
@@ -23,8 +24,84 @@ public class AuthAction extends MainAction
     public String authQuery() throws Exception {
         return "success";
     }
-
     public String authQueryJSON() throws Exception {
+        return authQueryJSON_2();
+    }
+
+    public String authQueryJSON_2() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final HttpServletResponse response = ServletActionContext.getResponse();
+
+        long systemid = req.getLong("systemid");
+        int pid = req.getInt("pid",0);
+        boolean isAll = req.getInt("isAll")==1;
+        boolean isCheck = req.getInt("isCheck")==1;
+        String powertype = req.getString("powertype");
+
+        EntityWrapper ew=new EntityWrapper();
+        ew.setEntity(new AppriesFunc());
+        ew.where("parentId = {0}",pid);
+        System.out.println("powertype:" + powertype);
+        if (StringUtils.isNotBlank(powertype))
+            ew.where("funcname = {0} and parentid=0", powertype);
+        ew.orderBy("orderid");
+        List<AppriesFunc> menus = appriesFuncService.selectList(ew);//(pid);
+        //put("topmenu", menus);
+
+        JSONArray ja1 = new JSONArray();
+        for(int i=0; i < menus.size(); i++) {
+            JSONObject jo2 = new JSONObject();
+            jo2.put("id",menus.get(i).getId());
+            jo2.put("name",menus.get(i).getFuncName());
+            if(menus.get(i).getParentId()!=null && !menus.get(i).getParentId().equals(0L))
+                jo2.put("iconCls", "fa fa-chevron-circle-right");
+            jo2.put("parentId", menus.get(i).getParentId());
+            jo2.put("open", true);
+            jo2.put("level", 2);
+
+            ew=new EntityWrapper();
+            ew.where("parentId = {0}", Integer.valueOf(menus.get(i).getId()));
+            List<AppriesFunc> menuChild = appriesFuncService.selectList(ew); //.selectChildList(Integer.valueOf(menus.get(i).ID));
+            JSONArray ja2 = new JSONArray();
+            for(int j=0; j<menuChild.size(); j++) {
+                JSONObject subjo2 = new JSONObject();
+                subjo2.put("id",menuChild.get(j).getId());
+                subjo2.put("name",menuChild.get(j).getFuncName());
+                if(menuChild.get(j).getParentId()!=null && !menuChild.get(j).getParentId().equals(0L))
+                    subjo2.put("iconCls", "fa fa-chevron-circle-right");
+                subjo2.put("parentId", menuChild.get(j).getParentId());
+                subjo2.put("open", true);
+                subjo2.put("level", 3);
+                if (isAll){
+                    ew=new EntityWrapper();
+                    ew.where("parentId = {0}", Integer.valueOf(menuChild.get(j).getId()));
+                    List<AppriesFunc> menuChild2 = appriesFuncService.selectList(ew);//.selectChildList(Integer.valueOf(menus.get(i).ID));
+                    JSONArray ja22 = new JSONArray();
+                    for(int k=0; k<menuChild2.size(); k++) {
+                        JSONObject subjo22 = new JSONObject();
+                        subjo22.put("id",menuChild2.get(k).getId());
+                        subjo22.put("name",menuChild2.get(k).getFuncName());
+                        if(menuChild.get(k).getParentId()!=null && !menuChild2.get(k).getParentId().equals(0L))
+                            subjo22.put("iconCls", "fa fa-chevron-circle-right");
+                        subjo22.put("parentId", menuChild2.get(k).getParentId());
+                        subjo22.put("open", true);
+                        subjo22.put("level", 4);
+                        ja22.add(subjo22);
+                    }
+                    if(ja22.size()>0)
+                        subjo2.put("children", ja22);
+                }
+                ja2.add(subjo2);
+            }
+            if(ja2.size()>0)
+                jo2.put("children", ja2);
+            ja1.add(jo2);
+        }
+        request.setAttribute("msg", ja1.toString());
+        return "success";
+    }
+
+    public String authQueryJSON_ROOT() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpServletResponse response = ServletActionContext.getResponse();
         JSONArray jo = new JSONArray();

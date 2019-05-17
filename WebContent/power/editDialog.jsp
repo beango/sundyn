@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="lib/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
@@ -21,12 +21,37 @@
 <div class="layui-form">
     <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-color: #e9f5fd;">
         <tr>
-            <td style="border-color: #e9f5fd;" width="12%" align="right">
+            <td style="border-color: #e9f5fd;" width="15%" align="right">
                 <s:text name='sundyn.role.roleName' /><s:text name="sundyn.colon" />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
                 <input type="hidden" id="id" name="id" value="${m.id}" />
                 <input name="name" id="name"   value="${m.name}" onchange="powerExist()" class="input_comm" /><span id="tip" style="font-size: 12px;color: red;"></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="border-color: #e9f5fd;" width="12%" align="right">
+                状态<s:text name="sundyn.colon" />
+            </td>
+            <td align="left" style="border-color: #e9f5fd;">
+                <input type="radio" name="status" id="status" value="1" <c:if test="${m.status!=0}">checked="checked"</c:if> />启用
+                <input type="radio" name="status" id="status" value="0" <c:if test="${m.status==0}">checked="checked"</c:if> />禁用
+            </td>
+        </tr>
+        <tr>
+            <td style="border-color: #e9f5fd;" width="12%" align="right">
+                所属类别<s:text name="sundyn.colon" />
+            </td>
+            <td align="left" style="border-color: #e9f5fd;">
+                <div class="layui-input-inline">
+                    <select style="width:150px" id="powertype" name="powertype" lay-filter="powertype">
+                        <option value="" <c:if test="${m.powertype==''}">selected="selected"</c:if>>无</option>
+                        <option value="业务办理" <c:if test="${m.powertype=='业务办理'}">selected="selected"</c:if>>业务办理</option>
+                        <option value="系统管理" <c:if test="${m.powertype=='系统管理'}">selected="selected"</c:if>>系统管理</option>
+                        <option value="安全管理" <c:if test="${m.powertype=='安全管理'}">selected="selected"</c:if>>安全管理</option>
+                        <option value="审计管理" <c:if test="${m.powertype=='审计管理'}">selected="selected"</c:if>>审计管理</option>
+                    </select>
+                </div>
             </td>
         </tr>
         <tr style="display: none;">
@@ -60,7 +85,7 @@
             </td>
         </tr>
         <tr>
-            <td>权限：</td>
+            <td style="border-color: #e9f5fd;" align="right">权限：</td>
             <td>
                 <div style="overflow:auto;height:300px;">
                     <ul id="zTreeMenuContent" class="ztree"></ul>
@@ -83,6 +108,11 @@
     //Demo
     layui.use('form', function(){
         var form = layui.form;
+        form.on('select(powertype)', function(data){
+            console.log(data.value)
+            setting.async.url = "${ctx}/authQueryJSON.action?isAll=1&isCheck=1&powertype="+data.value;
+            loadfunctree();
+        });
     });
     var curStatus = "init", curAsyncCount = 0, asyncForAll = false, goAsync = false;
     var setting = {
@@ -94,7 +124,7 @@
         async: {
             enable: true,
             autoParam: ["id=ids"],//, "name=n", "level=lv"
-            url: "${ctx}/authQueryJSON.action?isAll=1&isCheck=1",
+            url: "${ctx}/authQueryJSON.action?isAll=1&isCheck=1&powertype=" + $("#powertype").val(),
             dataFilter: filter,
             type: "post"
         },
@@ -128,10 +158,12 @@
     //初始化
     var rMenu,zTree;
     $(document).ready(function () {
-        zTree = jQuery.fn.zTree.init($("#zTreeMenuContent"), setting);
-
+        loadfunctree();
     });
 
+    function loadfunctree(){
+        zTree = jQuery.fn.zTree.init($("#zTreeMenuContent"), setting);
+    }
     //节点数据过滤
     function filter(treeId, parentNode, childNodes) {
         if (!childNodes) {

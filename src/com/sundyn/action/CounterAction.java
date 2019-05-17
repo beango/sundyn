@@ -43,12 +43,16 @@ public class CounterAction extends MainAction
             ew = ew.where("hallid={0}", key_hallid);
         if (null!=key_countername && !"".equals(key_countername))
             ew = ew.like("countername", key_countername);
+        final String deptIds = this.deptService.findChildALLStr1234(null);
+        if (null!=deptIds && !"".equals(deptIds))
+            ew = ew.in("deptid", deptIds.split(","));
         Page<SysQueuecounter> queryData = counterService.selectListEx(new Page<SysQueuecounter>(pageindex, pageSize), ew.orderBy("id desc"));
         String spath = ServletActionContext.getServletContext().getRealPath("/");
 
         request.setAttribute("hallid", key_hallid);
         request.setAttribute("queryData", queryData);
         request.setAttribute("hallList", hallService.selectList(null));
+        request.setAttribute("hallList", hallService.selectList(new EntityWrapper<SysQueuehall>().in("deptid", deptIds.split(","))));
         return "success";
     }
 
@@ -77,7 +81,9 @@ public class CounterAction extends MainAction
         }
         request.setAttribute("deptid", deptid);
         request.setAttribute("entity", entity);
-        request.setAttribute("hallList", hallService.selectList(null));
+        String deptIds = this.deptService.findChildALLStr1234(null);
+        request.setAttribute("hallList", hallService.selectList(new EntityWrapper<SysQueuehall>().in("deptid", deptIds.split(","))));
+        request.setAttribute("halldef", req.getString("halldef"));
         return "success";
     }
 
@@ -115,14 +121,14 @@ public class CounterAction extends MainAction
             boolean succ = false;
             if(entity.getId()==null || entity.getId() == 0){
                 if (counterService.selectCount(new EntityWrapper<SysQueuecounter>().where("hallid={0} and counterno={1}", entity.getHallid(), entity.getCounterno()))>0){
-                    request.setAttribute("msg", "窗口号已经存在");
+                    request.setAttribute("msg", "新增窗口号失败，窗口号已经存在");
                     return "success";
                 }
                 succ = entity.insert();
             }
             else{
                 if (counterService.selectCount(new EntityWrapper<SysQueuecounter>().where("hallid={0} and counterno={1} and id!={2}", entity.getHallid(), entity.getCounterno(), entity.getId()))>0){
-                    request.setAttribute("msg", "窗口号已经存在");
+                    request.setAttribute("msg", "修改窗口号失败，窗口号已经存在");
                     return "success";
                 }
 

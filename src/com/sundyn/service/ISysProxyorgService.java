@@ -16,5 +16,5 @@ import java.util.Map;
  * @since 2019-01-18
  */
 public interface ISysProxyorgService extends IService<SysProxyorg> {
-    Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper);
+    //Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper);
 }

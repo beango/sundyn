@@ -7,7 +7,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
-    <title><s:text name='sundyn.title'/></title>
+    <title><s:text name='zx.title'/></title>
     <script>
         //这段脚本如果你的页面里有，就可以去掉它们了
         //欢迎访问我的网站queyang.com
@@ -17,7 +17,7 @@
             return document.getElementById(objID);
         }
     </script>
-    <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="js/line.js"></script>

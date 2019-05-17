@@ -1,16 +1,18 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
+import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.*;
-import java.io.*;
-import org.apache.struts2.*;
-import javax.servlet.http.*;
-import java.text.*;
-import java.sql.*;
-import java.util.*;
-import java.util.Date;
+import com.sundyn.util.Pager;
+import com.sundyn.util.Poi;
+import com.sundyn.util.Three;
+import org.apache.struts2.ServletActionContext;
 
-import com.sundyn.util.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ThreeAction extends ActionSupport
 {
@@ -307,7 +309,7 @@ public class ThreeAction extends ActionSupport
             keys = keys.substring(0, keys.length() - 1);
         }
         final int rowsCount = this.threeService.countQuery(this.id, keys, deptIds, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", ThreeAction.pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", ThreeAction.pageSize, rowsCount, request, this);
         final List tempList = this.threeService.query(this.id, keys, deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(tempList);
         this.keys = keys;

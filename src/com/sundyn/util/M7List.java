@@ -1,19 +1,25 @@
 package com.sundyn.util;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.utils.*;
-import java.util.*;
-import org.apache.struts2.*;
-import org.springframework.web.context.support.*;
-import com.sundyn.service.*;
-import org.springframework.context.*;
+import com.opensymphony.xwork2.ActionSupport;
+import com.sundyn.service.ManagerService;
+import com.sundyn.utils.DBConnHelper;
+import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class M7List extends ActionSupport
 {
     private static M7List m7List;
     private static Map m7;
     private static Object obj;
-    
+    @Resource
+    private static JdbcTemplate jdbcTemplate;
     static {
         M7List.m7List = null;
         M7List.m7 = new HashMap();
@@ -28,8 +34,9 @@ public class M7List extends ActionSupport
     }
     
     public static M7List getInstance(final int num) {
-        if (M7List.m7List == null) {
-            DBConnHelper.emptyTable("delete from appries_onlinemac");
+        if (M7List.m7List == null && jdbcTemplate != null) {
+            String sql = "delete from appries_onlinemac";
+            jdbcTemplate.update(sql);
         }
         return M7List.m7List = new M7List();
     }

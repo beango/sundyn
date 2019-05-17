@@ -1,6 +1,7 @@
 package com.sundyn.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -211,6 +212,27 @@ public class SysQueuehall extends Model<SysQueuehall> {
     private Date versiontime;
     private Date getverionlasttime;
     private String workversion;
+    private String checkdigit;
+    private Integer checkdigited;
+
+    public String getNcheckdigit() {
+        return ncheckdigit;
+    }
+
+    public void setNcheckdigit(String ncheckdigit) {
+        this.ncheckdigit = ncheckdigit;
+    }
+
+    @TableField(exist = false)
+    private String ncheckdigit;
+
+    public String getCheckdigit() {
+        return checkdigit;
+    }
+
+    public void setCheckdigit(String checkdigit) {
+        this.checkdigit = checkdigit;
+    }
 
     public Integer getEval6warnvalue() {
         return eval6warnvalue;

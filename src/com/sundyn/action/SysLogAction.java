@@ -3,7 +3,6 @@ package com.sundyn.action;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.sundyn.entity.SysLog;
 import com.sundyn.service.ISysDevicesService;
 import com.sundyn.service.ISysLogService;
 
@@ -22,7 +21,7 @@ public class SysLogAction extends MainAction {
         try {
             String managername = req.getString("managername");
 
-            Wrapper<Map> ew =new EntityWrapper<Map>().where("actionname!='' ");
+            Wrapper<Map> ew =new EntityWrapper<Map>();//.where("actionname!='' ");
 
             if (null!=managername && !"".equals(managername))
                 ew = ew.where("realname like '%"+managername+"%'");

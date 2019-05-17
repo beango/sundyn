@@ -38,8 +38,7 @@ function initTree(param, seleVal, check, _onclick, _oncheck){
         },
         callback: {
             onAsyncSuccess: function(){
-                console.log("callbs:" + seleVal)
-                if (seleVal!=null && seleVal!='null'){console.log("callbs２:" + seleVal)
+                if (seleVal!=null && seleVal!='null'){
                     var node = zTree.getNodeByParam("id", seleVal);
                     if(node){
                         zTree.checkNode(node, true, null, null);
@@ -52,14 +51,6 @@ function initTree(param, seleVal, check, _onclick, _oncheck){
     };
     var IDMark_A = "_a";
     function addDiyDom(treeId, treeNode) {
-        return;
-        var aObj = $("#" + treeNode.tId + IDMark_A);
-        if (treeNode.id[0] == 'e') {
-            var editStr = "<input type='checkbox' class='checkboxBtn' id='checkbox_" +treeNode.id+ "' onfocus='this.blur();'></input>";
-            aObj.before(editStr);
-            var btn = $("#checkbox_"+treeNode.id);
-            if (btn) btn.bind("change", function() {checkAccessories(treeNode, btn);});
-        }
     }
 
     var treeDept = $("#treeDept");

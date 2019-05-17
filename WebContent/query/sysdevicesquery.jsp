@@ -15,10 +15,9 @@
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
-    <script type="text/javascript" src="lib/layui/layui.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.all.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
     <script type="text/javascript" src="js/application.js?1"></script>
     <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>

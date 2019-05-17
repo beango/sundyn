@@ -7,7 +7,26 @@ public class PowerVo
     private Integer baseSet;
     private Integer dataManage;
     private Integer deptIdGroup;
-    
+    private String powertype;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    private Integer status;
+
+    public String getPowertype() {
+        return powertype;
+    }
+
+    public void setPowertype(String powertype) {
+        this.powertype = powertype;
+    }
+
     public String getName() {
         return this.name;
     }

@@ -1,18 +1,24 @@
 package com.sundyn.Realm;
 
-import org.apache.commons.lang3.StringUtils;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.sundyn.entity.AppriesManagerpower;
+import com.sundyn.entity.AppriesPowerfunc;
+import com.sundyn.service.IAppriesManagerpowerService;
+import com.sundyn.service.IAppriesMenuService;
+import com.sundyn.service.IAppriesPowerfuncService;
+import com.sundyn.service.ManagerService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ByteSource;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Resource;
+import java.util.*;
 
 
 /**
@@ -24,7 +30,14 @@ import java.util.List;
  */
 
 public class MyRealm extends AuthorizingRealm {
-
+    @Resource
+    private ManagerService managerService;
+    @Resource
+    private IAppriesMenuService appriesMenuService;
+    @Resource
+    private IAppriesManagerpowerService managerpowerService;
+    @Resource
+    private IAppriesPowerfuncService appriesPowerFuncService;
     /**
      * 为当前登录的Subject授予角色和权限
      *
@@ -35,11 +48,14 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     public AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        //获取当前登录的用户名,等价于(String)principals.fromRealm(this.getName()).iterator().next()
-        System.out.println("授权验证");
+        System.out.println("进入角色授权");
+        Subject currentUser = SecurityUtils.getSubject();
+        Session session = currentUser.getSession();
+        Map manager = (Map)session.getAttribute("manager");
+        System.out.println("当前用户" + manager.get("name"));
+
         String currentUsername = (String) super.getAvailablePrincipal(principals);
         List<String> roleList = new ArrayList<String>();
-        List<String> permissionList = new ArrayList<String>();
         //从数据库中获取当前登录用户的详细信息
         //DsCommonUserService userService = (DsCommonUserService) dswork.spring.BeanFactory.getBean("dsCommonUserService");
 
@@ -51,33 +67,29 @@ public class MyRealm extends AuthorizingRealm {
         //为当前用户设置角色和权限
         SimpleAuthorizationInfo simpleAuthorInfo = new SimpleAuthorizationInfo();
         simpleAuthorInfo.addRoles(roleList);
-        simpleAuthorInfo.addStringPermissions(permissionList);
-        for (String s : permissionList) {
-            System.out.println("perc:" + s);
+
+
+        List<AppriesManagerpower> managerPowers = managerpowerService.selectListEx(new EntityWrapper<AppriesManagerpower>()
+                .where("managerId={0}",manager.get("id").toString()));
+        ArrayList cookieMapPowerArr = new ArrayList();
+        if (null!=managerPowers && managerPowers.size()>0){
+            for (AppriesManagerpower powr : managerPowers){
+                cookieMapPowerArr.add(powr.getPowerName());
+            }
         }
+        Set<String> permissions = new HashSet<>();
+        List<AppriesPowerfunc> managerAllFuncs = appriesPowerFuncService.selectListEx(new EntityWrapper<AppriesPowerfunc>().in("powerName", cookieMapPowerArr.toArray()));
+        for (AppriesPowerfunc f : managerAllFuncs){
+            permissions.add(f.getFuncCode());
+        }
+        permissions.add("home");
+        permissions.add("managerChangePsw");
+        simpleAuthorInfo.addStringPermissions(permissions);
         return simpleAuthorInfo;
     }
 
     @Override
-    protected void assertCredentialsMatch(AuthenticationToken authcToken,
-                                          AuthenticationInfo info) throws AuthenticationException {
-        return;
-    }
-
-    public AuthenticationInfo doGetAuthenticationInfo2(AuthenticationToken token) {
-        /*System.out.println("doGetAuthorizationInfo2" + (token == null));
-        System.out.println("验证当前Subject时获取到token为" + ReflectionToStringBuilder.toString(token, ToStringStyle.MULTI_LINE_STYLE));
-		AuthenticationInfo authc = super.doGetAuthenticationInfo(token);
-
-		String account = (String) authc.getPrincipals().getPrimaryPrincipal();
-		System.out.println("doGetAuthorizationInfo2: " + account);
-		DsCommonUserService userService = (DsCommonUserService) dswork.spring.BeanFactory.getBean("dsCommonUserService");
-		DsCommonUser user = userService.getByAccount(account);
-
-		SecurityUtils.getSubject().getSession().setAttribute("user", user);
-
-		return authc;*/
-        return null;
+    protected void assertCredentialsMatch(AuthenticationToken authcToken, AuthenticationInfo info) throws AuthenticationException {
     }
 
     /**
@@ -87,24 +99,13 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     public AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
-        System.out.println("登录验证");
-        //获取基于用户名和密码的令牌
-        //实际上这个authcToken是从LoginController里面currentUser.login(token)传过来的
-        //两个token的引用都是一样的,本例中是org.apache.shiro.authc.UsernamePasswordToken@33799a1e
-        UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-        //DsCommonUserService userService = (DsCommonUserService) dswork.spring.BeanFactory.getBean("dsCommonUserService");
-        //DsCommonUser user = userService.getByAccount(token.getUsername());
-        /*if (null != user) {
-            //使用netid作为realmName
-            AuthenticationInfo authcInfo = new SimpleAuthenticationInfo(user.getAccount(), user.getPassword(), user.getNetid());
-            this.setSession("currentUser", user);
-            System.out.println("doGetAuthorizationInfo2---not null");
-            return authcInfo;
-        } else {
-            System.out.println("doGetAuthorizationInfo2---null");
-            return null;
-        }*/
-        return null;
+        System.out.println("进入用户登录");
+        String username = (String) authcToken.getPrincipal();
+        Map user = managerService.findByName(username);
+        if (user == null) {
+            throw new UnknownAccountException("当前账户不存在");
+        }
+        return new SimpleAuthenticationInfo(user.get("name"), user.get("password"), ByteSource.Util.bytes("TestSalt"), super.getName());
     }
 
 
@@ -127,5 +128,10 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     public boolean supports(AuthenticationToken token) {
         return token instanceof UsernamePasswordToken;
+    }
+
+    public void clearCached() {
+        PrincipalCollection principals = SecurityUtils.getSubject().getPrincipals();
+        super.clearCache(principals);
     }
 }

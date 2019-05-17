@@ -60,8 +60,8 @@ public class PowerService extends SuperDao
     }
     
     public boolean addUserGroup(final PowerVo s) throws SQLException {
-        final String sql = "insert into appries_power (name, baseSet ,dataManage, deptidGroup) values (?,?,?,? )";
-        final Object[] arg = { s.getName(), s.getBaseSet(), s.getDataManage(), s.getDeptIdGroup() };
+        final String sql = "insert into appries_power (name, baseSet ,dataManage, deptidGroup, powertype, status) values (?,?,?,?,?,?)";
+        final Object[] arg = { s.getName(), s.getBaseSet(), s.getDataManage(), s.getDeptIdGroup(),s.getPowertype(), s.getStatus()};
         try {
             final int num = this.getJdbcTemplate().update(sql, arg);
             return num > 0;
@@ -73,14 +73,12 @@ public class PowerService extends SuperDao
     }
     
     public boolean update(final PowerVo s) {
-        final String sql = "update  appries_power set   name=?, baseSet=? ,dataManage=?, deptidGroup=? where id =?";
-        final Object[] arg = { s.getName(), s.getBaseSet(), s.getDataManage(), s.getDeptIdGroup(), s.getId() };
+        final String sql = "update  appries_power set   name=?, baseSet=? ,dataManage=?, deptidGroup=?, powertype=?, status=? where id =?";
+        final Object[] arg = { s.getName(), s.getBaseSet(), s.getDataManage(), s.getDeptIdGroup(), s.getPowertype(), s.getStatus(), s.getId() };
         try {
-            final int num = this.getJdbcTemplate().update(sql, arg);
-            return num > 0;
+            return this.getJdbcTemplate().update(sql, arg) > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -189,5 +187,12 @@ public class PowerService extends SuperDao
         catch (Exception e) {
             return false;
         }
+    }
+
+    public boolean checkIsJyAction(String powerid) {
+        String sql = "select count(*) c from appries_power t1 join appries_powerfunc t2 on t1.name =t2.powername\n" +
+                "join appries_menu t3 on t2.funccode=t3.funccode\n" +
+                "where t1.id=? and t3.isjy=1";
+        return this.getJdbcTemplate().queryForObject(sql, new Object[]{powerid}, java.lang.Integer.class)>0;
     }
 }

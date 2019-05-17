@@ -7,13 +7,15 @@
 	String path= request.getRealPath("/");
   	SundynSet set=SundynSet.getInstance(path);
 	String title=set.getM_content().get("title").toString();
+	System.out.println(set);
+
 	String logo=set.getM_content().get("logo").toString();
  	String url = set.getM_content().get("requestAddress").toString();
  	%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
-		<title><s:text name='sundyn.title'/></title>
+		<title><s:text name='zx.title'/></title>
 		<script type="text/javascript" src="js/dojo.js"></script>
 		<script type="text/javascript" src="js/dialog.js"></script>
 		<script type="text/javascript" src="js/wz_jsgraphics.js"></script>
@@ -21,7 +23,7 @@
 	</head>
 	<body>
 	<div style="width:840px;height:300px" >
-	<div  style="float:left;width: 420" >
+	<div  style="float:left;width: 420" ><s:text name="sundyn.homePage" />11111
 		<h2>调用系统方法appriesAddSp插入</h2>
 		<form  method="post" action="appriesAddSp">
 			<table style="border-color: #FFFFFF;">

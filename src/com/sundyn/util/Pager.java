@@ -1,10 +1,11 @@
 package com.sundyn.util;
 
-import com.opensymphony.xwork2.*;
-import java.util.*;
-import javax.servlet.http.*;
+import com.opensymphony.xwork2.ActionSupport;
 
-public class Pager extends ActionSupport
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+public class Pager //extends ActionSupport
 {
     private int currentPage;
     private int pageSize;
@@ -114,8 +115,8 @@ public class Pager extends ActionSupport
     public void setPageList(final List pageList) {
         this.pageList = pageList;
     }
-    
-    public Pager(final String currentpage, final int pageSize, final int rowsCount, final HttpServletRequest request) {
+
+    public Pager(final String currentpage, final int pageSize, final int rowsCount, final HttpServletRequest request, ActionSupport action) {
         try {
             this.currentPage = Integer.parseInt(request.getParameter(currentpage).toString());
         }
@@ -211,23 +212,23 @@ public class Pager extends ActionSupport
         this.pageTextEn = this.pageTextEn.concat("&nbsp;&nbsp;");
         this.pageTextEn = this.pageTextEn.concat("<a href=\"").concat(this.url).concat(String.valueOf(currentpage) + "=" + this.pages).concat("\">End page</a>");
         this.pageTextAjax = "";
-        this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:page(1)'>" + this.getText("sundyn.homePage") + "</a>");
+        this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:page(1)'>" + action.getText("sundyn.homePage") + "</a>");
         this.pageTextAjax = String.valueOf(this.pageTextAjax) + " ";
         if (this.currentPage == 1) {
-            this.pageTextAjax = this.pageTextAjax.concat(this.getText("sundyn.previousPage"));
+            this.pageTextAjax = this.pageTextAjax.concat(action.getText("sundyn.previousPage"));
         }
         else {
-            this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:page(" + this.previous + ")'>" + this.getText("sundyn.previousPage") + "</a>");
+            this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:page(" + this.previous + ")'>" + action.getText("sundyn.previousPage") + "</a>");
         }
         this.pageTextAjax = String.valueOf(this.pageTextAjax) + " ";
         if (this.currentPage == this.pages) {
-            this.pageTextAjax = this.pageTextAjax.concat(this.getText("sundyn.nextPage"));
+            this.pageTextAjax = this.pageTextAjax.concat(action.getText("sundyn.nextPage"));
         }
         else {
-            this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:page(" + this.next + ")'>" + this.getText("sundyn.nextPage") + "</a>");
+            this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:page(" + this.next + ")'>" + action.getText("sundyn.nextPage") + "</a>");
         }
         this.pageTextAjax = String.valueOf(this.pageTextAjax) + " ";
-        this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:page(" + this.pages + ")'>" + this.getText("sundyn.lastPage") + "</a>");
+        this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:page(" + this.pages + ")'>" + action.getText("sundyn.lastPage") + "</a>");
         this.pageNum = "";
         final StringBuffer sb = new StringBuffer();
         sb.append("<div class=\"pagerlist\">");
@@ -235,10 +236,10 @@ public class Pager extends ActionSupport
         sb.append(this.currentPage);
         sb.append("/");
         sb.append(this.pages);
-        sb.append(this.getText("sundyn.system.page"));
+        sb.append(action.getText("sundyn.system.page"));
         sb.append("&nbsp;&nbsp;&nbsp;");
         sb.append(this.rowsCount);
-        sb.append(this.getText("sundyn.system.records"));
+        sb.append(action.getText("sundyn.system.records"));
         sb.append("</div>");
         sb.append(" <ul>");
         sb.append("<li><a href=\"" + this.url + currentpage + "=" + "1" + "\" class=\"a\"></a></li>");
@@ -272,7 +273,7 @@ public class Pager extends ActionSupport
         this.pageTextCn = new String(sb);
     }
     
-    public Pager(final String currentpage, final int pageSize, final int rowsCount, final HttpServletRequest request, final String ajaxF) {
+    public Pager(final String currentpage, final int pageSize, final int rowsCount, final HttpServletRequest request, final String ajaxF, ActionSupport action) {
     	this.rowsCount = rowsCount;
         try {
             this.currentPage = Integer.parseInt(request.getParameter(currentpage).toString());
@@ -368,22 +369,22 @@ public class Pager extends ActionSupport
         this.pageTextEn = this.pageTextEn.concat("&nbsp;&nbsp;");
         this.pageTextEn = this.pageTextEn.concat("<a href=\"").concat(this.url).concat(String.valueOf(currentpage) + "=" + this.pages).concat("\">End page</a>");
         this.pageTextAjax = "";
-        this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:" + ajaxF + "(1)'>" + this.getText("sundyn.homePage") + "</a>");
+        this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:" + ajaxF + "(1)'>" + action.getText("sundyn.homePage") + "</a>");
         this.pageTextAjax = String.valueOf(this.pageTextAjax) + " ";
         if (this.currentPage == 1) {
-            this.pageTextAjax = this.pageTextAjax.concat(this.getText("sundyn.previousPage"));
+            this.pageTextAjax = this.pageTextAjax.concat(action.getText("sundyn.previousPage"));
         }
         else {
-            this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:" + ajaxF + "(" + this.previous + ")'>" + this.getText("sundyn.previousPage") + "</a>");
+            this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:" + ajaxF + "(" + this.previous + ")'>" + action.getText("sundyn.previousPage") + "</a>");
         }
         this.pageTextAjax = String.valueOf(this.pageTextAjax) + " ";
         if (this.currentPage == this.pages) {
-            this.pageTextAjax = this.pageTextAjax.concat(this.getText("sundyn.nextPage"));
+            this.pageTextAjax = this.pageTextAjax.concat(action.getText("sundyn.nextPage"));
         }
         else {
-            this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:" + ajaxF + "(" + this.next + ")'>" + this.getText("sundyn.nextPage") + "</a>");
+            this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:" + ajaxF + "(" + this.next + ")'>" + action.getText("sundyn.nextPage") + "</a>");
         }
         this.pageTextAjax = String.valueOf(this.pageTextAjax) + " ";
-        this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:" + ajaxF + "(" + this.pages + ")'>" + this.getText("sundyn.lastPage") + "</a>");
+        this.pageTextAjax = this.pageTextAjax.concat("<a href='javascript:" + ajaxF + "(" + this.pages + ")'>" + action.getText("sundyn.lastPage") + "</a>");
     }
 }

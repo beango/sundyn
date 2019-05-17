@@ -8,17 +8,20 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
-    <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
     <link rel="stylesheet" href="lib/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
-    <title><s:text name='sundyn.title'/></title>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <title><s:text name='zx.title'/></title>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/dtree.js"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?<%=new Date().getTime()%>"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript">
+
+
+    </script>
 </head>
 <body>
 <script type="text/javascript">
@@ -111,7 +114,6 @@
     }
     function reloadtree(){
         $('#tg').tree("reload");
-
     }
     var curStatus = "init", curAsyncCount = 0, asyncForAll = false, goAsync = false;
     var setting = {
@@ -152,16 +154,12 @@
         },
         callback: {
             onRightClick: onRightClick,
-            //beforeRemove: beforeRemove,    //节点被删除之前的事件,并且根据返回值确定是否允许删除操作
-            beforeRename: beforeRename,    //用于捕获节点编辑名称结束
 
             beforeAsync: beforeAsync,    //用于捕获异步加载之前的事件回调函数,zTree 根据返回值确定是否允许进行异步加载
             onAsyncSuccess: onAsyncSuccess,    //用于捕获异步加载出现异常错误的事件回调函数
             onAsyncError: onAsyncError,    //用于捕获异步加载正常结束的事件回调函数
 
-            beforeDrag: beforeDrag,    //用于捕获节点被拖拽之前的事件回调函数，并且根据返回值确定是否允许开启拖拽操作
             beforeDrop: beforeDrop,    //用于捕获节点拖拽操作结束之前的事件回调函数，并且根据返回值确定是否允许此拖拽操作
-            beforeDragOpen: beforeDragOpen,    //用于捕获拖拽节点移动到折叠状态的父节点后，即将自动展开该父节点之前的事件回调函数，并且根据返回值确定是否允许自动展开操作
             onDrag: onDrag,    //用于捕获节点被拖拽的事件回调函数
             onDrop: onDrop,    //用于捕获节点拖拽操作结束的事件回调函数
             onExpand: onExpand,    //用于捕获节点被展开的事件回调函数
@@ -206,60 +204,7 @@
         return node.font ? node.font : {};
     }
 
-    ////////////////////下面是处理增删改节点//////////////////
-
-    //节点被删除之前的事件,并且根据返回值确定是否允许删除操作
     function beforeRemove(treeId, treeNode) {
-
-    }
-
-    //用于捕获节点编辑名称
-    function beforeRename(treeId, treeNode, newName, isCancel) {
-        if (treeNode.id === "1") {
-            layer.msg('根目录不能编辑！', {icon: 3});
-            return true;
-        } else {
-            if (treeNode.name == newName) {
-                return true;
-            } else if (newName.length == 0) {
-                layer.msg('菜单名称不能为空！', {icon: 3});
-                treeNode.name = treeNode.name;
-                return false;
-            } else {
-
-                var cn_pattern= /[\u4e00-\u9fa5]/g;
-                var g = newName.match(cn_pattern);
-                var cn_length = newName.length;
-                if(g!=null){
-                    var cn_numbers = g.length;
-                    cn_length = cn_numbers*2+(cn_length-cn_numbers);
-                }
-
-                if(cn_length>99){
-                    layer.msg('名称不能超过99个字符(1个汉字为2个字符)', {icon: 7});
-                    return false;
-                }else{
-                    var param_data = {"album_id": treeNode.id, "album_name": newName};
-                    var reData = '';
-                    jQuery.ajax({
-                        type: "post",
-                        async: false,
-                        url: "$!webPath/xxx/xxx_ajax_update.htm",
-                        data: param_data,
-                        success: function (save_id) {
-                            reData = save_id;
-                        }
-                    });
-                    if (reData == treeNode.id) {
-                        return true;
-                    } else {
-                        layer.msg("修改<" + treeNode.name + ">菜单名称失败！", {icon: 3});
-                        return false;
-                    }
-                }
-
-            }
-        }
     }
 
     //添加菜单
@@ -270,7 +215,6 @@
             return;
         }
     };
-
 
     function dropNext(treeId, nodes, targetNode) {
         var pNode = targetNode.getParentNode();
@@ -320,21 +264,6 @@
     //className = "dark",
     //用于捕获节点被拖拽之前的事件回调函数，并且根据返回值确定是否允许开启拖拽操作
     var log, curDragNodes, autoExpandNode;
-    function beforeDrag(treeId, treeNodes) {
-        //className = (className === "dark" ? "" : "dark");
-        for (var i = 0, l = treeNodes.length; i < l; i++) {
-            if (treeNodes[i].drag === false) {
-                curDragNodes = null;
-                return false;
-            } else if (treeNodes[i].parentTId && treeNodes[i].getParentNode().childDrag === false) {
-                curDragNodes = null;
-                return false;
-            }
-        }
-        curDragNodes = treeNodes;
-        return true;
-    }
-
 
     //用于捕获节点被拖拽的事件回调函数
     function onDrag(event, treeId, treeNodes) {
@@ -398,14 +327,12 @@
     }
 
     function onAsyncSuccess(event, treeId, treeNode, msg) {
-
         curAsyncCount--;
         if (curStatus == "expand") {
             expandNodes(treeNode.children);
         } else if (curStatus == "async") {
             asyncNodes(treeNode.children);
         }
-        //console.info(curStatus);
         if (curAsyncCount <= 0) {
             if (curStatus != "init" && curStatus != "") {
                 asyncForAll = true;
@@ -455,13 +382,6 @@
         }
     }
 
-    //用于捕获拖拽节点移动到折叠状态的父节点后，即将自动展开该父节点之前的事件回调函数，并且根据返回值确定是否允许自动展开操作
-    function beforeDragOpen(treeId, treeNode) {
-        autoExpandNode = treeNode;
-        return true;
-    }
-
-
     //字体设置
     function getFont(treeId, node) {
         return node.font ? node.font : {};
@@ -470,9 +390,10 @@
     //初始化
     var rMenu,zTree;
     $(document).ready(function () {
-        zTree = jQuery.fn.zTree.init($("#zTreeMenuContent"), setting);
-        $("#callbackTrigger").bind("change", {}, setTrigger);    //拖拽节点时自动展开父节点是否触发
-        rMenu = $("#rMenu");
+        layui.use(['layer'], function() {
+            zTree = jQuery.fn.zTree.init($("#zTreeMenuContent"), setting);
+            rMenu = $("#rMenu");
+        });
     });
 
     function reset() {
@@ -509,11 +430,6 @@
                 curStatus = "";
             }
         }
-    }
-
-    function setTrigger() {
-        var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
-        zTree.setting.edit.drag.autoExpandTrigger = $("#callbackTrigger").attr("checked");
     }
 
     //鼠标右键功能

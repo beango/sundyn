@@ -9,14 +9,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>排队历史数据查询</title>
+    <title><c:forEach items="${navbar_menuname}" var="menu" varStatus="index">${menu.name}${index.index==0?"->":""}</c:forEach></title>
     <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="css/admin.css" type="text/css"/>
     <script type="text/javascript" src="js/dojo.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/json2.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/FusionCharts.js"></script>
     <style type="text/css">
         .layui-card-body{padding:3px;}

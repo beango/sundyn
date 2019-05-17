@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.sundyn.entity.AppriesFunc;
 import com.sundyn.entity.AppriesMenu;
 import com.sundyn.service.IAppriesFuncService;
+import com.sundyn.service.IAppriesManagerpowerService;
 import com.sundyn.service.IAppriesMenuService;
 import com.sundyn.service.MenuService;
+import com.sundyn.util.EhCacheHelper;
 import com.sundyn.util.ValidateUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -22,6 +24,8 @@ public class MenuAction extends MainAction {
     private IAppriesMenuService appriesMenuService;
     @Resource
     private IAppriesFuncService appriesFuncService;
+    @Resource
+    private IAppriesManagerpowerService managerpowerService;
 	private MenuService menuService;
 
 	public MenuService getMenuService() {
@@ -31,10 +35,23 @@ public class MenuAction extends MainAction {
 	public void setMenuService(MenuService menuService) {
 		this.menuService = menuService;
 	}
-	
-	public String getQuery() {
+
+	public String leftMenu(){
+	    return getQuery();
+    }
+
+    public String topMenu(){
+        return getQuery();
+    }
+
+    public String getQuery() {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        final List menuAll = this.menuService.GetAll(super.POWERS);
+        List menuAll = (List) request.getSession().getAttribute("menus");
+        if (menuAll == null){
+            menuAll = this.menuService.GetMenuByName(super.UserID);
+            request.getSession().setAttribute("menus", menuAll);
+        }
+
         final JSONArray json = JSONArray.fromObject((Object)menuAll);
         request.setAttribute("json", (Object)json);
         return "success";
@@ -130,6 +147,10 @@ public class MenuAction extends MainAction {
         String nav = req.getString("nav");
         int menuorder = req.getInt("menuorder",0);
         int parentId = req.getInt("parentId",0);
+        int isnotgeneral = req.getInt("isnotgeneral");
+        int isjy = req.getInt("isjy");
+        int iscore = req.getInt("iscore");
+
         String funccode = req.getString("funccode");
         AppriesMenu menu  = new AppriesMenu();
         String cls = "fa fa-chevron-circle-right";
@@ -157,6 +178,9 @@ public class MenuAction extends MainAction {
             menu.setParentId(parentId);
             menu.setIconCls(cls);
             menu.setIsshow(1);
+            menu.setIsnotgeneral(isnotgeneral);
+            menu.setIscore(iscore);
+            menu.setIsjy(isjy);
             if(funccode!=null && !funccode.equals("")){
                 AppriesFunc f = appriesFuncService.selectById(Integer.valueOf(funccode.replace(",", "")));
                 menu.setFuncCode(f.getFuncCode());
@@ -174,6 +198,7 @@ public class MenuAction extends MainAction {
         }else{
             boolean isAdd = appriesMenuService.insert(menu);
         }
+        appriesMenuService.getAllCache(true);
         return "success";
     }
 
@@ -189,6 +214,7 @@ public class MenuAction extends MainAction {
             boolean isdel = appriesMenuService.delete(ew);
 
             appriesMenuService.deleteById(id);
+            appriesMenuService.getAllCache(true);
         }
 
         return "success";

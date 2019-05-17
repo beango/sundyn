@@ -165,7 +165,6 @@ public class BlackListAction extends MainAction
         SysProxy entity = new SysProxy();
         try {
             BeanUtils.populate(entity, request.getParameterMap());
-            System.out.println("null:" + (entity==null) + ":" + (new org.json.JSONObject(request.getParameterMap()).toString()));
             ValidateUtil.validate(entity);
             boolean succ = false;
             System.out.println("++++" + JSONObject.fromObject(entity).toString());

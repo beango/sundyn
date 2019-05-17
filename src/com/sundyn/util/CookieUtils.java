@@ -44,8 +44,15 @@ public class CookieUtils {
                         String[] split = value.split(",");
                         String username = split[0];
                         String password = split[1];
-                        try {
-                            Map user = managerService.findManageBy(username, password,null);
+                        System.out.println("username:" + username + " -- password:" + password);
+                        String[] rst = new String[1];
+                        Map user = managerService.findManageBy(username, password,rst);
+                        if(user == null){
+                            if (rst!=null && rst.length==1)
+                                System.out.println("Cookie初始化用户登录信息失败：" + rst[0]);
+                            return false;
+                        }
+                        else {
                             List<AppriesManagerpower> managerPowers = managerPowerService.selectListEx(new EntityWrapper<AppriesManagerpower>().where("managerid={0}", user.get("id")));
                             String cookieMapPowerStr = "";
                             if (null!=managerPowers && managerPowers.size()>0){
@@ -58,16 +65,9 @@ public class CookieUtils {
                             String DEPTIDS = deptService.findChildALLStr1234(null);
                             user.put("deptids", DEPTIDS);
                             HttpSession session = request.getSession();
-                            if(user == null)
-                                return false;
-                            else {
-                                session.setAttribute("manager", user);// 添加用户到session中
-                            }
-                            return true;
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                            return false;
+                            session.setAttribute("manager", user);// 添加用户到session中
                         }
+                        return true;
                     }
                 }
             }

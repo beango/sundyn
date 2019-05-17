@@ -1,10 +1,20 @@
 package com.sundyn.util;
 
+import com.opensymphony.xwork2.ActionContext;
+import org.apache.struts2.ServletActionContext;
+import org.jdom.Content;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
-import org.jdom.output.*;
-import org.jdom.*;
-import java.io.*;
-import org.jdom.input.*;
 
 public class M7Info
 {
@@ -76,12 +86,15 @@ public class M7Info
             root.addContent((Content)m7Info);
         }
         try {
+            ActionContext ac = ActionContext.getContext();
+            ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
+            String path = sc.getRealPath("/");
             final Format format = Format.getPrettyFormat();
             format.setIndent("    ");
             format.setEncoding("gb2312");
             XMLOutputter XMLOut = new XMLOutputter(format);
             final Document doc = new Document(root);
-            OutputStream os = new FileOutputStream(String.valueOf(Path.getRootPath()) + "update" + File.separator + "m7Info.xml");
+            OutputStream os = new FileOutputStream(path + "update" + File.separator + "m7Info.xml");
             XMLOut.output(doc, os);
             os.close();
             os = null;
@@ -96,7 +109,10 @@ public class M7Info
         final List ls = new ArrayList();
         SAXBuilder sb = new SAXBuilder();
         try {
-            Document doc = sb.build(String.valueOf(Path.getRootPath()) + "update" + File.separator + "m7Info.xml");
+            ActionContext ac = ActionContext.getContext();
+            ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
+            String path = sc.getRealPath("/");
+            Document doc = sb.build(path + "update" + File.separator + "m7Info.xml");
             Element root = doc.getRootElement();
             final List e_ls = root.getChildren();
             for (int i = 0; i < e_ls.size(); ++i) {
@@ -121,7 +137,10 @@ public class M7Info
     }
     
     public static List getList(final boolean flag) {
-        final String path = String.valueOf(Path.getRootPath()) + "update" + File.separator + "m7Info.xml";
+        ActionContext ac = ActionContext.getContext();
+        ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
+        String path = sc.getRealPath("/");
+        path = path + "update" + File.separator + "m7Info.xml";
         if (flag) {
             return read();
         }

@@ -11,7 +11,7 @@
   		<script type="text/javascript" src="js/dialog.js"></script>
    	    <script type="text/javascript" src="js/json.js"></script>
 		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
- 		<title><s:text name='sundyn.title'/></title>
+ 		<title><s:text name='zx.title'/></title>
  	</head>
 	<body>
 		<div id="man_zone">

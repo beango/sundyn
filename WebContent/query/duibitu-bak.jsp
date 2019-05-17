@@ -37,7 +37,6 @@ o\:* {
 		
 		<script type="text/javascript" src="js/dojo.js"></script>
 		<script type="text/javascript" src="js/dialog.js"></script>
-		<script type="text/javascript" src="js/wz_jsgraphics.js"></script>
 		<script type="text/javascript" src="js/pie.js"></script>
 		<script type="text/javascript" src="js/Pie3D.js"></script>
 		<script type="text/javascript"

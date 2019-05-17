@@ -2,22 +2,15 @@ package com.sundyn.util;
 
 import net.sf.json.JSONArray;
 
+import javax.servlet.http.HttpServletRequest;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.PrintStream;
-import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.servlet.http.HttpServletRequest;
 
 public class MyRequest
 {
@@ -342,6 +335,19 @@ public class MyRequest
     {
         String value = this.request.getParameter(key);
         return value == null ? defaultValue : value;
+    }
+
+    public Date getDate(String key)
+    {
+        String value = this.request.getParameter(key);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = format.parse(value);
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
+        return date;
     }
 
     public String[] getStringArray(String key)

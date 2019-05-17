@@ -17,7 +17,7 @@
 		 </STYLE>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
-		<title><s:text name='sundyn.title'/></title>
+		<title><s:text name='zx.title'/></title>
 		<style type="text/css">
 table {
 	font-size: 12px;

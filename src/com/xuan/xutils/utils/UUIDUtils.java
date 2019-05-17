@@ -1,6 +1,7 @@
 package com.xuan.xutils.utils;
 
 import java.net.InetAddress;
+import java.util.UUID;
 
 /**
  * UUID 生成工具类
@@ -140,4 +141,9 @@ public class UUIDUtils {
         return uuid.generateHex();
     }
 
+    public static String getUUID(){
+        String s = UUID.randomUUID().toString();
+        //去掉“-”符号
+        return s.substring(0,8)+s.substring(9,13)+s.substring(14,18)+s.substring(19,23)+s.substring(24);
+    }
 }

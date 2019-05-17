@@ -29,6 +29,16 @@ public class SysLog extends Model<SysLog> {
     private String action;
     private Date actiontime;
     private String actionname;
+
+    public String getMoudlename() {
+        return moudlename;
+    }
+
+    public void setMoudlename(String moudlename) {
+        this.moudlename = moudlename;
+    }
+
+    private String moudlename;
     private String actionparam;
     private Integer managerid;
     private String ipaddress;

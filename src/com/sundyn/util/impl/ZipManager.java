@@ -16,7 +16,6 @@ public class ZipManager
             int readLen = 0;
             for (int i = 0; i < fileList.size(); ++i) {
                 final File f = (File) fileList.get(i);
-                System.out.println("Adding: " + f.getPath() + f.getName());
                 ze = new ZipEntry(this.getAbsFileName(baseDir, f));
                 ze.setSize(f.length());
                 ze.setTime(f.lastModified());
@@ -26,7 +25,6 @@ public class ZipManager
                     zos.write(buf, 0, readLen);
                 }
                 is.close();
-                System.out.println("done...");
             }
             zos.close();
             return;
@@ -74,7 +72,6 @@ public class ZipManager
     
     public void releaseZipToFile(final String sourceZip, final String outFileName) throws IOException {
         final ZipFile zfile = new ZipFile(sourceZip);
-        System.out.println("生成升级包文件:" + zfile.getName());
         final Enumeration zList = zfile.entries();
         ZipEntry ze = null;
         final byte[] buf = new byte[1024];
@@ -91,7 +88,6 @@ public class ZipManager
             }
             is.close();
             os.close();
-            System.out.println("Extracted: " + ze.getName());
         }
         zfile.close();
     }
@@ -139,7 +135,6 @@ public class ZipManager
             }
             ret = String.valueOf(real.getName()) + "/" + ret;
         }
-        System.out.println("--------------" + ret);
         return ret;
     }
     

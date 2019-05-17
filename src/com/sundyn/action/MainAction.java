@@ -3,7 +3,9 @@ package com.sundyn.action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.cache.Cache1;
 import com.sundyn.cache.CacheManager1;
+import com.sundyn.entity.SysDictinfo;
 import com.sundyn.service.DeptService;
+import com.sundyn.service.ISysDictinfoService;
 import com.sundyn.service.PowerService;
 import com.sundyn.util.ConfigHelper;
 import com.sundyn.util.MyRequest;
@@ -12,6 +14,7 @@ import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.multipart.MultipartException;
@@ -26,6 +29,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static com.sundyn.util.MyFile.copy;
@@ -37,6 +41,8 @@ public class MainAction extends ActionSupport {
     private DeptService deptService;
     @Resource
     private com.xuan.xutils.cache.CacheManager dCacheManager;
+    @Resource
+    private ISysDictinfoService dictinfoService;
     private PowerService powerService;
 
     protected HttpServletRequest request;
@@ -45,7 +51,7 @@ public class MainAction extends ActionSupport {
     protected String UserName = null;
     protected Integer UserID = null;
     protected String UserDeptIds = null;
-    protected String[] POWERS = null;
+    //protected String[] POWERS = null;
     protected String DEPTIDS = null;
     protected int pageSize = 20, pageindex=1;
 
@@ -84,7 +90,7 @@ public class MainAction extends ActionSupport {
                 UserName = (String) UserManager.get("name");
                 UserID = (int) UserManager.get("id");
                 if (UserManager.get("POWERS") != null){
-                    POWERS = UserManager.get("POWERS").toString().split("\\|");
+                    //POWERS = UserManager.get("POWERS").toString().split("\\|");
                 }
             }
             try{
@@ -129,16 +135,16 @@ public class MainAction extends ActionSupport {
         String[] fileTypes = null;
         if(null!=_fileType)fileTypes = _fileType.split(",");
         JSONObject jo = new JSONObject();
-        String dstPath = getServletContext().getRealPath("\\");
+        String dstPath = getServletContext().getRealPath("/");//原来为双斜杠
         // 检查form中是否有enctype="multipart/form-data"
         if (resolver.isMultipart(request)) {
             // 将request变成多部分request
             MultiPartRequestWrapper multiRequest = (MultiPartRequestWrapper) request;
             // 获取multiRequest 中所有的文件名
-            File[] iter = multiRequest.getFiles("file");
+            UploadedFile[] iter = multiRequest.getFiles("file");
             String[] nFiles = new String[iter.length],orgNames = new String[iter.length];
             for(int i=0; i<iter.length; i++) {
-                File file = iter[i];
+                UploadedFile file = iter[i];
                 String orgname = multiRequest.getFileNames("file")[i];
                 String fileExt = orgname.substring(orgname.lastIndexOf(".") + 1).toLowerCase();
                 logger.info("原始文件名:" + orgname + ",扩展名：" + fileExt);
@@ -151,9 +157,10 @@ public class MainAction extends ActionSupport {
                     return jo;
                 }
                 String nFileName = String.valueOf(System.currentTimeMillis()) + "." + fileExt;
-                String path = String.valueOf(dstPath) + dir + "/" + nFileName;
+                String path = String.valueOf(dstPath) + dir + File.separator + nFileName;
                 final File dst = new File(path);
-                copy(file, dst);
+                File f = new File(file.getAbsolutePath());
+                copy(f, dst);
                 nFiles[i] = dir + "/" + nFileName;
             }
             jo.put("rst", "success");
@@ -165,7 +172,6 @@ public class MainAction extends ActionSupport {
     }
 
     public void init(){
-        System.out.println("ACTION++++++++++++++++++++++++++++++initinit");
         ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
         powerService = (PowerService)ctx.getBean("powerService");
         deptService = (DeptService)ctx.getBean("deptService");
@@ -178,6 +184,13 @@ public class MainAction extends ActionSupport {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String execute() throws Exception {
+        System.out.println("ActionSupport.execute////////////////////////////////////////////////////////////////");
+        request.setAttribute("sysversion" , getDictInfo("sysversion"));
+        return super.execute();
     }
 
     public enum ENUM_DEPTTYPE{
@@ -217,12 +230,21 @@ public class MainAction extends ActionSupport {
     }
 
     protected void ClearCache_DEPT(){
+        deptService.findChildALLStr1234(null, true);
+
         String MANAGERKEY = "MANAGER-" + this.UserName;
         Cache cache = dCacheManager.getCache(MANAGERKEY);
         if(cache!=null){
-            //cache = this.initManagerCache();
-            System.out.println("清除缓存" + MANAGERKEY);
             cache.remove("KEY-MANAGER-DEPTIDS");
         }
+    }
+
+    public String getDictInfo(String key){
+        List<SysDictinfo> allData = dictinfoService.getAllCache();
+        for(SysDictinfo m : allData){
+            if (m.getIsenable() && m.getDictkey().equalsIgnoreCase(key))
+                return m.getDictvalue();
+        }
+        return null;
     }
 }

@@ -3,11 +3,6 @@ package com.sundyn.util;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-import org.apache.struts2.ServletActionContext;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class EhCacheHelper {
     public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
@@ -15,8 +10,36 @@ public class EhCacheHelper {
     private static boolean enableCache = false;
     private static CacheManager cacheManager = null;
 
+    public enum CacheKeyEnum {
+        ISNOTGENERAL("ISNOTGENERAL", "非常规业务"),
+        ALLMENUS("ALLMENUS", "所有菜单数据"),
+        ALLMANAGER("ALLMANAGER", "所有管理员数据"),
+        ALLDEPT("ALLDEPT", "所有部门数据"),
+        ALLDICTINFO("ALLDICTINFO", "所有字典数据");
+
+        private String name;
+        private String msg;
+        CacheKeyEnum(String name, String msg) {
+            this.name = name;
+            this.msg = msg;
+        }
+
+        public static CacheKeyEnum codeOf(String name) {
+            for (CacheKeyEnum ynEnum : CacheKeyEnum.values()) {
+                if (ynEnum.name == name) {
+                    return ynEnum;
+                }
+            }
+            return null;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+    }
+
     static{
-        logger.info("java.io.tmpdir:" + ConfigHelper.getValue("enableCache"));
+        //logger.info("java.io.tmpdir:" + ConfigHelper.getValue("enableCache"));
         enableCache =  ConfigHelper.getValue("enableCache").toLowerCase().equals("true");
         if(enableCache)
             cacheManager = CacheManager.create();
@@ -26,35 +49,48 @@ public class EhCacheHelper {
         return cacheManager;
     }*/
 
-    public static void putCache(String key, Object data){
+    public static void putCache(CacheKeyEnum key, Object data){
         if(!enableCache){
             return;
         }
-        final Cache cache = cacheManager.getCache("helloworld1");
+        final Cache cache = cacheManager.getCache("EhCacheVol1");
 
         //他建一个数据容器
-        final Element putGreeting = new Element(key, data);
+        final Element putGreeting = new Element(key.name, data);
 
         //将数据放入到缓存实例中
         cache.put(putGreeting);
-        logger.info("写入缓存:" + key);
+        logger.info("写入缓存:" + key.name);
     }
 
-    public static Object getCache(String key){
-        logger.info("java.io.tmpdir:" + System.getProperty("java.io.tmpdir")  + enableCache);
+    public static Object getCache(CacheKeyEnum key){
+        //logger.info("java.io.tmpdir:" + System.getProperty("java.io.tmpdir")  + enableCache);
         if(!enableCache){
             return null;
         }
-        final Cache cache = cacheManager.getCache("helloworld1");
-        final Element getGreeting = cache.get(key);
+        final Cache cache = cacheManager.getCache("EhCacheVol1");
+        final Element getGreeting = cache.get(key.name);
         if (getGreeting == null){
-            logger.info("读取缓存:" + key + "为空");
             return null;
         }
         else{
-            logger.info("读取缓存:" + key + "有数据了");
             return getGreeting.getObjectValue();
         }
+    }
 
+    public static Object getCacheAndPut(CacheKeyEnum key, Object data){
+        //logger.info("java.io.tmpdir:" + System.getProperty("java.io.tmpdir")  + enableCache);
+        if(!enableCache){
+            return null;
+        }
+        final Cache cache = cacheManager.getCache("EhCacheVol1");
+        final Element getGreeting = cache.get(key.name);
+        if (getGreeting == null){
+            putCache(key, data);
+            return null;
+        }
+        else{
+            return getGreeting.getObjectValue();
+        }
     }
 }

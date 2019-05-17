@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,7 @@ public class SerialAction extends MainAction
         request.setAttribute("hallid", key_hallid);
         request.setAttribute("bizname", key_bizname);
         request.setAttribute("queryData", queryData);
-        request.setAttribute("hallList", hallService.selectList(null));
+        request.setAttribute("hallList", hallService.selectList(new EntityWrapper<SysQueuehall>().in("deptid", deptIds.split(","))));
         return "success";
     }
 
@@ -68,6 +69,7 @@ public class SerialAction extends MainAction
         int deptid = req.getInt("deptid");
         int hallid = req.getInt("hallid");
         String bizid = req.getString("bizid");
+        String halldef = req.getString("halldef");
 
         SysQueueserial hall = null;
         if(id!=0)
@@ -81,7 +83,9 @@ public class SerialAction extends MainAction
         }
 
         request.setAttribute("entity", hall);
-        request.setAttribute("hallList", hallService.selectList(null));
+        String deptIds = this.deptService.findChildALLStr1234(deptid !=0 ? String.valueOf(deptid):null);
+        request.setAttribute("hallList", hallService.selectList(new EntityWrapper<SysQueuehall>().in("deptid", deptIds.split(","))));
+        request.setAttribute("halldef", halldef);
         return "success";
     }
 

@@ -9,13 +9,11 @@
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css"/>
-    <title><s:text name='sundyn.title'/></title>
-    <script type="text/javascript" src="assets/javascripts/vendor/jquery-2.1.3.min.js?1440992355"></script>
+    <title><s:text name='zx.title'/></title>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
-    <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
-    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?3"></script>
+    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/util/deptselutil.js"></script>
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
@@ -39,7 +37,7 @@
         .layui-form-radio{margin:0px !important;}
     </style>
 </head>
-<body class="layui-form">
+<body class="layui-main" style="width:100%;">
 <div class="place">
     <span>位置：</span>
     <ul class="placeul">
@@ -48,33 +46,31 @@
         </c:forEach>
     </ul>
 </div>
-<table width="100%" height="51" border="0" cellpadding="0" cellspacing="0"
-       style="border-color:#FFFFFF;">
-    <tr>
-        <td style="border-color:#FFFFFF;" align="left">
-            <div class="layui-select-cus layui-inline">
-                <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.query.selectDept'/></label>
-                <div class="layui-form-mid layui-word-aux">
-                </div>
-                <input id="deptSel" class="scinput" type="text" readonly
-                       value="<%=request.getParameter("deptname")==null?"全部":request.getParameter("deptname")%>"
-                       style="width:120px;cursor: pointer;" onclick="showDeptTree(this, null);"/>
-            </div>
-            <s:text name='sundyn.total.startDate'/>
-            <input type="text" id="startDate" class="scinput" <s:text name="sundyn.language.calendar.setDay"/>
-                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-            <s:text name='sundyn.total.endDate'/>
-            <input type="text" id="endDate" class="scinput" <s:text name="sundyn.language.calendar.setDay"/>
-                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
-            <s:text name='sundyn.analyse.by'/>
 
-            <input type="radio" name="type" checked="checked" value="day" title="<s:text name='sundyn.analyse.day'/>"/>
-            <input type="radio" name="type" value="month" title="<s:text name='sundyn.analyse.month'/>"/>
-            <input type="radio" name="type" value="year" title="<s:text name='sundyn.analyse.year'/>"/>
-            <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" style="cursor:pointer;" onclick="query()"/>
-        </td>
-    </tr>
-</table>
+<div class="layui-select-cus layui-inline">
+    <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.query.selectDept'/></label>
+    <input id="deptSel" class="scinput" type="text" readonly
+           value="<%=request.getParameter("deptname")==null?"全部":request.getParameter("deptname")%>"
+           style="width:120px;cursor: pointer;" onclick="showDeptTree(this, null);"/>
+</div>
+<div class="layui-select-cus layui-inline">
+    <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.total.startDate'/></label>
+    <input type="text" id="startDate" class="scinput" <s:text name="sundyn.language.calendar.setDay"/>
+           onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+</div>
+<div class="layui-select-cus layui-inline">
+    <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.total.endDate'/></label>
+    <input type="text" id="endDate" class="scinput" <s:text name="sundyn.language.calendar.setDay"/>
+           onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+</div>
+<div class="layui-select-cus layui-inline">
+    <label class="layui-form-label" style="width:60px;"><s:text name='sundyn.analyse.by'/></label>
+    <input type="radio" name="type" checked="checked" value="day" title="<s:text name='sundyn.analyse.day'/>" style="vertical-align:middle;" /><span style="margin-top:0px;display:inline-block;height: 24px; vertical-align: middle;margin-top:8px;"><s:text name='sundyn.analyse.day'/></span>
+    <input type="radio" name="type" value="month" title="<s:text name='sundyn.analyse.month'/>" style="vertical-align:middle;" /><span style="margin-top:0px;display:inline-block;height: 24px; vertical-align: middle;margin-top:8px;"><s:text name='sundyn.analyse.month'/></span>
+    <input type="radio" name="type" value="year" title="<s:text name='sundyn.analyse.year'/>" style="vertical-align:middle;" /><span style="margin-top:0px;display:inline-block;height: 24px; vertical-align: middle;margin-top:8px;"><s:text name='sundyn.analyse.year'/></span>
+    <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" style="cursor:pointer;" onclick="query()"/>
+</div>
+
 <div class="formbody">
     <div id="usual1" class="usual">
         <div class="itab">
@@ -122,8 +118,7 @@
     <ul id="treeDept" class="ztree" style="margin-top:0; width:380px; height: 300px;"></ul>
 </div>
 <script type="text/javascript" language="javascript">
-    layui.use('form', function () {
-        var form = layui.form;
+    layui.use('layer', function () {
     });
 
     var curTab = "";

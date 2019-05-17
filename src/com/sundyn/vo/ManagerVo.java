@@ -1,5 +1,7 @@
 package com.sundyn.vo;
 
+import java.util.Date;
+
 public class ManagerVo
 {
     private Integer id;
@@ -11,6 +13,148 @@ public class ManagerVo
     private String remark;
     private String ext1;
     private String ext2;
+    private int jyflag;
+    private String jyno;
+    private Date uexpired;
+    private Date pwdexpried;
+    private String idcard;
+    private String userid;
+    private Integer cuser;
+
+    public Integer getCuser() {
+        return cuser;
+    }
+
+    public void setCuser(Integer cuser) {
+        this.cuser = cuser;
+    }
+
+    public Date getCtime() {
+        return ctime;
+    }
+
+    public void setCtime(Date ctime) {
+        this.ctime = ctime;
+    }
+
+    private Date ctime;
+
+    public String getAccessip() {
+        return accessip;
+    }
+
+    public void setAccessip(String accessip) {
+        this.accessip = accessip;
+    }
+
+    private String accessip;
+
+    public int getNeedchangepwd() {
+        return needchangepwd;
+    }
+
+    public void setNeedchangepwd(int needchangepwd) {
+        this.needchangepwd = needchangepwd;
+    }
+
+    private int needchangepwd;
+
+    public String getAccesstime1() {
+        return accesstime1;
+    }
+
+    public void setAccesstime1(String accesstime1) {
+        this.accesstime1 = accesstime1;
+    }
+
+    public String getAccesstime2() {
+        return accesstime2;
+    }
+
+    public void setAccesstime2(String accesstime2) {
+        this.accesstime2 = accesstime2;
+    }
+
+    private String accesstime1;
+    private String accesstime2;
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public String getCheckdigit() {
+        return checkdigit;
+    }
+
+    public void setCheckdigit(String checkdigit) {
+        this.checkdigit = checkdigit;
+    }
+
+    private String checkdigit;
+    private Integer checkdigited;
+
+    public Integer getCheckdigited() {
+        return checkdigited;
+    }
+
+    public void setCheckdigited(Integer checkdigited) {
+        this.checkdigited = checkdigited;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    private int status;
+
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard;
+    }
+
+    public int getJyflag() {
+        return jyflag;
+    }
+
+    public void setJyflag(int jyflag) {
+        this.jyflag = jyflag;
+    }
+
+    public String getJyno() {
+        return jyno;
+    }
+
+    public void setJyno(String jyno) {
+        this.jyno = jyno;
+    }
+
+    public Date getUexpired() {
+        return uexpired;
+    }
+
+    public void setUexpired(Date uexpired) {
+        this.uexpired = uexpired;
+    }
+
+    public Date getPwdexpried() {
+        return pwdexpried;
+    }
+
+    public void setPwdexpried(Date pwdexpried) {
+        this.pwdexpried = pwdexpried;
+    }
+
     private int deptid;
 
     public int getLocaluser() {

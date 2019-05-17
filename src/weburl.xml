@@ -5,11 +5,12 @@
 	<package name="weburl" extends="struts-default">
 		<!-- 验证用户登录 开始-->
 		<interceptors>
-			<interceptor name="userCheckR"
-				class="com.sundyn.util.UserCheckR">
+			<interceptor name="userCheckR" class="com.sundyn.util.UserCheckR">
 			</interceptor>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
 			<interceptor-stack name="mydefault">
 				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="operationInterceptor" />
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
 		</interceptors>
@@ -41,14 +42,11 @@
 			<result name="weburlDeleteOk" type="redirect">weburlListAjax</result>
 			<result name="inputs">/weburl/weburl.jsp</result>
 		</action>
-		
 		<action name="weburlListAjax" class="weburlAction" method="weburlList">
 			<result name="weburlListOk">/weburl/weburlListTable.jsp</result>
-<!--			<result name="INPUT">/manager/weburl.jsp</result>-->
 		</action>
 		<action name="weburlList" class="weburlAction" method="weburlList">
 			<result name="weburlListOk">/weburl/weburlList.jsp</result>
-<!--			<result name="INPUT">/manager/weburl.jsp</result>-->
 		</action>
 <!--		<action name="weburlDownload" class="weburlAction" method="weburlDownload">-->
 <!--			<result name="weburlDownloadOk"  type="stream">-->

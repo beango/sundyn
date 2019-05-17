@@ -11,18 +11,24 @@
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
     <link rel="stylesheet" href="css/dialog.css" type="text/css" />
     <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
-
-    <script type="text/javascript" src="${ctx}/assets/javascripts/jquery-2.1.3.min.js" ></script>
+    <script type="text/javascript" src="js/jquery.js" ></script>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script src="${ctx}/js/application.js"></script>
 </head>
-<body>
-<div class="layui-main">
+<body style="width:100%;">
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <c:forEach items="${navbar_menuname}" var="menu">
+            <li><a href="#">${menu.name}</a></li>
+        </c:forEach>
+        <c:if test="${deptObj!=null}"><li>${deptObj["name"]}</li></c:if>
+    </ul>
+</div>
+<div class="layui-form">
     <div class="layui-inline">
         <div class="layui-input-inline">
             <input type="text" name="txtTitle" id="txtTitle" value="<%=request.getParameter("key_title")==null?"":request.getParameter("key_title")%>" class="input_comm" />
@@ -65,6 +71,8 @@
 </div>
 <div id="dialog-window" style="display: none;"></div>
 <script type="text/javascript">
+    layui.use('layer', function() {});
+
     initPager(${pager.getRowsCount()}, <%=request.getParameter("currentPage")==null?1:request.getParameter("currentPage")%>,<%=request.getParameter("pageSize")==null?20:request.getParameter("pageSize")%>);
 
     function query(){

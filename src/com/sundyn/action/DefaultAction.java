@@ -70,31 +70,33 @@ public class DefaultAction extends ActionSupport
         PrintWriter out = response.getWriter();
 
         final Map manager = (Map)request.getSession().getAttribute("manager");
-        final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
-        final Map power = this.powerService.getUserGroup(groupid);
+        //final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
+        //final Map power = this.powerService.getUserGroup(groupid);
         
-        final String baseSet = power.get("baseSet").toString();
-        final String dataManage = power.get("dataManage").toString();
-        int b = 0;
+        //final String baseSet = power.get("baseSet").toString();
+        //final String dataManage = power.get("dataManage").toString();
+        /*int b = 0;
         int d = 0;
         if (baseSet.equals("true") || baseSet.equals("1")) {
             b = 1;
         }
         if (dataManage.equals("true") || dataManage.equals("1")) {
             d = 1;
+        }*/
+        if (null != manager){
+            final String language = ActionContext.getContext().getLocale().getLanguage();
+            //final String jsurl = String.valueOf(language) + "/" + "nav" + b + d + ".js";
+            //request.setAttribute("jsurl", (Object)jsurl);
+            request.setAttribute("realname", manager.get("realname"));
+            //request.setAttribute("name", power.get("name"));
+            JSONObject json= new JSONObject();
+            json.put("realname", manager.get("realname"));
+            json.put("powername", manager.get("powers"));
+            json.put("deptname", manager.get("deptname"));
+            out.println(json.toString());
+            out.flush();
+            out.close();
         }
-        final String language = ActionContext.getContext().getLocale().getLanguage();
-        final String jsurl = String.valueOf(language) + "/" + "nav" + b + d + ".js";
-        request.setAttribute("jsurl", (Object)jsurl);
-        request.setAttribute("realname", manager.get("realname"));
-        request.setAttribute("name", power.get("name"));
-        JSONObject json= new JSONObject();
-        json.put("realname", manager.get("realname"));
-        json.put("powername", manager.get("powers"));
-        json.put("deptname", manager.get("deptname"));
-        out.println(json.toString()); 
-        out.flush();    
-        out.close(); 
         
         return "success";
     }

@@ -5,11 +5,12 @@
 	<package name="notice" extends="struts-default">
 		<!-- 验证用户登录 开始-->
 		<interceptors>
-			<interceptor name="userCheckR"
-				class="com.sundyn.util.UserCheckR">
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
+			<interceptor name="userCheckR" class="com.sundyn.util.UserCheckR">
 			</interceptor>
 			<interceptor-stack name="mydefault">
 				<interceptor-ref name="userCheckR" />
+                <interceptor-ref name="operationInterceptor" />
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
 		</interceptors>
@@ -18,7 +19,11 @@
 			<result name="login">/login.jsp</result>
             <result name="noauth">/noauth.jsp</result>
 			<result name="register">base/register.jsp</result>
-		</global-results>
+            <result name="defExceptionResult" type="redirect">/exception1.jsp</result>
+        </global-results>
+        <global-exception-mappings>
+            <exception-mapping result="defExceptionResult" exception="java.lang.Exception"></exception-mapping>
+        </global-exception-mappings>
 		<!--  验证用户登录 结束 -->
 		<action name="noticeToAdd" class="noticeAction" method="noticeToAdd">
 			<result name="noticeToAdd">notice/noticeAddDialog.jsp</result>
@@ -26,20 +31,16 @@
 		<action name="noticeAdd" class="noticeAction" method="noticeAdd">
 			<result name="addOk" type="redirect">noticeListAjax</result>
             <result name="msg">notice/msg.jsp</result>
-<!--			<result name="inputs">notice/weburl.jsp</result>-->
 		</action>
 		<action name="noticeToUpdate" class="noticeAction" method="noticeToUpdate">
 			<result name="noticeToUpdate" >notice/noticeUpdateDialog.jsp</result>
-<!--			<result name="inputs">notice/weburl.jsp</result>-->
 		</action>
 		<action name="noticeUpdate" class="noticeAction" method="noticeUpdate">
 			<result name="noticeUpdateOk" type="redirect">noticeListAjax</result>
             <result name="msg">notice/msg.jsp</result>
-<!--			<result name="inputs">notice/weburl.jsp</result>-->
 		</action>
 		<action name="noticeDelete" class="noticeAction" method="noticeDelete">
 			<result name="noticeDeleteOk" type="redirect">noticeListAjax</result>
-<!--			<result name="inputs">notice/weburl.jsp</result>-->
 		</action>
 		<action name="noticeListAjax" class="noticeAction" method="noticeList">
 			<result name="noticeListOk">notice/noticeListAjax.jsp</result>

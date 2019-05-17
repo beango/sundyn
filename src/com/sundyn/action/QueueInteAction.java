@@ -1,16 +1,16 @@
 package com.sundyn.action;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.mysql.jdbc.StringUtils;
+import com.google.gson.Gson;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.entity.*;
 import com.sundyn.service.*;
-import freemarker.template.utility.StringUtil;
+import com.sundyn.util.CookieUtils;
+import com.xuan.xutils.utils.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.sf.ezmorph.object.DateMorpher;
-import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.util.JSONUtils;
@@ -19,6 +19,7 @@ import org.apache.struts2.ServletActionContext;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
@@ -56,7 +57,20 @@ public class QueueInteAction extends ActionSupport {
     private String DATA;
 
     public String gethalldata(){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        String istest = request.getParameter("istest");
+        System.out.println("istest: " + istest);
+        Map manager = (Map)session.getAttribute("manager");
+        if (manager == null && istest != null && istest.equalsIgnoreCase("1")){
+            CookieUtils cookieUtils = new CookieUtils();
+            if (cookieUtils.getCookie(request)){
+                HttpSession csession = request.getSession();
+                manager = (Map)csession.getAttribute("manager");
+            }
+        }
         List<SysQueuehall> halllist = hallService.selectList(null);
+        System.out.println(new Gson().toJson(halllist).toString());
         JSONArray ja = new JSONArray();
         for (int i=0; i< halllist.size(); i++){
             JSONObject o = new JSONObject();
@@ -635,19 +649,19 @@ public class QueueInteAction extends ActionSupport {
             String status = jo.optString("status");
             String tt = jo.optString("tt");
             System.out.println("devicestatus:" + tt);
-            if (StringUtils.isNullOrEmpty(devicemac)){
+            if (StringUtils.isBlank(devicemac)){
                 m.put("succ", false);
                 m.put("msg", "mac地址不能为空");
                 return m;
             }
-            if (StringUtils.isNullOrEmpty(status)){
+            if (StringUtils.isBlank(status)){
                 m.put("succ", false);
                 m.put("msg", "状态不能为空");
                 return m;
             }
             SysDevices device = sysDevicesService.selectOne(new EntityWrapper<SysDevices>().where("devicemac='" + devicemac+"'"));
             if (device==null){
-                if (StringUtils.isNullOrEmpty(devicename)){
+                if (StringUtils.isBlank(devicename)){
                     m.put("succ", false);
                     m.put("msg", "名称不能为空");
                     return m;

@@ -18,11 +18,7 @@ public class JavaXML
             elements.addContent((Content)new Element("url").setText("www.baidu.com"));
             root.addContent((Content)elements);
         }
-        final XMLOutputter XMLOut = new XMLOutputter();
-        String file = this.getClass().getClassLoader().getResource("").getPath();
-        file = file.replaceAll("%20", " ");
-        file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
-        XMLOut.output(Doc, (OutputStream)new FileOutputStream(String.valueOf(file) + "notice.xml"));
+        XMLOut(Doc, "notice.xml");
     }
     
     public static void downloadWeburl(final List<WeburlVo> weburls, final String mac) throws FileNotFoundException, IOException {
@@ -34,11 +30,7 @@ public class JavaXML
             elements.addContent((Content)new Element("url").setText(vo.getUrl()));
             root.addContent((Content)elements);
         }
-        final XMLOutputter XMLOut = new XMLOutputter();
-        String file = JavaXML.class.getClassLoader().getResource("").getPath();
-        file = file.replaceAll("%20", " ");
-        file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
-        XMLOut.output(Doc, (OutputStream)new FileOutputStream(String.valueOf(file) + mac + ".xml"));
+        XMLOut(Doc, mac + ".xml");
     }
     
     public static void downloadEmployeeInfoSet(final Map<String, String> employInfoSet) throws FileNotFoundException, IOException {
@@ -64,11 +56,7 @@ public class JavaXML
             root.addContent((Content)deptname);
             root.addContent((Content)unitName);
         }
-        final XMLOutputter XMLOut = new XMLOutputter();
-        String file = JavaXML.class.getClassLoader().getResource("").getPath();
-        file = file.replaceAll("%20", " ");
-        file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
-        XMLOut.output(Doc, (OutputStream)new FileOutputStream(String.valueOf(file) + "employeeInfoSet.xml"));
+        XMLOut(Doc, "employeeInfoSet.xml");
     }
     
     public static void downloadNotice(final List<NoticeVo> notices) throws FileNotFoundException, IOException {
@@ -79,17 +67,26 @@ public class JavaXML
             elements.addContent((Content)new Element("id").setText(new StringBuilder(String.valueOf(vo.getId())).toString()));
             elements.addContent((Content)new Element("title").setText(vo.getTitle()));
             elements.addContent((Content)new Element("content").setText(vo.getContent()));
-            System.out.println(vo.getDate());
             elements.addContent((Content)new Element("date").setText(vo.getDate()));
             root.addContent((Content)elements);
         }
-        final XMLOutputter XMLOut = new XMLOutputter();
-        String file = JavaXML.class.getClassLoader().getResource("").getPath();
-        file = file.replaceAll("%20", " ");
-        file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
-        XMLOut.output(Doc, (OutputStream)new FileOutputStream(String.valueOf(file) + "notice.xml"));
+        XMLOut(Doc, "notice.xml");
     }
 
-    public static void main(final String[] args) {
+    public static void XMLOut(Document Doc, String sourceFile){
+        try {
+            final XMLOutputter XMLOut = new XMLOutputter();
+            File f = XMLOutFile(sourceFile);
+            XMLOut.output(Doc, (OutputStream)new FileOutputStream(f));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static File XMLOutFile(String sourceFile){
+        String file = JavaXML.class.getClassLoader().getResource("").getPath();
+        file = file.replaceAll("%20", " ");
+        file = String.valueOf(file.substring(0, file.indexOf("classes"))) + "source/";
+        return new File(file + sourceFile);
     }
 }

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="css/style.css"  media="all" type="text/css" />
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
@@ -35,7 +35,7 @@
 
         function counterAdd(id){
             var action = id==undefined?"增加":"编辑";
-            new dialog().iframe("counterAdd.action?id=" + id, {title: action+"窗口", resize:false, w:"500px", h:"400px"});
+            new dialog().iframe("counterAdd.action?id=" + id + "&halldef=" + $("#hallsele").val(), {title: action+"窗口", resize:false, w:"500px", h:"400px"});
         }
 
         function counterDel(id){

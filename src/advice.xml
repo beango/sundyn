@@ -20,14 +20,14 @@
 		<global-results>
 			<result name="login">/login.jsp</result>
             <result name="noauth">/noauth.jsp</result>
-			<result name="register">base/register.jsp</result>
+			<result name="register">/base/register.jsp</result>
 		</global-results>
 		<!--  验证用户登录 结束 -->
 		<action name="adviceToAdd" class="adviceSurveyAction" method="adviceToAdd">
 			<result name="adviceToAdd">/adviceSurvey/adviceAddDialog.jsp</result>
 		</action>	
 		<action name="adviceAdd" class="adviceSurveyAction" method="adviceAdd">
-			<result name="addOk" type="redirect">adviceListAjax</result>
+			<result name="addOk" type="redirect">/adviceListAjax</result>
 			<result name="inputs">/adviceSurvey/weburl.jsp</result>
 		</action>
 		<action name="adviceToUpdate" class="adviceSurveyAction" method="adviceToUpdate">

@@ -352,12 +352,12 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String ids = this.deptService.findChildALLStr123(deptIdGroup);
 
-        this.pager = new Pager("currentPage", pageSize, 0, this.request);
+        this.pager = new Pager("currentPage", pageSize, 0, this.request, this);
         Integer[] total = new Integer[1];
         this.list = this.totalService.totalDating(null, ids, null, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
                 this.pager.getPageSize(), total);
         final int rowsCount = total[0];
-        this.pager = new Pager("currentPage", pageSize, rowsCount, this.request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, this.request, this);
 
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
@@ -391,7 +391,7 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final String deptId = this.request.getParameter("deptId");
         final int rowsCount = this.totalService.counttotalWindow(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, this.request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, this.request, this);
         this.list = this.totalService.totalWindow(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), null);
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");
@@ -432,7 +432,7 @@ public class DuiBiAction extends ActionSupport implements ServletRequestAware
             deptId = "-1";
         deptId = this.deptService.findChildALLStr123(deptId);
         final int rowsCount = this.totalService.countTotalPerson(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, this.request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, this.request, this);
         this.list = this.totalService.totalPerson(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         final StringBuilder strXML1 = new StringBuilder("");
         strXML1.append("<?xml version='1.0' encoding='UTF-8'?>");

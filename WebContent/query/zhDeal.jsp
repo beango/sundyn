@@ -9,10 +9,9 @@
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <link rel="stylesheet" href="css/dialog.css" type="text/css"/>
     <link rel="stylesheet" href="css/dtree.css" type="text/css"></link>
-    <title><s:text name='sundyn.title'/></title>
+    <title><s:text name='zx.title'/></title>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
     <script type="text/javascript" src="js/pie.js"></script>
     <script type="text/javascript" src="js/Pie3D.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>

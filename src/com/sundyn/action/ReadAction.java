@@ -1,14 +1,20 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import org.apache.struts2.*;
-import javax.servlet.http.*;
+import com.opensymphony.xwork2.ActionSupport;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.struts2.ServletActionContext;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import org.jsoup.*;
-import org.jsoup.nodes.*;
-import org.jsoup.select.*;
-import java.util.*;
-import net.sf.json.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ReadAction extends ActionSupport
 {
@@ -176,7 +182,7 @@ public class ReadAction extends ActionSupport
                         tempContent[c] = "<ul>";
                     }
                     else {
-                        tempContent[c] = tempContent[c].replace("<LI>¡¤", "<LI>").replace("<FONT color=#cc6600>[\u6709\u6548]</FONT>", "").replace("http://www.12366.ha.cn/websites/service/viewDoc.jsp", "readDetails.action").replace("target=_blank", "");
+                        tempContent[c] = tempContent[c].replace("<LI>", "<LI>").replace("<FONT color=#cc6600>[\u6709\u6548]</FONT>", "").replace("http://www.12366.ha.cn/websites/service/viewDoc.jsp", "readDetails.action").replace("target=_blank", "");
                     }
                     flage = !flage;
                     this.tempContent = String.valueOf(this.tempContent) + tempContent[c];
@@ -253,7 +259,7 @@ public class ReadAction extends ActionSupport
                         tempContent[c] = "<ul>";
                     }
                     else {
-                        tempContent[c] = tempContent[c].replace("<LI>¡¤", "<LI>").replace("<FONT color=#cc6600>[\u6709\u6548]</FONT>", "").replace("http://www.12366.ha.cn/websites/service/viewDoc.jsp", "readHtmlAjaxJson.action").replace("target=_blank", "");
+                        tempContent[c] = tempContent[c].replace("<LI>", "<LI>").replace("<FONT color=#cc6600>[\u6709\u6548]</FONT>", "").replace("http://www.12366.ha.cn/websites/service/viewDoc.jsp", "readHtmlAjaxJson.action").replace("target=_blank", "");
                     }
                     flage = !flage;
                     this.tempContent = String.valueOf(this.tempContent) + tempContent[c];

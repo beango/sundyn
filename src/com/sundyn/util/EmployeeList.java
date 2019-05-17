@@ -1,18 +1,29 @@
 package com.sundyn.util;
 
-import com.sundyn.utils.*;
-import java.util.*;
-import org.apache.struts2.*;
-import org.springframework.web.context.support.*;
-import com.sundyn.service.*;
-import org.springframework.context.*;
+import com.sundyn.service.EmployeeService;
+import com.xuan.xutils.utils.DateUtils;
+import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.annotation.Resource;
+import javax.servlet.ServletContext;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class EmployeeList
 {
     private static EmployeeList employeeList;
     private static Map mE;
     private static Object obj;
-    
+    @Resource
+    private static JdbcTemplate jdbcTemplate;
+
+    //static JdbcTemplate jdbc;
     static {
         EmployeeList.employeeList = null;
         EmployeeList.mE = new HashMap();
@@ -21,14 +32,16 @@ public class EmployeeList
     
     public static EmployeeList getInstance() {
         if (EmployeeList.employeeList == null) {
-            DBConnHelper.emptyTable("delete from appries_onlineemployee");
+            String sql = "delete from appries_onlineemployee";
+            jdbcTemplate.update(sql);
         }
         return EmployeeList.employeeList = new EmployeeList();
     }
     
     public static EmployeeList getInstance(final int num) {
-        if (EmployeeList.employeeList == null) {
-            DBConnHelper.emptyTable("delete from appries_onlineemployee");
+        if (EmployeeList.employeeList == null && jdbcTemplate!=null) {
+            String sql = "delete from appries_onlineemployee";
+            jdbcTemplate.update(sql);
         }
         return EmployeeList.employeeList = new EmployeeList();
     }
@@ -37,7 +50,32 @@ public class EmployeeList
         final Map m = (Map)o;
         addMac(m);
     }
-    
+
+    public static void addManager(final Object o) {
+        final Map m = (Map)o;
+        ServletContext context = ServletActionContext.getServletContext();
+        ConcurrentHashMap<String, Object> map = (ConcurrentHashMap<String, Object>) context.getAttribute("activeSessions");
+
+        if (null == map)
+        {
+            map = new ConcurrentHashMap<String, Object>();
+            context.setAttribute("activeSessions", map);
+        }
+        if (!map.contains(m.get("name")))
+            map.put(m.get("name").toString(), m.get("name") + "   登陆时间:" + DateUtils.date2String(new Date()));
+    }
+
+    public static void removeManager(final Object o) {
+        final Map m = (Map)o;
+        ServletContext context = ServletActionContext.getServletContext();
+        ConcurrentHashMap<String, Object> map = (ConcurrentHashMap<String, Object>) context.getAttribute("activeSessions");
+        if (null != map && map.contains(m.get("name")))
+        {
+            map.remove(m.get("name"));
+            context.setAttribute("activeSessions", map);
+        }
+    }
+
     public static void remove(final Object o) {
         final Map m = (Map)o;
         deleteMac(m);

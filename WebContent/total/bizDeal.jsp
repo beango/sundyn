@@ -11,13 +11,11 @@
       xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title><s:text name='sundyn.title'/></title>
+    <title><s:text name='zx.title'/></title>
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css"/>
-    <script src="${ctx}/assets/javascripts/vendor/jquery-2.1.3.min.js?1440992355"></script>
-    <script type="text/javascript" src="js/jquery-1.4.3.js"></script>
-    <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
+    <script src="js/jquery.js?1440992355"></script>
     <script type="text/javascript" src="js/pie.js"></script>
     <script type="text/javascript" src="js/Pie3D.js"></script>
     <script type="text/javascript" src="js/dojo.js"></script>

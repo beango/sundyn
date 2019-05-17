@@ -4,7 +4,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        hallno, deptid, hallname, address, longitude, dimension, head, headtel, note, busitmnote, path, onlinenetxcticket, onlineappoint, appointnote, sort, version, versiontime, getverionlasttime, workversion, eval6warnvalue, pausewarnvalue, waitwarnvalue
+        hallno, deptid, hallname, address, longitude, dimension, head, headtel, note, busitmnote, path, onlinenetxcticket, onlineappoint, appointnote, sort, version, versiontime, getverionlasttime, workversion, eval6warnvalue, pausewarnvalue, waitwarnvalue, checkdigit, checkdigited
     </sql>
 
 </mapper>

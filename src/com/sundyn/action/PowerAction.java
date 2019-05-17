@@ -71,7 +71,7 @@ public class PowerAction extends MainAction
     public String powerQuery() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.powerService.countByName("");
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage", this);
         final List list = this.powerService.findByName("", (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         return "success";
@@ -90,7 +90,7 @@ public class PowerAction extends MainAction
         //final String deptIdGroup = power.get("deptIdGroup").toString();
         final String deptGroups = this.deptService.findChildALLStr123(super.getUserDept().toString());
         final int rowsCount = this.powerService.countLowerPowerByName(name, deptGroups);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage", this);
         final List list = this.powerService.findLowerPowerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         return "success";
@@ -109,7 +109,7 @@ public class PowerAction extends MainAction
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String deptGroups = this.deptService.findChildALLStr123(deptIdGroup);
         final int rowsCount = this.powerService.countLowerPowerByName(name, deptGroups);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage", this);
         final List list = this.powerService.findLowerPowerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         request.setAttribute("keyword", (Object)name);
@@ -125,7 +125,7 @@ public class PowerAction extends MainAction
         keyword = keyword.trim();
         keyword = Mysql.mysql(keyword);
         final int rowsCount = this.powerService.countByName(keyword);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "lowerPowerPage", this);
         final List list = this.powerService.findByName(keyword, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         request.setAttribute("keyword", (Object)keyword);
@@ -170,6 +170,8 @@ public class PowerAction extends MainAction
         final Integer baseSet = Integer.valueOf(request.getParameter("baseSet"));
         final Integer dataManage = Integer.valueOf(request.getParameter("dataManage"));
         final Integer deptId = Integer.valueOf(request.getParameter("deptId"));
+        String powertype = req.getString("powertype");
+        int status = req.getInt("status",0);
 
         final String funcid = req.getString("funcid");
         if (funcid!=null){
@@ -195,6 +197,8 @@ public class PowerAction extends MainAction
         powerVo.setBaseSet(baseSet);
         powerVo.setDataManage(dataManage);
         powerVo.setDeptIdGroup(deptId);
+        powerVo.setPowertype(powertype);
+        powerVo.setStatus(status);
         this.powerService.addUserGroup(powerVo);
         return "success";
     }
@@ -209,13 +213,14 @@ public class PowerAction extends MainAction
             final Map dept = (Map) list.get(0);
             dept.put("fatherId", -1);
         }
+        if (id>0){
+            Map oldpower = powerService.getUserGroup(id);
+            EntityWrapper<AppriesPowerfunc> ew = new EntityWrapper<AppriesPowerfunc>();
+            ew.where("powerName={0}", oldpower.get("name"));
+            List<AppriesPowerfunc> powerFuncList = powerFuncService.selectListEx(ew);
 
-        Map oldpower = powerService.getUserGroup(id);
-        EntityWrapper<AppriesPowerfunc> ew = new EntityWrapper<AppriesPowerfunc>();
-        ew.where("powerName={0}", oldpower.get("name"));
-        List<AppriesPowerfunc> powerFuncList = powerFuncService.selectListEx(ew);
-
-        request.setAttribute("powerFunc", powerFuncList);
+            request.setAttribute("powerFunc", powerFuncList);
+        }
         request.setAttribute("m", (Object)m);
         request.setAttribute("list", (Object)list);
         return "success";
@@ -224,7 +229,10 @@ public class PowerAction extends MainAction
     public String powerEdit() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String name = request.getParameter("name");
-        final Integer id = Integer.valueOf(request.getParameter("id"));
+        final Integer id = req.getInt("id", 0);
+        if (id==0){
+            return powerAdd();
+        }
         if (this.powerService.powerExist(String.valueOf(id), name)) {
             this.msg = "该角色名存在";
         }
@@ -235,10 +243,11 @@ public class PowerAction extends MainAction
         final Integer dataManage = Integer.valueOf(request.getParameter("dataManage"));
         final Integer deptId = Integer.valueOf(request.getParameter("deptId"));
         final String funcid = req.getString("funcid");
+        String powertype = req.getString("powertype");
+        int status = req.getInt("status");
         Map oldpower = powerService.getUserGroup(id);
         if (funcid!=null && oldpower!=null){
             List<AppriesFunc> allFuncs = appriesFuncService.selectList(null);
-
 
             EntityWrapper ew=new EntityWrapper();
             ew.setEntity(new AppriesPowerfunc());
@@ -246,7 +255,6 @@ public class PowerAction extends MainAction
             boolean isdel = powerFuncService.delete(ew);
 
             String[] funcidArr = funcid.split(",");
-            System.out.println("funcidArr: " + funcidArr.length);
             List<AppriesPowerfunc> pfList = new ArrayList<>();
             for (String f : funcidArr) {
                 if (f.equals(""))
@@ -267,6 +275,8 @@ public class PowerAction extends MainAction
         powerVo.setBaseSet(baseSet);
         powerVo.setDataManage(dataManage);
         powerVo.setDeptIdGroup(deptId);
+        powerVo.setPowertype(powertype);
+        powerVo.setStatus(status);
         this.powerService.update(powerVo);
         return "success";
     }

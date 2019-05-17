@@ -10,12 +10,13 @@ import com.sundyn.util.socketUdp;
 import com.sundyn.utils.CitysUtils;
 import com.sundyn.utils.GetWeatherString;
 import com.sundyn.vo.AppriesVo;
+import com.xuan.xutils.utils.StringUtils;
+import com.xuan.xutils.utils.UUIDUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.jfree.util.Log;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
@@ -210,6 +211,7 @@ public class AppriesAction extends ActionSupport
     }
     
     public String appriesAdd() {
+        System.out.println("++++++++++++++++1");
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String serviceDate = request.getParameter("serviceDate");
         final String serviceCycle = request.getParameter("serviceCycle");
@@ -288,8 +290,8 @@ public class AppriesAction extends ActionSupport
     public List<String> getList() {
         return list;
     }
-    // 接受依赖注入的属性
     private String savePath;
+
     public String appriesFileupload()
     {
         System.out.println("获取Android端传过来的普通信息：111111111111111");
@@ -345,6 +347,7 @@ public class AppriesAction extends ActionSupport
             }
         }
     }
+
     public String appriesFileupload1() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         //得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
@@ -575,6 +578,9 @@ public class AppriesAction extends ActionSupport
         String businessTime = request.getParameter("businessTime");
         String imgfile = request.getParameter("imgfile");
         String busRst = request.getParameter("busRst");
+        String ywlsh = request.getParameter("ywlsh");
+        if (ywlsh.equalsIgnoreCase("null"))
+            ywlsh = null;
         int min = 0;
         int sec = 0;
         if (businessTime != null) {
@@ -600,14 +606,14 @@ public class AppriesAction extends ActionSupport
             for (int j = 0; j < bmls.size(); ++j) {
                 final Map i = (Map) bmls.get(j);
                 if (!i.get("keyNo").toString().equals("6")) {
-                    bmk = String.valueOf(bmk) + i.get("keyNo").toString() + ",";
+                    bmk += i.get("keyNo").toString() + ",";
                 }
             }
         }
         else {
             for (int j = 0; j < bmls.size(); ++j) {
                 final Map i = (Map) bmls.get(j);
-                bmk = String.valueOf(bmk) + i.get("keyNo").toString() + ",";
+                bmk += i.get("keyNo").toString() + ",";
             }
         }
         if (bmk.indexOf(pj) > -1) {
@@ -626,7 +632,6 @@ public class AppriesAction extends ActionSupport
                     for (int l = 0; l < host.size(); ++l) {
                     	Map map = (Map)host.get(l);
                     	final String ip = map.get("ext2").toString();
-                        //final String ip = host.get(l).get("ext2").toString();
                         final String[] sip = ip.split(",");
                         for (int m = 0; m < sip.length; ++m) {
                             temp.put(sip[m], sip[m]);
@@ -663,8 +668,8 @@ public class AppriesAction extends ActionSupport
                     final InetAddress addr = InetAddress.getLocalHost();
                     this.mobileIp = addr.getHostAddress();
                 }
-                final String t = String.valueOf(this.msg) + "||" + s_m;
-                udp.send(this.mobileIp, this.mobilePort, String.valueOf(this.msg) + "||" + s_m);
+                final String t = this.msg + "||" + s_m;
+                udp.send(this.mobileIp, this.mobilePort, this.msg + "||" + s_m);
                 udp.close();
             }
             catch (Exception e3) {
@@ -701,6 +706,7 @@ public class AppriesAction extends ActionSupport
                 else {
                     this.msg = "error:mac=" + mac + "--tt=" + tt + "--cardnum=" + cardnum + "--pj=" + pj;
                 }
+                System.out.println("++++++++++++++++this.msg// " + this.msg + "------------msg2: " + msg2 + ", ywlsh: " + ywlsh);
                 if (msg2 == "1") {
                     final List list = this.appriesService.checkAppries(tt, pj, mac);
                     if (list != null) {
@@ -708,7 +714,11 @@ public class AppriesAction extends ActionSupport
                             this.msg = "error:mac=" + mac + "--tt=" + tt + "--cardnum=" + cardnum + "--pj=" + pj + " has been saved";
                         }
                         else if (list.size() == 0) {
-                            if (this.appriesService.addArriresXiangYang(mac, tt, cardnum, pj, demo, videofile, businessTime, min, sec, tel, idCard, name, phone, imgfile, busRst)) {
+                            if (StringUtils.isBlank(ywlsh)){
+                                ywlsh = UUIDUtils.getUUID();
+                            }
+                            if (this.appriesService.addArriresXiangYang(mac, tt, cardnum, pj, demo, videofile, businessTime, min, sec, tel, idCard,
+                                    name, phone, imgfile, busRst, ywlsh, null)) {
                                 this.msg = "success";
                             }
                             else {
@@ -943,7 +953,7 @@ public class AppriesAction extends ActionSupport
             keys = keys.substring(0, keys.length() - 1);
         }
         final int rowsCount = this.queryService.countQueryZh(this.id, keys, deptIds, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", AppriesAction.pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", AppriesAction.pageSize, rowsCount, request, this);
         final List tempList = this.queryService.queryZh(this.id, keys, deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(tempList);
         final List chatList = this.queryService.QueryZhChat(this.id, keys, deptIds, this.startDate, this.endDate);
@@ -1025,10 +1035,11 @@ public class AppriesAction extends ActionSupport
             sec = Integer.valueOf(businessTime) % 60;
             businessTime = String.valueOf(String.valueOf(min)) + "\u5206" + String.valueOf(sec) + "\u79d2";
         }
-        final String msg = "http://localhost/appriesAddSp.action?mac=" + mac + "&&tt=" + tt + "&&cardnum=" + cardNum + "&&pj=" + appriesButton + "&&tel=" + tel + "&&idCard=" + idCard + "&&businessType=1";
-        System.out.println("debug\u6dfb\u52a0\u8bc4\u4ef7\u6570\u636e\u8bf7\u6c42=" + msg);
-        request.setAttribute("msg", (Object)msg);
-        this.appriesService.addArriresXiangYang(mac, tt, cardNum, appriesButton, "13333", "", businessTime, 0, 0, tel, idCard, null, null, null, null);
+        final String url = "http://localhost/appriesAddSp.action?mac=" + mac + "&&tt=" + tt + "&&cardnum=" + cardNum + "&&pj=" + appriesButton + "&&tel=" + tel + "&&idCard=" + idCard + "&&businessType=1";
+
+        request.setAttribute("msg", (Object)url);
+        boolean b = this.appriesService.addArriresXiangYang(mac, tt, cardNum, appriesButton, "13333", "", businessTime, 0, 0, tel, idCard, null, null, null, null, null, null);
+        System.out.println("debug\u6dfb\u52a0\u8bc4\u4ef7\u6570\u636e\u8bf7\u6c42=" + url + ", 结果：" + b);
         return "success";
     }
     

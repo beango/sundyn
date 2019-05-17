@@ -3,23 +3,24 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-    <link rel="stylesheet" href="css/dialog.css" type="text/css"/>
+    <title><s:text name='zx.title'/></title>
+
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
     <link rel="stylesheet" href="css/dtree.css" type="text/css"/>
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
-    <title><s:text name='sundyn.title'/></title>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/ddtree.js"></script>
     <script type="text/javascript" src="js/json2.js"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?<%=new Date().getTime()%>"></script>
-    <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
+    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
 </head>
 <body>
 <div class="place">
@@ -57,5 +58,9 @@
 </div>
 <div id="dialog" style="width: 700px; display: none;">
 </div>
+<script type="text/javascript">
+    layui.use('layer', function() {
+    });
+</script>
 </body>
 </html>

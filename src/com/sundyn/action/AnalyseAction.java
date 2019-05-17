@@ -1,6 +1,5 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.ActionSupport;
 import com.sundyn.service.*;
 import com.sundyn.util.ColorHelper;
 import com.sundyn.util.DateHelper;
@@ -8,8 +7,6 @@ import com.sundyn.util.SundynSet;
 import com.xuan.xutils.utils.StringUtils;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
-import org.jsoup.helper.StringUtil;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -313,7 +310,6 @@ public class AnalyseAction extends MainAction
             strXML1.append(mergeDataSet(3));
         }
         strXML1.append("</graph>");
-        System.out.println(strXML1);
         request.setAttribute("strXML1", strXML1.toString());
         request.setAttribute("strXMLType", "MSLine.swf");//占比
         return "success";

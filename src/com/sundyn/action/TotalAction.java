@@ -596,7 +596,7 @@ public class TotalAction extends MainAction
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String deptId = this.deptService.findChildALLStr123(deptIdGroup);
         final int rowsCount = this.totalService.countTotalBusiness(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         this.list = this.totalService.totalBusiness(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -766,7 +766,7 @@ public class TotalAction extends MainAction
         String deptId = request.getParameter("deptId");
         deptId = this.deptService.findChildALLStr123(deptId);
         final int rowsCount = this.totalService.countTotalBusiness(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         this.list = this.totalService.totalBusiness(deptId, this.startDate, this.endDate, null, null);
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -810,7 +810,7 @@ public class TotalAction extends MainAction
         }
         String sort = req.getString("sort");
         final String filterDeptIds = this.deptService.findChildALLStr1234(request.getParameter("deptId"));
-        this.pager = new Pager("currentPage", pageSize, 0, request);
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
         Integer[] total = new Integer[1];
         this.list = null;
         if(isRpt)
@@ -818,7 +818,7 @@ public class TotalAction extends MainAction
         else
             this.list = this.totalService.totalDating(filterDeptIds, ids, dating, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), total);
         final int rowsCount = total[0];
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
         this.list = this.getD(this.list);
@@ -2129,7 +2129,7 @@ public class TotalAction extends MainAction
         String deptId = request.getParameter("deptId");
         final String ids = this.deptService.findChildALLStr1234(deptId);
         final Integer employeeId = req.getInt("employeeId");
-        this.pager = new Pager("currentPage", pageSize, 0, request);
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
         Integer[] totalrows = new Integer[1];
         Map e = this.employeeService.findEmployeeById(employeeId);
         String keyCardNum = null;
@@ -2148,7 +2148,7 @@ public class TotalAction extends MainAction
         } else
             this.list = this.totalService.totalPerson(ids, keyCardNum, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), totalrows);
         final int rowsCount = totalrows[0];
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
 
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -2312,7 +2312,7 @@ public class TotalAction extends MainAction
 
         String deptId = request.getParameter("deptId");
         final String ids = this.deptService.findChildALLStr1234(deptId);
-        this.pager = new Pager("currentPage", pageSize, 0, request);
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
         Integer[] totalrows = new Integer[1];
         String sort = req.getString("sort");
         String exportExcel = request.getParameter("export");
@@ -2324,7 +2324,7 @@ public class TotalAction extends MainAction
             this.list = this.totalService.totalProxyRpt(ids, sort, req.getString("cardname"), this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), totalrows);
         }
         final int rowsCount = totalrows[0];
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
 
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -2481,7 +2481,7 @@ public class TotalAction extends MainAction
 
         String deptId = request.getParameter("deptId");
         final String ids = this.deptService.findChildALLStr1234(deptId);
-        this.pager = new Pager("currentPage", pageSize, 0, request);
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
         Integer[] totalrows = new Integer[1];
         String sort = req.getString("sort");
         String exportExcel = request.getParameter("export");
@@ -2493,7 +2493,7 @@ public class TotalAction extends MainAction
             this.list = this.totalService.totalProxyBizRpt(ids, sort, req.getString("cardname"),cardid, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), totalrows);
         }
         final int rowsCount = totalrows[0];
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
 
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -2632,7 +2632,7 @@ public class TotalAction extends MainAction
         String deptId = request.getParameter("deptId");
         deptId = this.deptService.findChildALLStr123(deptId);
         final int rowsCount = this.totalService.countEmployeeAll();
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         this.list = this.totalService.totalPerson3(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -2828,7 +2828,7 @@ public class TotalAction extends MainAction
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String deptId = request.getParameter("deptId");
         final int rowsCount = this.totalService.countTotalPerson(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         this.list = this.totalService.totalPerson(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -2876,7 +2876,7 @@ public class TotalAction extends MainAction
         String exportExcel = request.getParameter("export");
 
         int[] rowsCount = new int[1];
-        this.pager = new Pager("currentPage", pageSize, 0, request);
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
         final String ids2 = this.deptService.findChildALLStr1234(deptId);
         this.list = null;
         if(isRpt){
@@ -2886,7 +2886,7 @@ public class TotalAction extends MainAction
         }
         else
             list = this.totalService.totalWindow(ids2, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
-        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request, this);
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
         this.list = this.getD(this.list);
@@ -3053,7 +3053,7 @@ public class TotalAction extends MainAction
         String exportExcel = request.getParameter("export");
 
         int[] rowsCount = new int[1];
-        this.pager = new Pager("currentPage", pageSize, 0, request);
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
         final String ids2 = this.deptService.findChildALLStr1234(deptId);
         this.list = null;
         if (isproxy.equals("true"))
@@ -3069,7 +3069,7 @@ public class TotalAction extends MainAction
             else
                 list = this.totalService.totalBiz(ids2, bizname, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
         }
-        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request, this);
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
         this.list = this.getD(this.list);
@@ -3494,7 +3494,7 @@ public class TotalAction extends MainAction
         final String deptIdGroup = power.get("deptIdGroup").toString();
         final String ids = this.deptService.findChildALLStr123(deptIdGroup);
         final int rowsCount = this.totalService.countTotalSection(ids, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         this.list = this.totalService.totalSection(ids, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.list = this.getPandM(this.list);
         this.list = this.getStar(this.list);
@@ -3702,7 +3702,7 @@ public class TotalAction extends MainAction
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final String deptId = request.getParameter("deptId");
         final int rowsCount = this.totalService.counttotalWindow(deptId, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         final List videolist = this.totalService.totalWindowVideo(deptId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         ServletActionContext.getRequest().setAttribute("videolist", (Object)videolist);
         return "success";

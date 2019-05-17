@@ -1,17 +1,24 @@
 package com.sundyn.action;
 
-import java.util.*;
+import com.sundyn.service.AdviceService;
+import com.sundyn.statistics.AdviceStatistics;
+import com.sundyn.util.Pager;
+import com.sundyn.utils.AdviceUtils;
+import com.sundyn.utils.CitysUtils;
+import com.sundyn.utils.StringHql;
+import com.sundyn.utils.StringUtils;
+import com.sundyn.vo.AdviceVo;
+import com.sundyn.vo.AnswerVo;
+import com.sundyn.vo.CheckVo;
+import com.sundyn.vo.QuestionVo;
+import org.apache.struts2.ServletActionContext;
 
-import com.opensymphony.xwork2.ActionSupport;
-import com.sundyn.service.*;
-import com.sundyn.vo.*;
-import com.sundyn.util.*;
-import org.apache.struts2.*;
-import java.io.*;
-import javax.servlet.http.*;
-import com.sundyn.utils.*;
-import com.sundyn.statistics.*;
-import java.sql.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 public class AdviceSurveyAction extends MainAction
 {
@@ -129,7 +136,7 @@ public class AdviceSurveyAction extends MainAction
     public String adviceList() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.adviceService.getCount1();
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         this.advices = this.adviceService.findAdvice(false, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.advices);
         return "adviceListOk";
@@ -138,7 +145,7 @@ public class AdviceSurveyAction extends MainAction
     public String showAnserTable() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.adviceService.getCount1();
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         this.adviceStatistics = (List<Map<String, List<Map<String, Map<String, Double>>>>>)AdviceStatistics.adviceStatistics((this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), this.adviceService);
         this.pager.setPageList(this.adviceStatistics);
         return "showAnserTableOk";
@@ -147,7 +154,7 @@ public class AdviceSurveyAction extends MainAction
     public String checkList() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.adviceService.getCount();
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         this.checks = this.adviceService.getChecks((this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.checks);
         return "checkListOk";

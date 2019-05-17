@@ -11,27 +11,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>VIP客户信息管理</title>
+    <title>预警消息查询</title>
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
     <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
-    <script type="text/javascript" src="js/myAjax.js"></script>
     <script type="text/javascript" src="js/application.js?1"></script>
-    <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
-    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
-    <link type="text/css" rel="stylesheet" href="js/jquery.dropdown.min.css" />
-    <script type="text/javascript" src="js/jquery.dropdown.min.js"></script>
-    <style type="text/css">
-        ul.ztree {margin-top: 10px;border: 1px solid #617775;background: #f0f6e4;width:420px;height:360px;overflow-y:scroll;overflow-x:auto;}
-        .layui-btn-xs{text-indent:0px;}
-    </style>
 </head>
 <body>
 <script type="text/javascript">
@@ -68,15 +58,6 @@
             layer.close(index);
         });
     }
-    $(function(){
-        $('.dropdown-mul-1').dropdown({
-            limitCount: 40,
-            multipleMode: 'label',
-            choice: function () {
-                console.log(arguments,this);
-            }
-        });
-    });
 </script>
 <div class="place">
     <span>位置：</span>

@@ -1,14 +1,19 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.vo.*;
-import com.sundyn.service.*;
-import com.sundyn.util.*;
-import org.apache.struts2.*;
-import javax.servlet.http.*;
-import java.io.*;
-import com.sundyn.utils.*;
-import java.util.*;
+import com.opensymphony.xwork2.ActionSupport;
+import com.sundyn.service.NoticeService;
+import com.sundyn.util.Pager;
+import com.sundyn.utils.JavaXML;
+import com.sundyn.vo.NoticeVo;
+import org.apache.struts2.ServletActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class NoticeAction extends ActionSupport
 {
@@ -67,7 +72,7 @@ public class NoticeAction extends ActionSupport
     public String noticeList() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.noticeService.getCount();
-        this.pager = new Pager("currentPage", NoticeAction.pageSize, rowsCount, request, "noticPage");
+        this.pager = new Pager("currentPage", NoticeAction.pageSize, rowsCount, request, "noticPage", this);
         this.notices = this.noticeService.findNotices((this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.notices);
         return "noticeListOk";

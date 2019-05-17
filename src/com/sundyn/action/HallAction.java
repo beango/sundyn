@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.enums.SqlLike;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.opensymphony.xwork2.Action;
 import com.sundyn.entity.SysQueuehall;
 import com.sundyn.service.DeptService;
 import com.sundyn.service.ISysQueuehallService;
 import com.sundyn.util.ValidException;
 import com.sundyn.util.ValidateUtil;
+import com.sundyn.util.impl.util;
+import com.sundyn.vo.ManagerVo;
+import com.xuan.xutils.utils.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.struts2.ServletActionContext;
 
@@ -18,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class HallAction extends MainAction
 {
@@ -45,10 +46,8 @@ public class HallAction extends MainAction
         Wrapper<SysQueuehall> ew =new EntityWrapper<SysQueuehall>();
         if (null!=key_hallname && !"".equals(key_hallname))
             ew = ew.like("hallname", key_hallname, SqlLike.DEFAULT);
-        if (null!=key_deptId && !"".equals(key_deptId)){
-            String key_deptids = this.deptService.findChildALLStr1234(key_deptId);
-            ew = ew.in("deptid", key_deptids.split(","));
-        }
+        String key_deptids = this.deptService.findChildALLStr1234(key_deptId);
+        ew = ew.in("deptid", key_deptids.split(","));
 
         Page<SysQueuehall> queryData = hallService.selectPage(new Page<SysQueuehall>(pageindex, pageSize), ew.orderBy("id desc"));
         String spath = ServletActionContext.getServletContext().getRealPath("/");
@@ -78,6 +77,18 @@ public class HallAction extends MainAction
         return "success";
     }
 
+    private String genCheckDigit(SysQueuehall model){
+        StringBuilder digitStr = new StringBuilder();
+
+        digitStr.append(model.getHallno());
+        digitStr.append("|");
+
+        digitStr.append(model.getHallname());
+        digitStr.append("|");
+
+        return (util.md5(digitStr.toString()));
+    }
+
     /*
     添加/修改大厅  提交数据
      */
@@ -86,6 +97,7 @@ public class HallAction extends MainAction
         try {
             BeanUtils.populate(hall, request.getParameterMap());
             ValidateUtil.validate(hall);
+            hall.setCheckdigit(genCheckDigit(hall));
             boolean succ = false;
             if(hall.getId() == null || hall.getId() == 0){
                 if (hallService.selectCount(new EntityWrapper<SysQueuehall>().where("hallno={0}", hall.getHallno()))>0){
@@ -101,6 +113,7 @@ public class HallAction extends MainAction
                 }
                 if (hall.getDeptid()==0)
                     hall.setDeptid(null);
+                hall.setCheckdigited(0);
                 succ = hall.updateById();
             }
             if (!succ){

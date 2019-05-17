@@ -11,7 +11,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE"/>
     <META HTTP-EQUIV="Expires" CONTENT="Mon, 04 Dec 1999 21:29:02 GMT"/>
-    <title><s:text name='sundyn.title'/></title>
+    <title><s:text name='zx.title'/></title>
     <link href="${ctx}/assets/stylesheets/application.css?14427995576" rel="stylesheet"/>
     <link href="${ctx}/assets/stylesheets/fontawesome.css?1440992355" rel="stylesheet"/>
     <!-- /### You don't need include in your project -->
@@ -119,7 +119,7 @@
     </div>
 </div>
 </div>
-<script src="${ctx}/js/jquery-2.1.3.min.js"></script>
+<script src="${ctx}/js/jquery.js"></script>
 <script src="${ctx}/js/easyui-1.5.3/jquery.easyui.min.js"></script>
 <script language="javascript" type="text/javascript">
 $(function () {

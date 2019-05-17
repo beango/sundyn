@@ -4,12 +4,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title><s:text name='sundyn.title'/></title>
+    <title><s:text name='zx.title'/></title>
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
     <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="js/dojo.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/json2.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?1"></script>
@@ -70,15 +69,15 @@
 <div class="layui-main layui-form" lay-filter="formTest">
     <div class="layui-tab layui-tab-brief">
         <ul class="layui-tab-title">
-            <li style="display:none;"><s:text name='sundyn.softSetup.systemSetup'/></li>
+            <li class="layui-this"><s:text name='sundyn.softSetup.systemSetup'/></li>
             <%--<li><s:text name='sundyn.softSetup.infoSetup' /></li>--%>
-            <li style="display:none;"><s:text name='sundyn.softSetup.timeSetup'/></li>
-            <li class="layui-this"><s:text name='sundyn.softSetup.starSetup'/></li>
-            <li style="display:none;"><s:text name='sundyn.softSetup.employeeInfoSetup'/></li>
+            <li><s:text name='sundyn.softSetup.timeSetup'/></li>
+            <li><s:text name='sundyn.softSetup.starSetup'/></li>
+            <li><s:text name='sundyn.softSetup.employeeInfoSetup'/></li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item">
-                <div style="display:none"><input type="checkbox" name="camera" id="camera" <c:if
+                <div><input type="checkbox" name="camera" id="camera" <c:if
                         test="${system.camera == 'true' }"> checked="checked"</c:if>      />&nbsp;&nbsp;<b><s:text
                         name='sundyn.softSetup.camera'/></b>&nbsp;&nbsp;&nbsp;&nbsp;
                     <c><s:text name='sundyn.softSetup.cameraInfo'/></c>
@@ -88,7 +87,7 @@
                         name='sundyn.softSetup.k7'/></b>&nbsp;&nbsp;&nbsp;&nbsp;<c><s:text
                         name='sundyn.softSetup.k7Info'/></c>
                 </div>
-                <div><input type="checkbox" name="star" onclick="checkStar()" id="star" <c:if
+                <div style="display:none"><input type="checkbox" name="star" onclick="checkStar()" id="star" <c:if
                         test="${system.star == 'true' }"> checked="checked"</c:if>
                             lay-skin="switch"/>&nbsp;&nbsp;<b><s:text name='sundyn.softSetup.starGrade'/></b>&nbsp;&nbsp;&nbsp;&nbsp;<c>
                     <s:text name='sundyn.softSetup.starGradeInfo'/></c>
@@ -185,18 +184,18 @@
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet1" value="1" id="est1"
                                    <c:if test="${employeeInfoSet.employeeName== 'true'}">checked="checked"</c:if> /><span
-                                style="margin-top:8px;">&nbsp;&nbsp;<s:text name='sundyn.column.employeeName'/></span>
+                                style="margin-top:8px;display:inline;">&nbsp;&nbsp;<s:text name='sundyn.column.employeeName'/></span>
                         </li>
                         <li id="m2">
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet2" value="2" id="est2"
-                                   <c:if test="${employeeInfoSet.job_desc== 'true'}">checked="checked"</c:if> /><span>&nbsp;&nbsp;<s:text
+                                   <c:if test="${employeeInfoSet.job_desc== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
                                 name='sundyn.column.post'/></span><br/>
                         </li>
                         <li id="m3">
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet3" value="3" id="est3"
-                                   <c:if test="${employeeInfoSet.employeeJobNum== 'true'}">checked="checked"</c:if> /><span>&nbsp;&nbsp;<s:text
+                                   <c:if test="${employeeInfoSet.employeeJobNum== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
                                 name='sundyn.column.employeeJobNum'/></span><br/>
                         </li>
                         <%--<li id="m4">
@@ -205,30 +204,30 @@
                         <li id="m5">
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet5" value="5" id="est5"
-                                   <c:if test="${employeeInfoSet.star== 'true'}">checked="checked"</c:if> /><span>&nbsp;&nbsp;<s:text
+                                   <c:if test="${employeeInfoSet.star== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
                                 name='sundyn.column.star'/></span><br/>
                         </li>
                         <li id="m6">
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet6" value="6" id="est6"
-                                   <c:if test="${employeeInfoSet.phone== 'true'}">checked="checked"</c:if> /><span>&nbsp;&nbsp;联系方式</span><br/>
+                                   <c:if test="${employeeInfoSet.phone== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;联系方式</span><br/>
                         </li>
                         <li id="m7">
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet7" value="7" id="est7"
-                                   <c:if test="${employeeInfoSet.windowName== 'true'}">checked="checked"</c:if> /><span>&nbsp;&nbsp;<s:text
+                                   <c:if test="${employeeInfoSet.windowName== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
                                 name='sundyn.column.windowName'/></span><br/>
                         </li>
                         <li id="m8">
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet8" value="8" id="est8"
-                                   <c:if test="${employeeInfoSet.deptname== 'true'}">checked="checked"</c:if> /><span>&nbsp;&nbsp;<s:text
+                                   <c:if test="${employeeInfoSet.deptname== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
                                 name='sundyn.column.deptname'/></span><br/>
                         </li>
                         <li id="m9">
                             <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet9" value="9" id="est9"
-                                   <c:if test="${employeeInfoSet.unitName== 'true'}">checked="checked"</c:if> /><span>&nbsp;&nbsp;<s:text
+                                   <c:if test="${employeeInfoSet.unitName== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
                                 name='sundyn.column.unitName'/></span><br/>
                         </li>
                     </ul>
@@ -249,34 +248,6 @@
 <script>
     var employeeInfoSetArr = new Array();
     layui.use(['form', 'element'], function () {
-        var form = layui.form;
-
-        form.on('switch(employeeInfoSet)', function (data) {
-            return;
-            //console.log(data.elem.name); //得到checkbox原始DOM对象
-            //console.log(data.elem.checked); //开关是否开启，true或者false
-            //console.log(data.value); //开关value值，也可以通过data.elem.value得到
-
-            if (data.elem.checked) {
-                if (employeeInfoSetArr.length >= 5) {
-                    alert("最多可以选择5项");
-                }
-
-                if (!employeeInfoSetArr.indexOf(data.value) > -1)
-                    employeeInfoSetArr.push(data.value);
-
-            }
-            else {
-                employeeInfoSetArr.remove(data.value);
-            }
-            console.log("总数:" + employeeInfoSetArr.length); //得到美化后的DOM对象
-            console.log("是否存在:" + employeeInfoSetArr.indexOf(data.value)); //得到美化后的DOM对象
-            var name = data.elem.name;
-            form.val("formTest", {
-                name: true
-            })
-        });
-
         var el = document.getElementById('dom1');
         var sortable = Sortable.create(el);
     });

@@ -92,11 +92,7 @@ public class KeyTypeAction extends ActionSupport
                 root.addContent(button);
             }
         }
-        final XMLOutputter XMLOut = new XMLOutputter();
-        String file = JavaXML.class.getClassLoader().getResource("").getPath();
-        file = file.replaceAll("%20", " ");
-        file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
-        XMLOut.output(Doc, (OutputStream)new FileOutputStream(String.valueOf(file) + "evalbuttons.xml"));
+        JavaXML.XMLOut(Doc, "evalbuttons.xml");
         return "success";
     }
 
@@ -170,10 +166,7 @@ public class KeyTypeAction extends ActionSupport
     }
 
     public JSONArray ConvertXMLtoJSON() throws IOException {
-        String file = JavaXML.class.getClassLoader().getResource("").getPath();
-        file = file.replaceAll("%20", " ");
-        file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
-        File f = new File(String.valueOf(file) + "evalbuttons.xml");
+        File f = JavaXML.XMLOutFile("evalbuttons.xml");
 
         InputStream is = new FileInputStream(f);
         // 声明一个字节数组

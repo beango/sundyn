@@ -220,7 +220,6 @@ public class ServiceBaseImpl<dao extends BaseMapper<T>, T> extends ServiceImpl<d
 
     @Override
     public int selectCount(Wrapper<T> wrapper) {
-        System.out.println("FILTERDEPT:" + this.FILTERDEPT);
         String filterDept = USERDATA_DEPTIDS();
         if (filterDept !=null && !"".equals(filterDept)){
             if (wrapper == null)

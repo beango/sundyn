@@ -112,16 +112,6 @@ function parseURL(url) {
 
 //替换myUrl中的同名参数值
 function replaceUrlParams(myUrl, newParams) {
-    /*
-    for (var x in myUrl.params) {
-        for (var y in newParams) {
-            if (x.toLowerCase() == y.toLowerCase()) {
-                myUrl.params[x] = newParams[y];
-            }
-        }
-    }
-    */
-
     for (var x in newParams) {
         var hasInMyUrlParams = false;
         for (var y in myUrl.params) {

@@ -1,14 +1,16 @@
 package com.sundyn.service;
 
-import com.sundyn.cache.Cache1;
 import com.sundyn.cache.CacheManager1;
 import com.sundyn.dao.SuperDao;
+import com.sundyn.util.EhCacheHelper;
+import com.sundyn.util.impl.util;
 import com.sundyn.utils.StringUtils;
 import com.sundyn.vo.DeptVo;
 import org.jsoup.helper.StringUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +52,6 @@ public class DeptService extends SuperDao
     public Map findDeptById(final Integer id) {
         final String sql = "select *,(select count(*) from appries_dept t1 where t1.fatherid=t2.id) as childs from appries_dept t2 where id=?";
         final Object[] arg = { id };
-        logger.debug(sql + id);
         try {
             return this.getJdbcTemplate().queryForMap(sql, arg);
         }
@@ -251,23 +252,12 @@ public class DeptService extends SuperDao
     }
 
     public List findchild(final Integer id, boolean isCountChild) {
-        //String Key = CacheManager1.DeptService_findchild + id + "_" + isCountChild;
-
-        //Cache1 data = CacheManager1.getCacheInfo(Key);
-        /*if(data!=null){
-            return (List)data.getValue();
-        }*/
         String sql = "select * ";
         if(isCountChild)
             sql += ", (select count(*) from appries_dept t1 where t1.fatherid=t2.id) as childs ";
         sql += "from appries_dept t2 where fatherId =" + id;
         try {
-            List l = this.getJdbcTemplate().queryForList(sql);
-            /*Cache1 c = new Cache1();
-            c.setValue(l);
-            CacheManager1.AddKey(Key);
-            CacheManager1.putCache(Key, c);*/
-            return l;
+            return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
             return null;
@@ -299,7 +289,7 @@ public class DeptService extends SuperDao
         return rtemp;
     }
 
-    public List findChildALL(final Integer id, int deep) throws SQLException {
+    public List findChildALL(final Integer id, int deep) {
         deep -= 1;
         final List tem = this.findchild(id,deep>0);
         if (tem != null && tem.size() > 0) {
@@ -324,11 +314,11 @@ public class DeptService extends SuperDao
         }
     }
 
-    public List findChildALL(final String ids) throws SQLException {
+    public List findChildALL(final String ids) {
         return this.findChildALL(ids,999);
     }
 
-    public List findChildALL(final String ids, int deep) throws SQLException {
+    public List findChildALL(final String ids, int deep) {
         if(ids == null)
             return null;
         final List temp = new ArrayList();
@@ -384,7 +374,39 @@ public class DeptService extends SuperDao
         return resl;
     }
 
-    public String findChildALLStr1234(String ids) throws SQLException {
+    public String findChildALLStr1234(String ids) {
+        return findChildALLStr1234(ids, false);
+    }
+
+    public String findChildALLStr1234(String ids, boolean isClear) {
+        Object allCacheData = EhCacheHelper.getCache(EhCacheHelper.CacheKeyEnum.ALLDEPT);
+        HashMap<String, Object> allData = null;
+        String mapKey = util.md5(ids + super.getUserDept());
+        if (null == allCacheData || isClear){
+            System.out.println("ALLDEPT 缓存为空，获取并添加缓存,是否清空：" + isClear);
+            allData = new HashMap<String, Object>();
+            String s1 = findChildALLStr1234_NOC(ids);
+            if (s1 != null)
+                allData.put(mapKey, s1);
+            EhCacheHelper.putCache(EhCacheHelper.CacheKeyEnum.ALLDEPT, allData);
+        }
+        else{
+            allData = (HashMap<String, Object>)allCacheData;
+            if (allData != null && !allData.containsKey(mapKey)){
+                String s1 = findChildALLStr1234_NOC(ids);
+                if (s1 != null)
+                    allData.put(mapKey, s1);
+                return s1;
+            }
+        }
+        if (allData!= null && allData.containsKey(mapKey)){
+            String s1 = allData.get(mapKey).toString();
+            return s1;
+        }
+        return null;
+    }
+
+    public String findChildALLStr1234_NOC(String ids) {
         if (ids==null || ids.equals(""))
             ids = "1";
         final List temp = this.findChildALL(ids);
@@ -520,7 +542,7 @@ public class DeptService extends SuperDao
     }
 
     public Map findByMac(final String mac) {
-        final String sql = "select * from appries_dept where remark=?";
+        final String sql = "select top 1 * from appries_dept where remark=?";
         final Map tempMap = null;
         final Object[] args = { mac };
         try {
@@ -827,5 +849,4 @@ public class DeptService extends SuperDao
             return null;
         }
     }
-
 }

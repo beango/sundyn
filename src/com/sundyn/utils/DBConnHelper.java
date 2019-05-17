@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class DBConnHelper
 {
-    public static Connection getConnection(final String driver) {
+    public static Connection getConnection_remove(final String driver) {
         Connection con = null;
         try {
             Class.forName("org.logicalcobwebs.proxool.ProxoolDriver");
@@ -19,7 +19,7 @@ public class DBConnHelper
         return con;
     }
     
-    public static void closeResource(final PreparedStatement ps, final ResultSet rs, Connection cnn) {
+    public static void closeResource_remove(final PreparedStatement ps, final ResultSet rs, Connection cnn) {
         try {
             if (rs != null) {
                 rs.close();
@@ -47,8 +47,8 @@ public class DBConnHelper
         }
     }
     
-    public static boolean emptyTable(final String sql) {
-        final Connection con = getConnection("proxool.DbPool");
+    public static boolean emptyTable_remove(final String sql) {
+        final Connection con = getConnection_remove("proxool.DbPool");
         Statement st = null;
         try {
             st = con.createStatement();

@@ -9,12 +9,10 @@ import javax.servlet.ServletContextListener;
 
 public class InitDbUpdate implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent arg0) {
-        System.out.println("webexit ... contextDestroyed");
+
     }
 
     public void contextInitialized(ServletContextEvent arg0) {
-
-        System.out.println("webinit ... contextInitialized");
         ApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(arg0.getServletContext());
         ManagerService managerService = (ManagerService)ctx.getBean("managerService");
         int count = managerService.countByName("admin");

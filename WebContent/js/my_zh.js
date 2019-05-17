@@ -1,7 +1,7 @@
 //导入包
-dojo.require("dojo.parser");
-dojo.require("dojo.io.script");
-dojo.require("dojo.io.iframe");
+// dojo.require("dojo.io.parser");
+// dojo.require("dojo.io.script");
+// dojo.require("dojo.io.iframe");
 var djConfig = {parseOnLoad:true};
 // 快速查询
 // 删除快速查询
@@ -767,13 +767,6 @@ function deptAddDialog(data, deptid, title) {
 
         }
     });
-    return;
-	dojo.xhrPost({url:"deptAddDialog.action", content:{deptType:data}, load:function (resp, ioArgs) {
-		dojo.byId("dialog").innerHTML = resp;
-		var dia = new dialog();
-		dia.show("dialog");
-
-	}});
 }
 // 修改机构对话框
 function deptEditDialog(title, fatherid) {
@@ -787,7 +780,7 @@ function deptCfgDialog(title, deptname) {
 }
 //窗口参数配置
 function counterCfgDialog(title, deptname, fatherId, deptid) {
-    new dialog().iframe('counterAdd.action?deptid='+deptid + "&fatherId="+fatherId + "&deptName=" + encodeURI(deptname), {title: title, resize:false, w:'700px', h:"650px"});
+    new dialog().iframe('counterAdd.action?deptid='+deptid + "&fatherId="+fatherId + "&deptName=" + encodeURI(deptname), {title: title+"11", resize:false, w:'700px', h:"650px"});
 }
 function deptGenCer(mac, batchname){
     dojo.xhrPost({url:"deptGenCer.action", content:{mac:mac, batchname:batchname}, load:function (resp, ioArgs) {
@@ -904,7 +897,7 @@ function page(data) {
 // 添加员工对话框
 function employeeAddDialog(title) {
     var deptId = document.getElementById("deptId").value;
-    new dialog().iframe('employeeAddDialog.action?deptId='+deptId, {title: title});
+    new dialog().iframe('employeeAddDialog.action?deptId='+deptId, {title: title, resize:false, w:'700px', h:"650px"});
 }
 // 员工是否存在
  function employeeExsits(){
@@ -1116,7 +1109,7 @@ function employeeIn(data) {
 // 根据人员姓名，查询人员
 function employeeQueryKeyword(deptId) {
 	var keyword = document.getElementById("keyword").value;
-	dojo.xhrPost({url:"employeeQueryKeyword.action", content:{keyword:keyword, deptId:document.getElementById("deptId").value}, load:function (resp, ioArgs) {
+	dojo.xhrPost({url:"employeeManage.action", content:{keyword:keyword, deptId:document.getElementById("deptId").value}, load:function (resp, ioArgs) {
 		document.getElementById("employeeView").innerHTML = resp;
 	}});
 }
@@ -1242,18 +1235,18 @@ function managerAddDialog() {
 // 添加低等级用户对话框
 function lowerManagerAddDialog(title) {
     var dia = new dialog();
-    dia.iframe("lowerManagerAddDialog.action",{title:title, resize:true});
+    dia.iframe("managerEditDialog.action",{title:title, w:'700px', h:'600px'});
 }
 // 验证用户不为空
 function managerCheck(){
 	var name = document.getElementById("name").value;
 	if(name==""){
-		alert("用户名不能为空");
+		error("用户名不能为空");
 		return false;
 	}
 	var realname = document.getElementById("realname").value;
 	if(realname==""){
-		alert("真实姓名不能为空");
+        error("真实姓名不能为空");
 		return false;
 	}
 	return true;
@@ -1285,7 +1278,10 @@ function managerAdd() {
     var powers = "";
     var managerPowers = $("input[name=managerPowers]");
     var localuser = $('input:radio[name="localuser"]:checked').val();
-
+	if(managerPowers.length!=1){
+		alert("只能选择一个角色！");
+		//return false;
+	}
     for (var i=0; i<managerPowers.length; i++){
         if(managerPowers[i].checked){
             powers += (managerPowers[i].value) + ",";
@@ -1323,12 +1319,12 @@ function managerAdd() {
 // 修改用户对话框
 function managerEditDialog(data, title) {
     var dia = new dialog();
-    dia.iframe("managerEditDialog.action?id="+data, {title: title, resize: false});
+    dia.iframe("managerEditDialog.action?id="+data, {title: title, w:'700px', h:'600px'});
 }
 // 修改用户
 function managerEdit() {
 	if(document.getElementById("tip").innerHTML=='该用户已经存在'){
-		alert("该用户已经存在");
+        error("该用户已经存在");
 		return false;
 	}
 	var check=managerCheck();
@@ -1345,38 +1341,54 @@ function managerEdit() {
 	var powers = "";
 	var managerPowers = $("input[name=managerPowers]");
     var localuser = $('input:radio[name="localuser"]:checked').val();
-	for (var i=0; i<managerPowers.length; i++){
-        if(managerPowers[i].checked){
-            powers += (managerPowers[i].value) + ",";
-        }
-    }
-    var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
-    var nodes=zTree.getCheckedNodes(true),
-        v="";
-    if(nodes && nodes.length>0)
-        v = nodes[0].id;
-    if (v == ""){
-        alert("选择部门机构");
+    var pwd = document.getElementById("pwd").value;
+    var accessip = document.getElementById("accessip").value;
+    var userid = document.getElementById("userid").value;
+    if (id=="" && pwd == "") {
+        error("密码不能为空!");
         return false;
     }
 
-	dojo.xhrPost({url:"managerEdit.action", content:{id:id, name:name, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId, powers:powers, dept:v, localuser: localuser}, load:function (resp, ioArgs) {
+	var powerLen = 0;
+	for (var i=0; i<managerPowers.length; i++){
+        if(managerPowers[i].checked){
+            powers += (managerPowers[i].value) + ",";
+			powerLen++;
+        }
+    }
+	if(powerLen != 1){
+		//error("只能选择一个角色！");
+		//return false;
+	}
+    var deptId = getCheck();
+    var deptname = getCheckName();
+    if (deptId == "") {
+        error("选择部门机构");
+        return false;
+    }
+    var idcard = document.getElementById("idcard").value;
+    var jyflag = document.getElementById("jyflag").checked?1:0;
+    var status=$('input:radio[name="status"]:checked').val();
+    var jyno = document.getElementById("jyno").value;
+    var uexpried = document.getElementById("uexpired").value;
+    var pwdexpired = document.getElementById("pwdexpired").value;
+    var accesstime1 = document.getElementById("accesstime1").value;
+    var accesstime2 = document.getElementById("accesstime2").value;
+
+	dojo.xhrPost({url:"managerEdit.action", content:{id:id, name:name, realname:realname, pwd: pwd, remark:remark, ext1:ext1,
+            ext2:ext2, userGroupId:userGroupId, powers:powers, dept:deptId, localuser: localuser,
+            idcard: idcard, jyflag: jyflag, jyno: jyno, uexpired: uexpried, pwdexpired: pwdexpired, status: status,
+            accesstime1: accesstime1, accesstime2:accesstime2, aname:(id==""||id==0)?"新增用户" : "修改用户",
+            accessip:accessip, userid:userid
+        }, load:function (resp, ioArgs) {
             if(resp.trim()==""){
-                layer.msg('修改成功', {
-                    icon: 1,
-                    time: 800
-                }, function(){
+                succ("修改成功", function(){
                     parent.closeDialog();
                     parent.lowerManagerQueryAjax();
                 });
             }
             else{
-                layer.msg(resp, {
-                    icon: 2,
-                    time: 800
-                }, function(){
-
-                });
+                error(resp);
             }
 	}});
 }
@@ -1403,11 +1415,6 @@ function lowerManagerQueryAjax() {
     else{
         location.href = _newUrl;
     }
-
-    return;
-	dojo.xhrPost({url:"lowerManagerQueryAjax.action", content:{name:keyword}, load:function (resp, ioArgs) {
-		document.getElementById("layui-form").innerHTML = resp;
-	}});
 }
 function managerPage(data) {
 	var name = document.getElementById("keyword").value;
@@ -1424,11 +1431,11 @@ function lowerManagerPage(data) {
 function managerDel(data) {
 	var managerId=document.getElementById("managerId").value;
 	if(data==1){
-		alert("不能删除此超级用户！");
+		lalert("不能删除此超级用户！");
 	}else if(managerId==data){
-		alert("不能删除自己！");
+		lalert("不能删除自己！");
 	}else{
-        if (confirm("确认要删除吗?")){
+        lconfirm("确认要删除吗?",function(){
             dojo.xhrPost({url:"managerDel.action", content:{id:data}, load:function (resp, ioArgs) {
                     layer.msg('删除成功', {
                         icon: 1,
@@ -1436,22 +1443,47 @@ function managerDel(data) {
                     }, function(){
                         lowerManagerQueryAjax();
                     });
-            }});
-        }
+                }});
+        });
 	}
 }
 // 重置密码
+function managerEditStatus(id, editname) {
+    lconfirm("确认要"+editname+"该账户吗?",function(){
+        dojo.xhrPost({url:"managerResetStatus.action", content:{id:id}, load:function (resp) {
+                if(resp.trim()==''){
+                    succ('状态修改成功!', function () {
+                        refreshTab();
+                    });
+                }
+                else{
+                    error(resp);
+                }
+            }});
+    });
+}
+// 重置密码
 function managerReset(data) {
-	if (confirm("确认要重置该用户密码吗?")){
-        dojo.xhrPost({url:"managerReset.action", content:{id:data}, load:function (resp, ioArgs) {
-                layer.msg('密码已重置为初始密码', {
-                    icon: 1,
-                    time: 800
-                }, function(){
-                    closeDialog();
-                });
-        }});
-    }
+     lconfirm("确认要重置该用户密码吗?",function(){
+         dojo.xhrPost({url:"managerReset.action", content:{id:data}, load:function (resp, ioArgs) {
+                 if(resp.trim()==''){
+                     layer.msg('密码已重置为初始密码', {
+                         icon: 1,
+                         time: 800
+                     }, function(){
+                         closeDialog();
+                     });
+                 }
+                 else{
+                     layer.msg('密码重置失败!', {
+                         icon: 2,
+                         time: 1800
+                     }, function(){
+                         closeDialog();
+                     });
+                 }
+             }});
+     });
 }
 // 角色管理
 function powerQueryAjax() {
@@ -1511,11 +1543,11 @@ function powerExist(){
 function powerAdd() {
 	var name = document.getElementById("name").value;
 	if(name==""){
-		alert("角色名不能为空");
+		error("角色名不能为空");
 		return false;
 	}
 	if (document.getElementById("tip").innerHTML=="该角色名存在") {
-		alert("该角色名存在");
+		error("该角色名存在");
 		return false;
 	}
 	var baseSet = document.getElementById("baseSet");
@@ -1576,11 +1608,11 @@ function powerCopy(data, title) {
 	var id = document.getElementById("id").value;
 	var name = document.getElementById("name").value;
 	if(name==""){
-		alert("用户名不能为空");
+		error("角色名不能为空");
 		return false;
 	}
 	if (document.getElementById("tip").innerHTML=="该角色名存在") {
-		alert("该角色名存在");
+		error("该角色名存在");
 		return false;
 	}
 	var baseSet = document.getElementById("baseSet");
@@ -1602,9 +1634,13 @@ function powerCopy(data, title) {
     for(var i=0;i<nodes.length;i++){
          v+=nodes[i].id + ",";
     }
-	dojo.xhrPost({url:"powerEdit.action", content:{id:id,funcid:v, name:name, baseSet:baseSet, dataManage:dataManage, deptId:deptId}, load:function (resp, ioArgs) {
+    var powertype = $("#powertype").val();
+    var status = $('input:radio[name="status"]:checked').val();
+
+	dojo.xhrPost({url:"powerEdit.action", content:{id:id,funcid:v, name:name, baseSet:baseSet, dataManage:dataManage,
+            deptId:deptId, powertype:powertype, status:status}, load:function (resp, ioArgs) {
 		if(resp.trim()==""){
-            layer.msg('修改成功', {
+            layer.msg(id==''?'添加成功':'修改成功', {
                 icon: 1,
                 time: 800
             }, function(){
@@ -2004,7 +2040,7 @@ function playListAddDialog() {
 }
 // 播放列表 添加对话框 android
 function playListAddDialogAndroid(title) {
-     new dialog().iframe("playListAddDialogAndroid.action",{title: title});
+     new dialog().iframe("playListAddDialogAndroid.action",{title: title, resize:false, w:"460px", h:"340px"});
 }
 
 // 播放列表添加
@@ -3054,13 +3090,9 @@ function sundynSetSave(){
 	      // return 0;
  	   // }
 	}
-  	 dojo.xhrPost({url:"baseSetSave.action",content:{camera:camera,k7:k7,star:star,bind:bind,guide:guide,tipLanguage:tipLanguage,title:title,logo:logo,sam:sam,eam:eam,spm:spm,epm:epm,prates:prates,pgrades:pgrades,pstars:pstars,buttom:buttom,requestAddress:requestAddress,standard:standard,est1:est1,est2:est2,est3:est3,est4:est4,est5:est5,est6:est6,est7:est7,est8:est8,est9:est9},load:function (resp, ioArgs){
-             layer.msg(resp, {
-                 icon: 1,
-                 time: 800
-             }, function(){
-             });
-	 }});
+  	 $.post("baseSetSave.action",{camera:camera,k7:k7,star:star,bind:bind,guide:guide,tipLanguage:tipLanguage,title:title,logo:logo,sam:sam,eam:eam,spm:spm,epm:epm,prates:prates,pgrades:pgrades,pstars:pstars,buttom:buttom,requestAddress:requestAddress,standard:standard,est1:est1,est2:est2,est3:est3,est4:est4,est5:est5,est6:est6,est7:est7,est8:est8,est9:est9},function (resp){
+  	     succ(resp);
+	 });
 }
 // 查看投票
 function voteResult(data){
@@ -4477,3 +4509,188 @@ function getQueryString(name) {
     if (r != null) return unescape(r[2]); return null;
 }
 
+function succ(msg, calback){
+    layer.msg(msg, {icon: 1, time: 800}, function(){
+        if (calback) {
+            calback();
+        }
+    });
+}
+
+function error(msg){
+    layer.msg(msg, {icon: 2, time: 5800});
+}
+
+// https://zeit.co/blog/async-and-await
+function sleep (time) {
+    setTimeout(function(){ console.log(11); }, time);
+}
+
+function lsubmit(url, data, cb){
+    var l = layer.msg('加载中', {icon: 16, shade: 0.1, time: 999999}, function(){
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: data,
+        success: function(resp){
+            layer.close(l);
+            cb(resp);
+        },
+        dataType: 'json'
+    });
+}
+
+function lalert(msg){
+    layer.msg(msg, {icon: 4, time: 5800});
+}
+
+function lalert2(msg, yesclick){
+    layer.alert(msg, {icon: 6});
+    layer.msg(msg, {
+        time: 0 //不自动关闭
+        ,btn: ['确定']
+        ,yes: function(index){
+            layer.close(index);
+            if(yesclick)yesclick();
+        }
+    });
+}
+
+function lconfirm(msg, yescall){
+    layer.confirm(msg, {
+        btn: ['确认','取消'] //按钮
+    }, function(){
+        if(yescall)
+            yescall();
+    }, function(){
+    });
+}
+
+// base64加密开始
+function parseURL(url) {
+    var a = document.createElement('a');
+    a.href = url;
+    return {
+        source: url,
+        protocol: a.protocol.replace(':', ''),
+        host: a.hostname,
+        port: a.port,
+        query: a.search,
+        params: (function () {
+            var ret = {},
+                seg = a.search.replace(/^\?/, '').split('&'),
+                len = seg.length, i = 0, s;
+            for (; i < len; i++) {
+                if (!seg[i]) { continue; }
+                s = seg[i].split('=');
+                ret[s[0]] = s[1];
+            }
+            return ret;
+
+        })(),
+        file: (a.pathname.match(/\/([^\/?#]+)$/i) || [, ''])[1],
+        hash: a.hash.replace('#', ''),
+        path: a.pathname.replace(/^([^\/])/, '/$1'),
+        relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [, ''])[1],
+        segments: a.pathname.replace(/^\//, '').split('/')
+    };
+}
+
+
+//替换myUrl中的同名参数值
+function replaceUrlParams(myUrl, newParams) {
+    for (var x in newParams) {
+        var hasInMyUrlParams = false;
+        for (var y in myUrl.params) {
+            if (x.toLowerCase() == y.toLowerCase()) {
+                myUrl.params[y] = newParams[x];
+                hasInMyUrlParams = true;
+                break;
+            }
+        }
+        //原来没有的参数则追加
+        if (!hasInMyUrlParams) {
+            myUrl.params[x] = newParams[x];
+        }
+    }
+    var _result = myUrl.protocol + "://" + myUrl.host + ":" + myUrl.port + myUrl.path + "?";
+
+    for (var p in myUrl.params) {
+        _result += (p + "=" + myUrl.params[p] + "&");
+    }
+
+    if (_result.substr(_result.length - 1) == "&") {
+        _result = _result.substr(0, _result.length - 1);
+    }
+
+    if (myUrl.hash != "") {
+        _result += "#" + myUrl.hash;
+    }
+    return _result;
+}
+
+
+function renderchild(form, value, level, deptpath, type){
+    var def = "";
+    if(deptpath){
+        def = deptpath[0];
+        deptpath.remove(def);
+    }
+
+    dojo.xhrGet({url:"queryDeptAjax2.action", content:{id: value, level: level, type:type}, load:function (resp, ioArgs) {
+            var i=level+1;
+            var d = $("#deptitem" + i);
+            while(d && d.length>0){
+                d.remove();
+                i++;
+                d = $("#deptitem" + i);
+            }
+            if(resp.trim().length==0)
+                return;
+            $(".layui-select-cus").find("div:last").before(resp);
+            if(def) {
+                $("select[name=deptId"+(level+1)+"]").val(def);
+            }
+            form.render('select');
+            form.on("select(queryDept"+(level+1)+")",function(data2){
+                renderchild(form, data2.value, level+1, deptpath, type);
+                initDeptValue();
+            });
+
+            if(def!=null && def!="") {
+                renderchild(form, def, level+1, deptpath, type);
+                initDeptValue();
+            }
+        }});
+}
+
+function encode64(input) {
+	var keyStr = "ABCDEFGHIJKLMNOP" + "QRSTUVWXYZabcdef" + "ghijklmnopqrstuv"
+		+ "wxyz0123456789+/" + "=";
+	var output = "";
+	var chr1, chr2, chr3 = "";
+	var enc1, enc2, enc3, enc4 = "";
+	var i = 0;
+	do {
+		chr1 = input.charCodeAt(i++);
+		chr2 = input.charCodeAt(i++);
+		chr3 = input.charCodeAt(i++);
+		enc1 = chr1 >> 2;
+		enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+		enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+		enc4 = chr3 & 63;
+		if (isNaN(chr2)) {
+			enc3 = enc4 = 64;
+		} else if (isNaN(chr3)) {
+			enc4 = 64;
+		}
+		output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2)
+			+ keyStr.charAt(enc3) + keyStr.charAt(enc4);
+		chr1 = chr2 = chr3 = "";
+		enc1 = enc2 = enc3 = enc4 = "";
+	} while (i < input.length);
+
+	return output;
+}

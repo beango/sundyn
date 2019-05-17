@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="lib/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
@@ -51,6 +51,7 @@
             <td align="left" style="border-color: #e9f5fd;">
                 <div class="layui-input-inline">
                 <select name="deptId" id="deptId">
+                    <option value="">全部</option>
                     <c:forEach items="${list}" var="dept" varStatus="index">
                         <option value="${dept.id}" <c:if test="index.index==0">selected="selected"</c:if>><c:forEach begin="0" end="${dept.lenvel}">&nbsp;</c:forEach>${dept.name}</option>
                     </c:forEach>

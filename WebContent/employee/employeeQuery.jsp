@@ -9,7 +9,7 @@
                cellspacing="0" style="border-color: #FFFFFF;">
             <tr>
                 <td style="border-color: #FFFFFF;" align="center">
-                    <input type="text" name="keyword" id="keyword" value="${keyword}" class="input_comm"/>
+                    姓名或工号：<input type="text" name="keyword" id="keyword" value="${keyword}" class="input_comm"/>
                 </td>
                 <td style="border-color: #FFFFFF;" align="left">
                     <img src="<s:text name='sundyn.pic.query' />" width="55" height="25"
@@ -53,7 +53,7 @@
                         <s:text name='sundyn.female'/>
                     </c:if>
                 </td>
-                <td align="center">${employee.ext2}</td>
+                <td align="center">${employee.cardnum}</td>
                <%-- <td align="center">
                     <c:if test="${online!=null}">
                         <c:if test="${fn:contains(online, employee.id)}">

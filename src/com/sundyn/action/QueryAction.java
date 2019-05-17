@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.opensymphony.xwork2.ActionContext;
 import com.sundyn.entity.QueueDetail;
-import com.sundyn.entity.SysProxyorg;
-import com.sundyn.entity.WarnOntimedetail;
 import com.sundyn.service.*;
 import com.sundyn.util.*;
 import org.apache.struts2.ServletActionContext;
@@ -19,7 +17,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.Socket;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -460,11 +457,11 @@ public class QueryAction extends MainAction
             this.deptId = Integer.valueOf(request.getParameter("deptId"));
         final String deptIds = this.deptService.findChildALLStr1234(request.getParameter("deptId"));
         final String allKeyInUse = this.keyTypeService.findAllKeyInUseWithNoEval(1);
-        this.pager = new Pager("currentPage", pageSize, 0, request);
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
         int[] rowcounts = new int[1];
         List list = this.queryService.queryDept2Ex(deptIds,req.getString("bizname"),null, null, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
                 this.pager.getPageSize(), allKeyInUse, rowcounts);
-        this.pager = new Pager("currentPage", pageSize, rowcounts[0], request);
+        this.pager = new Pager("currentPage", pageSize, rowcounts[0], request, this);
         list = this.handleEmptyFile(list);
         this.pager.setPageList(list);
         JSONObject gson = new JSONObject(pager);
@@ -789,7 +786,7 @@ public class QueryAction extends MainAction
     public String queryDealPeopleyForDel() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.queryService.countQueryEmployee(this.id, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         final List querylist = this.queryService.queryEmployee(this.id, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(querylist);
         return "success";
@@ -850,7 +847,7 @@ public class QueryAction extends MainAction
         final String path = ServletActionContext.getServletContext().getRealPath("/");
         final String allKeyInUse = this.keyTypeService.findAllKeyInUseWithNoEval(1);
         int rowsCount = 0;//this.queryService.countQueryEmployee2(this.id, this.startDate, this.endDate, allKeyInUse);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         int[] rc = new int[1];
         //List querylist = this.queryService.queryEmployee2(deptIds, req.getInt("employeeid"), this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
         //        this.pager.getPageSize(), allKeyInUse, rc);
@@ -858,7 +855,7 @@ public class QueryAction extends MainAction
                 this.pager.getPageSize(), allKeyInUse, rc);
         rowsCount = rc[0];
 
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         if (querylist != null) {
             querylist = this.handleEmptyFile(querylist);
         }
@@ -926,7 +923,7 @@ public class QueryAction extends MainAction
         if (m3 != null && m3.size() >= 1) {
             this.id = Integer.valueOf(this.employeeService.employeeFindByCardnum(cardNum).get("id").toString());
             final int rowsCount = this.queryService.countQueryEmployee(this.id, this.startDate, this.endDate);
-            this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+            this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
             final List querylist = this.queryService.queryEmployee(this.id, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(querylist);
             final List chatList = this.queryService.QueryEmployeeChat(this.id, this.startDate, this.endDate);
@@ -952,7 +949,7 @@ public class QueryAction extends MainAction
         }
         final Integer employeeId = Integer.valueOf(emp.get("Id").toString());
         final int rowsCount = this.queryService.countQueryEmployee(employeeId, this.startDate, this.endDate);
-        final Pager pager = new Pager("currentPage", pageSize, rowsCount, request);
+        final Pager pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         this.pager = pager;
         this.pager = pager;
         final List querylist = this.queryService.queryEmployee(employeeId, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
@@ -988,13 +985,13 @@ public class QueryAction extends MainAction
         if(request.getParameter("keys")!=null && !request.getParameter("keys").equals(""))
             keys =Integer.parseInt(request.getParameter("keys"));
         final int[] rowsCount = new int[]{0};
-        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request, this);
         final String allKeyInUse = this.keyTypeService.findAllKeyInUseWithNoEval(1);
         //List querylist = this.queryService.queryResult(deptIds, keys, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
         //        this.pager.getPageSize(), allKeyInUse, rowsCount);
         List querylist = this.queryService.queryDept2Ex(deptIds, req.getString("bizname"), null, keys, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
                 this.pager.getPageSize(), allKeyInUse, rowsCount);
-        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request, this);
         querylist = this.handleEmptyFile(querylist);
         this.pager.setPageList(querylist);
         this.keys = new StringBuilder(String.valueOf(keys)).toString();
@@ -1069,7 +1066,7 @@ public class QueryAction extends MainAction
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
         final String tel = request.getParameter("tel");
         final int rowsCount = this.queryService.countQueryResultTel(deptIds, tel, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         List querylist = this.queryService.queryResultTel(deptIds, tel, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         querylist = this.handleEmptyFile(querylist);
         this.pager.setPageList(querylist);
@@ -1104,11 +1101,11 @@ public class QueryAction extends MainAction
         strXML1.append("<graph caption='" + this.getText("sundyn.inquiry.appriesDataDiagram") + "' xAxisName='\u540d\u79f0' yAxisName='AAAA\u91cf' baseFontSize='14' rotateYAxisName='1' decimalPrecision='0' formatNumberScale='0'>");
         final String tel = request.getParameter("tel");
         final int[] rowsCount = new int[]{0};
-        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request, this);
         final String allKeyInUse = this.keyTypeService.findAllKeyInUse(1);
         List querylist = this.queryService.queryResultIdCard(deptIds, tel, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
                 this.pager.getPageSize(), allKeyInUse, rowsCount);
-        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request, this);
         querylist = this.handleEmptyFile(querylist);
         this.pager.setPageList(querylist);
         this.keys = new StringBuilder(String.valueOf(this.keys)).toString();
@@ -1198,9 +1195,9 @@ public class QueryAction extends MainAction
             keys = keys.substring(0, keys.length() - 1);
         }
         final int rowsCount[] = new int[1];//this.queryService.countQueryZh2(this.id, keys, deptIds, this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, 0, request);
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
         List tempList = this.queryService.queryZh2(this.id, keys, deptIds, this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
-        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request, this);
         if (tempList != null) {
             tempList = this.handleEmptyFile(tempList);
         }
@@ -1263,13 +1260,13 @@ public class QueryAction extends MainAction
             keys = keys.substring(0, keys.length() - 1);
         }
         final int[] rowsCount = new int[]{0};
-        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request, this);
         final String allKeyInUse = this.keyTypeService.findAllKeyInUseWithNoEval(1);
         //List tempList = this.queryService.queryZh2(this.id, keys, deptIds, this.startDate, this.endDate,
         //        (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowsCount);
         List tempList = this.queryService.queryDept2Ex(deptIds,req.getString("bizname"), id, req.getInt("keys",-1), this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(),
                 this.pager.getPageSize(), allKeyInUse, rowsCount);
-        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount[0], request, this);
         if (tempList != null) {
             tempList = this.handleEmptyFile(tempList);
         }

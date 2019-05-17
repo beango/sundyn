@@ -18,10 +18,10 @@
             overflow-x: auto;
         }
     </style>
-    <script src="assets/javascripts/vendor/jquery-2.1.3.min.js?1440992355"></script>
+    <script type="text/javascript" src="${ctx}/js/jquery.js"></script>
     <script type="text/javascript" src="lib/jquery.form.min.js"></script>
     <script type="text/javascript" src="lib/layer/layer.js"></script>
-    <script type="text/javascript" src="lib/layui/layui.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.all.js"></script>
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
     <script type="text/javascript" src="lib/util/deptselutil.js?1"></script>
@@ -33,6 +33,7 @@
                 beforeSubmit: validate,    // 提交前，验证
                 success: function(resp) {
                     if(resp.trim()==""){
+
                         layer.msg('修改成功', {
                             icon: 1,
                             time: 800

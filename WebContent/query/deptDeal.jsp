@@ -11,14 +11,10 @@
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
     <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
-    <title><s:text name='sundyn.title'/></title>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <title><s:text name='zx.title'/></title>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
-    <script type="text/javascript" src="js/pie.js"></script>
-    <script type="text/javascript" src="js/Pie3D.js"></script>
-    <script type="text/javascript" src="js/layer/layer.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
@@ -84,14 +80,13 @@
     <div class="layui-inline">
         <div class="layui-input-inline">
             <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" class="hand" onclick="querydept(false)"/>
-            <%--<img src="<s:text name='sundyn.query.pic.exportExcel'/>" class="hand" onclick="querydept(true)"/>--%>
         </div>
     </div>
     <table width="100%" class="tablelist">
         <thead>
         <tr>
             <th style="text-align: center;">
-                <s:text name='sundyn.column.employeeName'/>
+                <s:text name='sundyn.column.employeeName'/> / 窗口
             </th>
             <th style="text-align: center;">
                 <s:text name='sundyn.column.atDating'/>

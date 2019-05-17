@@ -1,12 +1,14 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.service.*;
-import com.sundyn.util.*;
-import org.apache.struts2.*;
-import javax.servlet.http.*;
-import java.text.*;
-import java.util.*;
+import com.sundyn.service.ErrorInfoService;
+import com.sundyn.util.Pager;
+import org.apache.struts2.ServletActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class ErrorInfoAction extends MainAction
 {
@@ -26,7 +28,7 @@ public class ErrorInfoAction extends MainAction
             this.endDate = curdate;
         }
         final int rowsCount = this.errorInfoService.query(this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, this);
         final List templist = this.errorInfoService.query(this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(templist);
         return "success";

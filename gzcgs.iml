@@ -86,6 +86,15 @@
         </webroots>
       </configuration>
     </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="ApplicationContext Action" removed="false">
+          <file>file://$MODULE_DIR$/WebContent/WEB-INF/applicationContext-action.xml</file>
+          <file>file://$MODULE_DIR$/WebContent/WEB-INF/applicationContext-dao.xml</file>
+          <file>file://$MODULE_DIR$/WebContent/WEB-INF/applicationContext-service.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
     <output url="file://$MODULE_DIR$/target/classes" />
@@ -95,13 +104,11 @@
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="library" name="ant" level="project" />
     <orderEntry type="library" name="log4j-api-2.11.0" level="project" />
     <orderEntry type="library" name="ehcache-1.4.1" level="project" />
     <orderEntry type="library" name="ehcache-2.7.8" level="project" />
-    <orderEntry type="library" name="bcprov-ext-jdk15on-159" level="project" />
-    <orderEntry type="library" name="bcpkix-jdk15on-159" level="project" />
     <orderEntry type="library" name="mybatis-generator-core-1.3.7" level="project" />
     <orderEntry type="library" name="shiro-cache-1.4.0" level="project" />
     <orderEntry type="library" name="spring-oxm-4.2.5.RELEASE" level="project" />
@@ -114,6 +121,33 @@
     <orderEntry type="library" name="spring-aop-4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="sqljdbc4-4.0" level="project" />
     <orderEntry type="library" name="struts2-core-2.3.16" level="project" />
+    <orderEntry type="library" exported="" name="Tomcat 7.0.85" level="application_server_libraries" />
+    <orderEntry type="library" name="poi-4.0.0" level="project" />
+    <orderEntry type="library" name="org.apache.poi.xwpf.converter.core-1.0.5" level="project" />
+    <orderEntry type="library" name="ooxml-schemas-1.1" level="project" />
+    <orderEntry type="library" name="bcpkix-jdk15on-159" level="project" />
+    <orderEntry type="library" name="bcprov-ext-jdk15on-159" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.struts:struts2-core:2.5.10.1" level="project" />
+    <orderEntry type="library" name="Maven: ognl:ognl:3.1.12" level="project" />
+    <orderEntry type="library" name="Maven: org.javassist:javassist:3.20.0-GA" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.7" level="project" />
+    <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.3.2" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.23" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-jcl:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-oxm:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:5.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aspects:5.0.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.10" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.49" level="project" />
     <orderEntry type="library" name="Maven: commons-dbcp:commons-dbcp:1.4" level="project" />
@@ -139,5 +173,34 @@
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml-schemas:4.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.xmlbeans:xmlbeans:3.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi-scratchpad:4.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-all:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-lang:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.21" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-config-core:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-config-ogdl:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.9.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-crypto-core:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-crypto-hash:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-crypto-cipher:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-event:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-core:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-cache:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-web:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-aspectj:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.8.9" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-ehcache:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-core:2.6.11" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-guice:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.inject:guice:3.0" level="project" />
+    <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
+    <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.inject.extensions:guice-multibindings:3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-hazelcast:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: com.hazelcast:hazelcast:3.7.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-quartz:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.opensymphony.quartz:quartz:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.shiro:shiro-spring:1.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.3" level="project" />
+    <orderEntry type="library" name="proxool-0.8.3" level="project" />
   </component>
 </module>

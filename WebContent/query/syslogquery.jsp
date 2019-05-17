@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
@@ -66,9 +66,12 @@
                 <th style="text-align: center;">
                     用户
                 </th>
-                <th style="text-align: center;">操作</th>
+                <th style="text-align: center;">模块</th>
+                <th style="text-align: center;">页面操作</th>
+                <th style="text-align: center;">类型</th>
                 <th style="text-align: center;">IP地址</th>
                 <th style="text-align: center;">时间</th>
+                <th style="text-align: center;">描述</th>
             </tr>
             </thead>
             <tbody>
@@ -83,17 +86,23 @@
                                 ${data.realname}
                         </td>
                         <td style="text-align: center;">
-                                ${data.actionname}
+                                ${data.moudlename}
+                        </td>
+                        <td style="text-align: center;">
+                                ${data.action}
+                        </td>
+                        <td style="text-align: center;">
+                                ${data.actionname==""?(data.action.indexOf("get")>-1?"查询":(data.action.indexOf("edit")>-1?"编辑":(data.action.indexOf("add")>-1?"添加":(data.action.indexOf("del")>-1?"删除":"")))) : data.actionname}
                         </td>
                         <td style="text-align: center;">
                                 ${data.ipaddress}
                         </td>
                         <td style="text-align: center;">
                             <label style="height:20px;"><fmt:formatDate value="${data.actiontime}" type="both" /></label>
-                        </td>
-
-                        <td>
                             <c:if test="{data.endtime!=null}">　／　</c:if><label style="height:20px;"><fmtformatDate value="{data.endtime}" type="both" /></label>
+                        </td>
+                        <td>
+                                ${data.note}
                         </td>
                     </tr>
                 </c:forEach>

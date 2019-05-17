@@ -13,15 +13,9 @@
     <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
-    <script type="text/javascript" src="js/myAjax.js"></script>
-    <script type="text/javascript" src="js/application.js?1"></script>
-    <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
-    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
     <style type="text/css">
         ul.ztree {margin-top: 10px;border: 1px solid #617775;background: #f0f6e4;width:420px;height:360px;overflow-y:scroll;overflow-x:auto;}
         .layui-btn-xs{text-indent:0px;}
@@ -36,7 +30,7 @@
 
     function serialAdd(id){
         var action = id==undefined?"增加":"编辑";
-        new dialog().iframe("serialAdd.action?id=" + id, {title: action + "业务", resize:false, w:"500px", h:"400px"});
+        new dialog().iframe("serialAdd.action?id=" + id + "&halldef=" + $("#hallsele").val(), {title: action + "业务", resize:false, w:"500px", h:"400px"});
     }
 
     function serialDel(id){
@@ -95,7 +89,7 @@
     <div class="layui-inline">
         <div class="layui-input-inline">
             <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" class="hand" onclick="serialQuery('')"/>
-            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="serialAdd()" value="增    加" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="serialAdd('')" value="增    加" />
         </div>
     </div>
     <div>

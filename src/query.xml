@@ -174,12 +174,7 @@
 		<action name="getMenu" class="menuAction" method="getQuery">
 			<result name="success">/menujson.jsp</result>
 		</action>
-        <action name="leftMenu" class="menuAction" method="getQuery">
-            <result name="success">/left.jsp</result>
-        </action>
-        <action name="topMenu" class="menuAction" method="getQuery">
-            <result name="success">/top.jsp</result>
-        </action>
+
 		<action name="queryDemo" class="queryAction"
 			method="queryDemo">
 			<result name="success">/query/dialog.jsp</result>
@@ -205,6 +200,12 @@
         </action>
 	</package>
 	<package name="queryOther" extends="struts-default">
+        <action name="leftMenu" class="menuAction" method="leftMenu">
+            <result name="success">/left.jsp</result>
+        </action>
+        <action name="topMenu" class="menuAction" method="topMenu">
+            <result name="success">/top.jsp</result>
+        </action>
 		<action name="queryEmployee" class="queryAction"
 			method="queryEmployee">
 			<result name="success">/query/employee.jsp</result>

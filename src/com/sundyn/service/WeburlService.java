@@ -122,7 +122,6 @@ public class WeburlService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

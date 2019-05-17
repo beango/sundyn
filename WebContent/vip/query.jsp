@@ -10,18 +10,11 @@
     <title>VIP客户信息管理</title>
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
-    <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
-    <script type="text/javascript" src="js/myAjax.js"></script>
-    <script type="text/javascript" src="js/application.js?1"></script>
-    <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
-    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
     <style type="text/css">
         ul.ztree {margin-top: 10px;border: 1px solid #617775;background: #f0f6e4;width:420px;height:360px;overflow-y:scroll;overflow-x:auto;}
         .layui-btn-xs{text-indent:0px;}
@@ -30,33 +23,25 @@
 <body>
 <script type="text/javascript">
     function vipQuery(){
-        var cardno = $("#cardno").val();
-        window.location.href = "vipQuery.action?cardno="+cardno + "&vipname=" + $("#vipname").val();
+        window.location.href = "vipQuery.action?cardno=" + $("#cardno").val() + "&vipname=" + $("#vipname").val();
     }
 
     function vipAdd(id){
-        var action = id==undefined?"增加":"编辑";
+        var action = id == undefined ? "增加" : "编辑";
         new dialog().iframe("vipAdd.action?id=" + id, {title: action+"VIP名单", resize:false, w:"460px", h:"340px"});
     }
 
     function vipDel(id){
         layer.confirm('真的删除么', function(index){
             $.post("vipDel.action?id=" + id, function(resp){
-                if(resp.trim()==""){
-                    layer.msg('删除成功', {
-                        icon: 1,
-                        time: 800
-                    }, function(){
-                        parent.closeDialog();
-                        parent.refreshTab();
+                if(resp.trim()=="") {
+                    succ('删除成功', function(){
+                        closeDialog();
+                        refreshTab();
                     });
                 }
                 else{
-                    layer.msg(resp, {
-                        icon: 2,
-                        time: 1200
-                    }, function(){
-                    });
+                    error(resp);
                 }
             });
             layer.close(index);

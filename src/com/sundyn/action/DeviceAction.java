@@ -5,7 +5,6 @@ import com.sundyn.service.DeviceService;
 import com.sundyn.util.DateHelper;
 import com.sundyn.util.Pager;
 import com.sundyn.utils.JavaXML;
-import freemarker.template.utility.DateUtil;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
 import org.jdom.Content;
@@ -78,10 +77,10 @@ public class DeviceAction extends MainAction
     public String batchquery() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         //final int rowsCount = this.deviceService.getCount1();
-        this.pager = new Pager("currentPage", pageSize, 0, request);
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
         int[] total = new int[1];
         List list = this.deviceService.findDeviceBatch((this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), total);
-        this.pager = new Pager("currentPage", pageSize, total[0], request);
+        this.pager = new Pager("currentPage", pageSize, total[0], request, this);
         this.pager.setPageList(list);
 
         return "success";
@@ -233,7 +232,7 @@ public class DeviceAction extends MainAction
 
     public String deviceList() {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        this.pager = new Pager("currentPage", pageSize, 0, request);
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
         int[] total = new int[1];
         String startDate = request.getParameter("startDate"),
                 endDate = request.getParameter("endDate"),
@@ -241,7 +240,7 @@ public class DeviceAction extends MainAction
                 keymac = request.getParameter("mac");
 
         List list = this.deviceService.findDevice(batchno, keymac, startDate, endDate,(this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), total);
-        this.pager = new Pager("currentPage", pageSize, total[0], request);
+        this.pager = new Pager("currentPage", pageSize, total[0], request, this);
         this.pager.setPageList(list);
         String spath = ServletActionContext.getServletContext().getRealPath("/");
         for (int i=0; i<pager.getPageList().size(); i++){

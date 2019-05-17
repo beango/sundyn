@@ -6,7 +6,7 @@
 <script type="text/javascript" src="lib/layui/layui.js"></script>
 <script type="text/javascript" src="js/myAjax.js"></script>
 <script type="text/javascript" src="js/dojo.js"></script>
-<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
 
 <div class="dialog">

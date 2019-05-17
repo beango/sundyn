@@ -5,20 +5,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>角色管理</title>
+        <title><c:forEach items="${navbar_menuname}" var="menu" varStatus="index">${menu.name}${index.index==0?"->":""}</c:forEach></title>
         <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
         <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
 
         <script type="text/javascript" src="js/dojo.js"></script>
         <script type="text/javascript" src="js/dialog.js"></script>
-        <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
-        <script type="text/javascript" src="js/jquery.blockUI.js?1"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-        <script type="text/javascript" src="lib/layer/layer.js"></script>
         <script type="text/javascript" src="lib/layui/layui.js"></script>
         <script type="text/javascript" src="js/myAjax.js"></script>
         <script type="text/javascript" src="js/application.js?1"></script>
-
 	</head>
 	<body>
 		<div id="man_zone">
@@ -36,13 +33,15 @@
 				       <tr>
 				         <td style="border-color:#FFFFFF;width:120px;" align="center">	<input name="keyword" id="keyword" class="input_comm"  value="<%=request.getParameter("name")==null?"":request.getParameter("name")%>"/></td>
 				         <td style="border-color:#FFFFFF;width:60px;" align="left"><img src="<s:text name='sundyn.pic.query' />" width="55" height="25" onclick="lowerPowerQueryAjax()" class="hand"/></td>
-				         <td style="border-color:#FFFFFF;" align="left"><img src="<s:text name='sundyn.pic.add' />" width="63" height="25" onclick="powerAddDialog('<s:text name="sundyn.role.addRole" />')" class="hand"/></td>
+				         <td style="border-color:#FFFFFF;" align="left"><img src="<s:text name='sundyn.pic.add' />" width="63" height="25" onclick="powerEditDialog(0,'<s:text name="sundyn.role.addRole" />')" class="hand"/></td>
 				      </tr>
 				     </table>
 			    </div>
                 <table class="layui-table">
 				  <tr>
 				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name="sundyn.column.roleName" /></td>
+				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">类型</td>
+				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1">状态</td>
 				     <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1" style="display: none;"><s:text name="sundyn.column.systemSetup" /></td>
 				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1" style="display: none;"><s:text name="sundyn.column.baseSetup" /></td>
 				    <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1" style="display: none;"><s:text name="sundyn.column.dept" /></td>
@@ -53,6 +52,12 @@
 							<td style="text-align: center;">
 								${power.name}
 							</td>
+                            <td style="text-align: center;">
+								${power.powertype}
+							</td>
+                            <td style="text-align: center;">
+                                    ${power.status==0?"禁用":"启用"}
+                            </td>
 							<td style="text-align: center;display: none;">
 								<c:if test="${ power.baseSet==1    }">
 									<s:text name='sundyn.yes' />
@@ -87,5 +92,7 @@
 	</body>
     <script type="text/javascript">
         initPager(${pager.getRowsCount()}, <%=request.getParameter("currentPage")==null?1:request.getParameter("currentPage")%>,<%=request.getParameter("pageSize")==null?10:request.getParameter("pageSize")%>);
+        layui.use('layer', function() {
+        });
     </script>
 </html>

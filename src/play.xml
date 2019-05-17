@@ -8,8 +8,10 @@
 			<interceptor name="userCheckR"
 				class="com.sundyn.util.UserCheckR">
 			</interceptor>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
 			<interceptor-stack name="mydefault">
 				<interceptor-ref name="userCheckR" />
+				<interceptor-ref name="operationInterceptor" />
 				<interceptor-ref name="defaultStack" />
 			</interceptor-stack>
 		</interceptors>

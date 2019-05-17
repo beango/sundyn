@@ -63,6 +63,16 @@ public class AppriesPowerfunc extends Model<AppriesPowerfunc> {
     @TableField(exist = false)
     private int powerid;
 
+    public String getPowertype() {
+        return powertype;
+    }
+
+    public void setPowertype(String powertype) {
+        this.powertype = powertype;
+    }
+
+    private String powertype;
+
     public static final String ID = "id";
 
     public static final String FUNCCODE = "funcCode";

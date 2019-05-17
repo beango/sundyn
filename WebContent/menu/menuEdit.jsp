@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="lib/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
@@ -17,7 +17,7 @@
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
 </head>
 <body>
-<div class="layui-form">
+<div class="layui-form" lay-filter="form1">
     <input type="hidden" name="id" id="id" class="input_comm" value="${model.id}"/>
     <table width="100%" height="173" border="0" cellpadding="0"
            cellspacing="0" style="border-color: #e9f5fd;">
@@ -47,6 +47,30 @@
             </td>
         </tr>
         <tr>
+            <td align="right">
+                是否警员功能<s:text name="sundyn.colon" />
+            </td>
+            <td>
+                <input type="checkbox" name="isjy" id="isjy" lay-skin="switch" lay-text="是|否" value="1" />
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                是否非常规业务<s:text name="sundyn.colon" />
+            </td>
+            <td>
+                <input type="checkbox" name="isnotgeneral" id="isnotgeneral" lay-skin="switch" lay-text="是|否" value="1" />
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                是否核心业务<s:text name="sundyn.colon" />
+            </td>
+            <td>
+                <input type="checkbox" name="iscore" id="iscore" lay-skin="switch" lay-text="是|否" value="1" />
+            </td>
+        </tr>
+        <tr>
             <td style="border-color: #e9f5fd;" align="right">
                 排序<s:text name="sundyn.colon" />
             </td>
@@ -66,7 +90,7 @@
         <tr>
             <td></td>
             <td>
-                <img src="<s:text name='sundyn.pic.ok' />"  onclick="menuAdd()"
+                <img src="<s:text name='sundyn.pic.ok' />"  onclick="post()"
                      class="hand" />
                 <img src="<s:text name='sundyn.pic.close' />"  onclick="closeDialog()"
                 class="hand">
@@ -76,11 +100,16 @@
 </div>
 </body>
 <script type="text/javascript">
-    layui.use('form', function(){
-        var form = layui.form;
-    });
+layui.use('form', function(){
+    var form = layui.form;
+    form.val("form1", {
+        "isjy": ${model.isjy==1?1:0},
+        "iscore": ${model.iscore==1?1:0},
+        "isnotgeneral": ${model.isnotgeneral==1?1:0},
+    })
+});
 
-    function menuAdd(){
+    function post(){
         var id = document.getElementById("id").value;
         var menuName = document.getElementById("menuName").value;
         if(menuName==""){
@@ -94,11 +123,15 @@
         var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes=zTree.getCheckedNodes(true),
         v="";
-        console.log(nodes);
         for(var i=0;i<nodes.length;i++){
             v+=nodes[i].id + ",";
         }
-        dojo.xhrPost({url:"menuEditPost.action", content:{id:id, menuName:menuName, nav:nav, parentId:parentId, menuorder:menuorder, funccode: v}, load:function (resp, ioArgs) {
+    var isjy = $('input:checkbox[name="isjy"]:checked').val();
+    var iscore = $('input:checkbox[name="iscore"]:checked').val();
+    var isnotgeneral = $('input:checkbox[name="isnotgeneral"]:checked').val();
+
+        dojo.xhrPost({url:"menuEditPost.action", content:{id:id, menuName:menuName, nav:nav, parentId:parentId,
+            menuorder:menuorder, funccode: v, iscore:iscore, isjy:isjy, isnotgeneral:isnotgeneral}, load:function (resp, ioArgs) {
                 if(resp.trim()==""){
                     layer.msg('修改成功', {
                         icon: 1,
@@ -148,7 +181,6 @@
         callback: {
             onAsyncSuccess: function(){
                 var funcid = "${model.funcId}";
-                console.log("ID:" + funcid + "${model.parentName}");
                 if (funcid!=null && funcid != ""){
                     var node = zTree.getNodeByParam("id", funcid);
                     if(node){

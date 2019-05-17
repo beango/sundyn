@@ -3,12 +3,15 @@ package com.sundyn.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.sundyn.dao.SysProxyDao;
 import com.sundyn.entity.SysProxy;
 import com.sundyn.service.ISysProxyService;
+import com.sundyn.util.CookieUtils;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -21,15 +24,8 @@ import java.util.Map;
  */
 @Service
 public class SysProxyServiceImpl extends ServiceBaseImpl<SysProxyDao, SysProxy> implements ISysProxyService {
-
     @Override
     public Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper) {
-        String filterDept = USERDATA_DEPTIDS();
-        if (filterDept !=null && !"".equals(filterDept)){
-            if (wrapper == null)
-                wrapper = new EntityWrapper<>();
-            //wrapper = wrapper.in("deptid", filterDept.split(","));
-        }
         return page.setRecords(baseMapper.querypagemap(page, wrapper));
     }
 }

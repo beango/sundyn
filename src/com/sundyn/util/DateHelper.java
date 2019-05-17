@@ -2,8 +2,13 @@ package com.sundyn.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateHelper {
     private static DateHelper util;
@@ -291,5 +296,18 @@ public class DateHelper {
         cal.set(Calendar.SECOND, 0);
         Date date = cal.getTime();
         return date;
+    }
+
+    public static void main(String[] arg){
+        System.out.println(new DateHelper().getDataString_1(getWeekFirstDate()));
+
+        java.util.TimeZone zone = java.util.TimeZone.getTimeZone("GMT+8:00");
+        java.util.Calendar cal = java.util.Calendar.getInstance(zone);
+
+        //Calendar calendar = Calendar.getInstance();
+        //设置该周第一天为星期一
+        cal.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+
+        System.out.println(new DateHelper().getDataString_1(cal.getTime()));
     }
 }

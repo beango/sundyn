@@ -4,7 +4,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, action, actiontime, actionurl, actionmethod, actionname, actionparam, managerid, ipaddress, note
+        id, action, actiontime, moudlename, actionurl, actionmethod, actionname, actionparam, managerid, ipaddress, note
     </sql>
 
     <select id="selectListEx" resultType="Map">

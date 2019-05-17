@@ -223,7 +223,7 @@ public class BaseAction extends MainAction
         final String deptId = request.getParameter("deptId").toString();
         final String deptIds = this.deptService.findChildALLStr123(deptId);
         num = this.employeeService.countEmployeeOnline(deptIds, employeeIds);
-        this.pager = new Pager("currentPage", pageSize, num, request, "onLinePage");
+        this.pager = new Pager("currentPage", pageSize, num, request, "onLinePage", this);
         final List list = this.employeeService.employeeOnline(deptIds, employeeIds, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         request.setAttribute("allNum", (Object)num);

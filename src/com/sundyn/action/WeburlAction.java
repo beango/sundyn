@@ -1,14 +1,17 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.vo.*;
-import com.sundyn.service.*;
-import com.sundyn.util.*;
-import org.apache.struts2.*;
-import com.sundyn.utils.*;
-import javax.servlet.http.*;
-import java.util.*;
+import com.sundyn.service.WeburlService;
+import com.sundyn.util.Pager;
+import com.sundyn.utils.JavaXML;
+import com.sundyn.vo.WeburlVo;
+import org.apache.struts2.ServletActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class WeburlAction extends MainAction
 {
@@ -55,7 +58,7 @@ public class WeburlAction extends MainAction
         final String uri = request.getRequestURL().toString();
         final String key_title = request.getParameter("key_title");
         final int rowsCount = this.weburlService.getCount(key_title);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "weburlPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "weburlPage", this);
         this.weburls = this.weburlService.findWeburl(key_title,(this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.weburls);
         return "weburlListOk";
@@ -108,13 +111,7 @@ public class WeburlAction extends MainAction
     public String weburlDownload() throws FileNotFoundException, IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String mac = request.getParameter("mac");
-        final String basepath = ServletActionContext.getServletContext().getRealPath("\\");
-        String file = JavaXML.class.getClassLoader().getResource("").getPath();
-        file = file.replaceAll("%20", " ");
-        file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
-        final String filename = String.valueOf(mac) + ".xml";
-        String url = String.valueOf(file) + filename;
-        File f = new File(url);
+        File f = JavaXML.XMLOutFile(mac+".xml");
         if (!f.exists()) {
             f.createNewFile();
         }

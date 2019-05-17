@@ -1,19 +1,26 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.service.*;
+import com.sundyn.service.PlayService;
+import com.sundyn.util.*;
+import com.sundyn.vo.PlayVo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.struts2.*;
-import java.net.*;
-import org.jdom.*;
-import org.jdom.output.*;
-import com.sundyn.vo.*;
-import javax.servlet.http.*;
-import org.jdom.input.*;
-import java.util.*;
-import java.io.*;
-import com.sundyn.util.*;
+import org.apache.struts2.ServletActionContext;
+import org.jdom.Content;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.util.List;
+import java.util.Map;
 
 public class PlayAction extends MainAction
 {
@@ -223,7 +230,7 @@ public class PlayAction extends MainAction
     public String playQuery() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.playService.countPlayQuery("");
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playPage", this);
         final List list = this.playService.playQuery(request.getParameter("keyword"), (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         return "success";
@@ -238,7 +245,7 @@ public class PlayAction extends MainAction
         keyword = keyword.trim();
         keyword = Mysql.mysql(keyword);
         final int rowsCount = this.playService.countPlayQuery(keyword);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playPage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playPage", this);
         final List list = this.playService.playQuery(keyword, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(list);
         request.setAttribute("keyword", (Object)keyword);

@@ -11,7 +11,7 @@
 		<title><s:text name='sundyn.advice.question.list' /></title>
 		<script type="text/javascript" src="js/dojo.js"></script>
 		<script type="text/javascript" src="js/dialog.js"></script>
-        <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
         <script type="text/javascript" src="lib/layui/layui.js"></script>
         <script type="text/javascript" src="js/myAjax.js"></script>
@@ -103,7 +103,7 @@
                     </td>
                 </tr>
             </c:if>
-            <c:if test="${dept.deptType==0 }">
+            <c:if test="${dept.deptType==0 && sysversion!='cgs' }">
             <tr>
                 <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.dept.playList" /></td>
                 <td align="left" style="border-color:#FFFFFF;">
@@ -156,7 +156,7 @@
             </tr>
             <c:if test="${dept.deptType!=2 }">
             <tr>
-                <td align="right" style="border-color:#FFFFFF;">上级部门:</td>
+                <td align="right" style="border-color:#FFFFFF;">上级:</td>
                 <td align="left" style="border-color:#FFFFFF;" class="layui-form-item">
                     <div class="layui-input-inline" style="width:100px;">
                         <ul id="treeDept" class="ztree"></ul>
@@ -164,7 +164,7 @@
                 </td>
             </tr>
             </c:if>
-            <c:if test="${dept.deptType==0 }">
+            <c:if test="${dept.deptType==0 && sysversion != 'cgs'}">
             <tr >
                 <td align="right" style="border-color:#FFFFFF;"><s:text name="sundyn.system.screenInfo"/></td>
                 <td align="left"  style="border-color:#FFFFFF;" class="layui-form-item">

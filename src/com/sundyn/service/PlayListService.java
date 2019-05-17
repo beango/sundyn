@@ -56,10 +56,10 @@ public class PlayListService extends SuperDao
             sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
         }
         try {
+            System.out.println(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

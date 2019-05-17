@@ -5,8 +5,6 @@ import com.sundyn.service.*;
 import com.sundyn.util.*;
 import com.sundyn.vo.AttendanceVo;
 import com.sundyn.vo.EmployeeVo;
-import lombok.Getter;
-import lombok.Setter;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.LinkedMap;
 import org.apache.log4j.Logger;
@@ -195,6 +193,13 @@ public class EmployeeAction extends MainAction
 
         if (cardNum.equals("")){
             this.msg = "员工工号不能为空！";
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", msg);
+            return Action.SUCCESS;
+        }
+        if (this.employeeService.employeeCardNumExsits(cardNum)) {
+            this.msg = "员工工号已经存在！";
             jsonData.clear();
             jsonData.put("succ", false);
             jsonData.put("msg", msg);
@@ -590,7 +595,6 @@ public class EmployeeAction extends MainAction
 
     public String employeeLogin() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        final HttpSession session = request.getSession();
         String cardnum = request.getParameter("cardnum");
         String psw = request.getParameter("psw");
         cardnum = Mysql.mysql(cardnum);
@@ -605,7 +609,6 @@ public class EmployeeAction extends MainAction
             this.msg = "密码错误";
         }
         else {
-
             this.msg = "loginSuccess";
         }
         return "success";
@@ -747,15 +750,33 @@ public class EmployeeAction extends MainAction
         Map dept = this.deptService.findDeptById(this.deptId);
         if (dept!=null && dept.get("deptType").toString().equals("1")) {//服务厅
             final HttpServletRequest request = ServletActionContext.getRequest();
+            String keyword = request.getParameter("keyword");
+            if (keyword == null) {
+                keyword = "";
+            }
+            keyword = keyword.trim();
+
             final int num = this.employeeService.countEmployeeByDeptid(this.deptId);
-            this.pager = new Pager("currentPage", pageSize, num, request);
-            this.list = this.employeeService.findEmployeeByDeptid(this.deptId, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+            this.pager = new Pager("currentPage", pageSize, num, request, this);
+            this.list = this.employeeService.findEmployeeByDeptid(this.deptId, keyword, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(this.list);
             final Map m = EmployeeList.getList();
             request.setAttribute("online", m);
+            request.setAttribute("keyword", keyword);
             return "success";
         }
         return "error";
+
+
+        /*final HttpServletRequest request = ServletActionContext.getRequest();
+
+        final int num = this.employeeService.countEmployeeByName(keyword);
+        this.pager = new Pager("currentPage", pageSize, num, request, "keywordpage", this);
+        this.list = this.employeeService.findEmployeeByName(this.deptId, keyword, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        this.pager.setPageList(this.list);
+        request.setAttribute("keyword", (Object)keyword);
+        request.setAttribute("online", EmployeeList.getList());
+        return "success";*/
     }
 
     public String employeeOut() throws Exception {
@@ -768,7 +789,7 @@ public class EmployeeAction extends MainAction
     public String employeeOutView() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int num = this.employeeService.countMovedEmployee();
-        this.pager = new Pager("currentPage", pageSize, num, request, "employeeOutPage");
+        this.pager = new Pager("currentPage", pageSize, num, request, "employeeOutPage", this);
         this.list = this.employeeService.findMovedEmployee((this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.list);
         return "success";
@@ -782,7 +803,7 @@ public class EmployeeAction extends MainAction
         }
         keyword = keyword.trim();
         final int num = this.employeeService.countEmployeeByName(keyword);
-        this.pager = new Pager("currentPage", pageSize, num, request, "keywordpage");
+        this.pager = new Pager("currentPage", pageSize, num, request, "keywordpage", this);
         this.list = this.employeeService.findEmployeeByName(this.deptId, keyword, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.list);
         request.setAttribute("keyword", (Object)keyword);
@@ -1021,7 +1042,7 @@ public class EmployeeAction extends MainAction
         String version = request.getParameter("version");
         final String config = request.getParameter("config");
         final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        final String basepath = getServletContext().getRealPath("\\");
+        final String basepath = getServletContext().getRealPath("/");
         String playListId = "";
         final String dd = df.format(new Date());
         if (mac != null) {

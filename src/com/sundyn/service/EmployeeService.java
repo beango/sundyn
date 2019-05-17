@@ -140,14 +140,16 @@ public class EmployeeService extends SuperDao
         }
     }
 
-    public List findEmployeeByDeptid(final Integer deptId, final int start, final int num) throws SQLException {
-        String sql = "select row_number() over(order by id desc) as rows, Id, Name,Sex,CardNum,Phone,ext2 from appries_employee where ext1 is null and  deptid in (" + deptId + ")";
-        sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
+    public List findEmployeeByDeptid(final Integer deptId, String name, final int start, final int num) throws SQLException {
+        String sql = "select row_number() over(order by id desc) as rows, Id, Name,Sex,CardNum,Phone,ext2 from appries_employee " +
+                "where ext1 is null and  deptid in (" + deptId + ") ";
+        if (com.xuan.xutils.utils.StringUtils.isNotBlank(name))
+            sql += "and (name like '%"+name+"%' or cardnum like '%" + name + "%')";
+        sql = "select * from ("+sql+") t where t.rows>? and t.rows<=?";
         try {
-            return this.getJdbcTemplate().queryForList(sql);
+            return this.getJdbcTemplate().queryForList(sql, new Object[]{start, num+start});
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -421,11 +423,12 @@ public class EmployeeService extends SuperDao
     }
 
     public Map findByCardnum(final String cardNum) {
-        final String sql = "select top 1 id, Name,CardNum, deptid from appries_employee where CardNum = '" + cardNum + "'";
+        final String sql = "select top 1 id, Name,CardNum, deptid from appries_employee where CardNum = ?";
         try {
-            return this.getJdbcTemplate().queryForMap(sql);
+            return this.getJdbcTemplate().queryForMap(sql, new Object[]{cardNum});
         }
         catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

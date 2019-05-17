@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.sundyn.entity.AppriesMenu;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,6 +18,9 @@ import java.util.Map;
  * @since 2018-08-22
  */
 public interface IAppriesMenuService extends IService<AppriesMenu> {
+    List<AppriesMenu> getAllCache();
+    List<AppriesMenu> getAllCache(boolean isClear);
+
     HashMap selectByIdEx(Integer id);
     Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper);
     void updateAllFuncCode(String oldFunc, String newFunc);

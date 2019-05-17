@@ -84,10 +84,8 @@ public class DesImpl implements Des
             }
             finally {
                 JNative.unLoadAllLibraries();
-                System.out.println(res);
             }
             JNative.unLoadAllLibraries();
-            System.out.println(res);
         }
     }
 }

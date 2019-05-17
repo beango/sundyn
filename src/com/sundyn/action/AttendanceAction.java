@@ -1,13 +1,17 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.service.*;
-import com.sundyn.util.*;
-import org.apache.struts2.*;
-import java.text.*;
-import javax.servlet.http.*;
-import java.util.*;
-import java.io.*;
+import com.sundyn.service.AttendanceService;
+import com.sundyn.util.Pager;
+import org.apache.struts2.ServletActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 
 public class AttendanceAction extends MainAction
 {
@@ -41,7 +45,7 @@ public class AttendanceAction extends MainAction
             this.endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         }
         final int rowsCount = this.attendanceService.count(this.startDate, this.endDate);
-        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "attendancePage");
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "attendancePage", this);
         final List pageList = this.attendanceService.query(this.startDate, this.endDate, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(pageList);
         String filepath = ServletActionContext.getServletContext().getRealPath("/update");

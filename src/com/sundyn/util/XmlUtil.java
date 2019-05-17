@@ -36,7 +36,6 @@ public class XmlUtil {
                     }
                 }
             }
-            System.out.println(fields.toString());
             return object;
         }catch(Exception e){
             e.printStackTrace();

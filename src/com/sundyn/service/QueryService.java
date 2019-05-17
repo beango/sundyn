@@ -656,11 +656,10 @@ public class QueryService extends SuperDao
                 "join appries_dept t3 on t3.id=t1.hjcounterdeptid " +
                 "where apprisetime is not null and appriseresult!=-1 ";
         if (StringUtils.isNotBlank(deptid)){
-            sql += " and deptid in("+deptid+")";
+            sql += "and deptid in("+deptid+") ";
         }
         sql += "order by apprisetime desc";
         try {
-            logger.info(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {

@@ -18,36 +18,25 @@
 		</interceptors>
 		<default-interceptor-ref name="mydefault" />
 		<global-results>
-			<result name="login">login.jsp</result>
+			<result name="login">/login.jsp</result>
             <result name="noauth">/noauth.jsp</result>
-			<result name="register">base/register.jsp</result>
+			<result name="register">/base/register.jsp</result>
+			<result name="defExceptionResult" type="redirect">/exception1.jsp</result>
 		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="defExceptionResult" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
 		<!--  验证用户登录 结束 -->
-		<action name="managerChangePsw" class="managerAction"
-			method="managerChangePsw">
-			<result name="success">/manager/changePsw.jsp</result>
-		</action>
 		<action name="managerChangePswDeal" class="managerAction"
 			method="managerChangePswDeal">
 			<result name="success">/msg.jsp</result>
 			<result name="input" type="chain">managerChangePsw</result>
 			<result name="error">/msg.jsp</result>
 		</action>
-		<action name="managerChangePswDeal2" class="managerAction"
-			method="managerChangePswDeal2">
-<!--		<result name="success" type="chain">managerChangePsw</result>-->
-		<result name="success" >/manager/changePsw.jsp</result>
-		<result name="input" >/manager/changePsw.jsp</result>
-		<result name="error" >/manager/changePsw.jsp</result>
-		</action>
-		<!--<action name="ManagerQuery" class="managerAction"
-			method="ManagerQuery">
-			<result name="success">manager/query.jsp</result>
-		</action>
-		-->
+
 		<action name="LowerManagerQuery" class="managerAction"
 			method="LowerManagerQuery">
-			<result name="success">manager/query.jsp</result>
+			<result name="success">/manager/query.jsp</result>
 		</action>
 		<action name="managerAddDialog" class="managerAction"
 			method="managerAddDialog">
@@ -84,9 +73,14 @@
 		</action>
 		<action name="managerReset" class="managerAction"
 			method="managerReset">
+            <result name="input">/msg.jsp</result>
 			<result name="success">manager/success.jsp</result>
 		</action>
-
+        <action name="managerResetStatus" class="managerAction"
+                method="managerResetStatus">
+            <result name="input">/msg.jsp</result>
+            <result name="success">manager/success.jsp</result>
+        </action>
 		<action name="managerLogout" class="managerAction"
 			method="managerLogout">
 			<result name="success" type="redirect">login.jsp</result>
@@ -107,7 +101,10 @@
 			method="deleteVideoFileDeal">
 			<result name="success">manager/success.jsp</result>
 		</action>
-
+        <action name="loginmsg" class="managerAction"
+                method="loginmsg">
+            <result name="success">/manager/loginmsg.jsp</result>
+        </action>
 	</package>
 	<package name="login" extends="struts-default">
         <interceptors>
@@ -117,14 +114,41 @@
                 <interceptor-ref name="operationInterceptor" />
             </interceptor-stack>
         </interceptors>
-		<action name="managerLogin" class="managerAction" method="managerLogin">
-            <interceptor-ref name="defualtSecurityStackWithAuthentication"></interceptor-ref>
-			<result name="success">redirect.jsp</result>
-			<result name="input">login.jsp</result>
-		</action>
 		<action name="createTxt" class="managerAction"
 			method="createTxt">
 			<result name="success">/manager/success.jsp</result>
 		</action>
 	</package>
+    <package name="login2" extends="json-default">
+        <interceptors>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
+            <interceptor-stack name="defualtSecurityStackWithAuthentication">
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="operationInterceptor" />
+            </interceptor-stack>
+        </interceptors>
+		<global-results>
+			<result name="defExceptionResult" type="redirect">/exception1.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="defExceptionResult" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+        <action name="managerLogin" class="managerAction" method="managerLogin">
+            <interceptor-ref name="defualtSecurityStackWithAuthentication"></interceptor-ref>
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="managerChangePsw" class="managerAction"
+                method="managerChangePsw">
+            <result name="success">/manager/changePsw.jsp</result>
+        </action>
+        <action name="managerChangePswDeal2" class="managerAction"
+                method="managerChangePswDeal2">
+			<result name="home" >/default.jsp</result>
+			<result name="success" type="json">
+				<param name="root">jsonData</param>
+			</result>
+        </action>
+    </package>
 </struts>

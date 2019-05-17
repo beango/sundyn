@@ -1,12 +1,14 @@
 package com.sundyn.interceptor;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import com.sundyn.entity.AppriesMenu;
+import com.sundyn.entity.AuditLog;
 import com.sundyn.entity.SysLog;
 import com.sundyn.service.IAppriesMenuService;
+import com.sundyn.service.IAuditLogService;
 import com.sundyn.service.ManagerService;
+import com.sundyn.util.impl.util;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -14,12 +16,8 @@ import org.apache.struts2.ServletActionContext;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
 import java.net.URLDecoder;
-import java.net.UnknownHostException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class OperationInterceptor extends AbstractInterceptor {
 
@@ -28,53 +26,87 @@ public class OperationInterceptor extends AbstractInterceptor {
     private IAppriesMenuService appriesMenuService;
     @Resource
     private ManagerService managerService;
+    @Resource
+    private IAuditLogService auditLogService;
+
     //无须记录Action调用日志的方法
-    private static String[] unRecordLogResources={"validateTeaSnapNum",//校验教师创建的快照数量是否超过场景限制
-            "validateServSnapNum",//校验应用服务创建的快照数量是否超过场景限制
-            "getRoleList",//获取角色列表
-            "initTaeCfg",//初始化登录配置
-            "getIdvEnable",//IDV功能是否开启
-            "getSysOpLogListByPage",//查询系统操作日志
-            "getSysOpType",//得到系统操作方法
-            "getStaticSwitch",//获取统计页面的开关状态
-            "init",//登录初始化,
-            "initEnv",//初始化登录环境
-            "getInitUrl",//初始化登录环境
-            "getAllUrl",//获取线上请求地址url
-            "initCfgInfo",//正常登录
-            "getURLfromConf",//获取配置文件信息
-            "loginStatus",//检测用户登录状态
-            "localAccountValidate",//本地账号验证模式
-            "verifyLocal",//本地登录账号校验
-            "verifyRemoteByQQ",//第三方登录远程同步并返回用户角色
-            "verifyRemote",//用户登录同步到本地
-            "buildTerLoginRelation"//添加终端登录关系
+    private static String[] unRecordLogResources={
+            "getQueueTotal",
+            "getQueueDeptAnysleAjax",
+            "getQueueTotalOnce",
+            "authDeptTree",
+            "menuQueryJson",
+            "deptReg",
+            "authQueryJSON"
     };
 
     private static HashMap<String,String> actionNameMap = new HashMap<String, String>(){{
-            put("managerLogin", "用户登录");
-            put("managerLogout", "用户退出"); }
+        put("managerLogin", "用户登录");
+        put("managerLogout", "用户退出");
+        put("hall", "大厅管理");
+        put("authDeptTree", "部门组织权树");
+        put("dept", "部门查询");
+        put("deptEditDialog", "部门修改");
+        put("serial", "业务管理");
+        put("counter", "窗口管理");
+        put("vip", "VIP管理");
+        put("black", "黑名单管理");
+        put("proxyorg", "代理人机构管理");
+        put("proxy", "代理人管理");
+        put("employee", "员工管理");
+        put("sysdict", "参数管理");
+        put("dict", "参数管理");
+        put("notice", "通知公告管理");
+        put("jx", "绩效管理");
+        put("menu", "菜单管理");
+        put("auth", "权限管理");
+        put("manager", "用户管理");
+        put("managerEditDialog", "用户修改");
+        put("role", "角色管理");
+        put("lowerPowerQuery", "角色查询");
+        put("powerEditDialog", "角色修改");
+        put("auditlock", "锁定管理");
+        put("managerlogin", "登录日志查询");
+        put("syslog", "操作日志查询");
+        put("auditlogin", "安全日志查询");
+        put("syslogrpt", "操作日志统计");
+        put("securitylogrpt", "登录日志统计");
+        put("auditlogrpt", "审计日志统计");
+        put("queue", "排队数据查询");
+    }
     };
-
+    
+    private String getMoudleName(String actionname){
+        Iterator iter = actionNameMap.entrySet().iterator();
+        while (iter.hasNext()){
+            Map.Entry entry = (Map.Entry)iter.next();
+            Object key = entry.getKey();
+            if (actionname.toLowerCase().contains(key.toString()))
+                return entry.getValue().toString();
+        }
+        return null;
+    }
     public String intercept(ActionInvocation invocation) throws Exception {
         HttpServletRequest req = ServletActionContext.getRequest();
-        String ipaddr = getRemoteIpAddr(req);//获取系统操作远程ip
+        String ipaddr = util.getRemoteIpAddr();//获取系统操作远程ip
         int userid=0;
         Map UserManager = (Map)req.getSession().getAttribute("manager");
         if(null!=UserManager) {
             userid = (Integer) UserManager.get("id");
         }
-        else
-            System.out.println("usermanager==null");
         try{
-            if (userid==0 && req.getParameter("managerVo.name")!=null){
-                System.out.println("没有便用户ID" + req.getParameter("managerVo.name"));
-                Map managermap = managerService.findByName(req.getParameter("managerVo.name"));
-                userid = Integer.valueOf(managermap.get("id").toString());
+            if (userid==0 && (req.getParameter("managerVo.name")!=null || req.getParameter("name")!=null)){
+                String reqname = req.getParameter("managerVo.name");
+                if (StringUtils.isBlank(reqname))
+                    reqname = req.getParameter("name");
+
+                Map managermap = managerService.findByNameCache(reqname);
+                if(null!=managermap)
+                    userid = Integer.valueOf(managermap.get("id").toString());
             }
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
         String actionClass = invocation.getProxy().getAction().getClass().getName();
         if(actionClass.indexOf("$") != -1){
@@ -94,14 +126,53 @@ public class OperationInterceptor extends AbstractInterceptor {
 
         Date startTime = new Date();
         String menuName = "";
+
         try{
             String reqmethod = req.getMethod();
-            if (reqmethod.toLowerCase().equals("get")){
+            if (reqmethod.toLowerCase().equals("get") && UserManager!=null){
                 String u = req.getRequestURI().replace("/","");
-                AppriesMenu menu = appriesMenuService.selectOne(new EntityWrapper<AppriesMenu>().like("nav",u));
+                AppriesMenu menu = null;//appriesMenuService.selectOne(new EntityWrapper<AppriesMenu>().like("nav",u));
+                List<AppriesMenu> allMenus = appriesMenuService.getAllCache();
+                for(AppriesMenu m : allMenus){
+                    if (StringUtils.isNotBlank(m.getNav()) && m.getNav().indexOf(u)>-1)
+                        menu = m;
+                }
+
                 JSONArray menuStrs = new JSONArray();
                 if (null!=menu){
-                    AppriesMenu pmenu = appriesMenuService.selectOne(new EntityWrapper<AppriesMenu>().where("id={0}", menu.getParentId()));
+                    if (menu.getIsnotgeneral() != null && menu.getIsnotgeneral() == 1){
+                        AuditLog t = new AuditLog();
+                        t.setName(UserManager.get("name").toString());
+                        t.setCtime(new Date());
+                        t.setIpadd(util.getRemoteIpAddr());
+                        t.setLogrst("访问非常规业务");
+                        t.setLogtype("访问非常规业务");
+                        String logdevice = util.getRemoteBowser();
+                        if (StringUtils.isBlank(logdevice) && logdevice.length()>150)
+                            logdevice = logdevice.substring(0, 149);
+                        t.setLogdevice(logdevice);
+                        t.setLogrstdesc("用户"+UserManager.get("name")+"访问非常规业务:\"" + menu.getMenuName() + "\"");
+                        auditLogService.insert(t);
+                    }
+                    if (menu.getIscore() != null && menu.getIscore() == 1){
+                        AuditLog t = new AuditLog();
+                        t.setName(UserManager.get("name").toString());
+                        t.setCtime(new Date());
+                        t.setIpadd(util.getRemoteIpAddr());
+                        t.setLogrst("访问核心功能");
+                        t.setLogtype("访问核心功能");
+                        String logdevice = util.getRemoteBowser();
+                        if (StringUtils.isBlank(logdevice) && logdevice.length()>150)
+                            logdevice = logdevice.substring(0, 149);
+                        t.setLogdevice(logdevice);
+                        t.setLogrstdesc("用户"+UserManager.get("name")+"访问核心功能:\"" + menu.getMenuName() + "\"");
+                        auditLogService.insert(t);
+                    }
+                    AppriesMenu pmenu = null; //appriesMenuService.selectOne(new EntityWrapper<AppriesMenu>().where("id={0}", menu.getParentId()));
+                    for(AppriesMenu m : allMenus){
+                        if (m.getId().equals(menu.getParentId()))
+                            pmenu = m;
+                    }
                     if (null!=pmenu){
                         JSONObject jo = new JSONObject();
                         jo.put("name", pmenu.getMenuName());
@@ -114,7 +185,7 @@ public class OperationInterceptor extends AbstractInterceptor {
                     menuName = menu.getMenuName();
                     menuStrs.add(jo);
                 }
-                req.setAttribute("navbar_menuname", menuStrs);
+                req.setAttribute("navbar_menuname", menuStrs);//所有上级菜单，用于显示在页面面包屑位置
             }
             //实际方法执行阶段
             invocation.invoke();
@@ -132,7 +203,18 @@ public class OperationInterceptor extends AbstractInterceptor {
                 while(param.length()>0){
                     SysLog log = new SysLog();
                     log.setAction(actionName);
-                    log.setActionname(actionNameMap.containsKey(actionName)?actionNameMap.get(actionName).toString():menuName);
+                    log.setMoudlename(actionNameMap.containsKey(actionName)?actionNameMap.get(actionName).toString():menuName);
+                    if (actionNameMap.containsKey(actionName))
+                        log.setMoudlename(actionNameMap.get(actionName).toString());
+                    else if (StringUtils.isNotBlank(menuName))
+                        log.setMoudlename(menuName);
+                    else {
+                        log.setMoudlename(getMoudleName(actionName));
+                    }
+                    if (StringUtils.isNotBlank(req.getParameter("aname")))
+                        log.setActionname(req.getParameter("aname"));
+                    else
+                        log.setActionname(actionNameMap.containsKey(actionName)?actionNameMap.get(actionName).toString():menuName);
                     log.setActiontime(startTime);
                     log.setActionurl(url);
                     if (param.length()>len){
@@ -149,7 +231,6 @@ public class OperationInterceptor extends AbstractInterceptor {
                     log.setNote("处理时长：" + costTime);
                     log.insert();
                 }
-                //sysOperationLogManager.saveSysOperationLog(userName,actionClass,actionName,url,ipaddr,startTime,endTime,costTime,SysOpConstant.SYS_LOG_ACTION);
             }
         }
         return null;
@@ -163,38 +244,5 @@ public class OperationInterceptor extends AbstractInterceptor {
             }
         }
         return false;
-    }
-
-    protected String getRemoteIpAddr(HttpServletRequest request) {
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-        }
-
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip= request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-
-        if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip)) {
-            try {
-                ip= InetAddress.getLocalHost().getHostAddress();
-            } catch (UnknownHostException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        return ip.split(",")[0];
     }
 }

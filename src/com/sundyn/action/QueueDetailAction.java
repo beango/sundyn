@@ -3,7 +3,6 @@ package com.sundyn.action;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.google.gson.Gson;
 import com.opensymphony.xwork2.Action;
 import com.sundyn.entity.QueueDetail;
 import com.sundyn.entity.QueueEmployeereport;
@@ -230,56 +229,66 @@ public class QueueDetailAction extends MainAction
         //不满意
         List employeeWarn = this.queryService.getEmployeeWarn(filterDeptids);
         Float totalservicecount = 0f;
-        for (Object datum : employeeWarn) {
-            Map m = (Map) datum;
-            totalservicecount += StringUtils.toFloat(m.get("totalkeybmy"), 0);
-        }
-        Float avg = totalservicecount / employeeWarn.size();
-        if (employeeWarn!=null && employeeWarn.size()>0)
-            avg = StringUtils.toFloat(((Map)employeeWarn.get(0)).get("avg"), 0);
+        Float avg = 0f;
         List data2list = new ArrayList();
-        for (Object datum : employeeWarn) {
-            Map m = (Map) datum;
-            if (StringUtils.toFloat(m.get("totalkeybmy"), 0) > avg)
-                data2list.add(m);
-        }
-        Collections.sort(data2list, new SortByServiceCount("totalkeybmy", "desc"));
-        jsonData.clear();
-        jsonData.put("TableMonthDeptBMY", data2list);
-        //工作量
-        totalservicecount = 0f;
-        for (Object datum : employeeWarn) {
-            Map m = (Map) datum;
-            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
-        }
-        avg = totalservicecount / employeeWarn.size();
-        data2list = new ArrayList();
-        for (Object datum : employeeWarn) {
-            Map m = (Map) datum;
-            if (Float.compare(StringUtils.toFloat(m.get("servicecount"), 0), avg)==-1) {
-                data2list.add(m);
+        if  (null!=employeeWarn){
+            for (Object datum : employeeWarn) {
+                Map m = (Map) datum;
+                totalservicecount += StringUtils.toFloat(m.get("totalkeybmy"), 0);
             }
+            avg = totalservicecount / employeeWarn.size();
+            if (employeeWarn!=null && employeeWarn.size()>0)
+                avg = StringUtils.toFloat(((Map)employeeWarn.get(0)).get("avg"), 0);
+
+            for (Object datum : employeeWarn) {
+                Map m = (Map) datum;
+                if (StringUtils.toFloat(m.get("totalkeybmy"), 0) > avg)
+                    data2list.add(m);
+            }
+            Collections.sort(data2list, new SortByServiceCount("totalkeybmy", "desc"));
+            jsonData.clear();
+            jsonData.put("TableMonthDeptBMY", data2list);
         }
-        Collections.sort(data2list, new SortByServiceCount("servicecount", "asc"));
-        jsonData.put("employeeservicecount", data2list);
+
+        //工作量
+        if(null!=employeeWarn){
+            totalservicecount = 0f;
+            for (Object datum : employeeWarn) {
+                Map m = (Map) datum;
+                totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
+            }
+            avg = totalservicecount / employeeWarn.size();
+            data2list = new ArrayList();
+            for (Object datum : employeeWarn) {
+                Map m = (Map) datum;
+                if (Float.compare(StringUtils.toFloat(m.get("servicecount"), 0), avg)==-1) {
+                    data2list.add(m);
+                }
+            }
+            Collections.sort(data2list, new SortByServiceCount("servicecount", "asc"));
+            jsonData.put("employeeservicecount", data2list);
+        }
+
         //满意度
-        totalservicecount = 0f;
-        float totalmyd = 0f;
-        for (Object datum : employeeWarn) {
-            Map m = (Map) datum;
-            totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
-            totalmyd += StringUtils.toFloat(m.get("totalmyd"), 0);
+        if (null!=employeeWarn){
+            totalservicecount = 0f;
+            float totalmyd = 0f;
+            for (Object datum : employeeWarn) {
+                Map m = (Map) datum;
+                totalservicecount += StringUtils.toFloat(m.get("servicecount"), 0);
+                totalmyd += StringUtils.toFloat(m.get("totalmyd"), 0);
+            }
+            avg = (float)Math.round(totalmyd*10.0 / totalservicecount);
+            data2list = new ArrayList();
+            for (Object datum : employeeWarn) {
+                Map m = (Map) datum;
+                m.put("totalmyd", (int)Math.round(StringUtils.toFloat(m.get("totalmyd"), 0)*10.0/StringUtils.toFloat(m.get("servicecount"), 0)));
+                if (Float.compare(StringUtils.toFloat(m.get("totalmyd"), 0), avg)==-1)
+                    data2list.add(m);
+            }
+            Collections.sort(data2list, new SortByServiceCount("totalmyd", "asc"));
+            jsonData.put("myd", data2list);
         }
-        avg = (float)Math.round(totalmyd*10.0 / totalservicecount);
-        data2list = new ArrayList();
-        for (Object datum : employeeWarn) {
-            Map m = (Map) datum;
-            m.put("totalmyd", (int)Math.round(StringUtils.toFloat(m.get("totalmyd"), 0)*10.0/StringUtils.toFloat(m.get("servicecount"), 0)));
-            if (Float.compare(StringUtils.toFloat(m.get("totalmyd"), 0), avg)==-1)
-                data2list.add(m);
-        }
-        Collections.sort(data2list, new SortByServiceCount("totalmyd", "asc"));
-        jsonData.put("myd", data2list);
         return SUCCESS;
     }
 

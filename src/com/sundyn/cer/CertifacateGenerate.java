@@ -56,6 +56,11 @@ public class CertifacateGenerate {
     private static String rootpath;
 
     static {
+        try{
+            Security.addProvider(new BouncyCastleProvider());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         /**
          * 算法名称与算法标识符映射
          */

@@ -1,18 +1,34 @@
 package com.sundyn.action;
 
-import com.opensymphony.xwork2.*;
-import com.sundyn.service.*;
-import org.apache.struts2.*;
-import javax.servlet.http.*;
-import java.sql.*;
-import com.sundyn.vo.*;
-import org.jdom.input.*;
-import org.jdom.output.*;
-import java.io.*;
-import org.jdom.*;
-import com.sundyn.util.*;
-import java.util.*;
-import com.sundyn.util.impl.*;
+import com.sundyn.service.DeptService;
+import com.sundyn.service.PlayListService;
+import com.sundyn.service.PlayService;
+import com.sundyn.service.PowerService;
+import com.sundyn.util.MyFile;
+import com.sundyn.util.Mysql;
+import com.sundyn.util.Pager;
+import com.sundyn.util.Update;
+import com.sundyn.util.impl.ZipManager;
+import com.sundyn.vo.PlayListVo;
+import org.apache.struts2.ServletActionContext;
+import org.jdom.Content;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PlayListAction extends MainAction
 {
@@ -94,7 +110,7 @@ public class PlayListAction extends MainAction
         final Map manager = (Map)request.getSession().getAttribute("manager");
         if (manager.get("id").toString().equals("1")) {
             final int rowsCount = this.playListService.countPlayListQuery("", null);
-            this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playListPage");
+            this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playListPage", this);
             final List list = this.playListService.playListQuery(request.getParameter("keyword"), null, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list);
         }
@@ -102,9 +118,9 @@ public class PlayListAction extends MainAction
             final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
             final Map power = this.powerService.getUserGroup(groupid);
             final String deptIdGroup = power.get("deptIdGroup").toString();
-            final String deptIds = this.deptService.findChildALLStr123(deptIdGroup);
+            final String deptIds = this.deptService.findChildALLStr1234(deptIdGroup);
             final int rowsCount2 = this.playListService.countPlayListQuery("", deptIds);
-            this.pager = new Pager("currentPage", pageSize, rowsCount2, request, "playListPage");
+            this.pager = new Pager("currentPage", pageSize, rowsCount2, request, "playListPage", this);
             final List list2 = this.playListService.playListQuery(request.getParameter("keyword"), deptIds, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list2);
         }
@@ -122,7 +138,7 @@ public class PlayListAction extends MainAction
         keyword = Mysql.mysql(keyword);
         if (manager.get("id").toString().equals("1")) {
             final int rowsCount = this.playListService.countPlayListQuery(keyword, null);
-            this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playListPage");
+            this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playListPage", this);
             final List list = this.playListService.playListQuery(keyword, null, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list);
         }
@@ -132,7 +148,7 @@ public class PlayListAction extends MainAction
             final String deptIdGroup = power.get("deptIdGroup").toString();
             final String deptIds = this.deptService.findChildALLStr123(deptIdGroup);
             final int rowsCount2 = this.playListService.countPlayListQuery(keyword, deptIds);
-            this.pager = new Pager("currentPage", pageSize, rowsCount2, request, "playListPage");
+            this.pager = new Pager("currentPage", pageSize, rowsCount2, request, "playListPage", this);
             final List list2 = this.playListService.playListQuery(keyword, deptIds, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list2);
         }
@@ -151,7 +167,7 @@ public class PlayListAction extends MainAction
         keyword = Mysql.mysql(keyword);
         if (manager.get("id").toString().equals("1")) {
             final int rowsCount = this.playListService.countPlayListQuery(keyword, null);
-            this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playListPage");
+            this.pager = new Pager("currentPage", pageSize, rowsCount, request, "playListPage", this);
             final List list = this.playListService.playListQuery(keyword, null, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list);
         }
@@ -161,7 +177,7 @@ public class PlayListAction extends MainAction
             final String deptIdGroup = power.get("deptIdGroup").toString();
             final String deptIds = this.deptService.findChildALLStr123(deptIdGroup);
             final int rowsCount2 = this.playListService.countPlayListQuery(keyword, deptIds);
-            this.pager = new Pager("currentPage", pageSize, rowsCount2, request, "playListPage");
+            this.pager = new Pager("currentPage", pageSize, rowsCount2, request, "playListPage", this);
             final List list2 = this.playListService.playListQuery(keyword, deptIds, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
             this.pager.setPageList(list2);
         }
@@ -370,7 +386,6 @@ public class PlayListAction extends MainAction
         SAXBuilder sb = new SAXBuilder(false);
         Document doc = sb.build(new File(filePath));
         final Element root = doc.getRootElement();
-        System.out.println("playListUpdateDialog-filePath=" + filePath);
         final String[] Shutdown = root.getChild("Software").getChildText("Shutdown").toString().split(":");
         final String[] Boot = root.getChild("Software").getChildText("Boot").toString().split(":");
         final int Shutdownhh = Integer.valueOf(Shutdown[0]);

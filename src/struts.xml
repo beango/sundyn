@@ -7,22 +7,23 @@
 	<constant name="struts.devMode" value="false"></constant>
  	<constant name="struts.configuration.xml.reload" value="true"></constant>
  	<constant name="struts.custom.i18n.resources" value="sundyn"></constant>
+	<constant name="struts.i18n.encoding" value="UTF-8" />
     <constant name="struts.multipart.saveDir" value="c:/windows/Temp"/>
   	<!--
 	<constant name="struts.custom.i18n.resources" value="set"></constant>
 	 -->
-
+	<constant name="struts.action.excludePattern" value="/js/.*"/>
 	<constant name= "struts.multipart.maxSize" value="104857600" />
 	<!-- 管理员控制器-->
     <include file="system.xml"></include>
 	<include file="manager.xml"></include>
-	<include file="duibi.xml"></include>
+<!--	<include file="duibi.xml"></include>-->
 	<!-- 快速查询控制器-->
-	<include file="quickly.xml"></include>
+<!--	<include file="quickly.xml"></include>-->
 	<!-- 查询统计控制器-->
 	<include file="query.xml"></include>
 	<!-- 错误评价数据控制器-->
-	<include file="errorInfo.xml"></include>
+<!--	<include file="errorInfo.xml"></include>-->
 	<!-- 决策分析控制器-->
 	<include file="analyse.xml"></include>
 	<!-- 部门控制器-->
@@ -49,27 +50,27 @@
 	<!-- 考勤管理 -->
 	<include file="attendance.xml"></include>
 	<!--留言板管理(FAQ) -->
-	<include file="lyb.xml"></include>
+<!--	<include file="lyb.xml"></include>-->
 	<!--投票-->
 	<include file="vote.xml"></include>
 	<!-- 业务类型 -->
-	<include file="business.xml"></include>
+<!--	<include file="business.xml"></include>-->
 	<!-- 配置向导 -->
-	<include file="guide.xml"></include>
+<!--	<include file="guide.xml"></include>-->
 	<!-- 中原国税 -->
-	<include file="read.xml"></include>
+<!--	<include file="read.xml"></include>-->
 	<!-- 注册 -->
-	<include file="register.xml"></include>
+<!--	<include file="register.xml"></include>-->
 	<!--第三方 业务结合，一条业务绑定一条评价数据 -->
-	<include file="three.xml"></include>
+<!--	<include file="three.xml"></include>-->
 	<!--天气预报 -->
-	<include file="weather.xml"></include>
+<!--	<include file="weather.xml"></include>-->
 	<!--自动生成评价数据 -->
-	<include file="auto.xml"></include>
+<!--	<include file="auto.xml"></include>-->
 	<!--显示M7信息 -->
-	<include file="m7Info.xml"></include>
+<!--	<include file="m7Info.xml"></include>-->
 	<!--自动升级数据库 -->
-	<include file="updateDb.xml"></include>
+<!--	<include file="updateDb.xml"></include>-->
 	<!--信息查询 -->
 	<include file="weburl.xml"></include>
 	<!--通知公告 -->
@@ -82,19 +83,20 @@
     <include file="hall.xml"></include>
     <include file="queue.xml"></include>
     <include file="jx.xml"></include>
+    <include file="audit.xml"></include>
 
-  	<package name="test" extends="struts-default">
+  	<!--<package name="test" extends="struts-default">
 		<action name="testData" class="testAction" method="testData">
 			<result name="success">/msg.jsp</result>
 		</action>
 
-	</package>
+	</package>-->
 
-    <bean type="org.apache.struts2.dispatcher.multipart.MultiPartRequest"
+    <!--<bean type="org.apache.struts2.dispatcher.multipart.MultiPartRequest"
           name="myRequestParser" class="com.sundyn.wrapper.RequestParseWrapper"
           scope="default" optional="true" />
-    <constant name="struts.multipart.handler" value="myRequestParser" />
-    <constant name="struts.convention.action.suffix" value="Controller"/>
-    <constant name="struts.convention.action.mapAllMatches" value="true"/>
-    <constant name="struts.convention.default.parent.package" value="rest-default"/>
+    <constant name="struts.multipart.handler" value="myRequestParser" />-->
+    <!--<constant name="struts.convention.action.suffix" value="Controller"/>-->
+    <!--<constant name="struts.convention.action.mapAllMatches" value="true"/>-->
+    <!--<constant name="struts.convention.default.parent.package" value="rest-default"/>-->
 </struts>

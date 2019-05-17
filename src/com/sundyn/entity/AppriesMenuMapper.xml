@@ -4,10 +4,14 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, menuName, nav, parentId, iconCls, isshow, menuorder, funcCode
+        id, menuName, nav, parentId, iconCls, isshow, menuorder, funcCode, iscore, isnotgeneral, isjy
     </sql>
 
     <select id="selectByIdEx" resultType="Map">
         SELECT *,(select menuName from appries_menu t where t.id=appries_menu.parentId) parentName,(select id from appries_func t where t.funcCode=appries_menu.funcCode) funcId FROM appries_menu WHERE id=#{id}
     </select>
+
+    <update id="updateAllFuncCode">
+        update appries_menu set funccode=#{newCold} where funcCode=#{oldCold}
+    </update>
 </mapper>

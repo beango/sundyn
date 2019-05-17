@@ -20,8 +20,8 @@ import java.util.Map;
  * @since 2019-01-18
  */
 @Service
-public class SysProxyorgServiceImpl extends ServiceBaseImpl<SysProxyorgDao, SysProxyorg> implements ISysProxyorgService {
-    public Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper) {
+public class SysProxyorgServiceImpl extends ServiceImpl<SysProxyorgDao, SysProxyorg> implements ISysProxyorgService {
+    /*public Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper) {
         String filterDept = USERDATA_DEPTIDS();
         if (filterDept !=null && !"".equals(filterDept)){
             if (wrapper == null)
@@ -29,5 +29,5 @@ public class SysProxyorgServiceImpl extends ServiceBaseImpl<SysProxyorgDao, SysP
             wrapper = wrapper.in("deptid", filterDept.split(","));
         }
         return page.setRecords(baseMapper.querypagemap(page, wrapper));
-    }
+    }*/
 }

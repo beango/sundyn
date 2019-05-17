@@ -310,4 +310,8 @@ public abstract class SecurityUtils {
         return hi * 32 + low;
     }
 
+    public static  void main    (String[] ar){
+        System.out.println(encodeBySelf("test1"));
+        System.out.println(decodeBySelf("test1"));
+    }
 }

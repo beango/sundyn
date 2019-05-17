@@ -105,6 +105,8 @@
     <bean id="sysDevicesService" class="com.sundyn.service.impl.SysDevicesServiceImpl"/>
     <bean id="sysJxdataService" class="com.sundyn.service.impl.SysJxdataServiceImpl"/>
     <bean id="jxEmployeeService" class="com.sundyn.service.impl.JxEmployeeServiceImpl"/>
+    <bean id="auditLoginService" class="com.sundyn.service.impl.AuditLogServiceImpl"/>
+    <bean id="auditLockService" class="com.sundyn.service.impl.AuditLockServiceImpl"/>
 
     <bean id="managerService" class="com.sundyn.service.ManagerService" parent="superDao"/>
 	<bean id="menuService" class="com.sundyn.service.MenuService" parent="superDao"/>

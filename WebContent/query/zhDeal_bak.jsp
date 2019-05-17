@@ -20,7 +20,7 @@
 		<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE" />
 		<link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
 		<link rel="stylesheet" href="css/dialog.css" type="text/css" />
-		<title><s:text name='sundyn.title'/></title>
+		<title><s:text name='zx.title'/></title>
 		<script type="text/javascript" src="js/dojo.js"></script>
 		<script type="text/javascript" src="js/dialog.js"></script>
 		<script type="text/javascript" src="js/wz_jsgraphics.js"></script>

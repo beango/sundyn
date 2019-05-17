@@ -8,9 +8,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
     <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
-    <title><s:text name='sundyn.title' /></title>
+    <title><s:text name='zx.title' /></title>
 
-    <script src="assets/javascripts/vendor/jquery-2.1.3.min.js?1440992355"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
 	<script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>

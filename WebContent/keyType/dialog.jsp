@@ -6,11 +6,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
-    <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
-    <script type="text/javascript" src="js/dojo.js"></script>
-    <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+    <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <script type="text/javascript" src="js/json2.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
     <style>
@@ -230,16 +229,9 @@
     </div>
 </div>
 
-<script src="js/interact.js"></script>
-<script src="js/json2.js"></script>
 <script>
     var dh = 220, dw=165;
     function getRandomColor() {
-        /*return '#' +
-            (function (color) {
-                return (color += '0123456789abcdef'[Math.floor(Math.random() * 16)])
-                && (color.length == 6) ? color : arguments.callee(color);
-            })('');*/
         return "#ffffff";
     }
     layui.use(['form', 'upload'], function(){
@@ -367,8 +359,7 @@
 
 
         var mydrag = function () {
-            interact('.draggable')
-                .draggable({
+            interact('.draggable').draggable({
                     inertia: false,
                     restrict: {
                         restriction: "parent",
@@ -386,14 +377,11 @@
                     }
                 })
                 .resizable({
-                    // resize from all edges and corners
                     edges: {left: true, right: true, bottom: true, top: true},
-                    // keep the edges inside the parent
                     restrictEdges: {
                         outer: 'parent',
                         endOnly: true
                     },
-                    // minimum size
                     restrictSize: {
                         min: {width: 0, height: 0}
                     },
@@ -467,7 +455,6 @@
 
             function dragMoveListener(event) {
                 var target = event.target,
-                    // keep the dragged position in the data-x/data-y attributes
                     x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
                     y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
@@ -502,11 +489,9 @@
                         y = parseInt(every_y[a_y])-s.height();
                     }
                 }
-                // translate the element
                 target.style.webkitTransform =
                     target.style.transform =
                         'translate(' + x + 'px, ' + y + 'px)';
-                // update the posiion attributes
                 target.setAttribute('data-x', x);
                 target.setAttribute('data-y', y);
             }
@@ -527,12 +512,10 @@
                 var sid = s.attr('id');
                 var ns = parseInt(sid);
                 var i = ns * 2
-                // top  right  bottom left   //data-y  data-x+width  data-y+height  data-x
                 every_y.insert(i, parseFloat(s.attr('data-y')));
                 every_x.insert(i, parseFloat(s.attr('data-x')) + parseFloat(s.width()));
                 every_y.insert(i + 1, parseFloat(s.attr('data-y')) + parseFloat(s.height()));
                 every_x.insert(i + 1, parseFloat(s.attr('data-x')));
-                //console.log(every_x, every_y)
             }
 
             function drag_c(event) {
@@ -563,14 +546,79 @@
                 size = $("#evalSize").val();
             if (img==null) img = "";
             data.push({'id': id, 'text': text, 'size':size, 'r': 0, 'g': 0, 'b': 0, 'lx': x, "ly": y, 'x': i, "y": 0, "width": w, "height": h, "img": img});
-            console.log('id:', id, 'x:', x, " y:", y, " width:", w, " height:", h);
-            console.log();
-
         }
-        console.log(JSON.stringify(data))
         $.post("keyTypeLayoutEdit.action", {data: JSON.stringify(data)},function(result){
-            console.log(result);
         })
+    }
+
+
+    function keyTypeEditAll() {
+        var r=/^[-]?\d+$/;
+        var ext1=document.getElementById("ext11").value;
+        var ext2=document.getElementById("ext12").value;
+        var ext3=document.getElementById("ext13").value;
+        var ext4=document.getElementById("ext14").value;
+        var ext5=document.getElementById("ext15").value;
+        var ext6=document.getElementById("ext16").value;
+        var ext7=document.getElementById("ext17").value;
+
+        if(r.test(ext1)&&r.test(ext2)&&r.test(ext3)&&r.test(ext4)&&r.test(ext5)&&r.test(ext6)&&r.test(ext7)){
+            if((ext1 && ext1>10) || (ext2 && ext2>10) || (ext3 && ext3>10) || (ext4 && ext4>10) || (ext5 && ext5>10) || (ext6 && ext6>10) || (ext7 && ext7>10))
+            {
+                alert("权值最大为10");
+                return;
+            }
+            var idx = 1;
+            var ids = "", names = "", isJoys="", yess = "", ext1s = "";
+            while (idx<=7){
+                var name = document.getElementById("name" + idx).value;
+                var isJoy = document.getElementById("isJoy" + idx);
+                var yes=document.getElementById("yes"+idx);
+                var ext1=document.getElementById("ext1"+idx).value;
+                if (isJoy.checked) {
+                    isJoy = "on";
+                } else {
+                    isJoy = "";
+                }
+                if (yes.checked) {
+                    yes = 1;
+                } else {
+                    yes = 0;
+                }
+                ids += idx+",";
+                names += name + ",";
+                isJoys += isJoy + ",";
+                yess += yes + ",";
+                ext1s += ext1 + ",";
+                idx++;
+            }
+            if(("," + yess).indexOf(",1,")==-1)
+            {
+                alert("至少选择一个评价按键！");
+                return;
+            }
+            var items = $(".content .draggable");
+            var data = [];
+            for (var i=0; i<items.length; i++){
+                var x = $(items[i]).attr("data-x"),
+                    y = $(items[i]).attr("data-y"),
+                    w = $(items[i]).width(),
+                    h = $(items[i]).height(),
+                    id = $(items[i]).attr("id").replace('e',''),
+                    text = document.getElementById("name" + id).value,//$(items[i]).find(".h4").html().trim(),
+                    img = $(items[i]).attr("data-img"),
+                    size = $("#evalSize").val();
+                if (img==null) img = "";
+                data.push({'id': id, 'text': text, 'size':size, 'r': 0, 'g': 0, 'b': 0, 'lx': x, "ly": y, 'x': i, "y": 0, "width": w, "height": h, "img": img});
+            }
+            $.post("keyTypeLayoutEdit.action", {data: JSON.stringify(data)},function(result){
+            });
+            $.post("keyTypeEdit.action", {ids:ids, names:names, isJoys:isJoys,yess:yess,ext1s:ext1s},function(resp){
+                succ(resp);
+            });
+        }else{
+            alert("权值非法，只能为整数" + (ext1>1));
+        }
     }
 </script>
 </body></html>

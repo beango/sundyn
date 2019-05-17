@@ -9,14 +9,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
     <link rel="stylesheet" href="lib/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css" />
-    <title><s:text name='sundyn.title'/></title>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <title><s:text name='zx.title'/></title>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/dtree.js"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?<%=new Date().getTime()%>"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
 </head>
 <body>
@@ -43,7 +43,6 @@
         $.ajax({url: ac+"&menus="+menus,
             type: 'GET',
             dataType:'json',
-            timeout: 20000,
             success: function(html){
                 dialogAjaxDone(html);
             }
@@ -479,9 +478,10 @@
     //初始化
     var rMenu,zTree;
     $(document).ready(function () {
-        zTree = jQuery.fn.zTree.init($("#zTreeMenuContent"), setting);
-        $("#callbackTrigger").bind("change", {}, setTrigger);    //拖拽节点时自动展开父节点是否触发
-        rMenu = $("#rMenu");
+        layui.use(['layer'], function() {
+            zTree = jQuery.fn.zTree.init($("#zTreeMenuContent"), setting);
+            rMenu = $("#rMenu");
+        });
     });
 
     function reset() {
@@ -518,11 +518,6 @@
                 curStatus = "";
             }
         }
-    }
-
-    function setTrigger() {
-        var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
-        zTree.setting.edit.drag.autoExpandTrigger = $("#callbackTrigger").attr("checked");
     }
 
     //鼠标右键功能

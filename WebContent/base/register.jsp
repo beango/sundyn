@@ -11,8 +11,8 @@
 		<link rel="stylesheet" href="${ctx}/css/common_<s:text name='sundyn.language' />.css" type="text/css" />
 		<link rel="stylesheet" href="${ctx}/css/dialog.css" type="text/css" />
 		<link rel="stylesheet" href="${ctx}/css/dtree.css" type="text/css" />
-		<title><s:text name='sundyn.title'/></title>
-        <script type="text/javascript" src="${ctx}/js/jquery-2.1.3.min.js"></script>
+		<title><s:text name='zx.title'/></title>
+        <script type="text/javascript" src="${ctx}/js/jquery.js"></script>
 		<script type="text/javascript" src="${ctx}/js/ddtree.js"></script>
 		<script type="text/javascript" src="${ctx}/js/dojo.js"></script>
 		<script type="text/javascript" src="${ctx}/js/dialog.js"></script>

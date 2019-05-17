@@ -7,10 +7,10 @@
 <head>
     <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
     <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
-    <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="lib/jquery.form.min.js"></script>
+    <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
@@ -26,24 +26,19 @@
     <script type="text/javascript">
         function formPost(){
             $("#hallid").val($("#hallsele").val());
-            $('form').ajaxForm({
-                beforeSubmit:  validate,    // 提交前，验证
-                success: function(resp) {
-                    if(resp.trim()==""){
-                        layer.msg('修改成功', {
-                            icon: 1,
-                            time: 800
-                        }, function(){
+            var data = $("form").serialize();
+            $.ajax({
+                url: 'counterPost.action',
+                type: 'POST',
+                data: data,
+                success:function (resp) {
+                    if (resp.trim() == "") {
+                        succ("修改成功",function () {
                             parent.closeDialog();
                             parent.refreshTab();
                         });
-                    }
-                    else{
-                        layer.msg(resp, {
-                            icon: 2,
-                            time: 1200
-                        }, function(){
-                        });
+                    } else {
+                        error(resp);
                     }
                 }
             });
@@ -75,7 +70,7 @@ request.setAttribute("qs_deptid", qs_deptid);
         <div class="layui-input-inline">
             <select id="hallsele">
                 <c:forEach items="${hallList}" var="hall" varStatus="index">
-                    <option <c:if test="${entity!=null?(hall.id==entity.hallid):(hall.id==deptid)}"> selected="selected"</c:if> value="${hall.id}">${hall.hallname}</option>
+                    <option <c:if test="${(entity != null ? (hall.id==entity.hallid) : (hall.id==deptid)) || halldef==hall.id }"> selected="selected"</c:if> value="${hall.id}">${hall.hallname}</option>
                 </c:forEach>
             </select>
         </div>
@@ -179,7 +174,7 @@ request.setAttribute("qs_deptid", qs_deptid);
     <div class="layui-form-item">
         <label class="layui-form-label"></label>
         <div class="layui-input-inline">
-            <input type="submit" class="layui-btn" value="提交" onclick="formPost()" />
+            <input type="button" class="layui-btn" value="提交" onclick="formPost()" />
         </div>
     </div>
 </form>

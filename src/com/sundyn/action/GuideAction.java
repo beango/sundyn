@@ -247,7 +247,7 @@ public class GuideAction extends ActionSupport
     public String guideSimpleFour() throws SQLException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Integer fatherId = Integer.valueOf(request.getParameter("fatherId"));
-        this.ls = this.employeeService.findEmployeeByDeptid(fatherId, 0, 40);
+        this.ls = this.employeeService.findEmployeeByDeptid(fatherId, null,0, 40);
         request.setAttribute("deptId", (Object)fatherId);
         return "success";
     }
@@ -299,7 +299,7 @@ public class GuideAction extends ActionSupport
     public String guideSimpleEmployeeAjax() throws SQLException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Integer deptId = Integer.valueOf(request.getParameter("deptId"));
-        this.ls = this.employeeService.findEmployeeByDeptid(deptId, 0, 40);
+        this.ls = this.employeeService.findEmployeeByDeptid(deptId, null,0, 40);
         return "success";
     }
     

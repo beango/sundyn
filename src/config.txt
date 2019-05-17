@@ -1,2 +1,2 @@
-enableCache=false
+enableCache=true
 PageSizeDef=20

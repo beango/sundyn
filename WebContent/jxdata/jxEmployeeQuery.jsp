@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
@@ -94,9 +94,9 @@
                 <th background="images/03_02_07.jpg"
                     class="px13_1" sort="servicetime">个人本月有效服务时间<img src="../images/nor.png" /></th>
                 <th background="images/03_02_07.jpg"
-                    class="px13_1" sort="servicetime">个人本月有效服务人次<img src="../images/nor.png" /></th>
+                    class="px13_1" sort="servicecount">个人本月有效服务人次<img src="../images/nor.png" /></th>
                 <th background="images/03_02_07.jpg"
-                    class="px13_1" sort="servicetime">大厅本月平均服务时间<img src="../images/nor.png" /></th>
+                    class="px13_1" sort="deptservicetimeavg">大厅本月平均服务时间<img src="../images/nor.png" /></th>
                 <th background="images/03_02_07.jpg"
                     class="px13_1" sort="fwzl">服务质量<img src="../images/nor.png" /></th>
                 <th background="images/03_02_07.jpg"
@@ -157,7 +157,9 @@
                             <fmt:formatNumber type="number" value="${data.deptfwxn}" maxFractionDigits="2"/>
                         </td>
                         <td>
-                            <fmt:formatNumber type="number" value="${data.fwpjl * 100.0}" maxFractionDigits="2"/>%
+                            <c:if test="${data.fwpjl>0}">
+                                ${data.fwpjl * 15.0}(<fmt:formatNumber type="number" value="${data.fwpjl * 100.0}" maxFractionDigits="2"/>%)
+                            </c:if>
                         </td>
                         <td>
                             <fmt:formatNumber type="number" value="${data.ykq}" maxFractionDigits="2"/>

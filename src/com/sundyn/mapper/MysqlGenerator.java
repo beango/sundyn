@@ -90,7 +90,7 @@ public class MysqlGenerator {
                                 .setDbColumnUnderline(true)// 全局下划线命名
                                 // .setTablePrefix(new String[]{"unionpay_"})// 此处可以修改为您的表前缀
                                 .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
-                                .setInclude(new String[] {"jx_employee"}) // 需要生成的表
+                                .setInclude(new String[] {"audit_lock"}) // 需要生成的表
                                 // .setExclude(new String[]{"test"}) // 排除生成的表
                                 // 自定义实体，公共字段
                                 // .setSuperEntityColumns(new String[]{"test_id"})

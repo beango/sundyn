@@ -8,7 +8,7 @@
 
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="lib/jquery.form.min.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layer/layer.js"></script>
@@ -19,25 +19,20 @@
         .layui-form-label{width:120px;}
     </style>
     <script type="text/javascript">
-        function hallPost(){
-            $('form').ajaxForm({
-                beforeSubmit:  validate,    // 提交前，验证
-                success: function(resp) {
-                    if(resp.trim()==""){
-                        layer.msg('修改成功', {
-                            icon: 1,
-                            time: 800
-                        }, function(){
+        function hallPost() {
+            var data = $("form").serialize();
+            $.ajax({
+                url: 'hallPost.action',
+                type: 'POST',
+                data: data,
+                success:function (resp) {
+                    if (resp.trim() == "") {
+                        succ("修改成功",function () {
                             parent.closeDialog();
                             parent.refreshTab();
                         });
-                    }
-                    else{
-                        layer.msg(resp, {
-                            icon: 2,
-                            time: 1200
-                        }, function(){
-                        });
+                    } else {
+                        error(resp);
                     }
                 }
             });
@@ -70,7 +65,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">大厅名称：</label>
         <div class="layui-input-inline">
-            <label class="layui-form-label" style="text-align: left;">${hall.hallname}</label>
+            <label class="layui-form-label" style="text-align: left;width: 100%;">${hall.hallname}</label>
             <input type="hidden" name="hallname" id="hallname" class="layui-input" value="${hall.hallname}" />
         </div>
     </div>
@@ -168,7 +163,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label"></label>
         <div class="layui-input-inline">
-            <input type="submit" class="layui-btn" value="提交" onclick="hallPost()" />
+            <input type="button" class="layui-btn" value="提交" onclick="hallPost()" />
         </div>
     </div>
 </form>

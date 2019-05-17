@@ -46,7 +46,6 @@ if (StringUtils.isBlank(id)){//参数没有指定显示哪个模块的菜单，�
         Map m = (Map)menuList.get(i);
         if (m.get("parentId").toString().equals("0")) {
             id = m.get("id").toString();
-            System.out.println(m.get("id"));
             break;
         }
     }

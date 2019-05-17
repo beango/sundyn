@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="css/dialog.css" type="text/css" />
 		<link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
 		<link rel="stylesheet" href="css/dtree.css" type="text/css" />
-		<title><s:text name='sundyn.title'/></title>
+		<title><s:text name='zx.title'/></title>
 		<script type="text/javascript" src="js/ddtree.js"></script>
 		<script type="text/javascript" src="js/dojo.js"></script>
 		<script type="text/javascript" src="js/dialog.js"></script>

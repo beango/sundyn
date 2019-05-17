@@ -3,6 +3,7 @@ package com.sundyn.action;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.sundyn.Realm.CheckPermission;
 import com.sundyn.entity.SysDictinfo;
 import com.sundyn.entity.SysJxdata;
 import com.sundyn.service.DeptService;
@@ -14,6 +15,7 @@ import com.sundyn.util.ValidateUtil;
 import com.xuan.xutils.utils.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.struts2.ServletActionContext;
 
 import javax.annotation.Resource;
@@ -36,6 +38,8 @@ public class SysJxDataAction extends MainAction {
     /*
     绩效数据配置
      */
+    //@RequiresPermissions("account:create")
+    //@CheckPermission(permission={"123"})
     public String jxDataQuery() {
         try {
             String key = req.getString("key");

@@ -8,18 +8,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf8"/>
-    <title><s:text name='sundyn.title'/></title>
+    <title><s:text name='zx.title'/></title>
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
     <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css"/>
-    <script src="${ctx}/assets/javascripts/vendor/jquery-2.1.3.min.js?1440992355"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/dojo.js"></script>
-    <script type="text/javascript" src="js/wz_jsgraphics.js"></script>
-    <script type="text/javascript" src="js/line.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?1"></script>
     <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
-    <script type="text/javascript" src="lib/layui/layui.js"></script>
+
     <script type="text/javascript" src="lib/util/deptselutil.js"></script>
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
@@ -42,7 +40,7 @@
         .layui-form-radio{margin:0px !important;}
     </style>
 </head>
-<body class="layui-form">
+<body class="layui-main" style="width:100%;">
 <div class="place">
     <span>位置：</span>
     <ul class="placeul">
@@ -73,11 +71,11 @@
     </div>
 </div>
 <div class="layui-inline">
-    <label class="layui-form-label" style="width:40px;">按</label>
+    <label class="layui-form-label" style="width:40px;"><s:text name='sundyn.analyse.by'/></label>
     <div class="layui-input-inline">
-        <input type="radio" name="type" checked="checked" value="day" title="<s:text name='sundyn.analyse.day'/>"/>
-        <input type="radio" name="type" value="month" title="<s:text name='sundyn.analyse.month'/>"/>
-        <input type="radio" name="type" value="year" title="<s:text name='sundyn.analyse.year'/>"/>
+        <input type="radio" name="type" checked="checked" value="day" title="<s:text name='sundyn.analyse.day'/>" style="vertical-align:middle;" /><span style="margin-top:0px;display:inline-block;height: 24px; vertical-align: middle;margin-top:8px;"><s:text name='sundyn.analyse.day'/></span>
+        <input type="radio" name="type" value="month" title="<s:text name='sundyn.analyse.month'/>" style="vertical-align:middle;" /><span style="margin-top:0px;display:inline-block;height: 24px; vertical-align: middle;margin-top:8px;"><s:text name='sundyn.analyse.month'/></span>
+        <input type="radio" name="type" value="year" title="<s:text name='sundyn.analyse.year'/>" style="vertical-align:middle;" /><span style="margin-top:0px;display:inline-block;height: 24px; vertical-align: middle;margin-top:8px;"><s:text name='sundyn.analyse.year'/></span>
         <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" style="cursor:pointer;" onclick="query()"/>
         <%--<img src="<s:text name="sundyn.analyse.businessNumAnalyse" />" onclick="analyseDeptAjax(w)" style="cursor: pointer; vertical-align: middle;"/>
         <img src="<s:text name="sundyn.analyse.contentNumAnalyse" />" onclick="analyseDeptContentAjax(w)" style="cursor: pointer; vertical-align: middle;"/>
@@ -129,9 +127,7 @@
 </div>
 </body>
 <script type="text/javascript">
-    //Demo
-    layui.use('form', function(){
-        var form = layui.form;
+    layui.use('layer', function(){
     });
 
     var curTab = "";
