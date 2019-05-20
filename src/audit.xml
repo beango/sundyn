@@ -1,0 +1,61 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="audit" extends="json-default">
+		<!-- 验证用户登录 开始-->
+        <interceptors>
+            <interceptor name="userCheckR" class="com.sundyn.util.UserCheckR"></interceptor>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
+            <interceptor name="registerCheck"
+                         class="registerCheck">
+            </interceptor>
+            <interceptor-stack name="mydefault">
+                <interceptor-ref name="operationInterceptor" />
+                <interceptor-ref name="userCheckR" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+            <result name="noauth">/noauth.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+
+        <!--  员工绩效数据管理 -->
+        <action name="auditlogin" class="auditAction"
+                method="auditlogin">
+            <result name="success">/audit/auditlogin.jsp</result>
+        </action>
+        <action name="managerlogin" class="auditAction"
+                method="managerlogin">
+            <result name="success">/audit/managerlogin.jsp</result>
+        </action>
+
+        <action name="securitylogrpt" class="auditAction"
+                method="securitylogrpt">
+            <result name="success">/audit/securitylogrpt.jsp</result>
+        </action>
+        <action name="auditlogrpt" class="auditAction"
+                method="auditlogrpt">
+            <result name="success">/audit/auditlogrpt.jsp</result>
+        </action>
+        <action name="syslogrpt" class="auditAction"
+                method="syslogrpt">
+            <result name="success">/audit/syslogrpt.jsp</result>
+        </action>
+
+        <action name="auditlock" class="auditAction"
+                method="auditlock">
+            <result name="success">/audit/auditlock.jsp</result>
+        </action>
+
+        <action name="auditunlock" class="auditAction"
+                method="auditunlock">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+    </package>
+</struts>

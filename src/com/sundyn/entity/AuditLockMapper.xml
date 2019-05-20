@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.AuditLockDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, locktype, locktime, unlocktime, status, lockdesc, ctime, realunlocktime, unlockuser
+    </sql>
+
+    <select id="querypagemap" resultType="Map">
+       SELECT audit_lock.*, appries_manager.realname, appries_dept.name deptname, t2.name unlockusername
+        FROM audit_lock left join appries_manager on audit_lock.name=appries_manager.name
+        LEFT JOIN appries_dept on appries_manager.deptid = appries_dept.id
+        LEFT join appries_manager t2 on t2.id=audit_lock.unlockuser
+        WHERE 1=1 ${ew.sqlSegment}
+    </select>
+
+</mapper>

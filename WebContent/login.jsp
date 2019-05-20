@@ -87,7 +87,7 @@
 
 </head>
 
-<body style="background-color:#1c77ac; background-image:url(${ctx}/images/managementLogin2.png); background-repeat:no-repeat; background-position:center top; overflow:hidden;">
+<body style="background-color:#1c77ac; background-image:url(${ctx}/images/managementLogin.jpg); background-repeat:no-repeat; background-position:center top; overflow:hidden;">
 
 <div class="loginbody" id="loginbody">
     <span class="systemlogo"></span>

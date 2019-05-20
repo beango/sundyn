@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.AuditLogDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, logtype, ctime, ipadd, logrst, logrstdesc, logdevice, checkdigit, checkdigited
+    </sql>
+
+    <select id="querypagemap" resultType="Map">
+       SELECT audit_log.*, appries_manager.realname, appries_dept.name deptname
+        FROM audit_log left join appries_manager on audit_log.name=appries_manager.name
+        LEFT JOIN appries_dept on appries_manager.deptid = appries_dept.id
+        WHERE 1=1 ${ew.sqlSegment}
+    </select>
+
+    <select id="querymap" resultType="Map">
+       SELECT audit_log.*, appries_manager.realname
+        FROM audit_log left join appries_manager on audit_log.name=appries_manager.name
+        WHERE 1=1 ${ew.sqlSegment}
+    </select>
+
+    <select id="securitylogrpt" resultType="Map">
+       select t1.name,t2.realname,sum(case when logrst='成功' then 1 else 0 end) succtimes
+        ,sum(case when logrst='成功' then 0 else 1 end) errortimes
+        from audit_log t1 left join appries_manager t2 on t1.name=t2.name
+        where logtype='登录' ${ew.sqlSegment}
+        group by t1.name,t2.realname
+    </select>
+
+    <select id="auditlogrpt" resultType="Map">
+       select logtype,count(*) count
+        from audit_log t where logtype!='登录' ${ew.sqlSegment}
+        group by logtype
+    </select>
+
+    <select id="syslogrpt" resultType="Map">
+       select actionname,count(*) count
+        from sys_log t  where moudlename is not null and actionname is not null and actionname!='' ${ew.sqlSegment}
+        group by actionname
+    </select>
+
+</mapper>

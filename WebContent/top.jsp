@@ -33,7 +33,7 @@
 <body style="background:url(${ctx}/images/topbg.gif) repeat-x; min-width: 1500px;">
 <div class="topleft">
     <div style="float:left;width:88px;">
-        <a href="${ctx}/default.jsp" target="_parent"><img src="${ctx}/images/公安.png" style="width:73px;height:71px;" title="首页"/></a>
+        <a href="${ctx}/default.jsp" target="_parent"><img src="${ctx}/images/ic_launcher.png" style="width:73px;height:71px;" title="首页"/></a>
     </div>
     <div style="float:left;margin-top:25px;">
         <h2 style="font-size:24px;color:white;"><s:text name="zx.title"/></h2>
