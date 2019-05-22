@@ -9,13 +9,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>欢迎登录后台管理系统</title>
     <link href="css/style.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="lib/layui/layui.all.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script language="JavaScript" src="js/md5.min.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script language="JavaScript" src="js/dojo.js"></script>
     <script language="JavaScript" src="js/my_zh.js"></script>
     <script language="javascript">
         $(function () {
+            layui.use("layer")
+
             var loginmsg = '${loginmsg}';
             if(loginmsg=='')
                 loginmsg = '${msg}';

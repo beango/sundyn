@@ -652,12 +652,6 @@ function regId(data) {
 }
 // 添加机构节点
 function addChildItem(deptId) {
-
-	if(document.getElementById("tip").innerHTML == "mac 已经被占用"){
-		alert("mac 已经被占用!");
-		return false;
-	}
-
 	if (!deptId) {
 		alert("请选择部门");
 		return false;
@@ -718,21 +712,18 @@ function addChildItem(deptId) {
 		var product_type = document.getElementById("product_type").value;
 	}
 	dojo.xhrPost({url:"deptAddChildItem.action", content:{deptId:deptId, deptName:deptName, reMark:reMark, client_type:client_type, product_type:product_type, deptType:deptType,dept_camera_url:dept_camera_url,dept_businessId:dept_businessId,dept_playListId:dept_playListId,deptPause:deptPause,deptPic:deptPic,deptLogoPic:deptLogoPic,useVideo:useVideo,notice:notice,provinceid:provinceid,cityid:cityid}, load:function (resp, ioArgs) {
-	    var _newUrl = parent.location.href;
-	    if(parent.parent.qc){
-                var currTab = parent.parent.qc.main.mainTabs.tabs('getSelected');
-                parent.parent.qc.main.mainTabs.tabs('update', {
-                    tab : currTab,
-                    options : {
-                        content : '<iframe class="iframe-fluid" src="'+_newUrl+'"></iframe>'
-                    }
-                });
-            }
-            else{
+	    if (resp.trim() != ''){
+	        error(resp);
+        }
+	    else{
+	        succ("提交成功！", function () {
+                var _newUrl = parent.location.href;
                 parent.location.href = _newUrl;
-            }
+            })
+        }
 	}});
 }
+
 // 删除机构
 function del() {
 	var deptId = document.getElementById("deptId").value;
@@ -755,23 +746,13 @@ function del() {
 	}});
 }
 // 添加机构对话框
-function deptAddDialog(data, deptid, title) {
-    layer.open({
-        type: 2,
-        title: title?title:'提示页',
-        shadeClose: true,
-        shade: 0.8,
-        area: ['600px', '50%'],
-        content: 'deptAddDialog.action?deptType='+data + "&deptId="+deptid,
-        success:function(ly,index){
-
-        }
-    });
+function deptAddDialog(deptType, deptid, title) {
+    new dialog().iframe("deptAddDialog.action?deptType="+deptType + "&deptId="+deptid, {title: title, w:'700px', h:"600px"});
 }
 // 修改机构对话框
-function deptEditDialog(title, fatherid) {
+function deptEditDialog(title, fatherid, deptType) {
 	var deptId = document.getElementById("deptId").value;
-	new dialog().iframe('deptEditDialog.action?deptId='+deptId + "&fatherid="+fatherid, {title: title, resize:false, h:"600px"});
+	new dialog().iframe("deptEditDialog.action?deptId="+deptId + "&fatherid="+fatherid + "&deptType=" + deptType, {title: title, w:'700px', h:"600px"});
 }
 // 大厅参数配置
 function deptCfgDialog(title, deptname) {
@@ -854,13 +835,14 @@ function deptEditItem(deptId) {
 	if(document.getElementById("citys")!=null){
 		cityid=document.getElementById("citys").value;
 	}
-	var fatherId = "";
+    var fatherId = "";
+	/*var fatherId = "";
     var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
     if (zTree){
         var nodes=zTree.getCheckedNodes(true);
         if(nodes && nodes.length>0)
             fatherId = nodes[0].id;
-    }
+    }*/
 	dojo.xhrPost({url:"deptEditItem.action", content:{deptId:deptId, deptName:deptName, reMark:reMark, client_type:client_type,product_type:product_type,
             dept_camera_url:dept_camera_url,dept_businessId:dept_businessId,dept_playListId:dept_playListId,deptPause:dept_Pause,deptPic:deptPic,
             deptLogoPic:deptLogoPic,useVideo:useVideo,notice:notice,provinceid:provinceid,cityid:cityid,fatherId:fatherId}, load:function (resp, ioArgs) {
@@ -2114,18 +2096,17 @@ function playListCreateUpdateZip(data){
 
 // 生成在线升级包,Zip格式和Bin格式
 function playListCreateUpdateZipFile(data){
-	document.getElementById("pbar").src="images/update_processbar.gif";
-	var playIds = getAllKey();
-	dojo.xhrPost({url:"playListCreateUpdateZip.action", content:{playListId:data,playIds:playIds}, load:function (resp, ioArgs) {
-		document.getElementById("pbar").src="images/update_processend.gif";
-            layer.msg('生成升级成功', {
-                icon: 1,
-                time: 800
-            }, function(){
-            });
-	}, error:function(){
-		alert("系统错误");
-	}});
+    //document.getElementById("pbar").src="images/update_processbar.gif";
+    var l = layer.msg('正在生成升级包...', {icon: 16, shade: 0.1, time: 999999});
+
+    var playIds = getAllKey();
+    dojo.xhrPost({url:"playListCreateUpdateZip.action", content:{playListId:data,playIds:playIds}, load:function (resp, ioArgs) {
+            document.getElementById("pbar").src="images/update_processend.gif";
+            succ('生成升级成功');
+            layer.close(l);
+        }, error:function(){
+            error("系统错误");layer.close(l);
+        }});
 }
 
 // 给文本框值
@@ -4518,7 +4499,7 @@ function succ(msg, calback){
 }
 
 function error(msg){
-    layer.msg(msg, {icon: 2, time: 5800});
+    layer.msg(msg, {icon: 2, time: 2800});
 }
 
 // https://zeit.co/blog/async-and-await

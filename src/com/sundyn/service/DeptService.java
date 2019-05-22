@@ -417,22 +417,20 @@ public class DeptService extends SuperDao
         if(temp == null || temp2 == null)
             return null;
         String resl = "";
-        String s1 = "",
-                s2 = "";
+        String s1 = "", s2 = "";
         for (int i = 0; i < temp.size(); ++i) {
             final Map m = (Map) temp.get(i);
             if (m != null) {
                 final Object obj = m.get("id");
-
                 s1 += "," + obj;
                 if (obj != null) {
                     final String id = obj.toString();
                     for (int j=0; j<temp2.size(); j++)
                     {
-                        s2 += "," + ((Map)temp2.get(j)).get("id").toString();
-
-                        if (((Map)temp2.get(j)).get("id").toString().equals(id))
-                            resl = String.valueOf(resl) + id + ",";
+                        Map m2 = (Map)temp2.get(j);
+                        s2 += "," + m2.get("id");
+                        if (m2.get("id").toString().equals(id))
+                            resl += id + ",";
                     }
                 }
             }

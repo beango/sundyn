@@ -1,6 +1,7 @@
 package com.sundyn.action;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.google.gson.JsonObject;
 import com.sundyn.cer.CertifacateGenerate;
 import com.sundyn.entity.City;
 import com.sundyn.entity.Province;
@@ -118,6 +119,15 @@ public class DeptAction extends MainAction
         if (this.deptId == null) {
             this.deptId = -1;
         }
+        if(StringUtils.isBlank(this.reMark)){
+            request.setAttribute("json", "设备信息不能为空");
+            return SUCCESS;
+        }
+        final Map m = this.deptService.findByMac(reMark);
+        if (m != null) {
+            request.setAttribute("json", "设备信息不能重复");
+            return SUCCESS;
+        }
         final Map temp = this.deptService.findDeptById(this.deptId);
         final Date cDate = new Date();
         final String dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cDate);
@@ -153,20 +163,21 @@ public class DeptAction extends MainAction
         final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
         final Map power = this.powerService.getUserGroup(groupid);
         final String deptIdGroup = power.get("deptIdGroup").toString();
-        this.list = this.deptService.findChildALL(deptIdGroup);
-        if (this.list != null && this.list.size() > 0) {
-            final Map dept = (Map) this.list.get(0);
-            dept.put("fatherId", -1);
-        }
-        final JSONArray json = JSONArray.fromObject((Object)this.list);
-        request.setAttribute("json", (Object)json);
+//        this.list = this.deptService.findChildALL(deptIdGroup);
+//        if (this.list != null && this.list.size() > 0) {
+//            final Map dept = (Map) this.list.get(0);
+//            dept.put("fatherId", -1);
+//        }
+//        final JSONArray json = JSONArray.fromObject((Object)this.list);
+//        request.setAttribute("json", (Object)json);
+        request.setAttribute("json", "");
         ClearCache_DEPT();
         return "success";
     }
     
     public String deptAddDialog() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-
+        int parentid = req.getInt("deptId");
         final String deptType = request.getParameter("deptType");
         this.list = this.businessService.find(true);
         final List playListList = this.playListService.playListQuery();
@@ -177,6 +188,7 @@ public class DeptAction extends MainAction
         request.setAttribute("deptType", (Object)deptType);
         request.setAttribute("playListList", (Object)playListList);
         request.setAttribute("remark", (Object)remark);
+        request.setAttribute("parentobj", deptService.findDeptById(parentid));
         //this.provinces = this.cityutils.getProvinces();
         this.provinces = this.cityutils.getProvincesOnly();
         this.province = this.cityutils.getProvinceDef();
@@ -209,19 +221,25 @@ public class DeptAction extends MainAction
 
     public String deptEditDialog() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
-        this.dept = this.deptService.findDeptById(this.deptId);
+        int parentid = req.getInt("fatherid");
+        if(deptId > 0){
+            this.dept = this.deptService.findDeptById(this.deptId);
+            final int pid = (int) this.dept.get("provinceid");
+            this.cityid = (int) this.dept.get("cityid");
+            final int id = (int) this.dept.get("id");
+            this.province = this.cityutils.getProvinceWithCitysById(pid);
+            this.citys = this.province.getCitys();
+            request.setAttribute("deptProvince", this.dept.get("pro"));
+            request.setAttribute("parentobj", deptService.findDeptById(parentid));
+        }
+        else
+            request.setAttribute("deptType", req.getInt("deptType"));
         this.list = this.businessService.find(true);
 
-        final int pid = (int) this.dept.get("provinceid");
-        this.cityid = (int) this.dept.get("cityid");
-        final int id = (int) this.dept.get("id");
         //this.provinces = this.cityutils.getProvinces();
         this.provinces = this.cityutils.getProvincesOnly();
-        this.province = this.cityutils.getProvinceWithCitysById(pid);
-        this.citys = this.province.getCitys();
         final List playListList = this.playListService.playListQuery();
         request.setAttribute("playListList", (Object)playListList);
-        request.setAttribute("deptProvince", this.dept.get("pro"));
         if (this.getCamera().equals("true")) {
             return "camera";
         }

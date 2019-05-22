@@ -34,11 +34,11 @@ function dialog()
                 if(args && args.full){
                     layer.full(index);
                 }
-                else if(args && (args.resize!=undefined || args.resize===false)){
+                /*else if(args && (args.resize!=undefined || args.resize===false)){
                 }
                 else{
                     layer.iframeAuto(index);
-                }
+                }*/
             }
         });
     }

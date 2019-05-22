@@ -706,7 +706,6 @@ public class AppriesAction extends ActionSupport
                 else {
                     this.msg = "error:mac=" + mac + "--tt=" + tt + "--cardnum=" + cardnum + "--pj=" + pj;
                 }
-                System.out.println("++++++++++++++++this.msg// " + this.msg + "------------msg2: " + msg2 + ", ywlsh: " + ywlsh);
                 if (msg2 == "1") {
                     final List list = this.appriesService.checkAppries(tt, pj, mac);
                     if (list != null) {

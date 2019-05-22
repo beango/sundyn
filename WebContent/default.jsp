@@ -7,7 +7,7 @@
 <title>广州市车管所排队与评价综管系统</title>
 </head>
 <frameset rows="88,*" cols="*" frameborder="no" border="0" framespacing="0">
-  <frame src="${ctx}/topMenu.action" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame" />
+  <frame src="${ctx}/topMenu.action" name="topFrame" scrolling="auto" noresize="noresize" id="topFrame" title="topFrame" />
   <frameset cols="187,*" frameborder="no" border="0" framespacing="0">
     <frame src="${ctx}/leftMenu.action" name="leftFrame" scrolling="No" noresize="noresize" id="leftFrame" title="leftFrame" />
     <frame src="${ctx}/queuealert.action" name="rightFrame" id="rightFrame" title="rightFrame" />

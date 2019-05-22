@@ -42,19 +42,12 @@
             layer.confirm('真的删除么', function(index){
                 $.post("counterDel.action?id=" + id, function(resp){
                     if(resp.trim()==""){
-                        layer.msg('删除成功', {
-                            icon: 1,
-                            time: 800
-                        }, function(){
+                        succ('删除成功', function(){
                             refreshTab();
                         });
                     }
                     else{
-                        layer.msg(resp, {
-                            icon: 2,
-                            time: 1200
-                        }, function(){
-                        });
+                        error(resp);
                     }
                 });
                 layer.close(index);

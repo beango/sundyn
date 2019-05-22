@@ -55,7 +55,6 @@ public class ManagerAction extends MainAction
     public void init() {
         super.init();
     }
-
     @Resource
     private IAppriesManagerpowerService managerpowerService;
     @Resource

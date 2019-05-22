@@ -141,7 +141,6 @@ public class ZipManager
     public void testReadZip() throws Exception {
         final String baseDir = "d://temp//zipout";
         final ZipFile zfile = new ZipFile("d://download//src.zip");
-        System.out.println(zfile.getName());
         final Enumeration zList = zfile.entries();
         ZipEntry ze = null;
         final byte[] buf = new byte[1024];
@@ -158,7 +157,6 @@ public class ZipManager
             }
             is.close();
             os.close();
-            System.out.println("Extracted: " + ze.getName());
         }
         zfile.close();
     }

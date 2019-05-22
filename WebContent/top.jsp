@@ -30,7 +30,7 @@
     </script>
 </head>
 
-<body style="background:url(${ctx}/images/topbg.gif) repeat-x; min-width: 1500px;">
+<body style="background:url(${ctx}/images/topbg.gif) repeat-x; min-width: 1800px;">
 <div class="topleft">
     <div style="float:left;width:88px;">
         <a href="${ctx}/default.jsp" target="_parent"><img src="${ctx}/images/ic_launcher.png" style="width:73px;height:71px;" title="首页"/></a>
@@ -54,7 +54,7 @@
 <ul class="nav">
     <c:forEach items="${json}" var="menu" varStatus="s">
         <c:if test="${menu!=null && menu.parentId==0}">
-            <li><a href="${ctx}/leftMenu.action?id=${menu.id}&isHome=${menu.menuorder==1}" target="leftFrame"><img src="${ctx}/images/${menu.iconCls}" title="${menu.text}"/>
+            <li><a href="${ctx}/leftMenu.action?id=${menu.id}&isHome=${menu.menuorder==1}" target="leftFrame"><img src="${ctx}/images/${menu.iconCls}" title="${menu.text}" style="width:58px; height:49px;"/>
                 <h2>${menu.text}</h2></a></li>
         </c:if>
     </c:forEach>

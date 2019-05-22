@@ -11,7 +11,7 @@
 	    <td align="center" colspan="2">
             <div class="button left " onclick="deptEditDialog('<s:text name="sundyn.dept.modifyDept" />','${dept.fatherId}')"   ><s:text name="sundyn.dept.modifyDept" /></div>
             <div class="button left " style="background-image: url('images/button6_bg.gif');width: 100px;"  onclick="deptAddDialog(2,'<%=request.getParameter("deptId")%>','<s:text name="sundyn.dept.addDept" />')" ><s:text name="sundyn.dept.addDept" /></div>
-            <div class="button left " onclick="deptAddDialog(1,'<%=request.getParameter("deptId")%>')"  ><s:text name="sundyn.dept.addDating" /></div>
+            <div class="button left " onclick="deptAddDialog(1,'<%=request.getParameter("deptId")%>', '<s:text name="sundyn.dept.addDating" />')"><s:text name="sundyn.dept.addDating" /></div>
             <div class="button left " onclick="del()"  ><s:text name="sundyn.del" /></div>
 	    </td>
 	  </tr>

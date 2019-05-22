@@ -605,7 +605,5 @@ public class LocalizedTextUtil {
         addDefaultResourceBundle("jdbc");
         setCharsetOfBundles(Charset.forName("gbk"));
         String s = findText(LocalizedTextUtil.class, "jdbc.driverClassName", Locale.getDefault());
-        System.out.println(s);
     }
-
 }

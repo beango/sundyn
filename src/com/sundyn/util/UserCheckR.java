@@ -39,12 +39,10 @@ public class UserCheckR extends AbstractInterceptor
         Object seO = session.getAttribute("sysversion");
 
         if (null != seO) {
-            System.out.println(seO + ", session");
         }
         else {
             for(SysDictinfo m : allData){
                 if (m.getDictkey().equalsIgnoreCase("sysversion")){
-                    System.out.println(m.getDictvalue() + ", request");
                     seO = m.getDictvalue();
                     session.setAttribute("sysversion", seO);
                 }

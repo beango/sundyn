@@ -97,7 +97,6 @@ public class AppriesService extends SuperDao
         try {
             String[] errmsg = new String[1];
             b = addQueueAppries(cardnum, mac, ywlsh, tt, pj, startservicetime, errmsg);
-            System.out.println("queue_appries:" + b + ", " + errmsg[0]);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -147,7 +146,6 @@ public class AppriesService extends SuperDao
         i = getJdbcTemplate().queryForObject(sql, new Object[]{
                 hallno, ywlsh, tt, cardnum, windowno, ttStr, tt, 0
         }, Integer.class);
-        System.out.println("插入呼叫记录：" + i);
         if (i>0){
             execQueueSP("Call", i);
         }
@@ -163,7 +161,6 @@ public class AppriesService extends SuperDao
         i = getJdbcTemplate().queryForObject(sql, new Object[]{
                 hallno, ywlsh, startservicetime, 1, ttStr, tt, 0
         }, Integer.class);
-        System.out.println("插入呼叫记录：" + i);
         if (i>0){
             execQueueSP("Service", i);
         }
@@ -177,7 +174,6 @@ public class AppriesService extends SuperDao
         i = getJdbcTemplate().queryForObject(sql, new Object[]{
                 hallno, ywlsh, tt, 2, ttStr, tt, 0
         }, Integer.class);
-        System.out.println("插入呼叫记录：" + i);
         if (i>0){
             execQueueSP("Service", i);
         }

@@ -1219,7 +1219,6 @@ public class EmployeeAction extends MainAction
         else {
             msg = "mac\u4e3a\u7a7a\uff0c\u8bf7\u91cd\u65b0\u8f93\u5165";
         }
-        System.out.println("useVideo-msg=" + msg);
         return "success";
     }
 

@@ -4,13 +4,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
     <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
 </head>
@@ -44,7 +42,7 @@
             <span style="font-size: 12px; color: red;" id="tip">(<s:text name="sundyn.alert.updata2" />)</span>
         </td></tr>
         <tr><td style="border-color: #e9f5fd;" colspan="2">
-            <img id="pbar" src="images/update_processstart.gif" style="width:100%;height:30px;" />
+            <img id="pbar" src="" style="width:100%;height:30px;display: none;" />
         </td></tr>
         <tr>
             <td style="border-color: #e9f5fd;" width="32%" align="right">
@@ -100,10 +98,10 @@
             </td>
         </tr>
     </table>
+    <br>
 </div>
 </body>
 <script>
-    //Demo
     layui.use('form', function(){
         var form = layui.form;
         var form = layui.form;

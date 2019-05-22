@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/admin.css" type="text/css"/>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/json2.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="js/FusionCharts.js"></script>
