@@ -1,3 +1,4 @@
+<%@ page import="com.sundyn.vo.PowerTypeEnum" %>
 <%@ page pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
@@ -31,25 +32,29 @@
         </tr>
         <tr>
             <td style="border-color: #e9f5fd;" width="12%" align="right">
-                状态<s:text name="sundyn.colon" />
+                <s:text name="sundyn.column.roleStatus" />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
-                <input type="radio" name="status" id="status" value="1" <c:if test="${m.status!=0}">checked="checked"</c:if> />启用
-                <input type="radio" name="status" id="status" value="0" <c:if test="${m.status==0}">checked="checked"</c:if> />禁用
+                <input type="radio" name="status" id="status" value="1" <c:if test="${m.status!=0}">checked="checked"</c:if> /><s:text name="main.radio.enable" />
+                <input type="radio" name="status" id="status" value="0" <c:if test="${m.status==0}">checked="checked"</c:if> /><s:text name="main.radio.disable" />
             </td>
         </tr>
         <tr>
             <td style="border-color: #e9f5fd;" width="12%" align="right">
-                所属类别<s:text name="sundyn.colon" />
+                <s:text name="sundyn.column.roleType" />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
                 <div class="layui-input-inline">
+                    <c:set var="p1" value="<%=PowerTypeEnum.业务办理.getCode()%>" />
+                    <c:set var="p2" value="<%=PowerTypeEnum.系统管理.getCode()%>" />
+                    <c:set var="p3" value="<%=PowerTypeEnum.安全管理.getCode()%>" />
+                    <c:set var="p4" value="<%=PowerTypeEnum.审计管理.getCode()%>" />
                     <select style="width:150px" id="powertype" name="powertype" lay-filter="powertype">
-                        <option value="" <c:if test="${m.powertype==''}">selected="selected"</c:if>>无</option>
-                        <option value="业务办理" <c:if test="${m.powertype=='业务办理'}">selected="selected"</c:if>>业务办理</option>
-                        <option value="系统管理" <c:if test="${m.powertype=='系统管理'}">selected="selected"</c:if>>系统管理</option>
-                        <option value="安全管理" <c:if test="${m.powertype=='安全管理'}">selected="selected"</c:if>>安全管理</option>
-                        <option value="审计管理" <c:if test="${m.powertype=='审计管理'}">selected="selected"</c:if>>审计管理</option>
+                        <option value="" <c:if test="${m.powertype==''}">selected="selected"</c:if>><s:text name="main.none" /></option>
+                        <option value="<%=PowerTypeEnum.业务办理.getCode()%>" <c:if test="${m.powertype==p1}">selected="selected"</c:if>><%=PowerTypeEnum.业务办理%></option>
+                        <option value="<%=PowerTypeEnum.系统管理.getCode()%>" <c:if test="${m.powertype==p2}">selected="selected"</c:if>><%=PowerTypeEnum.系统管理%></option>
+                        <option value="<%=PowerTypeEnum.安全管理.getCode()%>" <c:if test="${m.powertype==p3}">selected="selected"</c:if>><%=PowerTypeEnum.安全管理%></option>
+                        <option value="<%=PowerTypeEnum.审计管理.getCode()%>" <c:if test="${m.powertype==p4}">selected="selected"</c:if>><%=PowerTypeEnum.审计管理%></option>
                     </select>
                 </div>
             </td>
@@ -85,7 +90,7 @@
             </td>
         </tr>
         <tr>
-            <td style="border-color: #e9f5fd;" align="right">权限：</td>
+            <td style="border-color: #e9f5fd;" align="right"><s:text name="menu.form.label.auth" /></td>
             <td>
                 <div style="overflow:auto;height:300px;">
                     <ul id="zTreeMenuContent" class="ztree"></ul>
@@ -95,22 +100,18 @@
         <tr>
             <td></td>
             <td>
-                <img src="<s:text name='sundyn.pic.ok' />"  onclick="powerEdit()"
-                     class="hand" />
-                <img src="<s:text name='sundyn.pic.close' />"   onclick="closeDialog()"
-                     class="hand">
+                <input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="powerEdit()" class="layui-btn"/>
+                <input type="button" value="<s:text name='main.cancel'/>" class="layui-btn layui-btn-primary" onclick="parent.closeDialog()"/>
             </td>
         </tr>
     </table>
 </div>
 </body>
 <script>
-    //Demo
     layui.use('form', function(){
         var form = layui.form;
         form.on('select(powertype)', function(data){
-            console.log(data.value)
-            setting.async.url = "${ctx}/authQueryJSON.action?isAll=1&isCheck=1&powertype="+data.value;
+            setting.async.url = "authQueryJSON.action?isAll=1&isCheck=1&powertype=" + data.value;
             loadfunctree();
         });
     });
@@ -124,12 +125,11 @@
         async: {
             enable: true,
             autoParam: ["id=ids"],//, "name=n", "level=lv"
-            url: "${ctx}/authQueryJSON.action?isAll=1&isCheck=1&powertype=" + $("#powertype").val(),
+            url: "authQueryJSON.action?isAll=1&isCheck=1&powertype=" + $("#powertype").val(),
             dataFilter: filter,
             type: "post"
         },
         view: {
-            fontCss: getFont,
             showLine: true,
             expandSpeed: "",
             selectedMulti: true
@@ -175,9 +175,52 @@
         return childNodes;
     }
 
-    //字体设置
-    function getFont(treeId, node) {
-        return node.font ? node.font : {};
+
+    function powerEdit() {
+        var id = document.getElementById("id").value;
+        var name = document.getElementById("name").value;
+        if(name==""){
+            error("<s:text name="power.valid.name.notnull" />");
+            return false;
+        }
+        if (document.getElementById("tip").innerHTML=="<s:text name="power.valid.name.exists" />") {
+            error("<s:text name="power.valid.name.exists" />");
+            return false;
+        }
+        var baseSet = document.getElementById("baseSet");
+        if (baseSet.checked) {
+            baseSet = 1;
+        } else {
+            baseSet = 0;
+        }
+        var dataManage = document.getElementById("dataManage");
+        if (dataManage.checked) {
+            dataManage = 1;
+        } else {
+            dataManage = 0;
+        }
+        var deptId = document.getElementById("deptId").value;
+        var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
+        var nodes=zTree.getCheckedNodes(true),
+            v="";
+        for(var i=0;i<nodes.length;i++){
+            v+=nodes[i].id + ",";
+        }
+        var powertype = $("#powertype").val();
+        var status = $('input:radio[name="status"]:checked').val();
+
+        dojo.xhrPost({url:"powerEdit.action", content:{id:id,funcid:v, name:name, baseSet:baseSet, dataManage:dataManage,
+                deptId:deptId, powertype:powertype, status:status}, load:function (resp, ioArgs) {
+                if(resp.trim()==""){
+                    succ(id==''?"<s:text name="main.add.succ" />":"<s:text name="main.save.succ" />", function(){
+                        parent.closeDialog();
+                        parent.refreshTab();
+                    });
+                }
+                else{
+                    error(resp);
+                }
+            }});
     }
 </script>
 </html>

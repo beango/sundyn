@@ -23,7 +23,7 @@
                 <img src="images/employee_head_photo.gif" id="img123"  style="width: 250px;height: 280px;"  border="0" />
                 <div class="layui-upload">
                     <input type="hidden" name="imgName" id="imgName" />
-                    <button type="button" class="layui-btn" id="test1">选择图片</button>
+                    <button type="button" class="layui-btn" id="test1"><s:text name="main.choosepic" /></button>
                    <%-- <div class="layui-upload-list">
                         <img style="width: 140px;height: 147px;border:0;" class="layui-upload-img" name="img123" id="img123">
                         <p id="demoText"></p>
@@ -44,7 +44,7 @@
         </tr>--%>
         <tr>
             <td style="border-color: #e9f5fd;" align="right" class="ff">
-                工号<s:text name="sundyn.colon" /></td>
+                <s:text name="sundyn.column.employeeCardNum" /><s:text name="sundyn.colon" /></td>
             <td style="border-color: #e9f5fd;" align="left">
                 <input type="text" name="CardNum" id="CardNum"  onblur="employeeCardNumExsits()" class="input_comm"  /><font color="#FF0000">*</font><span style="color: red; font-size: 12px;" id="tipcardnum"></span>
                 <div style="color:red; text-align:left;"><s:text name="sundyn.employee.alertCardNum"></s:text></div>
@@ -104,8 +104,8 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <img src="<s:text name='sundyn.pic.ok' />" onclick="employeeAdd()" class="hand" />
-                <img src="<s:text name='sundyn.pic.close' />" onclick="closeDialog()" class="hand" />
+                <input type="button" class="layui-btn" value="<s:text name="main.save" />" onclick="employeeAdd()" />
+                <input type="button" class="layui-btn" value="<s:text name="main.cancel" />" onclick="closeDialog()" />
             </td>
         </tr>
     </table>
@@ -128,12 +128,12 @@
                 if(res.rst == "success" && res.path && res.path.length>0){
                     $('#imgName').val(res.path[0]); //图片链接（base64）
                     $('#img123').attr('src', res.path[0]);
-                    return layer.msg('上传成功！');
+                    return layer.msg('<s:text name="main.upload.succ" />');
                 }
                 alert(res.msg);
             }
             ,error: function(){
-                layer.msg('上传失败！');
+                layer.msg('<s:text name="main.upload.fail" />');
             }
         });
     });

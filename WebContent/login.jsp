@@ -1,19 +1,19 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="/struts-tags" prefix="s"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="qloginmsg" value="${pageContext.request.getParameter('msg')==null?'':com.sundyn.utils.ReqUtils.format(pageContext.request.getAttribute('msg').toString())}" />
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>欢迎登录后台管理系统</title>
+    <title><s:text name="login.title" /></title>
     <link href="css/style.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script language="JavaScript" src="js/md5.min.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script language="JavaScript" src="js/dojo.js"></script>
-    <script language="JavaScript" src="js/my_zh.js"></script>
+    <script language="JavaScript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script language="javascript">
         $(function () {
             layui.use("layer")
@@ -47,8 +47,8 @@
 
         function doclick(){
             var s = "";
-            if(!_$('name').value){s += "账号不能为空!";}
-            if(!_$('password1').value){s += "密码不能为空!";}
+            if(!_$('name').value){s += "<s:text name="login.userNameNotNULL" />";}
+            if(!_$('password1').value){s += "<s:text name="login.passwordNotNULL" />";}
             if(s != ""){
                 error(s);
                 return;
@@ -65,7 +65,7 @@
                 }
                 else
                 {
-                    if (resp.msg == "信息被变更,请重新修改密码!"){
+                    if (resp.msg == "<s:text name="login.passwordNeedChange" />"){
                         lalert2(resp.msg, redir2Changepwd);
                     }
                     else
@@ -74,7 +74,7 @@
             });
         }
 
-        function loginRedirec(){
+        function loginRedirec() {
             if(self!=top){
                 document.location.href="${ctx}/queryIndex.action";
             }else{
@@ -82,24 +82,23 @@
             }
         }
 
-        function redir2Changepwd(){
+        function redir2Changepwd() {
             document.location.href="${ctx}/managerChangePsw.action?type=1&name=" + _$('name').value;
         }
     </script>
 
 </head>
 
-<body style="background-color:#1c77ac; background-image:url(${ctx}/images/managementLogin.jpg); background-repeat:no-repeat; background-position:center top; overflow:hidden;">
-
+<body style="background-color:#1c77ac; background-image:url(<s:text name="login.pic.loginBg" />); background-repeat:no-repeat; background-position:center top; overflow:hidden;">
 <div class="loginbody" id="loginbody">
     <span class="systemlogo"></span>
     <div class="loginbox">
         <form method="post" id="v" action="managerLogin.action" class="form-condensed">
             <ul>
-                <li><label style="font-size:13pt;color:#fff;font-weight:bold;">账号：</label><input  name="managerVo.name" id="name" type="text" class="loginuser" value="" onclick="JavaScript:this.value=''"/></li>
-                <li><label style="font-size:13pt;color:#fff;font-weight:bold;">密码：</label><input name="password1" id="password1" type="password" class="loginpwd" value="" onclick="JavaScript:this.value=''"/></li>
-                <li style="padding-left:75px;"><input name="" type="button" class="loginbtn" value="登录" onclick="doclick()"/>
-                    <input type="hidden" title="密码" name="managerVo.password" id="password" value="" />
+                <li><label style="font-size:13pt;color:#fff;font-weight:bold;"><s:text name="login.userName" /></label><input  name="managerVo.name" id="name" type="text" class="loginuser" value="" onclick="JavaScript:this.value=''"/></li>
+                <li><label style="font-size:13pt;color:#fff;font-weight:bold;"><s:text name="login.password" /></label><input name="password1" id="password1" type="password" class="loginpwd" value="" onclick="JavaScript:this.value=''"/></li>
+                <li style="padding-left:75px;"><input name="" type="button" class="loginbtn" value="<s:text name="login.login" />" onclick="doclick()"/>
+                    <input type="hidden" name="managerVo.password" id="password" value="" />
                     <label class="msg" style="height:20px;color:red;">${msg}</label>
                 </li>
                 <li></li>

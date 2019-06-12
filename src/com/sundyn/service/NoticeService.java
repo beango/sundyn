@@ -79,7 +79,6 @@ public class NoticeService extends SuperDao
             return this.getJdbcTemplate().queryForMap(sql, arg);
         }
         catch (Exception e) {
-            final String a = "\u6ca1\u6709\u627e\u5230id\u4e3a\uff1a\u201c+id.toSring+\u201d\u7684\u901a\u77e5\u516c\u544a\u9605\u8bfb\u6570\u66f4\u65b0\u5931\u8d25\uff01";
             e.printStackTrace();
             return null;
         }

@@ -37,11 +37,11 @@
                 <s:text name='sundyn.total.startDate'/>
                 <input type="text" id="startDate" class="input_comm" <s:text
                         name="sundyn.language.calendar.setDay"/>
-                       onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                       onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})"/>
                 <s:text name='sundyn.total.endDate'/>
                 <input type="text" id="endDate" class="input_comm" <s:text
                         name="sundyn.language.calendar.setDay"/>
-                       onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                       onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})"/>
                 <s:text name='sundyn.analyse.by'/>
                 <select name="type" id="type">
                     <option value="day" selected="selected">

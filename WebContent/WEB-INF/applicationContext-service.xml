@@ -107,6 +107,8 @@
     <bean id="jxEmployeeService" class="com.sundyn.service.impl.JxEmployeeServiceImpl"/>
     <bean id="auditLoginService" class="com.sundyn.service.impl.AuditLogServiceImpl"/>
     <bean id="auditLockService" class="com.sundyn.service.impl.AuditLockServiceImpl"/>
+    <bean id="smsdetailService" class="com.sundyn.service.impl.SysSmsdetailServiceImpl"/>
+    <bean id="qrzSchedulejobService" class="com.sundyn.service.impl.QrzSchedulejobServiceImpl"/>
 
     <bean id="managerService" class="com.sundyn.service.ManagerService" parent="superDao"/>
 	<bean id="menuService" class="com.sundyn.service.MenuService" parent="superDao"/>
@@ -162,4 +164,5 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <bean id="dCacheManager" class="com.xuan.xutils.cache.DefaultCacheManager"></bean>
+
 </beans>

@@ -39,10 +39,16 @@ public class SysDictAction extends MainAction {
         try {
             List<SysDictinfo> dictinfos_config = dictinfoService.selectList(new EntityWrapper<SysDictinfo>().where("dictgroup = 'config' and isEnable=1"));
             request.setAttribute("dictinfos_config", dictinfos_config);
+
             List<SysDictinfo> dictinfos_inte = dictinfoService.selectList(new EntityWrapper<SysDictinfo>().where("dictgroup = 'inte' and isEnable=1"));
             request.setAttribute("dictinfos_inte", dictinfos_inte);
+
+            List<SysDictinfo> dictinfos_sms = dictinfoService.selectList(new EntityWrapper<SysDictinfo>().where("dictgroup = 'sms' and isEnable=1"));
+            request.setAttribute("dictinfos_sms", dictinfos_sms);
+
             List<SysDictinfo> dictinfos_security = dictinfoService.selectList(new EntityWrapper<SysDictinfo>().where("dictgroup = 'security_para' and isEnable=1"));
             request.setAttribute("dictinfos_security", dictinfos_security);
+
             List<SysDictinfo> dictinfos_audit = dictinfoService.selectList(new EntityWrapper<SysDictinfo>().where("dictgroup = 'audit_para' and isEnable=1"));
             request.setAttribute("dictinfos_audit", dictinfos_audit);
 
@@ -67,6 +73,12 @@ public class SysDictAction extends MainAction {
                 String dictvalue = jo.get("dictvalue").toString();
                 String dictname = jo.get("dictname").toString();
                 String dictkeyname = jo.get("dictkeyname").toString();
+                if (dictvalue.length()>200){
+                    jsonData.clear();
+                    jsonData.put("succ", false);
+                    jsonData.put("msg", dictname + "长度不能超过200！");
+                    return Action.SUCCESS;
+                }
                 if (dictgroup.equalsIgnoreCase("dictinfos_config")){
                     if (com.xuan.xutils.utils.StringUtils.isBlank(dictvalue)){
                         jsonData.clear();

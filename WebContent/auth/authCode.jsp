@@ -19,7 +19,7 @@
     <input type="hidden" name="parentId" id="parentId" class="input_comm" value="${parentModel.id}"/>
     <span style="font-size: 32px; font-weight: bold;">${parentModel.funcName}</span>
     <fieldset style="width: 500px;">
-        <legend>权限码</legend>
+        <legend><s:text name="menu.form.label.auth" /></legend>
         <div align="left">
             <ul>
                 <c:forEach items="${authCodeList}" var="authCode">
@@ -36,7 +36,7 @@
            cellspacing="0" style="border-color: #e9f5fd;">
         <tr>
             <td style="border-color: #e9f5fd;" width="32%" align="right">
-                权限名<s:text name="sundyn.colon" />
+                <s:text name="auth.form.label.name" />
             </td>
             <td width="68%" align="left" style="border-color: #e9f5fd;">
                 <input name="funcName" id="funcName" class="input_comm" value="${model.funcName}"/>
@@ -44,7 +44,7 @@
         </tr>
         <tr>
             <td style="border-color: #e9f5fd;" align="right">
-                权限码<s:text name="sundyn.colon" />
+                <s:text name="auth.form.label.code" />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
                 <input name="funcCode" id="funcCode" class="input_comm" value="${model.funcCode}"/>
@@ -53,8 +53,8 @@
         <tr>
             <td></td>
             <td>
-                <input type="button" class="layui-btn" onclick="funcAdd()" value="保存"/>
-                <input type="button" id="btnDel" style="display: none;" class="layui-btn layui-btn-danger" onclick="funcDel()" value="删除"/>
+                <input type="button" class="layui-btn" onclick="funcAdd()" value="<s:text name="main.save" />"/>
+                <input type="button" id="btnDel" style="display: none;" class="layui-btn layui-btn-danger" onclick="funcDel()" value="<s:text name="main.delete" />"/>
             </td>
         </tr>
     </table>
@@ -70,12 +70,12 @@
         var id = document.getElementById("id").value;
         var funcName = document.getElementById("funcName").value;
         if(funcName==""){
-            alert("权限名不能为空");
+            alert("<s:text name="auth.entity.validation.name.notnull" />");
             return false;
         }
         var funcCode = document.getElementById("funcCode").value;
         if(funcCode==""){
-            alert("权限码不能为空");
+            alert("<s:text name="auth.entity.validation.code.notnull" />");
             return false;
         }
         var parentId = document.getElementById("parentId").value;
@@ -110,19 +110,12 @@
         var id = document.getElementById("id").value;
         dojo.xhrPost({url:"authDelPost.action", content:{id: id}, load:function (resp, ioArgs) {
                 if(resp.trim()==""){
-                    layer.msg('删除成功', {
-                        icon: 1,
-                        time: 800
-                    }, function(){
+                    succ('<s:text name="main.delete.succ" />', function(){
                         refreshTab();
                     });
                 }
                 else{
-                    layer.msg(resp, {
-                        icon: 2,
-                        time: 800
-                    }, function(){
-                    });
+                    error(resp);
                 }
             }});
     }

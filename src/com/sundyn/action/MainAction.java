@@ -147,12 +147,11 @@ public class MainAction extends ActionSupport {
                 UploadedFile file = iter[i];
                 String orgname = multiRequest.getFileNames("file")[i];
                 String fileExt = orgname.substring(orgname.lastIndexOf(".") + 1).toLowerCase();
-                logger.info("原始文件名:" + orgname + ",扩展名：" + fileExt);
                 orgNames[i] = orgname;
                 // 检查扩展名
                 if (fileTypes!=null && !Arrays. asList(fileTypes).contains(fileExt)) {
                     jo.put("rst", "error");
-                    jo.put("msg", "只允许上传扩展名为"+_fileType+"的图片。");
+                    jo.put("msg",  this.getText("employee.valid.photo.ext", new String[]{_fileType}));
                     request.setAttribute("msg", jo.toString());
                     return jo;
                 }
@@ -244,6 +243,15 @@ public class MainAction extends ActionSupport {
         for(SysDictinfo m : allData){
             if (m.getIsenable() && m.getDictkey().equalsIgnoreCase(key))
                 return m.getDictvalue();
+        }
+        return null;
+    }
+
+    public SysDictinfo getDict(String key){
+        List<SysDictinfo> allData = dictinfoService.getAllCache();
+        for(SysDictinfo m : allData){
+            if (m.getIsenable() && m.getDictkey().equalsIgnoreCase(key))
+                return m;
         }
         return null;
     }

@@ -9,6 +9,7 @@
 
 		<link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
         <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
+        <script type="text/javascript" src="js/dojo.js"></script>
         <script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/dialog.js"></script>
 		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
@@ -17,7 +18,7 @@
 	</head>
 	<body>
     <div class="place">
-        <span>位置：</span>
+        <span><s:text name="main.placetitle" /></span>
         <ul class="placeul">
             <c:forEach items="${navbar_menuname}" var="menu">
                 <li><a href="#">${menu.name}</a></li>
@@ -30,18 +31,18 @@
             <tr>
                 <td style="border-color:#FFFFFF;" align="left">
                     <input name="keyword" id="keyword" class="input_comm" value="<%=request.getParameter("keyword")==null?"":request.getParameter("keyword")%>"/>
-                    <img src="<s:text name='sundyn.pic.query' />" width="55" height="25" onclick="playQueryAjax()" class="hand"/>
-                    <img src="<s:text name='sundyn.pic.add' />" width="63" height="25" onclick="playAddDialog('<s:text name="sundyn.play.addTitle" />')" class="hand"/>
+                    <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="playQueryAjax()" value="<s:text name="main.query" />">
+                    <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="playAddDialog('<s:text name="sundyn.play.addTitle" />')" value="<s:text name="main.add" />">
                 </td>
             </tr>
         </table>
     </div>
     <table class="layui-table">
         <tr>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.playList' /></td>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.playName' /></td>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.playType' /></td>
-            <td align="center" valign="middle" background="images/table_bg_03.jpg" class="px13_1"><s:text name='sundyn.column.operation' /></td>
+            <td align="center" valign="middle" background="images/table_bg_03.jpg"><s:text name='sundyn.column.playList' /></td>
+            <td align="center" valign="middle" background="images/table_bg_03.jpg"><s:text name='sundyn.column.playName' /></td>
+            <td align="center" valign="middle" background="images/table_bg_03.jpg"><s:text name='sundyn.column.playType' /></td>
+            <td align="center" valign="middle" background="images/table_bg_03.jpg"><s:text name='sundyn.column.operation' /></td>
         </tr>
         <c:forEach items="${pager.pageList}" var="play">
             <tr>
@@ -67,5 +68,30 @@
     <script type="text/javascript">
         layui.use('layer', function() {});
         initPager(${pager.getRowsCount()}, <%=request.getParameter("currentPage")==null?1:request.getParameter("currentPage")%>,<%=request.getParameter("pageSize")==null?20:request.getParameter("pageSize")%>);
+        // 播放查詢
+        function playQueryAjax() {
+            var keyword = document.getElementById("keyword").value;
+            refreshTab({keyword:keyword});
+        }
+        // 播放 添加对话框
+        function playAddDialog(title) {
+            new dialog().iframe("playAddDialog.action",{title:title});
+        }
+
+        // 播放修改对话框
+        function playEditDialog(playId, title) {
+            new dialog().iframe("playEditDialog.action?playId="+playId, {title: title});
+        }
+
+        // 播放删除
+        function playDel(data) {
+            if (confirm('<s:text name="main.delete.confirm" />')){
+                dojo.xhrPost({url:"playDel.action", content:{playId:data}, load:function (resp, ioArgs) {
+                        succ('<s:text name="main.delete.succ" />', function(){
+                            refreshTab();
+                        });
+                    }});
+            }
+        }
     </script>
 </html>

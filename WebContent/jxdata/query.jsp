@@ -12,20 +12,13 @@
     <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
     <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
     <script type="text/javascript" src="js/dojo.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
-    <script type="text/javascript" src="lib/layui/layui.all.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
-    <script type="text/javascript" src="js/application.js?1"></script>
+    <script type="text/javascript" src="js/application.js"></script>
     <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
-    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
-    <style type="text/css">
-        ul.ztree {margin-top: 10px;border: 1px solid #617775;background: #f0f6e4;width:420px;height:360px;overflow-y:scroll;overflow-x:auto;}
-        .layui-btn-xs{text-indent:0px;}
-    </style>
 </head>
 <body>
 <script type="text/javascript">
@@ -35,27 +28,20 @@
     }
 
     function proxyAdd(id){
-        var action = id==undefined?"增加":"编辑";
+        var action = id==undefined?"<s:text name="main.add" />":"<s:text name="main.edit" />";
         new dialog().iframe("jxDataAdd.action?id=" + id, {title: action+"", resize:false, w:"40%", h:"710px"});
     }
 
     function del(id){
-        layer.confirm('真的删除么', function(index){
+        layer.confirm('<s:text name="main.delete.confirm" />', function(index){
             $.post("jxDataDel.action?id=" + id, function(resp){
                 if(resp.trim()==""){
-                    layer.msg('删除成功', {
-                        icon: 1,
-                        time: 800
-                    }, function(){
+                    succ('<s:text name="main.delete.succ" />', function(){
                         refreshTab();
                     });
                 }
                 else{
-                    layer.msg(resp, {
-                        icon: 2,
-                        time: 1200
-                    }, function(){
-                    });
+                    error(resp);
                 }
             });
             layer.close(index);
@@ -63,7 +49,7 @@
     }
 </script>
 <div class="place">
-    <span>位置：</span>
+    <span><s:text name="main.placetitle" /></span>
     <ul class="placeul">
         <c:forEach items="${navbar_menuname}" var="menu">
             <li><a href="#">${menu.name}</a></li>
@@ -73,7 +59,7 @@
 <input type="hidden" id="deptId" value="${deptId}"/>
 <div class="layui-form" lay-filter="f">
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label" style="width:100px;">姓名/工号：</label>
+        <label class="layui-form-label" style="width:100px;"><s:text name="jx.query.search.name" /></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
         <div class="layui-input-inline">
@@ -81,44 +67,44 @@
         </div>
     </div>
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label" style="width:60px;">月份：</label>
+        <label class="layui-form-label" style="width:60px;"><s:text name="jx.query.search.month" /></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
         <div class="layui-input-inline">
-            <input type="text" class="scinput" id="servicedate" name="servicedate" value="<%=request.getParameter("servicedate")==null?"":request.getParameter("servicedate")%>" onClick="WdatePicker({dateFmt:'yyyy-MM'})"/>
+            <input type="text" class="scinput" id="servicedate" name="servicedate" value="<%=request.getParameter("servicedate")==null?"":request.getParameter("servicedate")%>" onClick="WdatePicker({dateFmt:'yyyy-MM',lang:'${locale}'})"/>
         </div>
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">
-            <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" class="hand" onclick="query('')"/>
-            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="proxyAdd()" value="增    加" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="query('')" value="<s:text name="main.query" />" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="proxyAdd()" value="<s:text name="main.add" />" />
         </div>
     </div>
     <div>
         <table class="tablelist" lay-filter="tbl" id="demo">
             <thead>
             <tr>
-                <th>序号 </th>
+                <th><s:text name="main.column.seq" /></th>
                 <th>
-                    姓名
+                    <s:text name="jx.column.name" />
                 </th>
                 <th>
-                    所属部门
+                    <s:text name="jx.column.deptname" />
                 </th>
                 <th>
-                    月份
+                    <s:text name="jx.column.month" />
                 </th>
                 <th>
-                    月度考勤
+                    <s:text name="jx.column.monthkq" />
                 </th>
                 <th>
-                    群众表扬
+                    <s:text name="jx.column.qzby" />
                 </th>
                 <th>
-                    日常巡查
+                    <s:text name="jx.column.rcxc" />
                 </th>
                 <th>
-                    一票否决
+                    <s:text name="jx.column.ypfj" />
                 </th>
                 <th></th>
             </tr>
@@ -150,14 +136,14 @@
                                 ${data.rcxc}
                         </td>
                         <td>
-                            <c:if test="${data.ypfj==null}"><button class="layui-btn layui-btn-xs">未否决</button></c:if>
-                            <c:if test="${data.ypfj!=null}"><button class="layui-btn layui-btn-danger layui-btn-xs">否决</button>
+                            <c:if test="${data.ypfj==null}"><button class="layui-btn layui-btn-xs"><s:text name="jx.td.ypfj2" /></button></c:if>
+                            <c:if test="${data.ypfj!=null}"><button class="layui-btn layui-btn-danger layui-btn-xs"><s:text name="jx.td.ypfj1" /></button>
                                 ${data.ypfj==999 && data.fjdesc!=null && data.fjdesc!=''? data.fjdesc : data.note}
                             </c:if>
                         </td>
                         <td>
-                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();proxyAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="event.stopPropagation();del('${data.id}','删除');"><i class="layui-icon layui-icon-delete"></i>删除</a>
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();proxyAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i><s:text name="main.edit" /></a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="event.stopPropagation();del('${data.id}','<s:text name="main.delete" />');"><i class="layui-icon layui-icon-delete"></i><s:text name="main.delete" /></a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -173,7 +159,6 @@
 </body>
 <script type="text/javascript">
     initPager(${queryData.getTotal()}, <%=request.getParameter("currentPage")==null?1:request.getParameter("currentPage")%>,<%=request.getParameter("pageSize")==null?20:request.getParameter("pageSize")%>);
-
     layui.use(['form', 'element'], function() {
         var form = layui.form;
     });

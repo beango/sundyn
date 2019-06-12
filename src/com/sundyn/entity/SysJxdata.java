@@ -120,13 +120,13 @@ public class SysJxdata extends Model<SysJxdata> {
     public void setCuser(Integer cuser) {
         this.cuser = cuser;
     }
-    @NotNull(message="所属部门不能为空")
+    @NotNull(message="{jx.entity.validation.deptid.notnull}")
     private Integer deptid;
     private String deptname;
-    @Size(min=1,max=50,message="员工工号不能为空")
+    @Size(min=1,max=50,message="{jx.entity.validation.cardnum.notnull}")
     private String eno;
     private String ename;
-    @Size(min=1,max=50,message="日期不能为空")
+    @Size(min=1,max=50,message="{jx.entity.validation.servicedate.notnull}")
     private String servicedate;
     private Float ykq;
     private Float qzby;

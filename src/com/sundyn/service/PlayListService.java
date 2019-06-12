@@ -14,7 +14,6 @@ public class PlayListService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -27,7 +26,6 @@ public class PlayListService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -40,7 +38,6 @@ public class PlayListService extends SuperDao
             return num > 0;
         }
         catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -50,13 +47,12 @@ public class PlayListService extends SuperDao
         if (playListName!=null && !playListName.equals(""))
             sql += "and playListName like '%" + playListName + "%'   ";
         if (deptIds != null && !deptIds.equals("")) {
-            sql = String.valueOf(sql) + "and  playListId  in(select dept_playListId from appries_dept where id in( " + deptIds + "))  ";
+            //sql = String.valueOf(sql) + "and  playListId  in(select dept_playListId from appries_dept where id in( " + deptIds + "))  ";
         }
         if (start != null && num != null) {
             sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
         }
         try {
-            System.out.println(sql);
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
@@ -70,7 +66,6 @@ public class PlayListService extends SuperDao
             return this.getJdbcTemplate().queryForList(sql);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -84,7 +79,6 @@ public class PlayListService extends SuperDao
             return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return 0;
         }
     }
@@ -96,7 +90,6 @@ public class PlayListService extends SuperDao
             return this.getJdbcTemplate().queryForMap(sql, args);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -107,7 +100,6 @@ public class PlayListService extends SuperDao
             return this.getJdbcTemplate().queryForObject(sql,null, java.lang.Integer.class);
         }
         catch (Exception e) {
-            e.printStackTrace();
             return 0;
         }
     }

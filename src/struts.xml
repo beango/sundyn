@@ -7,6 +7,7 @@
 	<constant name="struts.devMode" value="false"></constant>
  	<constant name="struts.configuration.xml.reload" value="true"></constant>
  	<constant name="struts.custom.i18n.resources" value="sundyn"></constant>
+    <constant name="struts.locale" value="zh_CN" />
 	<constant name="struts.i18n.encoding" value="UTF-8" />
     <constant name="struts.multipart.saveDir" value="c:/windows/Temp"/>
   	<!--
@@ -84,19 +85,5 @@
     <include file="queue.xml"></include>
     <include file="jx.xml"></include>
     <include file="audit.xml"></include>
-
-  	<!--<package name="test" extends="struts-default">
-		<action name="testData" class="testAction" method="testData">
-			<result name="success">/msg.jsp</result>
-		</action>
-
-	</package>-->
-
-    <!--<bean type="org.apache.struts2.dispatcher.multipart.MultiPartRequest"
-          name="myRequestParser" class="com.sundyn.wrapper.RequestParseWrapper"
-          scope="default" optional="true" />
-    <constant name="struts.multipart.handler" value="myRequestParser" />-->
-    <!--<constant name="struts.convention.action.suffix" value="Controller"/>-->
-    <!--<constant name="struts.convention.action.mapAllMatches" value="true"/>-->
-    <!--<constant name="struts.convention.default.parent.package" value="rest-default"/>-->
+    <include file="sms.xml"></include>
 </struts>

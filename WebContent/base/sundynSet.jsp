@@ -5,13 +5,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title><s:text name='zx.title'/></title>
-    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css"/>
+    <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
     <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/json2.js"></script>
-    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js?1"></script>
+    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/application.js"></script>
     <script type="text/javascript" src="lib/Sortable.min.js"></script>
@@ -59,7 +58,7 @@
 </head>
 <body>
 <div class="place">
-    <span>位置：</span>
+    <span><s:text name="main.placetitle" /></span>
     <ul class="placeul">
         <c:forEach items="${navbar_menuname}" var="menu">
             <li><a href="#">${menu.name}</a></li>
@@ -69,15 +68,15 @@
 <div class="layui-main layui-form" lay-filter="formTest">
     <div class="layui-tab layui-tab-brief">
         <ul class="layui-tab-title">
-            <li class="layui-this"><s:text name='sundyn.softSetup.systemSetup'/></li>
+            <li style="display:none;"><s:text name='sundyn.softSetup.systemSetup'/></li>
             <%--<li><s:text name='sundyn.softSetup.infoSetup' /></li>--%>
             <li><s:text name='sundyn.softSetup.timeSetup'/></li>
-            <li><s:text name='sundyn.softSetup.starSetup'/></li>
+            <li class="layui-this"><s:text name='sundyn.softSetup.starSetup'/></li>
             <li><s:text name='sundyn.softSetup.employeeInfoSetup'/></li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item">
-                <div><input type="checkbox" name="camera" id="camera" <c:if
+                <div style="display:none"><input type="checkbox" name="camera" id="camera" <c:if
                         test="${system.camera == 'true' }"> checked="checked"</c:if>      />&nbsp;&nbsp;<b><s:text
                         name='sundyn.softSetup.camera'/></b>&nbsp;&nbsp;&nbsp;&nbsp;
                     <c><s:text name='sundyn.softSetup.cameraInfo'/></c>
@@ -181,51 +180,70 @@
                 <div align="left">
                     <ul id="dom1">
                         <li id="m1">
-                            <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
+                            <input type="checkbox" lay-skin="switch" lay-text="<s:text
+                                name='main.radio.enable'/>|<s:text
+                                name='main.radio.disable'/>" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet1" value="1" id="est1"
                                    <c:if test="${employeeInfoSet.employeeName== 'true'}">checked="checked"</c:if> /><span
                                 style="margin-top:8px;display:inline;">&nbsp;&nbsp;<s:text name='sundyn.column.employeeName'/></span>
                         </li>
                         <li id="m2">
-                            <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
+                            <input type="checkbox" lay-skin="switch" lay-text="<s:text
+                                name='main.radio.enable'/>|<s:text
+                                name='main.radio.disable'/>" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet2" value="2" id="est2"
                                    <c:if test="${employeeInfoSet.job_desc== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
                                 name='sundyn.column.post'/></span><br/>
                         </li>
                         <li id="m3">
-                            <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
+                            <input type="checkbox" lay-skin="switch" lay-text="<s:text
+                                name='main.radio.enable'/>|<s:text
+                                name='main.radio.disable'/>" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet3" value="3" id="est3"
                                    <c:if test="${employeeInfoSet.employeeJobNum== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
                                 name='sundyn.column.employeeJobNum'/></span><br/>
                         </li>
                         <%--<li id="m4">
-                            <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet" name="employeeInfoSet4" value="4" id="est4" <c:if test="${employeeInfoSet.employeeCardNum== 'true'}">checked="checked"</c:if> /><span>&nbsp;&nbsp;<s:text name='sundyn.column.employeeCardNum'/></span><br/>
+                            <input type="checkbox" lay-skin="switch" lay-text="<s:text
+                                name='main.radio.enable'/>|<s:text
+                                name='main.radio.disable'/>" lay-filter="employeeInfoSet" name="employeeInfoSet4" value="4" id="est4" <c:if test="${employeeInfoSet.employeeCardNum== 'true'}">checked="checked"</c:if> /><span>&nbsp;&nbsp;<s:text name='sundyn.column.employeeCardNum'/></span><br/>
                         </li>--%>
                         <li id="m5">
-                            <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
+                            <input type="checkbox" lay-skin="switch" lay-text="<s:text
+                                name='main.radio.enable'/>|<s:text
+                                name='main.radio.disable'/>" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet5" value="5" id="est5"
                                    <c:if test="${employeeInfoSet.star== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
                                 name='sundyn.column.star'/></span><br/>
                         </li>
                         <li id="m6">
-                            <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
+                            <input type="checkbox" lay-skin="switch" lay-text="<s:text
+                                name='main.radio.enable'/>|<s:text
+                                name='main.radio.disable'/>" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet6" value="6" id="est6"
-                                   <c:if test="${employeeInfoSet.phone== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;联系方式</span><br/>
+                                   <c:if test="${employeeInfoSet.phone== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
+                                name='sundyn.column.phone'/></span><br/>
                         </li>
                         <li id="m7">
-                            <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
+                            <input type="checkbox" lay-skin="switch" lay-text="<s:text
+                                name='main.radio.enable'/>|<s:text
+                                name='main.radio.disable'/>" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet7" value="7" id="est7"
                                    <c:if test="${employeeInfoSet.windowName== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
                                 name='sundyn.column.windowName'/></span><br/>
                         </li>
                         <li id="m8">
-                            <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
+                            <input type="checkbox" lay-skin="switch" lay-text="<s:text
+                                name='main.radio.enable'/>|<s:text
+                                name='main.radio.disable'/>" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet8" value="8" id="est8"
                                    <c:if test="${employeeInfoSet.deptname== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
                                 name='sundyn.column.deptname'/></span><br/>
                         </li>
                         <li id="m9">
-                            <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="employeeInfoSet"
+                            <input type="checkbox" lay-skin="switch" lay-text="<s:text
+                                name='main.radio.enable'/>|<s:text
+                                name='main.radio.disable'/>" lay-filter="employeeInfoSet"
                                    name="employeeInfoSet9" value="9" id="est9"
                                    <c:if test="${employeeInfoSet.unitName== 'true'}">checked="checked"</c:if> /><span style="display:inline;">&nbsp;&nbsp;<s:text
                                 name='sundyn.column.unitName'/></span><br/>
@@ -239,7 +257,7 @@
     <div style="clear: both;">
         <input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="sundynSetSave()"
                class="layui-btn"/>
-        <input type="button" value="重置" class="layui-btn layui-btn-primary" onclick="refreshTab()"/>
+        <input type="button" value="<s:text name='main.reset' />" class="layui-btn layui-btn-primary" onclick="refreshTab()"/>
     </div>
 </div>
 <div id="dialog" style="width: 700px; display: none;"></div>

@@ -246,6 +246,6 @@
     <bean id="sysJxDataAction" class="com.sundyn.action.SysJxDataAction" scope="prototype" ></bean>
     <bean id="jxEmployeeAction" class="com.sundyn.action.JxEmployeeAction" scope="prototype" ></bean>
     <bean id="auditAction" class="com.sundyn.action.AuditAction" scope="prototype" ></bean>
-
+    <bean id="smsAction" class="com.sundyn.action.SysSmsdetailAction" scope="prototype" ></bean>
 
 </beans>

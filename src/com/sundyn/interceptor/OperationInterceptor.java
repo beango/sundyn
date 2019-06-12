@@ -2,6 +2,7 @@ package com.sundyn.interceptor;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import com.opensymphony.xwork2.util.LocalizedTextUtil;
 import com.sundyn.entity.AppriesMenu;
 import com.sundyn.entity.AuditLog;
 import com.sundyn.entity.SysLog;
@@ -86,6 +87,7 @@ public class OperationInterceptor extends AbstractInterceptor {
         }
         return null;
     }
+
     public String intercept(ActionInvocation invocation) throws Exception {
         HttpServletRequest req = ServletActionContext.getRequest();
         String ipaddr = util.getRemoteIpAddr();//获取系统操作远程ip
@@ -186,12 +188,13 @@ public class OperationInterceptor extends AbstractInterceptor {
                     menuStrs.add(jo);
                 }
                 req.setAttribute("navbar_menuname", menuStrs);//所有上级菜单，用于显示在页面面包屑位置
+                req.setAttribute("Locale", req.getLocale());
             }
             //实际方法执行阶段
             invocation.invoke();
-        } catch(Exception exception){
+        } catch(Exception exception) {
             exception.printStackTrace();
-        }finally{
+        } finally {
             if(!isNoRecordResource(actionName)){
                 Date endTime = new Date();
                 long costTime = endTime.getTime() - startTime.getTime();

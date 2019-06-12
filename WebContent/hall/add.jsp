@@ -9,9 +9,7 @@
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="lib/jquery.form.min.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
     <script type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
@@ -27,7 +25,7 @@
                 data: data,
                 success:function (resp) {
                     if (resp.trim() == "") {
-                        succ("修改成功",function () {
+                        succ("<s:text name="main.save.scuc" />", function () {
                             parent.closeDialog();
                             parent.refreshTab();
                         });
@@ -57,30 +55,37 @@
     <input type="hidden" name="deptid" id="deptid" value="<%=request.getParameter("deptid")%>" />
 
     <div class="layui-form-item">
-        <label class="layui-form-label">大厅编码：</label>
-        <div class="layui-input-inline">
-            <input type="text" name="hallno" id="hallno" class="layui-input" value="${hall.hallno}"/>
+        <div class="layui-inline">
+            <label class="layui-form-label"><s:text name="hall.field.hallcode"/></label>
+            <div class="layui-input-inline">
+                <input type="text" name="hallno" id="hallno" class="layui-input" value="${hall.hallno}"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label"><s:text name="hall.field.hallname"/></label>
+            <div class="layui-input-inline">
+                <label class="layui-form-label" style="text-align: left;width: 100%;">${hall.hallname}</label>
+                <input type="hidden" name="hallname" id="hallname" class="layui-input" value="${hall.hallname}" />
+            </div>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">大厅名称：</label>
-        <div class="layui-input-inline">
-            <label class="layui-form-label" style="text-align: left;width: 100%;">${hall.hallname}</label>
-            <input type="hidden" name="hallname" id="hallname" class="layui-input" value="${hall.hallname}" />
+        <div class="layui-inline">
+            <label class="layui-form-label"><s:text name="hall.field.cpyjz"/></label>
+            <div class="layui-input-inline">
+                <input type="text" name="eval6warnvalue" id="eval6warnvalue" class="layui-input" value="${hall.eval6warnvalue}" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">%</div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label"><s:text name="hall.field.ztyjz"/></label>
+            <div class="layui-input-inline" style="width:160px;">
+                <input type="text" name="pausewarnvalue" id="pausewarnvalue" class="layui-input" value="${hall.pausewarnvalue}" />
+            </div>
+            <div class="layui-form-mid layui-word-aux"><s:text name="main.minu"/></div>
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">差评预警值：</label>
-        <div class="layui-input-inline">
-            <input type="text" name="eval6warnvalue" id="eval6warnvalue" class="layui-input" value="${hall.eval6warnvalue}" />
-        </div>%
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">暂停时长预警值：</label>
-        <div class="layui-input-inline">
-            <input type="text" name="pausewarnvalue" id="pausewarnvalue" class="layui-input" value="${hall.pausewarnvalue}" />
-        </div>分钟
-    </div>
+
     <%--<div class="layui-form-item">
         <label class="layui-form-label">大厅地址：</label>
         <div class="layui-input-inline">
@@ -103,22 +108,22 @@
     </div>--%>
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">联系人：</label>
+            <label class="layui-form-label"><s:text name="hall.field.lxr"/></label>
             <div class="layui-input-inline">
                 <input type="text" name="head" id="head" class="layui-input" value="${hall.head}" />
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">联系人号码：</label>
+            <label class="layui-form-label"><s:text name="hall.field.lxrtel"/></label>
             <div class="layui-input-inline">
                 <input type="text" name="headtel" id="headtel" autocomplete="off" class="layui-input" value="${hall.headtel}" />
             </div>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">备注：</label>
+        <label class="layui-form-label"><s:text name="hall.field.desc"/></label>
         <div class="layui-input-inline">
-            <input type="text" name="note" id="note" class="layui-input" value="${hall.note}" style="width:524px;"/>
+            <textarea type="text" name="note" id="note" class="layui-input" style="width:524px; height:100px;">${hall.note}</textarea>
         </div>
     </div>
     <%--
@@ -163,7 +168,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label"></label>
         <div class="layui-input-inline">
-            <input type="button" class="layui-btn" value="提交" onclick="hallPost()" />
+            <input type="button" class="layui-btn" value="<s:text name="main.save" />" onclick="hallPost()" />
         </div>
     </div>
 </form>

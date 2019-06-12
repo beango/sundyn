@@ -1,27 +1,29 @@
 package com.sundyn.service;
 
 import com.sundyn.dao.SuperDao;
-import com.sundyn.entity.SysDictinfo;
 import com.sundyn.util.EhCacheHelper;
 import com.sundyn.util.impl.util;
+import com.sundyn.vo.LoginResultEnum;
 import com.sundyn.vo.ManagerVo;
+import com.xuan.xutils.utils.LocalizedTextUtil;
 import com.xuan.xutils.utils.StringUtils;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ManagerService extends SuperDao
 {
     public static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger();
 
     public Map findManageBy(final String userName, final String pwd, String[] rst) {
-        if(userName==null || userName.equals(""))
+        if(userName==null || userName.equals("")) {
+            rst[0] = LoginResultEnum.账号不存在.toString();
             return null;
+        }
         final String sql = "select *,(select name from appries_dept where id=appries_manager.deptid) deptname from appries_manager where name= ?";
 
         final Object[] arg = { userName };
@@ -29,32 +31,34 @@ public class ManagerService extends SuperDao
         try {
             m = this.getJdbcTemplate().queryForMap(sql, arg);
             if (m == null || m.size()==0){
-                if (rst!=null && rst.length==1)
-                    rst[0] = "账号不存在";
+                if (rst!=null && rst.length==1){
+                    rst[0] = LoginResultEnum.账号不存在.toString();
+                }
                 return null;
             }
 
             if (m.get("checkdigited")!=null && m.get("checkdigited").toString().equals("1")){
-                rst[0] = "数据被篡改";
+                rst[0] = LoginResultEnum.数据被篡改.toString();
                 return null;
             }
 
             String ppwd = getPwdStr(m.get("id"), pwd, m.get("name"), m.get("idcard"), m.get("realname"), m.get("jyno"));
             String dbpwd = m.get("password").toString();
-            System.out.println("计算出的密码：" + ppwd + " , 数据库中密码：" + dbpwd);
             if (!dbpwd.equals(ppwd)){
                 if (rst!=null && rst.length==1)
-                    rst[0] = "密码错误";
+                    rst[0] = LoginResultEnum.密码错误.toString();
                 return null;
             }
             return m;
         }
         catch (EmptyResultDataAccessException e) {
-            rst[0] = "账号不存在";
+            rst[0] = LoginResultEnum.账号不存在.toString();
             return null;
         }
         catch (Exception e) {
-            rst[0] = "系统错误";
+            HttpServletRequest req = ServletActionContext.getRequest();
+            String systemerror = LocalizedTextUtil.findDefaultText("main.systemerror", (Locale)req.getAttribute("Locale"));
+            rst[0] = systemerror;
             return null;
         }
     }
@@ -424,7 +428,6 @@ public class ManagerService extends SuperDao
             rowNum[0] = this.getJdbcTemplate().queryForObject(countSql,null, java.lang.Integer.class);
         }
         sql = "select * from ("+sql+") t where t.rows>" + start + " and t.rows<=" + (num+start);
-        logger.debug(sql);
         try {
             return this.getJdbcTemplate().queryForList(sql);
         }
@@ -547,7 +550,6 @@ public class ManagerService extends SuperDao
     }
 
     public void initPwdForCheck(){
-        System.out.println("管理员表初始化密码");
         String sql = "select * from appries_manager where len(password)!=32";
 
         List maplist = this.getJdbcTemplate().queryForList(sql);
@@ -555,7 +557,6 @@ public class ManagerService extends SuperDao
             for(Object item : maplist){
                 Map m = (Map)item;
                 String pwd = getPwdStr(m.get("id"), m.get("ext1"), m.get("name"),m.get("idcard"),m.get("realname"), m.get("jyno"));
-                System.out.println(m.get("name").toString() + "算得密码：" + pwd);
                 sql= "update appries_manager set password=? where id=?";
                 this.getJdbcTemplate().update(sql, new Object[]{pwd, m.get("id").toString()});
             }

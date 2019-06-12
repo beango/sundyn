@@ -2,6 +2,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,7 +13,6 @@
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
@@ -45,38 +45,37 @@
         </tr>
         <tr>
             <td style="border-color: #e9f5fd;" align="right">
-                部门（机构）<s:text name="sundyn.colon" />
+                <s:text name='sundyn.column.deptName'/>
             </td>
             <td align="left">
                 <input id="deptSel" class="input_comm" type="text" readonly value="${manager2.deptname}" onclick="showDeptTree(this,null);"/>
             </td>
-
-            <td align="right">密码<s:text name="sundyn.colon" /></td>
+            <td align="right"><s:text name="manage.label.password" /></td>
             <td align="left">
                 <input type="password" name="pwd" id="pwd" value="" class="input_comm" />
             </td>
         </tr>
         <tr>
             <td align="right">
-                状态<s:text name="sundyn.colon" />
+                <s:text name="manage.label.status" />
             </td>
             <td>
-                <input type="radio" name="status" id="status" value="1" <c:if test="${manager2==null || manager2.status==1 || manager2.status==null}"> checked="checked"</c:if>>启用
-                <input type="radio" name="status" id="status" value="0" <c:if test="${manager2!=null && manager2.status==0}"> checked="checked"</c:if>>禁用
+                <input type="radio" name="status" id="status" value="1" <c:if test="${manager2==null || manager2.status==1 || manager2.status==null}"> checked="checked"</c:if>><s:text name="main.radio.enable" />
+                <input type="radio" name="status" id="status" value="0" <c:if test="${manager2!=null && manager2.status==0}"> checked="checked"</c:if>><s:text name="main.radio.disable" />
             </td>
             <td align="right">
-                本地用户<s:text name="sundyn.colon" />
+                <s:text name="manage.label.localuser" />
             </td>
             <td>
                 <div class="layui-input-inline">
-                    <input type="radio" name="localuser" value="1" title="本地用户" <c:if test="${manager2==null || manager2.localuser}"> checked="checked"</c:if>>
-                    <input type="radio" name="localuser" value="0" title="异地用户" <c:if test="${manager2!=null && !manager2.localuser}"> checked="checked"</c:if>>
+                    <input type="radio" name="localuser" value="1" title="<s:text name="manage.localuser.local" />" <c:if test="${manager2==null || manager2.localuser}"> checked="checked"</c:if>>
+                    <input type="radio" name="localuser" value="0" title="<s:text name="manage.localuser.notlocal" />" <c:if test="${manager2!=null && !manager2.localuser}"> checked="checked"</c:if>>
                 </div>
             </td>
         </tr>
         <tr>
             <td align="right">
-                身份证号码<s:text name="sundyn.colon" />
+                <s:text name="manage.label.idcard" />
             </td>
             <td colspan="3">
                 <input name="idcard" id="idcard" value="${manager2.idcard}" class="input_comm" style="width:80%" />
@@ -84,44 +83,44 @@
         </tr>
         <tr>
             <td align="right">
-                警员<s:text name="sundyn.colon" />
+                <s:text name="manage.label.jy" />
             </td>
             <td>
-                <input type="checkbox" name="jyflag" id="jyflag" value="1" lay-skin="switch" lay-text="是|否" <c:if test="${manager2.jyflag==1}"> checked="checked"</c:if>>
+                <input type="checkbox" name="jyflag" id="jyflag" value="1" lay-skin="switch" lay-text="<s:text name="main.yes" />|<s:text name="main.no" />" <c:if test="${manager2.jyflag==1}"> checked="checked"</c:if>>
             </td>
-            <td align="right">警员编号<s:text name="sundyn.colon" /></td>
+            <td align="right"><s:text name="manage.label.jyno" /></td>
             <td align="left">
                 <input name="jyno" id="jyno" value="${manager2.jyno}" class="input_comm" />
             </td>
         </tr>
         <tr>
-            <td align="right">用户有效期<s:text name="sundyn.colon" /></td>
+            <td align="right"><s:text name="manage.label.accountexpired" /></td>
             <td>
-                <input type="text" class="input_comm" id="uexpired" name="uexpired" value="${manager2.uexpired}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
+                <input type="text" class="input_comm" id="uexpired" name="uexpired" value="${manager2.uexpired}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd', lang:'${locale}'})" />
             </td>
-            <td align="right">密码有效期<s:text name="sundyn.colon" /></td>
+            <td align="right"><s:text name="manage.label.pwdexpired" /></td>
             <td>
-                <input type="text" class="input_comm" id="pwdexpired" name="pwdexpired" value="${manager2.pwdexpired}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" />
-            </td>
-        </tr>
-        <tr>
-            <td align="right">访问时间段<s:text name="sundyn.colon" /></td>
-            <td>
-                <input type="text" class="input_comm" id="accesstime1" name="accesstime1" value="${manager2.accesstime1}" onClick="WdatePicker({dateFmt:'HH:mm'})" />
-            </td>
-            <td align="right">至<s:text name="sundyn.colon" /></td>
-            <td>
-                <input type="text" class="input_comm" id="accesstime2" name="accesstime2" value="${manager2.accesstime2}" onClick="WdatePicker({dateFmt:'HH:mm'})" />
+                <input type="text" class="input_comm" id="pwdexpired" name="pwdexpired" value="${manager2.pwdexpired}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd', lang:'${locale}'})" />
             </td>
         </tr>
         <tr>
-            <td align="right">绑定IP<s:text name="sundyn.colon" /></td>
+            <td align="right"><s:text name="manage.label.accesstime1" /></td>
+            <td>
+                <input type="text" class="input_comm" id="accesstime1" name="accesstime1" value="${manager2.accesstime1}" onClick="WdatePicker({dateFmt:'HH:mm', lang:'${locale}'})" />
+            </td>
+            <td align="right"><s:text name="manage.label.accesstime2" /></td>
+            <td>
+                <input type="text" class="input_comm" id="accesstime2" name="accesstime2" value="${manager2.accesstime2}" onClick="WdatePicker({dateFmt:'HH:mm', lang:'${locale}'})" />
+            </td>
+        </tr>
+        <tr>
+            <td align="right"><s:text name="manage.label.bindip" /></td>
             <td colspan="3">
                 <div class="layui-form-item">
                     <div class="layui-input-inline">
                         <input type="text" class="input_comm" id="accessip" name="accessip" value="${manager2.accessip}" />
                     </div>
-                    <div class="layui-form-mid layui-word-aux">多个IP使用逗号隔开,连接IP段可用~连接</div>
+                    <div class="layui-form-mid layui-word-aux"><s:text name="manage.label.bindiptips" /></div>
                 </div>
             </td>
         </tr>
@@ -179,8 +178,8 @@
         <tr>
             <td></td>
             <td colspan="3">
-                <img src="<s:text name='sundyn.pic.ok' />" onclick="managerEdit()" class="hand" />
-                <img src="<s:text name='sundyn.pic.close' />"   onclick="closeDialog()" class="hand">
+                <input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="managerEdit()" class="layui-btn"/>
+                <input type="button" value="<s:text name='main.cancel'/>" class="layui-btn layui-btn-primary" onclick="parent.closeDialog()"/>
             </td>
         </tr>
     </table>
@@ -196,6 +195,85 @@
     $(document).ready(function () {
         initTree("?depttype=1", '${manager2.deptid}');
     });
+
+
+    // 验证用户不为空
+    function managerCheck(){
+        var name = document.getElementById("name").value;
+        if(name==""){
+            error("<s:text name="manage.entity.validation.name.notnull" />");
+            return false;
+        }
+        var realname = document.getElementById("realname").value;
+        if(realname==""){
+            error("<s:text name="manage.entity.validation.realname.notnull" />");
+            return false;
+        }
+        return true;
+    }
+    // 修改用户
+    function managerEdit() {
+        var check=managerCheck();
+        if(!check){
+            return false;
+        }
+        var id = document.getElementById("id").value;
+        var name = document.getElementById("name").value;
+        var realname = document.getElementById("realname").value;
+        var remark = document.getElementById("remark").value;
+        var ext1 = document.getElementById("ext1").value;
+        var ext2 = document.getElementById("ext2").value;
+        var userGroupId = document.getElementById("userGroupId").value;
+        var powers = "";
+        var managerPowers = $("input[name=managerPowers]");
+        var localuser = $('input:radio[name="localuser"]:checked').val();
+        var pwd = document.getElementById("pwd").value;
+        var accessip = document.getElementById("accessip").value;
+        var userid = document.getElementById("userid").value;
+        if (id=="" && pwd == "") {
+            error("<s:text name="manage.entity.validation.password.notnull" />");
+            return false;
+        }
+
+        var powerLen = 0;
+        for (var i=0; i<managerPowers.length; i++){
+            if(managerPowers[i].checked){
+                powers += (managerPowers[i].value) + ",";
+                powerLen++;
+            }
+        }
+        if(powerLen != 1){
+            //error("只能选择一个角色！");
+            //return false;
+        }
+        var deptId = getCheck();
+        var deptname = getCheckName();
+        var idcard = document.getElementById("idcard").value;
+        var jyflag = document.getElementById("jyflag").checked?1:0;
+        var status=$('input:radio[name="status"]:checked').val();
+        var jyno = document.getElementById("jyno").value;
+        var uexpried = document.getElementById("uexpired").value;
+        var pwdexpired = document.getElementById("pwdexpired").value;
+        var accesstime1 = document.getElementById("accesstime1").value;
+        var accesstime2 = document.getElementById("accesstime2").value;
+
+        dojo.xhrPost({url:"managerEdit.action", content:{id:id, name:name, realname:realname, pwd: pwd, remark:remark, ext1:ext1,
+                ext2:ext2, userGroupId:userGroupId, powers:powers, dept:deptId, localuser: localuser,
+                idcard: idcard, jyflag: jyflag, jyno: jyno, uexpired: uexpried, pwdexpired: pwdexpired, status: status,
+                accesstime1: accesstime1, accesstime2:accesstime2, aname:(id==""||id==0)?"<s:text name="main.add" />" : "<s:text name="main.edit" />",
+                accessip:accessip, userid:userid
+            }, load:function (resp, ioArgs) {
+                if(resp.trim()==""){
+                    succ("<s:text name="main.save.succ" />", function(){
+                        parent.closeDialog();
+                        parent.lowerManagerQueryAjax();
+                    });
+                }
+                else{
+                    error(resp);
+                }
+            }});
+    }
 </script>
 </body>
 </html>

@@ -3,7 +3,6 @@ package com.sundyn.action;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.sundyn.Realm.CheckPermission;
 import com.sundyn.entity.SysDictinfo;
 import com.sundyn.entity.SysJxdata;
 import com.sundyn.service.DeptService;
@@ -15,8 +14,8 @@ import com.sundyn.util.ValidateUtil;
 import com.xuan.xutils.utils.StringUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.MapUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -83,6 +82,7 @@ public class SysJxDataAction extends MainAction {
     /*
    添加/修改大厅  提交数据
     */
+    @Validated
     public String jxDataPost(){
         SysJxdata entity = new SysJxdata();
         try {
@@ -90,7 +90,7 @@ public class SysJxDataAction extends MainAction {
             String enostr = req.getString("enostr");
             if (StringUtils.isNotBlank(enostr) && StringUtils.isBlank(entity.getEno()))
                 entity.setEno(enostr);
-            ValidateUtil.validate(entity);
+            ValidateUtil.validate(entity, this.getLocale());
             Map employeemap = null;
             if (StringUtils.isNotBlank(entity.getEno()) && (entity.getDeptid() == null || entity.getDeptid().equals(0))){
                 employeemap = employeeService.findByCardnum(entity.getEno());

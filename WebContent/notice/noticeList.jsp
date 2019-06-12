@@ -14,13 +14,12 @@
         <script type="text/javascript" src="js/dialog.js"></script>
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-
         <script type="text/javascript" src="js/myAjax.js"></script>
         <script type="text/javascript" src="js/application.js?1"></script>
 	</head>
 	<body>
     <div class="place">
-        <span>位置：</span>
+        <span><s:text name="main.placetitle" /></span>
         <ul class="placeul">
             <c:forEach items="${navbar_menuname}" var="menu">
                 <li><a href="#">${menu.name}</a></li>
@@ -30,7 +29,7 @@
     <div class="layui-form" lay-filter="f">
         <div class="layui-inline">
             <div class="layui-input-inline">
-                <img src="<s:text name='sundyn.pic.add' />" width="55" height="25" onclick="noticToAdd('<s:text name='sundyn.notice.add' />');" class="hand"/>
+                <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="noticToAdd('<s:text name='sundyn.notice.add' />');" value="<s:text name="main.add" />">
             </div>
         </div>
 			<div>
@@ -68,5 +67,26 @@
     <script type="text/javascript">
         layui.use('layer', function() {});
         initPager(${pager.getRowsCount()}, <%=request.getParameter("currentPage")==null?1:request.getParameter("currentPage")%>,<%=request.getParameter("pageSize")==null?20:request.getParameter("pageSize")%>);
+
+        // weburl 通知公告 更新框
+        function noticToUpate(data, title) {
+            new dialog().iframe("noticeToUpdate.action?id="+data,{title:title,w:'100%',h:"100%",full:true});
+        }
+
+        // notice 通知公告添加框
+        function noticToAdd(title) {
+            new dialog().iframe("noticeToAdd.action", {title: title,w:'100%',h:"100%",full:true});
+        }
+
+        // 删除 通知公告
+        function noticDelete(data){
+            if (confirm('<s:text name="main.delete.confirm" />')){
+                dojo.xhrPost({url:"noticeDelete.action", content:{id:data}, load:function (resp, ioArgs) {
+                        succ('<s:text name="main.delete.succ" />', function(){
+                            refreshTab();
+                        });
+                    }});
+            }
+        }
     </script>
 </html>

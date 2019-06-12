@@ -9,15 +9,13 @@
                cellspacing="0" style="border-color: #FFFFFF;">
             <tr>
                 <td style="border-color: #FFFFFF;" align="center">
-                    姓名或工号：<input type="text" name="keyword" id="keyword" value="${keyword}" class="input_comm"/>
+                    <s:text name="employee.queryname" /><input type="text" name="keyword" id="keyword" value="${keyword}" class="input_comm"/>
                 </td>
                 <td style="border-color: #FFFFFF;" align="left">
-                    <img src="<s:text name='sundyn.pic.query' />" width="55" height="25"
-                         onclick="employeeQueryKeyword()" class="hand"/>
+                    <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="employeeQueryKeyword()" value="<s:text name="main.query" />">
                 </td>
                 <td style="border-color: #FFFFFF;" align="left">
-                    <img src="<s:text name='sundyn.employee.pic.addEmployee' />" width="83" height="25"
-                         onclick="employeeAddDialog('<s:text name="sundyn.employee.addEmployee"/>')" class="hand"/>
+                    <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="employeeAddDialog('<s:text name="sundyn.employee.addEmployee"/>')" value="<s:text name="main.add" />">
                 </td>
                 <%--<td style="border-color: #FFFFFF;" align="left">
                     <img src="<s:text name='sundyn.employee.pic.seeFreeEmployee' />" width="108" height="25"
@@ -69,8 +67,8 @@
                         name="sundyn.modify"/></a> <s:text name="sundyn.separator"/>
                     <a href="javascript:employeeDel(${employee.Id})"><s:text name="sundyn.del"/></a><s:text
                             name="sundyn.separator"/>
-                    <%--<a href="javascript:employeeOut(${employee.Id})"><s:text name="sundyn.employee.out"/></a>--%><s:text
-                            name="sundyn.separator"/>
+                    <%--<a href="javascript:employeeOut(${employee.Id})"><s:text name="sundyn.employee.out"/></a><s:text
+                            name="sundyn.separator"/>--%>
                     <a href="javascript:employeeReset(${employee.Id})"><s:text
                             name="sundyn.employee.resetPassword"/></a></td>
             </tr>

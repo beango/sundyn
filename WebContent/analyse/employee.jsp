@@ -39,7 +39,7 @@
 </head>
 <body class="layui-main" style="width:100%;">
 <div class="place">
-    <span>位置：</span>
+    <span><s:text name="main.placetitle" /></span>
     <ul class="placeul">
         <c:forEach items="${navbar_menuname}" var="menu">
             <li><a href="#">${menu.name}</a></li>
@@ -58,13 +58,13 @@
 <div class="layui-inline">
     <label class="layui-form-label"><s:text name='sundyn.total.startDate'/></label>
     <div class="layui-input-inline">
-        <input type="text" class="scinput" id="startDate" value="${startDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+        <input type="text" class="scinput" id="startDate" value="${startDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})"/>
     </div>
 </div>
 <div class="layui-inline">
     <label class="layui-form-label"><s:text name='sundyn.total.endDate'/></label>
     <div class="layui-input-inline">
-        <input type="text" class="scinput" id="endDate" value="${endDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+        <input type="text" class="scinput" id="endDate" value="${endDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})"/>
     </div>
 </div>
 <div class="layui-inline">

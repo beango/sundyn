@@ -30,7 +30,6 @@ public class SignatureInterceptor extends AbstractInterceptor {
     private static final Logger LOG = LoggerFactory.getLogger(SignatureInterceptor.class);
     private static final String SK = "B548EC106017EFB2429B7528E65055E5";
     public String intercept(ActionInvocation invocation) throws Exception {
-        System.out.println("接口签权拦截器");
         ActionContext actionContext = invocation.getInvocationContext();
         HttpServletRequest request = (HttpServletRequest) actionContext.get(StrutsStatics.HTTP_REQUEST);
         HttpServletResponse response = (HttpServletResponse) actionContext.get(StrutsStatics.HTTP_RESPONSE);

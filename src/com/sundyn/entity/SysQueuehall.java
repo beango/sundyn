@@ -192,9 +192,9 @@ public class SysQueuehall extends Model<SysQueuehall> {
     }
 
     private Integer deptid;
-    @Size(min=1,max=50,message="大厅编码不能为空")
+    @Size(min=1,max=50,message="{hall.valid.hallno.notnull}")
     private String hallno;
-    @Size(min=1,max=50,message="大厅名称不能为空")
+    @Size(min=1,max=50,message="{hall.valid.hallname.notnull}")
     private String hallname;
     private String address;
     private String longitude;
@@ -214,6 +214,24 @@ public class SysQueuehall extends Model<SysQueuehall> {
     private String workversion;
     private String checkdigit;
     private Integer checkdigited;
+    private String notifymobile;
+    private String eval7template;
+
+    public String getEval7template() {
+        return eval7template;
+    }
+
+    public void setEval7template(String eval7template) {
+        this.eval7template = eval7template;
+    }
+
+    public String getNotifymobile() {
+        return notifymobile;
+    }
+
+    public void setNotifymobile(String notifymobile) {
+        this.notifymobile = notifymobile;
+    }
 
     public String getNcheckdigit() {
         return ncheckdigit;
@@ -300,6 +318,8 @@ public class SysQueuehall extends Model<SysQueuehall> {
     public static final String WORKVERSION = "workversion";
 
     public static final String DEPTID = "deptid";
+
+    public static final String NOTIFYMOBILE = "notifymobile";
 
     @Override
     protected Serializable pkVal() {

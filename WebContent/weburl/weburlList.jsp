@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
     <link rel="stylesheet" href="css/dialog.css" type="text/css" />
     <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
+    <script type="text/javascript">global_language='${locale}'</script>
     <script type="text/javascript" src="js/jquery.js" ></script>
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
@@ -20,7 +21,7 @@
 </head>
 <body style="width:100%;">
 <div class="place">
-    <span>位置：</span>
+    <span><s:text name="main.placetitle" /></span>
     <ul class="placeul">
         <c:forEach items="${navbar_menuname}" var="menu">
             <li><a href="#">${menu.name}</a></li>
@@ -36,8 +37,8 @@
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">
-            <img src="images/04_03_10.jpg" width="55" height="25" onclick="query()" class="hand">
-            <img src="<s:text name='sundyn.pic.add' />" width="55" height="25" onclick="weburToAdd(null,'<s:text name="sundyn.add.weburl" />');" class="hand" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="query()" value="<s:text name="main.query" />">
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="weburToAdd(null,'<s:text name="sundyn.add.weburl" />');" value="<s:text name="main.add" />">
         </div>
     </div>
     <input type="hidden" name="managerId" id="managerId" value="${managerId}" />
@@ -77,6 +78,27 @@
 
     function query(){
         refreshTab({key_title: $("#txtTitle").val()});
+    }
+
+    // weburl 信息查询添加框
+    function weburToAdd(data, title) {
+        new dialog().iframe("weburlToAdd.action", {title:title, full:true,w:'100%',h:'100%'});
+    }
+
+    // weburl 信息查询更新框
+    function weburlToUpate(data, title) {
+        new dialog().iframe("weburlToUpdate.action?id=" + data, {title:title, full:true,w:'100%',h:'100%'});
+    }
+
+    // 删除 信息查询
+    function weburlDelete(data){
+        if (confirm('<s:text name="main.delete.confirm" />')){
+            dojo.xhrPost({url:"weburlDelete.action", content:{id:data}, load:function (resp, ioArgs) {
+                    succ('<s:text name="main.delete.succ" />', function(){
+                        refreshTab();
+                    });
+                }});
+        }
     }
 </script>
 </body>

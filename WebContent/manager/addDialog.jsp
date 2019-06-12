@@ -11,7 +11,6 @@
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>

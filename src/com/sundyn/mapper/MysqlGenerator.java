@@ -25,7 +25,7 @@ public class MysqlGenerator {
     /**
      * 输出文件的路径
      */
-    private static final String OUT_PATH = "/work/gencode";
+    private static final String OUT_PATH = "/work/workspace/gzcgs/src";
     /**
      * 代码生成者
      */
@@ -62,7 +62,7 @@ public class MysqlGenerator {
         AutoGenerator mpg = new AutoGenerator().setGlobalConfig(
                 // 全局配置
                 new GlobalConfig().setOutputDir(OUT_PATH)// 输出目录
-                        .setFileOverride(true)// 是否覆盖文件
+                        .setFileOverride(false)// 是否覆盖文件
                         .setActiveRecord(true)// 开启 activeRecord 模式
                         .setEnableCache(false)// XML 二级缓存
                         .setBaseResultMap(false)// XML ResultMap
@@ -72,7 +72,7 @@ public class MysqlGenerator {
                         .setXmlName("%sMapper").setMapperName("%sDao")
                 // .setServiceName("MP%sService")
                 // .setServiceImplName("%sServiceDiy")
-                // .setControllerName("%sAction")
+                .setControllerName("%sAction")
         ).setDataSource(
                 // 数据源配置
                 new DataSourceConfig().setDbType(DbType.SQL_SERVER)// 数据库类型
@@ -90,7 +90,7 @@ public class MysqlGenerator {
                                 .setDbColumnUnderline(true)// 全局下划线命名
                                 // .setTablePrefix(new String[]{"unionpay_"})// 此处可以修改为您的表前缀
                                 .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
-                                .setInclude(new String[] {"audit_lock"}) // 需要生成的表
+                                .setInclude(new String[] {"qrz_schedulejob"}) // 需要生成的表
                                 // .setExclude(new String[]{"test"}) // 排除生成的表
                                 // 自定义实体，公共字段
                                 // .setSuperEntityColumns(new String[]{"test_id"})
@@ -120,7 +120,7 @@ public class MysqlGenerator {
                 ).setPackageInfo(
                         // 包配置
                         new PackageConfig().setModuleName(MODULE_NAME).setParent(PACKAGE_NAME)// 自定义包路径
-                                //.setController("controller")// 这里是控制器包名，默认 web
+                                .setController("action")// 这里是控制器包名，默认 web
                                 .setXml("mapper").setMapper("dao")
 
                 ).setCfg(

@@ -53,7 +53,8 @@ public class HallAction extends MainAction
         String spath = ServletActionContext.getServletContext().getRealPath("/");
         request.setAttribute("queryData", queryData);
         request.setAttribute("key_hallname", key_hallname);
-        return "success";
+        request.setAttribute("all", getText("main.all"));
+        return SUCCESS;
     }
 
     /*
@@ -74,6 +75,25 @@ public class HallAction extends MainAction
             hall.setHallname(req.getString("deptName"));
         }
         request.setAttribute("hall", hall);
+        return "success";
+    }
+
+    public String hallSmsAdd(){
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        int id = req.getInt("id");
+        int deptid = req.getInt("deptid");
+
+        SysQueuehall hall = null;
+        if(id!=0)
+            hall = hallService.selectById(id);
+        if(deptid!=0)
+            hall = hallService.selectOne(new EntityWrapper<SysQueuehall>().where("deptId={0}", deptid));
+        if (hall == null) {//添加时，大厅名称默认为dept表名称，且不允许修改
+            hall = new SysQueuehall();
+            hall.setHallname(req.getString("deptName"));
+        }
+        request.setAttribute("hall", hall);
+        request.setAttribute("smsTemplateTip", getDict("smstemplate-eval7"));
         return "success";
     }
 
@@ -101,14 +121,14 @@ public class HallAction extends MainAction
             boolean succ = false;
             if(hall.getId() == null || hall.getId() == 0){
                 if (hallService.selectCount(new EntityWrapper<SysQueuehall>().where("hallno={0}", hall.getHallno()))>0){
-                    request.setAttribute("msg", "大厅编码已经存在");
+                    request.setAttribute("msg", this.getText("hall.valid.hallno.exists"));
                     return "success";
                 }
                 succ = hall.insert();
             }
             else{
                 if (hallService.selectCount(new EntityWrapper<SysQueuehall>().where("hallno={0} and id!={1}", hall.getHallno(), hall.getId()))>0){
-                    request.setAttribute("msg", "大厅编码已经存在");
+                    request.setAttribute("msg", this.getText("hall.valid.hallno.exists"));
                     return "success";
                 }
                 if (hall.getDeptid()==0)
@@ -117,17 +137,44 @@ public class HallAction extends MainAction
                 succ = hall.updateById();
             }
             if (!succ){
-                request.setAttribute("msg", "提交失败");
+                request.setAttribute("msg", this.getText("main.save.fail"));
                 return "success";
             }
         } catch (IllegalAccessException e) {
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         } catch (InvocationTargetException e) {
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }  catch (ValidException e) {
             request.setAttribute("msg", e.getMessage());
         } catch (Exception e) {
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
+        }
+        return "success";
+    }
+
+    public String hallSmsPost(){
+        SysQueuehall hall = new SysQueuehall();
+        try {
+            BeanUtils.populate(hall, request.getParameterMap());
+            boolean succ = false;
+            if(hall.getId() == null || hall.getId() == 0){
+                request.setAttribute("msg", this.getText("main.save.fail"));
+                return "success";
+            }
+            else{
+                String setSql = "notifymobile='"+hall.getNotifymobile()+"', eval7template='"+hall.getEval7template()+"'";
+                succ = hallService.updateForSet(setSql,new EntityWrapper<SysQueuehall>().eq("id", hall.getId()));
+            }
+            if (!succ){
+                request.setAttribute("msg", this.getText("main.save.fail"));
+                return "success";
+            }
+        } catch (IllegalAccessException e) {
+            request.setAttribute("msg", this.getText("main.save.fail"));
+        } catch (InvocationTargetException e) {
+            request.setAttribute("msg", this.getText("main.save.fail"));
+        } catch (Exception e) {
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }
         return "success";
     }
@@ -139,7 +186,7 @@ public class HallAction extends MainAction
         int id = req.getInt("id");
         boolean succ = hallService.deleteById(id);
         if (!succ){
-            request.setAttribute("msg", "删除失败");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }
         return "success";
     }

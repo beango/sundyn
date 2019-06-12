@@ -119,15 +119,20 @@ public class DeptAction extends MainAction
         if (this.deptId == null) {
             this.deptId = -1;
         }
-        if(StringUtils.isBlank(this.reMark)){
-            request.setAttribute("json", "设备信息不能为空");
+
+        if(StringUtils.isBlank(this.reMark) && deptType == 0){
+            request.setAttribute("json", this.getText("dept.macnotnull"));
             return SUCCESS;
         }
-        final Map m = this.deptService.findByMac(reMark);
-        if (m != null) {
-            request.setAttribute("json", "设备信息不能重复");
-            return SUCCESS;
+
+        if (deptType == 0){
+            final Map m = this.deptService.findByMac(reMark);
+            if (m != null) {
+                request.setAttribute("json", this.getText("dept.machasexists"));
+                return SUCCESS;
+            }
         }
+
         final Map temp = this.deptService.findDeptById(this.deptId);
         final Date cDate = new Date();
         final String dt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cDate);
@@ -187,7 +192,7 @@ public class DeptAction extends MainAction
         }
         request.setAttribute("deptType", (Object)deptType);
         request.setAttribute("playListList", (Object)playListList);
-        request.setAttribute("remark", (Object)remark);
+        //request.setAttribute("remark", (Object)remark);
         request.setAttribute("parentobj", deptService.findDeptById(parentid));
         //this.provinces = this.cityutils.getProvinces();
         this.provinces = this.cityutils.getProvincesOnly();

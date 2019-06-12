@@ -10,7 +10,6 @@
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
 </head>
@@ -242,7 +241,7 @@
             </td>
         </tr>
         <tr>
-            <td>评价后填写联系方式</td>
+            <td><s:text name="playlist.config.evalcontact" /></td>
             <td>
                 <input type="radio" name="customerInfo"  title="<s:text name="sundyn.system.unit.Yes"></s:text>" value="1" <c:if test="${config.customerInfo == '1' }"> checked="checked" </c:if> />
                 <input type="radio" name="customerInfo" title="<s:text name="sundyn.system.unit.No"></s:text>"  value="0" <c:if test="${config.customerInfo == '0' }"> checked="checked" </c:if> />
@@ -272,10 +271,8 @@
 
             </td>
             <td>
-                <img src="<s:text name='sundyn.pic.save' />"  onclick="playListConfigSaveAndroid()"
-                     alt="<s:text name='sundyn.system.playlist.modify'/>" class="hand" />
-                <img src="<s:text name='sundyn.pic.close' />"  onclick="closeDialog()"
-                     class="hand">
+                <input type="button" value="<s:text name='main.save'/>" onclick="playListConfigSaveAndroid()" class="layui-btn"/>
+                <input type="button" value="<s:text name='main.cancel'/>" onclick="closeDialog()" class="layui-btn"/>
             </td>
         </tr>
     </table>

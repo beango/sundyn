@@ -11,6 +11,7 @@ import com.sundyn.service.EmployeeService;
 import com.sundyn.service.IAuditLockService;
 import com.sundyn.service.IAuditLogService;
 import com.sundyn.util.impl.util;
+import com.sundyn.vo.LogTypeEnum;
 import com.xuan.xutils.utils.DateUtils;
 import com.xuan.xutils.utils.StringUtils;
 import lombok.Getter;
@@ -112,7 +113,7 @@ public class AuditAction extends MainAction {
             String ypfj = req.getString("ypfj");
 
             Wrapper<Map> ew =new EntityWrapper<Map>();
-            ew.where("logtype in ('登录','退出')");
+            ew.in("logtype", new String[]{LogTypeEnum.登录.toString(), LogTypeEnum.退出.toString()});
 
             if (StringUtils.isNotBlank(logtype)){
                 ew = ew.where("logtype='" + logtype + "'");

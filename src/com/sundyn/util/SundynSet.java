@@ -37,7 +37,7 @@ public class SundynSet {
     }
 
     public static synchronized SundynSet getInstance(final String path) throws JDOMException, IOException {
-        SundynSet.setPath = String.valueOf(path) + "update" + File.separator + "set.xml";
+        SundynSet.setPath = path + "update" + File.separator + "set.xml";
         if (SundynSet.sundynSet == null) {
             SundynSet.sundynSet = new SundynSet(SundynSet.setPath);
         }

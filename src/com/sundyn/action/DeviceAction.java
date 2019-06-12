@@ -3,8 +3,10 @@ package com.sundyn.action;
 import com.sundyn.service.AppService;
 import com.sundyn.service.DeviceService;
 import com.sundyn.util.DateHelper;
+import com.sundyn.util.FileInfo;
 import com.sundyn.util.Pager;
 import com.sundyn.utils.JavaXML;
+import com.xuan.xutils.utils.StringUtils;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
 import org.jdom.Content;
@@ -55,15 +57,18 @@ public class DeviceAction extends MainAction
 
     public InputStream getEvalbutton() {
         try{
-            String file = JavaXML.class.getClassLoader().getResource("").getPath();
-            file = file.replaceAll("%20", " ");
-            file = String.valueOf(file.substring(1, file.indexOf("classes"))) + "source/";
-            final String filename = "evalbuttons.xml";
-            final String url = String.valueOf(file) + filename;
+            String layout = req.getString("layout");
+            String filename = "evalbuttons.xml";
+            if (StringUtils.isNotBlank(layout))
+                filename = "evalbuttons-" + layout + ".xml";
+            File f = JavaXML.XMLOutFile(filename);
+            if (!f.exists())
+            {
+                filename = "evalbuttons.xml";
+            }
             return ServletActionContext.getServletContext().getResourceAsStream("/WEB-INF/source/" + filename);
         }
         catch (Exception ex){
-            ex.printStackTrace();
             return null;
         }
     }

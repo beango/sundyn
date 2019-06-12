@@ -1,3 +1,6 @@
+<%@ page import="org.apache.struts2.ServletActionContext" %>
+<%@ page import="com.opensymphony.xwork2.util.LocalizedTextUtil" %>
+<%@ page import="java.util.Locale" %>
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
@@ -71,6 +74,14 @@
     </ul>
 </div>
 <input type="hidden" id="deptId" value="${deptId}"/>
+<%
+    HttpServletRequest req = ServletActionContext.getRequest();
+    String logTypeEnumLogin = LocalizedTextUtil.findDefaultText("auditlog.logTypeEnumLogin", (Locale)req.getAttribute("Locale"));
+    ServletActionContext.getRequest().setAttribute("logTypeEnumLogin", logTypeEnumLogin);
+
+    String logTypeEnumLoginout = LocalizedTextUtil.findDefaultText("auditlog.logTypeEnumLoginout", (Locale)req.getAttribute("Locale"));
+    ServletActionContext.getRequest().setAttribute("logTypeEnumLoginout", logTypeEnumLoginout);
+%>
 <div class="layui-form" lay-filter="f">
     <div class="layui-select-cus layui-inline">
         <label class="layui-form-label" style="width:60px;">类型：</label>
@@ -79,8 +90,8 @@
         <div class="layui-input-inline">
             <select name="logtype" id="logtype">
                 <option value="" <c:if test="${logtype==null || logtype==''}"> selected="selected"</c:if>>所有</option>
-                <option value="登录" <c:if test="${logtype=='登录'}"> selected="selected"</c:if>>登录</option>
-                <option value="退出" <c:if test="${logtype=='退出'}"> selected="selected"</c:if>>退出</option>
+                <option value="${logTypeEnumLogin}" <c:if test='${logtype==logTypeEnumLogin}'> selected="selected"</c:if>>${logTypeEnumLogin}</option>
+                <option value="${logTypeEnumLoginout}" <c:if test="${logtype==logTypeEnumLoginout}"> selected="selected"</c:if>>${logTypeEnumLoginout}</option>
             </select>
         </div>
     </div>

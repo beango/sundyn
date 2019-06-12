@@ -39,14 +39,31 @@
     <div class="layui-form-item">
         <label class="layui-form-label"></label>
         <div class="layui-input-inline">
-            <img src="<s:text name='sundyn.pic.ok' />"  onclick="playListAddAndroid()" class="hand" />
-            <img src="<s:text name='sundyn.pic.close' />" onclick="closeDialog()" class="hand">
+            <input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="playListAddAndroid()" class="layui-btn"/>
+            <input type="button" value="<s:text name='main.cancel'/>" class="layui-btn layui-btn-primary" onclick="parent.closeDialog()"/>
         </div>
     </div>
 </div>
 </body>
 <script>
-    layui.use('form', function(){
-    });
+    layui.use('form');
+
+    // 播放列表添加
+    function playListAddAndroid() {
+        var playListName = document.getElementById("playListName").value;
+        var playListDescription = document.getElementById("playListDescription").value;
+        var playIds = getAllKey();
+        dojo.xhrPost({url:"playListAddAndroid.action", content:{playListName:playListName, playListDescription:playListDescription, playIds:playIds}, load:function (resp, ioArgs) {
+                if (resp.trim() == "") {
+                    succ('<s:text name="main.add.succ" />', function(){
+                        parent.closeDialog();
+                        parent.refreshTab();
+                    });
+                }
+                else{
+                    error(resp);
+                }
+            }});
+    }
 </script>
 </html>

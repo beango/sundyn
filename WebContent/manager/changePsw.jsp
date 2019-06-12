@@ -18,7 +18,7 @@
         <script language="JavaScript" src="js/dojo.js"></script>
         <script type="text/javascript" src="lib/layui/layui.all.js"></script>
         <script language="JavaScript" src="js/md5.min.js"></script>
-        <script language="JavaScript" src="js/my_zh.js"></script>
+        <script language="JavaScript" src="js/my_<s:text name='sundyn.language' />.js"></script>
         <script>
             // base64加密开始
             var keyStr = "ABCDEFGHIJKLMNOP" + "QRSTUVWXYZabcdef" + "ghijklmnopqrstuv"
@@ -111,7 +111,7 @@
  	</head>
     <body>
     <div class="place">
-        <span>位置：</span>
+        <span><s:text name="main.placetitle" /></span>
         <ul class="placeul">
             <li><a href="#">修改密码</a></li>
         </ul>

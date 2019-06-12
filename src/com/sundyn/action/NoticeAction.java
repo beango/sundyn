@@ -15,9 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class NoticeAction extends ActionSupport
+public class NoticeAction extends MainAction
 {
-    private static final Integer pageSize;
     public NoticeVo notice;
     public NoticeService noticeService;
     public String isDeal;
@@ -26,11 +25,7 @@ public class NoticeAction extends ActionSupport
     private InputStream xml;
     private String msg;
     private Pager pager;
-    
-    static {
-        pageSize = 6;
-    }
-    
+
     public String noticeToAdd() {
         return "noticeToAdd";
     }
@@ -40,19 +35,19 @@ public class NoticeAction extends ActionSupport
         final String title = request.getParameter("title");
         final String content = request.getParameter("content");
         if (title.equals("")){
-            this.msg = "标题不能为空!";
+            this.msg = this.getText("notice.valid.title.nonull");
             return "msg";
         }
         if (content.equals("")){
-            this.msg = "内容不能为空!";
+            this.msg = this.getText("notice.valid.content.nonull");
             return "msg";
         }
         if (content.length()>4000){
-            this.msg = "内容不能超过4000字!";
+            this.msg = this.getText("notice.valid.content.length4000");
             return "msg";
         }
         if (noticeService.existsByName(null, title)){
-            this.msg = "添加失败:已经存在相同标题的记录";
+            this.msg = this.getText("notice.valid.title.exists");
             return "msg";
         }
 
@@ -65,14 +60,14 @@ public class NoticeAction extends ActionSupport
             this.creatXml();
             return "msg";
         }
-        this.isDeal = "添加失败请重新添加";
+        this.isDeal = this.getText("main.add.fail");
         return "inputs";
     }
     
     public String noticeList() {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final int rowsCount = this.noticeService.getCount();
-        this.pager = new Pager("currentPage", NoticeAction.pageSize, rowsCount, request, "noticPage", this);
+        this.pager = new Pager("currentPage", pageSize, rowsCount, request, "noticPage", this);
         this.notices = this.noticeService.findNotices((this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
         this.pager.setPageList(this.notices);
         return "noticeListOk";
@@ -97,19 +92,19 @@ public class NoticeAction extends ActionSupport
         final String content = request.getParameter("content");
         final String id = request.getParameter("id");
         if (title.equals("")){
-            this.msg = "标题不能为空!";
+            this.msg = this.getText("notice.valid.title.nonull");
             return "msg";
         }
         if (content.equals("")){
-            this.msg = "内容不能为空!";
+            this.msg = this.getText("notice.valid.content.nonull");
             return "msg";
         }
         if (content.length()>4000){
-            this.msg = "内容不能超过4000字!";
+            this.msg = this.getText("notice.valid.content.length4000");
             return "msg";
         }
         if (noticeService.existsByName(id, title)){
-            this.msg = "添加失败:已经存在相同标题的记录";
+            this.msg = this.getText("notice.valid.title.exists");
             return "msg";
         }
 
@@ -222,8 +217,5 @@ public class NoticeAction extends ActionSupport
     public void setPager(final Pager pager) {
         this.pager = pager;
     }
-    
-    public static Integer getPagesize() {
-        return NoticeAction.pageSize;
-    }
+
 }

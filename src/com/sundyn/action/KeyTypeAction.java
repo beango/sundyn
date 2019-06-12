@@ -7,6 +7,7 @@ import com.sundyn.utils.JavaXML;
 import com.sundyn.vo.button;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.jdom.Content;
 import org.jdom.Document;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class KeyTypeAction extends ActionSupport
+public class KeyTypeAction extends MainAction
 {
     private Integer id;
     private KeyTypeService keyTypeService;
@@ -41,7 +42,8 @@ public class KeyTypeAction extends ActionSupport
     public String keyTypeLayoutEdit() throws IOException {
         final HttpServletRequest request = ServletActionContext.getRequest();
         JSONArray ja = JSONArray.fromObject(request.getParameter("data"));
-
+        int lwidth = req.getInt("lwidth");
+        int lheight = req.getInt("lheight");
         final Element root = new Element("root");
         final Document Doc = new Document(root);
         Doc.setRootElement(root);
@@ -92,7 +94,12 @@ public class KeyTypeAction extends ActionSupport
                 root.addContent(button);
             }
         }
-        JavaXML.XMLOut(Doc, "evalbuttons.xml");
+
+        if (lwidth == 0 && lheight == 0)
+            JavaXML.XMLOut(Doc, "evalbuttons.xml");
+        if (lwidth>0 && lheight>0)
+            JavaXML.XMLOut(Doc, "evalbuttons-"+String.valueOf(lwidth) + "x" + String.valueOf(lheight)+".xml");
+
         return "success";
     }
 
@@ -105,7 +112,7 @@ public class KeyTypeAction extends ActionSupport
         final String[] ext1s = request.getParameter("ext1s").split(",");
         String[] idArray = ids.split(",");
         if (idArray == null || idArray.length==0){
-            request.setAttribute("msg", "系统错误!");
+            request.setAttribute("msg", this.getText("main.systemerror"));
             return "success";
         }
         for (int idx =0; idx < idArray.length; idx++){
@@ -115,18 +122,18 @@ public class KeyTypeAction extends ActionSupport
             int extInt;
             String ext1 = ext1s[idx];
             if (ext1 == null || ext1.equals("")){
-                request.setAttribute("msg", "权值不能为空!");
+                request.setAttribute("msg", this.getText("keytype.valid.weight.notnull"));
                 return "success";
             }
             try {
                 extInt = Integer.valueOf(ext1);
                 if(extInt>10){
-                    request.setAttribute("msg", "权值不能大于10!");
+                    request.setAttribute("msg", this.getText("keytype.valid.weight.max"));
                     return "success";
                 }
             }
             catch (Exception e){
-                request.setAttribute("msg", "权值只能为整数!");
+                request.setAttribute("msg", this.getText("keytype.valid.weight.notint"));
                 return "success";
             }
             String ext2 = names.length > idx ? names[idx] : "";
@@ -152,21 +159,33 @@ public class KeyTypeAction extends ActionSupport
             String _p_name = names.length > idx ? names[idx] : "";
             this.keyTypeService.update(Integer.valueOf(idArray[idx]), _p_name, (isJoys.length>idx?isJoys[idx]:""), yess[idx], ext1, ext2);
         }
-        request.setAttribute("msg", "保存成功!");
+        request.setAttribute("msg", this.getText("main.save.succ"));
         return "success";
     }
     
     public String keyTypeQueryDialog() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         this.list = this.keyTypeService.findByApprieserId(this.id);
+        String layout  = req.getString("layout");
 
-        JSONArray ja = ConvertXMLtoJSON();
+        JSONArray ja = ConvertXMLtoJSON(layout);
         request.setAttribute("evalbuttons", ja.toString());
         return "success";
     }
 
-    public JSONArray ConvertXMLtoJSON() throws IOException {
-        File f = JavaXML.XMLOutFile("evalbuttons.xml");
+    public JSONArray ConvertXMLtoJSON(String layout) throws IOException {
+        String xmlName = "evalbuttons.xml";
+        File f = null;
+        if (StringUtils.isNotBlank(layout)) {
+            xmlName = "evalbuttons-" + layout + ".xml";
+            f = JavaXML.XMLOutFile(xmlName);
+            if (f == null){
+                xmlName = "evalbuttons.xml";
+                f = JavaXML.XMLOutFile(xmlName);
+            }
+        }
+        else
+            f = JavaXML.XMLOutFile(xmlName);
 
         InputStream is = new FileInputStream(f);
         // 声明一个字节数组

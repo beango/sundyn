@@ -17,7 +17,7 @@
  	  <tr>
 	    <td align="center" style="border-color:#FFFFFF;" colspan="2">
 	    <div class="button left" onclick="deptEditDialog('<s:text name="sundyn.dept.modifyDating" />','${dept.fatherId}')"><s:text name="sundyn.dept.modifyDating" /></div>
-        <div style="margin-left: 5px;" class="button left" onclick="deptCfgDialog('大厅参数配置','${dept.name}'); return false;">参数配置</div>
+        <div style="margin-left: 5px;" class="button left" onclick="deptCfgDialog('<s:text name="main.hallcfg" />','${dept.name}'); return false;"><s:text name="main.hallcfg" /></div>
 	    <div style="margin-left: 5px;" class="button left" onclick="deptAddDialog(0,'<%=request.getParameter("deptId")%>','<s:text name="sundyn.dept.addWindow" />')" ><s:text name="sundyn.dept.addWindow" /></div>
 	    <div style="margin-left: 5px;" class="button left" onclick="del()"><s:text name="sundyn.del" /></div>
 	    </td>

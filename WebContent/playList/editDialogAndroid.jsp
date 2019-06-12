@@ -90,25 +90,69 @@
             </td>
         </tr>
         <tr>
-            <td></td>
-            <td>
-                <img src="<s:text name='sundyn.pic.save' />"  onclick="playListEdit()" alt="<s:text name='sundyn.system.playlist.modify'/>" class="hand" />
-                <img  src="<s:text name='sudnyn.playList.pic.update' />"  onclick="playListCreateUpdateZipFile(${p.playListId})" alt="生成升级包" class="hand"  />
-                <img src="<s:text name='sundyn.pic.close' />"  onclick="closeDialog()" class="hand">
+            <td colspan="2" style="text-align:center;">
+                <input type="button" value="<s:text name='main.save'/>" onclick="playListEdit()" class="layui-btn"/>
+                <input type="button" value="<s:text name="playlist.zip.gen" />" onclick="playListCreateUpdateZipFile(${p.playListId})" class="layui-btn"/>
+                <input type="button" value="<s:text name='main.cancel'/>" class="layui-btn layui-btn-primary" onclick="parent.closeDialog()"/>
             </td>
         </tr>
+        <tr style="height:10px;"></tr>
     </table>
-    <br>
 </div>
 </body>
 <script>
     layui.use('form', function(){
-        var form = layui.form;
         var form = layui.form;
 
         form.on('switch(playIdSet)', function(data){
             setvalue();
         });
     });
+
+
+    // 播放列表修改
+    function playListEdit() {
+        var ShowEmployeePage=1;
+        var Type=0;
+        var Version=document.getElementById("Version").value;
+        var Welcometime=document.getElementById("Welcometime").value;
+        var Approvertime=document.getElementById("Approvertime").value;
+        var Shutdownhh=document.getElementById("Shutdownhh").value;
+        var Shutdownmm=document.getElementById("Shutdownmm").value;
+        var Boothh=document.getElementById("Boothh").value;
+        var Bootmm=document.getElementById("Bootmm").value;
+        ShowEmployeePage= document.getElementById("ShowEmployeePage").value;
+        var IP=document.getElementById("IP").value;
+        var Port=document.getElementById("Port").value;
+        var temp2=document.getElementsByName("Type");
+        if(temp2[0].checked){Type=temp2[0].value }
+        if(temp2[1].checked){Type=temp2[1].value }
+        var playListName = document.getElementById("playListName").value;
+        var playListDescription = document.getElementById("playListDescription").value;
+        var playIds = document.getElementById("playIds").value;
+        var playListId = document.getElementById("playListId").value;
+        dojo.xhrPost({url:"playListEdit.action", content:{playListId:playListId, playListName:playListName, playListDescription:playListDescription, playIds:playIds,Version:Version,Approvertime:Approvertime,Welcometime:Welcometime,Shutdownhh:Shutdownhh,Shutdownmm:Shutdownmm,Boothh:Boothh,Bootmm:Bootmm,ShowEmployeePage:ShowEmployeePage,IP:IP,Port:Port,Type:Type}, load:function (resp, ioArgs) {
+                succ('<s:text name="main.save.succ" />', function(){
+                    parent.closeDialog();
+                    parent.refreshTab();
+                });
+            }});
+    }
+
+
+    // 生成在线升级包,Zip格式和Bin格式
+    function playListCreateUpdateZipFile(data){
+        var l = layer.msg('<s:text name="playlist.zip.isgening" />', {icon: 16, shade: 0.1, time: 999999});
+
+        var playIds = getAllKey();
+        dojo.xhrPost({url:"playListCreateUpdateZip.action", content:{playListId:data,playIds:playIds}, load:function (resp, ioArgs) {
+                document.getElementById("pbar").src="images/update_processend.gif";
+                succ('<s:text name="playlist.zip.gened" />');
+                layer.close(l);
+            }, error:function(){
+                error("<s:text name="main.systemerror" />");
+                layer.close(l);
+            }});
+    }
 </script>
 </html>

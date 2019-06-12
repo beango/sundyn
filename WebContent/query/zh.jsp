@@ -56,11 +56,11 @@
 							  </tr>
 							  <tr>
 							    <td align="right" style="border-color:#FFFFFF;"><s:text name='sundyn.total.startDate'/></td>
-							    <td colspan="2" align="left" style="border-color:#FFFFFF;"><input type="text" <s:text name="sundyn.language.calendar.setDay"/>  id="startDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /> </td>
+							    <td colspan="2" align="left" style="border-color:#FFFFFF;"><input type="text" <s:text name="sundyn.language.calendar.setDay"/>  id="startDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})" /> </td>
 							    </tr>
 							  <tr>
 							    <td align="right" style="border-color:#FFFFFF;"><s:text name='sundyn.total.endDate'/></td>
-							    <td colspan="2" align="left" style="border-color:#FFFFFF;"><input type="text" <s:text name="sundyn.language.calendar.setDay"/>  id="endDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  /></td>
+							    <td colspan="2" align="left" style="border-color:#FFFFFF;"><input type="text" <s:text name="sundyn.language.calendar.setDay"/>  id="endDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})"  /></td>
 						      </tr>
 			                </table>
 			          </form>

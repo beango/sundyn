@@ -31,8 +31,16 @@
                 method="hallAdd">
             <result name="success">/hall/add.jsp</result>
         </action>
+        <action name="hallSmsAdd" class="hallAction"
+                method="hallSmsAdd">
+            <result name="success">/hall/smsAdd.jsp</result>
+        </action>
         <action name="hallPost" class="hallAction"
                 method="hallPost">
+            <result name="success">/msg.jsp</result>
+        </action>
+        <action name="hallSmsPost" class="hallAction"
+                method="hallSmsPost">
             <result name="success">/msg.jsp</result>
         </action>
         <action name="hallDel" class="hallAction"

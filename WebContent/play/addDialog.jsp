@@ -10,7 +10,6 @@
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
 </head>
@@ -47,7 +46,7 @@
             <td align="left" style="border-color: #e9f5fd;">
                 <div class="layui-upload">
                     <input type="hidden" name="imgName" id="imgName" />
-                    <button type="button" class="layui-btn" id="test1">选择资源文件</button>
+                    <button type="button" class="layui-btn" id="test1"><s:text name="play.resource.choose" /></button>
                     <div class="layui-upload-list">
                         <input type="hidden" name="playSource" id="playSource"/>
                         <input type="hidden" name="orgname" id="orgname"/>
@@ -91,8 +90,8 @@
         <tr>
             <td></td>
             <td>
-                <img src="<s:text name='sundyn.pic.ok' />" onclick="playAdd()" class="hand" />
-                <img src="<s:text name='sundyn.pic.close' />" onclick="closeDialog()" class="hand">
+                <input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="playAdd()" class="layui-btn"/>
+                <input type="button" value="<s:text name='main.cancel'/>" class="layui-btn layui-btn-primary" onclick="closeDialog()"/>
             </td>
         </tr>
     </table>
@@ -123,13 +122,41 @@
                         $("#playSourceLink").attr("href", res.path[0]);
                     $("#orgname").val(res.orgin[0]);
                     $("#playSourceLink").html(res.orgin[0]);
-                    return layer.msg('上传成功！');
+                    return layer.msg('<s:text name="main.upload.succ" />');
                 }
                 alert(res.msg);
             }, error: function(){
-                layer.msg('上传失败！');
+                layer.msg('<s:text name="main.upload.fail" />');
             }
         });
     });
+
+
+    // 添加播放
+    function playAdd() {
+        var playName = document.getElementById("playName").value;
+        var playType = document.getElementById("playType").value;
+        var playSource = document.getElementById("playSource").value;
+        var playTimes=document.getElementById("playTimes").value;
+        var playIndex=document.getElementById("playIndex").value;
+        var playTitle=document.getElementById("playTitle").value;
+        var orgname=document.getElementById("orgname").value;
+
+        var playContent = document.getElementById("playContent").value;
+        var patrn=/^[0-9]{1,20}$/;
+        if (!patrn.exec(playIndex)){lalert("<s:text name="play.valid.seq.notint" />");document.getElementById("playIndex").focus();return false;}
+        dojo.xhrPost({url:"playAdd.action", content:{playName:playName, playType:playType, playSource:playSource,playTimes:playTimes,playIndex:playIndex,
+                playTitle:playTitle,playContent:playContent,orgname:orgname}, load:function (resp, ioArgs) {
+                if (resp.trim() == "") {
+                    succ('<s:text name="main.save.succ" />', function(){
+                        parent.closeDialog();
+                        parent.refreshTab();
+                    });
+                }
+                else{
+                    error(resp);
+                }
+            }});
+    }
 </script>
 </html>

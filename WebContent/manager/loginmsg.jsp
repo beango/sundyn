@@ -33,7 +33,7 @@
  	</head>
     <body>
     <div class="place">
-        <span>位置：</span>
+        <span><s:text name="main.placetitle" /></span>
         <ul class="placeul">
             <li><a href="#">登录信息</a></li>
         </ul>

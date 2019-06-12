@@ -115,10 +115,7 @@ public class PlayListAction extends MainAction
             this.pager.setPageList(list);
         }
         else {
-            final Integer groupid = Integer.valueOf(manager.get("userGroupId").toString());
-            final Map power = this.powerService.getUserGroup(groupid);
-            final String deptIdGroup = power.get("deptIdGroup").toString();
-            final String deptIds = this.deptService.findChildALLStr1234(deptIdGroup);
+            final String deptIds = this.deptService.findChildALLStr1234(null);
             final int rowsCount2 = this.playListService.countPlayListQuery("", deptIds);
             this.pager = new Pager("currentPage", pageSize, rowsCount2, request, "playListPage", this);
             final List list2 = this.playListService.playListQuery(request.getParameter("keyword"), deptIds, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
@@ -221,11 +218,11 @@ public class PlayListAction extends MainAction
         final PlayListVo playListVo = new PlayListVo();
         String name = request.getParameter("playListName");
         if (name.equals("")){
-            this.msg = "标题不能为空!";
+            this.msg = this.getText("playlist.valid.title.notnull");
             return "success";
         }
         if (playListService.existsByName(null, name)){
-            this.msg = "添加失败:已经存在相同的播放列表";
+            this.msg = this.getText("playlist.valid.title.exists");
             return "success";
         }
 
@@ -287,7 +284,7 @@ public class PlayListAction extends MainAction
         SAXBuilder sb = new SAXBuilder(false);
         File docFile = new File(filePath);
         if (!docFile.exists()){
-            this.msg = "文件丢失,请删除后重新添加!";
+            this.msg = this.getText("playlist.valid.resource.notfound");
             return "input";
         }
         Document doc = sb.build(docFile);
@@ -439,9 +436,6 @@ public class PlayListAction extends MainAction
             ids = playIds;
         }
         final List pls = this.playService.findByIds(ids);
-        for (final Object o2 : pls) {
-            System.out.println("得到播放列表包含的文件详细信息=(1)" + o2);
-        }
         final Format format = Format.getPrettyFormat();
         format.setIndent("    ");
         format.setEncoding("gb2312");
@@ -478,9 +472,6 @@ public class PlayListAction extends MainAction
             os.close();
             os = null;
         }
-        for (final Object o3 : playlist) {
-            System.out.println("得到播放列表文件名=(2)" + o3);
-        }
         final SAXBuilder sb = new SAXBuilder();
         final Document doc2 = sb.build(String.valueOf(m7apppath) + File.separator + "CONFIG.XML");
         final Element root2 = doc2.getRootElement();
@@ -498,7 +489,6 @@ public class PlayListAction extends MainAction
         String[] array;
         for (int length = (array = file).length, k = 0; k < length; ++k) {
             final Object o4 = array[k];
-            System.out.println("最终确定的待打bin包文件file=(3)" + o4);
         }
         final Update upadd = new Update(file);
         upadd.createUpdateFile(String.valueOf(m7binpath) + File.separator + "M7Update" + version + ".bin");
@@ -506,7 +496,6 @@ public class PlayListAction extends MainAction
         final Update up = new Update(String.valueOf(m7apppath) + File.separator);
         up.add(file);
         up.createUpdateFile(tar);
-        System.out.println("bin\u5305\u751f\u6210\u5b8c\u6210(4)");
         return "success";
     }
     
@@ -576,7 +565,6 @@ public class PlayListAction extends MainAction
         final Element root2 = doc2.getRootElement();
         String version = root2.getChild("Software").getChild("Version").getText();
         version = new StringBuilder().append(Integer.parseInt(version) + 1).toString();
-        System.out.println("生成新资源版本号=" + version);
         root2.getChild("Software").getChild("Version").setText(version);
         XMLOut.output(doc2, (OutputStream)new FileOutputStream(String.valueOf(m7apppath) + File.separator + "NEWCONFIG.XML"));
         XMLOut.output(doc2, (OutputStream)new FileOutputStream(String.valueOf(m7binpath) + File.separator + "NEWCONFIG.XML"));
@@ -592,12 +580,10 @@ public class PlayListAction extends MainAction
         String[] array;
         for (int length = (array = file).length, k = 0; k < length; ++k) {
             final String s = array[k];
-            System.out.println("升级包1文件=" + s);
         }
         String[] array2;
         for (int length2 = (array2 = file2).length, l = 0; l < length2; ++l) {
             final String s = array2[l];
-            System.out.println("升级包2文件=" + s);
         }
         final Update upadd = new Update();
         final String versionTar = String.valueOf(m7binpath) + File.separator + "M7Update" + version + ".zip";
@@ -716,13 +702,9 @@ public class PlayListAction extends MainAction
                 XMLOut.output(doc, (OutputStream)new FileOutputStream(String.valueOf(m7binpath) + File.separator + "NEWCONFIG.XML"));
                 XMLOut = null;
                 final ZipManager zipManager = new ZipManager();
-                System.out.println("\u5efa\u7acbzipManager\u5bf9\u8c61");
                 zipManager.createZip(String.valueOf(m7apptemppath) + File.separator, String.valueOf(m7binpath) + File.separator + "M7Update.zip");
-                System.out.println("\u751f\u6210zip\u5305");
                 zipManager.createZip(String.valueOf(m7apptemppath2) + File.separator, String.valueOf(m7binpath) + File.separator + "M7Update" + version + ".zip");
                 MyFile.delete(m7apptemppath2);
-                System.out.println("\u5220\u9664\u7f13\u5b58");
-                System.out.println("\u5efa\u7acb\u5b8c\u6574\u5347\u7ea7\u5305");
                 request.setAttribute("msg", (Object)"Zip\u66f4\u65b0\u6210\u529f");
             }
             catch (Exception e) {
@@ -774,7 +756,12 @@ public class PlayListAction extends MainAction
         final String playListId = request.getParameter("playListId");
         final String filePath = String.valueOf(basePath) + "m7app" + File.separator + playListId + File.separator + "NEWCONFIG.XML";
         SAXBuilder sb = new SAXBuilder(false);
-        Document doc = sb.build(new File(filePath));
+        File docFile = new File(filePath);
+        if (!docFile.exists()){
+            this.msg = this.getText("playlist.valid.resource.notfound");
+            return "input";
+        }
+        Document doc = sb.build(docFile);
         final Element root = doc.getRootElement();
         final String[] Shutdown = root.getChild("Software").getChildText("Shutdown").toString().split(":");
         final String[] Boot = root.getChild("Software").getChildText("Boot").toString().split(":");
@@ -805,15 +792,15 @@ public class PlayListAction extends MainAction
     }
     
     public String playListConfigSave() throws Exception {
-        final String basePath = ServletActionContext.getServletContext().getRealPath("\\");
+        final String basePath = ServletActionContext.getServletContext().getRealPath("/");
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String playListId = request.getParameter("playListId");
         final String hh = request.getParameter("hh");
         final String mm = request.getParameter("mm");
         final int autoShutDown = Integer.parseInt(hh) * 3600 + Integer.parseInt(mm) * 60;
-        final String m7apppath = String.valueOf(basePath) + "m7app" + File.separator + playListId + File.separator + "CONFIG.XML";
-        final String m7binpath = String.valueOf(basePath) + "update" + File.separator + playListId + File.separator + "CONFIG.XML";
-        final String updateFilepath = String.valueOf(basePath) + "UpdateFile" + File.separator + "CONFIG.XML";
+        final String m7apppath = basePath + "m7app" + File.separator + playListId + File.separator + "CONFIG.XML";
+        final String m7binpath = basePath + "update" + File.separator + playListId + File.separator + "CONFIG.XML";
+        final String updateFilepath = basePath + "UpdateFile" + File.separator + "CONFIG.XML";
         final SAXBuilder sb = new SAXBuilder();
         final Document doc = sb.build(m7apppath);
         final Element root = doc.getRootElement();
@@ -844,24 +831,24 @@ public class PlayListAction extends MainAction
     }
     
     public String playListConfigSaveAndroid() throws Exception {
-        final String basePath = ServletActionContext.getServletContext().getRealPath("\\");
+        final String basePath = ServletActionContext.getServletContext().getRealPath("/");
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String playListId = request.getParameter("playListId");
         final String Shutdownhh = request.getParameter("Shutdownhh");
         final String Shutdownmm = request.getParameter("Shutdownmm");
         final String Boothh = request.getParameter("Boothh");
         final String Bootmm = request.getParameter("Bootmm");
-        final String m7apppath = String.valueOf(basePath) + "m7app" + File.separator + playListId + File.separator + "NEWCONFIG.XML";
-        final String m7binpath = String.valueOf(basePath) + "update" + File.separator + playListId + File.separator + "NEWCONFIG.XML";
-        final String updateFilepath = String.valueOf(basePath) + "UpdateFile" + File.separator + "NEWCONFIG.XML";
+        final String m7apppath = basePath + "m7app" + File.separator + playListId + File.separator + "NEWCONFIG.XML";
+        final String m7binpath = basePath + "update" + File.separator + playListId + File.separator + "NEWCONFIG.XML";
+        final String updateFilepath = basePath + "UpdateFile" + File.separator + "NEWCONFIG.XML";
         final SAXBuilder sb = new SAXBuilder();
         final Document doc = sb.build(m7apppath);
         final Element root = doc.getRootElement();
         root.getChild("Software").getChild("Version").setText(request.getParameter("Version"));
         root.getChild("Software").getChild("Welcometime").setText(request.getParameter("Welcometime"));
         root.getChild("Software").getChild("Approvertime").setText(request.getParameter("Approvertime"));
-        root.getChild("Software").getChild("Shutdown").setText(String.valueOf(Shutdownhh) + ":" + Shutdownmm);
-        root.getChild("Software").getChild("Boot").setText(String.valueOf(Boothh) + ":" + Bootmm);
+        root.getChild("Software").getChild("Shutdown").setText(Shutdownhh + ":" + Shutdownmm);
+        root.getChild("Software").getChild("Boot").setText(Boothh + ":" + Bootmm);
         root.getChild("Software").getChild("ShowEmployeePage").setText(request.getParameter("ShowEmployeePage"));
         root.getChild("Software").getChild("customerInfo").setText(request.getParameter("customerInfo"));
         root.getChild("Server").getChild("IP").setText(request.getParameter("IP"));

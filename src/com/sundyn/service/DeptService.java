@@ -113,19 +113,26 @@ public class DeptService extends SuperDao
         }
     }
 
-    public boolean addDept(final DeptVo dept, final int fartherId) {
-        final String sql = "Insert into appries_dept (name, fatherId, remark, child,lenvel,client_type,product_type,deptType,dept_camera_url,dept_businessId,dept_playListId,ext1,ext2,ext3,useVideo,notice,cityid,provinceid,ext5) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public boolean addDept(DeptVo dept, final int fartherId) {
+        final String sql = "set NOCOUNT ON; " +
+                "Insert into appries_dept (name, fatherId, remark, child,lenvel,client_type,product_type,deptType,dept_camera_url,dept_businessId," +
+                "dept_playListId,ext1,ext2,ext3,useVideo,notice,cityid,provinceid,ext5) " +
+                "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);" +
+                "select ident_current('appries_dept');";
         final Object[] arg = { dept.getName()==null?"":dept.getName(), dept.getFatherId(), dept.getRemark()==null?"":dept.getRemark(), new Integer(0),
                 dept.getLenvel(), dept.getClient_type(), dept.getProduct_Type()==null?"":dept.getProduct_Type(), dept.getDeptType(),
                 dept.getDept_camera_url()==null?"":dept.getDept_camera_url(), dept.getDept_businessId(), dept.getDept_playListId(),
                 dept.getDeptPause()==null?"":dept.getDeptPause(), dept.getDeptPic()==null?"":dept.getDeptPic(),
                 dept.getDeptLogoPic()==null?"":dept.getDeptLogoPic(), dept.getUseVideo()==null?"":dept.getUseVideo(),
                 dept.getNotice()==null?"":dept.getNotice(), dept.getCityid(), dept.getProvinceid(), dept.getExt5()==null?"":dept.getExt5() };
-        final String sql2 = "update appries_dept set child = child+1 where id = ?";
-        final Object[] arg2 = { dept.getFatherId() };
+        String sql2 = "update appries_dept set child = child+1 where id = ?";
+        Object[] arg2 = { dept.getFatherId() };
         try {
-            this.getJdbcTemplate().update(sql, arg);
+            int deptid = this.getJdbcTemplate().queryForObject(sql, arg, Integer.class);
             this.getJdbcTemplate().update(sql2, arg2);
+            if ((dept.getDeptType()==1 || dept.getDeptType() ==2) && com.xuan.xutils.utils.StringUtils.isBlank(dept.getRemark())){
+                this.getJdbcTemplate().update("update appries_dept set remark=? where id=?", new Object[]{deptid, deptid});
+            }
             ClearCache();
             return true;
         }

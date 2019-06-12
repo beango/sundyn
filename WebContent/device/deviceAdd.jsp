@@ -46,7 +46,7 @@
         <tr >
             <td align="right"  style="border-color: #e9f5fd;">添加时间<s:text name='sundyn.colon' /></td>
             <td align="left"  style="border-color: #e9f5fd;">
-                <input name="ctime" class="input_comm" id="ctime" value="${vo==null?ctime:vo.ctime}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                <input name="ctime" class="input_comm" id="ctime" value="${vo==null?ctime:vo.ctime}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})" />
             </td>
         </tr>
         <tr>

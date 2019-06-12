@@ -184,7 +184,7 @@ public class EmployeeAction extends MainAction
             return Action.SUCCESS;
         }*/
         if (name.equals("")){
-            this.msg = "员工姓名不能为空！";
+            this.msg = this.getText("employee.valid.name.notnull");
             jsonData.clear();
             jsonData.put("succ", false);
             jsonData.put("msg", msg);
@@ -192,14 +192,14 @@ public class EmployeeAction extends MainAction
         }
 
         if (cardNum.equals("")){
-            this.msg = "员工工号不能为空！";
+            this.msg = this.getText("employee.valid.cardnum.notnull");
             jsonData.clear();
             jsonData.put("succ", false);
             jsonData.put("msg", msg);
             return Action.SUCCESS;
         }
         if (this.employeeService.employeeCardNumExsits(cardNum)) {
-            this.msg = "员工工号已经存在！";
+            this.msg = this.getText("employee.valid.cardnum.exists");
             jsonData.clear();
             jsonData.put("succ", false);
             jsonData.put("msg", msg);
@@ -230,7 +230,7 @@ public class EmployeeAction extends MainAction
         this.employeeService.addEmployee(employeeVo);
         jsonData.clear();
         jsonData.put("succ", true);
-        jsonData.put("msg", "添加成功");
+        jsonData.put("msg", this.getText("main.add.succ"));
         return "success";
     }
 
@@ -836,7 +836,7 @@ public class EmployeeAction extends MainAction
         String version = request.getParameter("version");
         final String config = request.getParameter("config");
         final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        final String basepath = getServletContext().getRealPath("\\");
+        final String basepath = getServletContext().getRealPath("/");
         String playListId = "";
         final String dd = df.format(new Date());
         if (mac != null) {
@@ -969,7 +969,7 @@ public class EmployeeAction extends MainAction
             final Map dept = this.deptService.findByMac(mac);
             if (dept != null) {
                 final String id = dept.get("dept_playListId").toString();
-                final String basepath = getServletContext().getRealPath("\\");
+                final String basepath = getServletContext().getRealPath("/");
                 final String m7binpath = String.valueOf(basepath) + "update" + File.separator + id;
                 final File f = new File(String.valueOf(m7binpath) + File.separator + "CONFIG.XML");
                 if (f.exists()) {
@@ -997,7 +997,7 @@ public class EmployeeAction extends MainAction
         String version = request.getParameter("version");
         final String config = request.getParameter("config");
         final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        final String basepath = getServletContext().getRealPath("\\");
+        final String basepath = getServletContext().getRealPath("/");
         String playListId = "";
         final String dd = df.format(new Date());
         List newestClient = this.clientService.getNewest();
@@ -1283,7 +1283,7 @@ public class EmployeeAction extends MainAction
         if ("c".equals(stype)) {
             imgName = request.getParameter("imgName2");
             if (this.img2 != null) {
-                String dstPath = getServletContext().getRealPath("\\");
+                String dstPath = getServletContext().getRealPath("/");
                 dstPath = dstPath.replaceAll("%20", " ");
                 final long curTime = System.currentTimeMillis();
                 final String filename = "upload/" + curTime + Math.round(Math.random() * 100.0) + this.getExtFileName(imgName);
@@ -1298,7 +1298,7 @@ public class EmployeeAction extends MainAction
         }
         else {
             imgName = request.getParameter("imgName");
-            String dstPath = getServletContext().getRealPath("\\");
+            String dstPath = getServletContext().getRealPath("/");
             if (this.img != null) {
                 dstPath = dstPath.replaceAll("%20", " ");
                 final long curTime = System.currentTimeMillis();

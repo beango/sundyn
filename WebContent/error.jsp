@@ -12,7 +12,7 @@
 		<script type="text/javascript" src="js/ddtree.js"></script>
 		<script type="text/javascript" src="js/dojo.js"></script>
 		<script type="text/javascript" src="js/dialog.js"></script>
-		<script type="text/javascript" src="js/my_zh.js"></script>
+		<script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
 	</head>
 	<body>
 		<div id="man_zone">

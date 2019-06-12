@@ -20,7 +20,7 @@
                          onclick="deptEditDialog('<s:text name="sundyn.dept.modifyWindow"/>','${dept.fatherId}')">
                         <s:text name="sundyn.dept.modifyWindow"/></div>
                     <div style="margin-left: 5px;" class="button left"
-                         onclick="counterCfgDialog('窗口参数配置','${dept.name}','${dept.fatherId}','${dept.id}')">窗口参数配置
+                         onclick="counterCfgDialog('<s:text name="main.windowcfg" />','${dept.name}','${dept.fatherId}','${dept.id}')"><s:text name="main.windowcfg" />
                     </div>
                     <c:if test="${sysversion!='cgs' }">
                     <div class="button left" onclick="bindWeburlDialog('<s:text name="sundyn.weburl.bind"/>')"

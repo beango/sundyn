@@ -25,93 +25,6 @@
 </head>
 <body>
 <script type="text/javascript">
-    function chooseMenus(){
-        var menus=document.getElementById("CmenuNames");
-        var retVal=new Array();
-
-        for(var i=0;i<menus.options.length;i++){
-            retVal[i]=menus.options[i].value;
-        }
-        return retVal;
-    }
-    function checkForm(ac){
-        var menus=chooseMenus();
-        $.ajax({url: ac+"&menus="+menus,
-            type: 'GET',
-            dataType:'json',
-            timeout: 20000,
-            success: function(html){
-                dialogAjaxDone(html);
-            }
-        });
-    }
-
-    function moveMenus(){
-        var e1=document.getElementById("menuNames");
-        var e2=document.getElementById("CmenuNames");
-
-        for( var i=0;i<e1.options.length;i++){
-
-            if(e1.options[i].selected){
-                var e=e1.options[i];
-                e2.options.add(new Option(e.text,e.value));
-                e1.remove(i);
-                i--;
-            }
-        }
-    }
-
-    function removeMenus(){
-        var e1=document.getElementById("menuNames");
-        var e2=document.getElementById("CmenuNames");
-        for( var i=0;i<e2.options.length;i++){
-            if(e2.options[i].selected){
-                var e=e2.options[i];
-                e1.options.add(new Option(e.text,e.value));
-                e2.remove(i);
-                i--;
-            }
-        }
-    }
-    function onContextMenu(e,node){
-        e.preventDefault();
-        $(this).tree('select',node.target);
-        if (node){
-            $('#mm').empty();
-            $('#mm').menu('show',{
-                left: e.pageX,
-                top: e.pageY
-            });
-            if(!node.parentId || node.parentId === 0) //如果有子节点，允许添加下级，否则不允许
-                $('#mm').menu('appendItem', {
-                    text: '添加下级',
-                    iconCls: 'icon-add',
-                    onclick: function(){
-                        $('#pp').panel('open').panel('refresh','${ctx}/common/func/addFunc1.htm?pid=' + node.id);
-                    }
-                });
-            $('#mm').menu('appendItem', {
-                text: '删除',
-                iconCls: 'icon-remove',
-                onclick: function(){
-                    $.messager.confirm('删除', '确定删除该功能吗？！', function(r){
-                        if (r){
-                            $.post('${ctx}/common/func/delFunc.htm?keyIndex='+node.id, function(rst){
-                                if (rst === "1"){
-                                    succ("删除成功");
-                                    reloadtree();
-                                }
-                                else{
-                                    succ("删除失败");
-                                }
-                            });
-                        }
-
-                    });
-                }
-            });
-        }
-    }
     function reloadtree(){
         $('#tg').tree("reload");
     }
@@ -125,11 +38,9 @@
             type: "post"
         },
         view: {
-            fontCss: getFont,
             showLine: true,
             expandSpeed: "",
             addHoverDom: addHoverDom,
-            //removeHoverDom: removeHoverDom,
             selectedMulti: false
         },
         edit: {
@@ -358,21 +269,6 @@
         }
     }
 
-    function asyncAll() {
-        if (!check()) {
-            return;
-        }
-        var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
-        if (asyncForAll) {
-
-        } else {
-            asyncNodes(zTree.getNodes());
-            if (!goAsync) {
-                curStatus = "";
-            }
-        }
-    }
-
     //用于捕获异步加载正常结束的事件回调函数
     function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
         curAsyncCount--;
@@ -380,11 +276,6 @@
             curStatus = "";
             if (treeNode != null) asyncForAll = true;
         }
-    }
-
-    //字体设置
-    function getFont(treeId, node) {
-        return node.font ? node.font : {};
     }
 
     //初始化
@@ -413,25 +304,6 @@
         return true;
     }
 
-
-    function expandAll() {
-        if (!check()) {
-            return;
-        }
-        var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
-        if (zTree == null)
-            return false;
-
-        if (asyncForAll) {
-            zTree.expandAll(true);
-        } else {
-            expandNodes(zTree.getNodes());
-            if (!goAsync) {
-                curStatus = "";
-            }
-        }
-    }
-
     //鼠标右键功能
     function onRightClick(event, treeId, treeNode) {
         var x = event.clientX;
@@ -451,7 +323,7 @@
         zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes = zTree.getSelectedNodes();
         if (nodes.length>0){
-            dia.iframe("menuEdit.action?parentid=" + nodes[0].id, {title: '添加菜单', resize: false, h: "600px"});
+            dia.iframe("menuEdit.action?parentid=" + nodes[0].id, {title: '<s:text name="menu.rightaction.add" />', resize: false, h: "600px"});
         }
         return true;
     }
@@ -462,7 +334,7 @@
         zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes = zTree.getSelectedNodes();
         if (nodes.length>0){
-            dia.iframe("menuEdit.action?id=" + nodes[0].id, {title: '修改菜单', resize: false, h: "600px"});
+            dia.iframe("menuEdit.action?id=" + nodes[0].id, {title: '<s:text name="menu.rightaction.edit" />', resize: false, h: "600px"});
         }
         return true;
     }
@@ -474,7 +346,7 @@
         if (nodes.length>0){
         dojo.xhrPost({url:"menuDelPost.action", content:{id:nodes[0].id}, load:function (resp, ioArgs) {
         if(resp.trim()==""){
-        layer.msg('删除成功', {
+        layer.msg('<s:text name="main.delete.succ" />', {
         icon: 1,
         time: 800
         }, function(){
@@ -550,7 +422,7 @@
     }
 </style>
     <div class="place">
-    <span>位置：</span>
+    <span><s:text name="main.placetitle" /></span>
     <ul class="placeul">
     <c:forEach items="${navbar_menuname}" var="menu">
         <li><a href="#">${menu.name}</a></li>
@@ -562,19 +434,19 @@
         <li id="m_add" onclick="addMenu();">
             <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
-                添加菜单
+    <s:text name="menu.rightaction.add" />
             </span>
         </li>
         <li id="m_rename" onclick="editMenu();">
             <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
-                修改菜单
+    <s:text name="menu.rightaction.edit" />
             </span>
         </li>
         <li id="m_del" onclick="delMenu();">
             <i class="fa fa-close fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
-                删除菜单
+    <s:text name="menu.rightaction.delete" />
             </span>
         </li>
     </ul>

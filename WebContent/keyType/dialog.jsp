@@ -1,16 +1,30 @@
+<%@ page import="java.util.Dictionary" %>
+<%@ page import="java.util.Hashtable" %>
+<%@ page import="java.util.HashMap" %>
 <%@ page pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
-
+<%
+    HashMap<String, String> device15 = new HashMap<String, String>();
+    device15.put("width", "2100");
+    device15.put("height", "1200");
+    HashMap<String, String> device10 = new HashMap<String, String>();
+    device10.put("width", "1280");
+    device10.put("height", "800");
+    HashMap<String, String> device7 = new HashMap<String, String>();
+    device7.put("width", "1024");
+    device7.put("height", "600");
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
     <link rel="stylesheet" href="lib/layui/css/layui.css" media="all">
     <script type="text/javascript" src="js/jquery.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <script type="text/javascript" src="js/interact.js"></script>
     <script type="text/javascript" src="js/json2.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
+    <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
     <style>
         * {
@@ -99,12 +113,11 @@
             height:10px;
             background: none;
             color:black;
-
         }
         .content {
             border: 1px solid #ccc;
-            width: 985px;
-            height: 490px;
+            width: 1080px;
+            height: 768px;
             position: relative;
             margin: 0px auto;
         }
@@ -157,10 +170,15 @@
             color: #999;
         }
     </style>
+    <script type="text/javascript">
+        var deviceTypes = {
+            10 : {width: 1024, height: 600}
+        }
+    </script>
 </head>
 <body>
 <div class="place">
-    <span>位置：</span>
+    <span><s:text name="main.placetitle" /></span>
     <ul class="placeul">
         <c:forEach items="${navbar_menuname}" var="menu">
             <li><a href="#">${menu.name}</a></li>
@@ -209,24 +227,27 @@
                             </td>
                         </tr>
                     </c:forEach>
-                </table>
+                </table><input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="keyTypeEditAll()" class="layui-btn"/>（<s:text name="keytype.tips.weightmax" /> 10）
             </td>
+
             <td valign="top">
                 <div style="text-align: left;margin-left:15px;" class="layui-form-item">
                     <div class="layui-form-mid layui-word-aux">
                         <div id="content" class="content">
                         </div>
-                        <div>
-                            字体：<input id="evalSize" type="text" value="30"/>
+                        <div style="margin-top:5px;">
+                            <s:text name="keytype.label.fontsize" /><input id="evalSize" type="text" value="30" style="width:40px;" />
+                            <s:text name="keytype.label.devicesize" /><input id="fbl1" type="text" value="<%=device10.get("width")%>" style="width:40px;" /> x <input id="fbl2" type="text" value="<%=device10.get("height")%>" style="width:40px;" />
+                            <input type="radio" value="15" id="r1" name="rgroup" lay-filter="layfilterrgroup" />15<s:text name="keytype.label.devicesizenut" />（<%=device15.get("width")%>x<%=device15.get("height")%>）
+                            <input type="radio" value="10" id="r2" name="rgroup" lay-filter="layfilterrgroup" checked="checked" />10<s:text name="keytype.label.devicesizenut" />（<%=device10.get("width")%>x<%=device10.get("height")%>）
+                            <input type="radio" value="7" id="r3" name="rgroup" lay-filter="layfilterrgroup" />7<s:text name="keytype.label.devicesizenut" />（<%=device7.get("width")%>x<%=device7.get("height")%>）
+                            （<s:text name="keytype.tips.devicelayout" />）
                         </div>
                     </div>
                 </div>
             </td>
         </tr>
     </table>
-    <div class="layui-input-inline">
-        <img src="<s:text name='sundyn.pic.save' />" onclick="keyTypeEditAll()" class="hand" />（权值最大为10）
-    </div>
 </div>
 
 <script>
@@ -247,6 +268,29 @@
                 $("#e"+id).remove();
             }
         });
+        form.on('radio(layfilterrgroup)', function(data){
+            switch (data.value) {
+                case "15":
+                    $("#fbl1").val("<%=device15.get("width")%>");
+                    $("#fbl2").val("<%=device15.get("height")%>");
+                    break;
+                case "10":
+                    $("#fbl1").val("<%=device10.get("width")%>");
+                    $("#fbl2").val("<%=device10.get("height")%>");
+                    break;
+                case "7":
+                    $("#fbl1").val("<%=device7.get("width")%>");
+                    $("#fbl2").val("<%=device7.get("height")%>");
+                    break;
+            }
+            $("#content").width($("#fbl1").val()).height($("#fbl2").val());
+        });
+        $("#fbl1").bind("change", function () {
+            $("#content").width($("#fbl1").val()).height($("#fbl2").val());
+        })
+        $("#fbl2").bind("change", function () {
+            $("#content").width($("#fbl1").val()).height($("#fbl2").val());
+        })
         //普通图片上传
         evalbutton(1, upload);
         evalbutton(2, upload);
@@ -260,7 +304,7 @@
         $("#evalSize").change(function(){
             if(!reg.test($(this).val()))
             {
-                alert("字体大小必须是正整数！");
+                alert("<s:text name="keytype.valid.intformat" />");
                 return;
             }
             $(".content .draggable div.h4").css("font-size", parseInt($(this).val()));
@@ -284,12 +328,12 @@
                 if(res.rst == "success" && res.path && res.path.length>0){
                     $('#e' + id).css("background-image", "url(" + res.path[0] + ")"); //图片链接（base64）
                     $('#e' + id).attr('data-img', res.path[0].substr(res.path[0].indexOf('/')+1));
-                    return layer.msg('上传成功！');
+                    return layer.msg('<s:text name="main.upload.succ" />');
                 }
                 alert(res.msg);
             }
             ,error: function(){
-                layer.msg('上传失败！');
+                layer.msg('<s:text name="main.upload.fail" />');
             }
         });
     }
@@ -298,9 +342,9 @@
         $('.content').append('<div class="draggable" id="e' + t.id + '" style="width:'+t.width+'px;height:'+t.height+'px;background:'
             + getRandomColor() + ';transform: translate('+t.lx+'px, '+t.ly+'px);" data-x="'+t.lx+'" data-y="'+t.ly+'" data-img="'+t.img+'">\n' +
             '            <div class="h4" style="font-size:'+t.size+'px;">' + t.text + '</div>\n' +
-            '            <p class="lt">左'+t.lx+'上'+t.ly+'px</p>\n' +
-            '            <p class="wh">'+t.width+'\u00D7'+t.height+'px</p>\n' +
-            '            <div class="layui-upload e"><button type="button" class="layui-btn" id="evalbutton'+t.id+'">选择图片</button></div>\n' +
+            '            <p class="lt"><s:text name="main.left"/>'+t.lx+'<s:text name="main.top"/>'+t.ly+'px</p>\n' +
+            '            <p class="wh">'+t.width+'×'+t.height+'px</p>\n' +
+            '            <div class="layui-upload e"><button type="button" class="layui-btn" id="evalbutton'+t.id+'"><s:text name="main.choosepic"/></button></div>\n' +
             '        </div>');
         if (t.img!=null && t.img !=''){
             $("#e" + t.id).css({"background-image": "url(/upload/" + t.img + ")",
@@ -375,8 +419,7 @@
                         drag_s(event);
                         myclose(event);
                     }
-                })
-                .resizable({
+                }).resizable({
                     edges: {left: true, right: true, bottom: true, top: true},
                     restrictEdges: {
                         outer: 'parent',
@@ -386,8 +429,7 @@
                         min: {width: 0, height: 0}
                     },
                     inertia: false
-                })
-                .on('resizemove', function (event) {
+                }).on('resizemove', function (event) {
                     var s = $(event.target);
                     var target = event.target,
                         x = (parseFloat(target.getAttribute('data-x')) || 0),
@@ -438,18 +480,13 @@
 
                     target.style.width = (xr-x) + 'px';
                     target.style.height =(yb-y) + 'px';
-
-                    target.style.webkitTransform = target.style.transform =
-                        'translate(' + x + 'px,' + y + 'px)';
-
+                    target.style.webkitTransform = target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
                     target.setAttribute('data-x', x);
                     target.setAttribute('data-y', y);
                     target.querySelector('p.wh').textContent =(xr-x) + '\u00D7' +(yb-y) + 'px';
                     var textEl = event.target.querySelector('p.lt');
-
                     textEl && (textEl.textContent = position(event));
-                })
-                .on('resizeend', function (event) {
+                }).on('resizeend', function (event) {
                     drag_s(event)
                 });
 
@@ -497,7 +534,7 @@
             }
 
             function position(e) {
-                return '左' + e.target.getAttribute('data-x') + "上" + e.target.getAttribute('data-y') + 'px'
+                return '<s:text name="main.left" />' + e.target.getAttribute('data-x') + "<s:text name="main.top" />" + e.target.getAttribute('data-y') + 'px'
             }
 
             function myclose(event) {
@@ -594,7 +631,7 @@
             }
             if(("," + yess).indexOf(",1,")==-1)
             {
-                alert("至少选择一个评价按键！");
+                alert("<s:text name="keytype.valid.key.notnull" />");
                 return;
             }
             var items = $(".content .draggable");
@@ -611,14 +648,20 @@
                 if (img==null) img = "";
                 data.push({'id': id, 'text': text, 'size':size, 'r': 0, 'g': 0, 'b': 0, 'lx': x, "ly": y, 'x': i, "y": 0, "width": w, "height": h, "img": img});
             }
-            $.post("keyTypeLayoutEdit.action", {data: JSON.stringify(data)},function(result){
-            });
+            var lwidth = $("#fbl1").val();
+            var lheight = $("#fbl2").val();
+            if (lwidth === "<%=device10.get("width")%>" && lheight === "<%=device10.get("height")%>"){
+                lwidth = 0;
+                lheight = 0;
+            }
+            $.post("keyTypeLayoutEdit.action", {lwidth: lwidth, lheight: lheight, data: JSON.stringify(data)});
             $.post("keyTypeEdit.action", {ids:ids, names:names, isJoys:isJoys,yess:yess,ext1s:ext1s},function(resp){
                 succ(resp);
             });
-        }else{
-            alert("权值非法，只能为整数" + (ext1>1));
+        } else {
+            alert("<s:text name="keytype.valid.weight.notint" />");
         }
     }
 </script>
-</body></html>
+</body>
+</html>

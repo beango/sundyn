@@ -66,11 +66,11 @@ public class PlayAction extends MainAction
             final String playTitle = request.getParameter("playTitle");
             String playContent = request.getParameter("playContent");
             if (playTitle.equals("")){
-                this.msg = "资源标题不能为空!";
+                this.msg = this.getText("play.valid.restitle.notnull");
                 return "msg";
             }
             if (playContent.equals("")){
-                this.msg = "资源内容不能为空!";
+                this.msg = this.getText("play.valid.rescontent.notnull");
                 return "msg";
             }
 
@@ -94,7 +94,6 @@ public class PlayAction extends MainAction
             format.setEncoding("gb2312");
             XMLOutputter XMLOut = new XMLOutputter(format);
             XMLOut.output(doc, (OutputStream)new FileOutputStream(String.valueOf(basepath) + "playSource" + File.separator + playSource));
-            logger.info("add生成资源路径：" + String.valueOf(basepath) + "playSource" + File.separator + playSource);
             XMLOut = null;
         }
         if (playTimes == null || playTimes.equals("")) {
@@ -104,11 +103,11 @@ public class PlayAction extends MainAction
         final PlayVo playVo = new PlayVo();
         String playName = request.getParameter("playName");
         if (playName.equals("")){
-            this.msg = "播放名不能为空!";
+            this.msg = this.getText("play.valid.title.notnull");
             return "msg";
         }
         if (playService.existsByName(null, playName)){
-            this.msg = "添加失败:已经存在相同的名称";
+            this.msg = this.getText("play.valid.title.exists");
             return "msg";
         }
 
@@ -144,11 +143,11 @@ public class PlayAction extends MainAction
             final String playTitle = request.getParameter("playTitle");
             String playContent = request.getParameter("playContent");
             if (playTitle.equals("")){
-                this.msg = "资源标题不能为空!";
+                this.msg = this.getText("play.valid.restitle.notnull");
                 return "msg";
             }
             if (playContent.equals("")){
-                this.msg = "资源内容不能为空!";
+                this.msg = this.getText("play.valid.rescontent.notnull");
                 return "msg";
             }
             final String ip = InetAddress.getLocalHost().getHostAddress();
@@ -193,11 +192,11 @@ public class PlayAction extends MainAction
         String playId = request.getParameter("playId");
         String playName = request.getParameter("playName");
         if (playName.equals("")){
-            this.msg = "播放名不能为空!";
+            this.msg = this.getText("play.valid.title.notnull");
             return "msg";
         }
         if (playService.existsByName(playId, playName)){
-            this.msg = "添加失败:已经存在相同的名称";
+            this.msg = this.getText("play.valid.title.exists");
             return "msg";
         }
         playVo.setPlayId(Integer.parseInt(playId));
@@ -302,7 +301,6 @@ public class PlayAction extends MainAction
                     if (!new File(path).exists()) {
                         new File(path).mkdirs();
                     }
-                    logger.info("保存路径: " + path);
                     WordToHtmlUtil.docx(new FileInputStream(dstPath + _docfile), path, "index.html");
                     impPath = new StringBuilder().append(curTime).toString();
                     jo.put("path", new String[]{impPath});

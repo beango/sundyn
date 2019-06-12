@@ -53,7 +53,7 @@ public class AppriesMenu extends Model<AppriesMenu> {
         this.menuName = menuName;
     }
 
-    @Size(min=1,max=30,message="菜单名不能为空")
+    @Size(min=1,max=30,message="{menu.entity.validation.menuname.notnull}")
     @TableField("menuName")
     private String menuName;
 

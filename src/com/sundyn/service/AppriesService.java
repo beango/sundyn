@@ -132,7 +132,6 @@ public class AppriesService extends SuperDao
         int i = getJdbcTemplate().queryForObject(sql, new Object[]{
                 hallno, ywlsh, tt, ttStr, tt, 0
         }, Integer.class);
-        System.out.println("插入取号记录：" + i);
         if (i>0){
             execQueueSP("addTicketRecord", i);
         }

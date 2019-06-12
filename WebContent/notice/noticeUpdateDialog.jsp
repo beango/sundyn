@@ -10,8 +10,7 @@
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
-    <script type="text/javascript" src="lib/layui/layui.all.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
 </head>
 
@@ -28,7 +27,7 @@
             </td>
         </tr>
         <tr >
-            <td align="right"  style="border-color: #e9f5fd;"><s:text name="sundyn.notice.content"/><s:text name='sundyn.colon' /><div style="color:red;">(不能超过4000字)</div></td>
+            <td align="right"  style="border-color: #e9f5fd;"><s:text name="sundyn.notice.content"/><s:text name='sundyn.colon' /><div style="color:red;">(<s:text name="notice.valid.content.length4000" />)</div></td>
             <td align="left"  style="border-color: #e9f5fd;">
                 <textarea name="notice.content"  id="noticeContent" style="height:400px; width:100%;">${notice.content }</textarea>
             </td>
@@ -37,11 +36,44 @@
             <td>
             </td>
             <td>
-                <img src="<s:text name="sundyn.pic.ok" />" onclick="noticUpate();"  style="cursor: pointer;"/>
-                <img src="<s:text name="sundyn.pic.close" />" onclick="closeDialog()" style="cursor: pointer;" />
+                <input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="noticUpate()" class="layui-btn"/>
+                <input type="button" value="<s:text name='main.cancel'/>" class="layui-btn layui-btn-primary" onclick="parent.closeDialog()"/>
             </td>
         </tr>
     </table>
 </div>
+<script type="text/javascript">
+    layui.use('layer', function() {});
+    // 更新通知公告
+    function noticUpate(){
+        var noticeTitle = document.getElementById("noticeTitle").value;
+        var noticeContent = document.getElementById("noticeContent").value;
+        var id = document.getElementById("nid").value;
+        if (!id){
+            lalert("<s:text name="main.systemerror" />");
+            return;
+        }
+        if (noticeTitle.length==0){
+            lalert("<s:text name="notice.valid.title.nonull" />");
+            return;
+        }
+        if (noticeContent.length==0){
+            lalert("<s:text name="notice.valid.content.nonull" />");
+            return;
+        }
+
+        dojo.xhrPost({url:"noticeUpdate.action", content:{title:noticeTitle,content:noticeContent,id:id}, load:function (resp, ioArgs) {
+                if (resp.trim() == "") {
+                    succ('<s:text name="main.save.succ" />', function(){
+                        parent.closeDialog();
+                        parent.refreshTab();
+                    });
+                }
+                else{
+                    error(resp);
+                }
+            }});
+    }
+</script>
 </body>
 </html>

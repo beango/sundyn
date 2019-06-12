@@ -33,11 +33,11 @@ public class WeburlAction extends MainAction
         final String name = request.getParameter("name");
         final String id = request.getParameter("id");
         if (name.equals("")){
-            this.msg = "标题不能为空!";
+            this.msg = this.getText("weburl.valid.title.nonull");
             return "msg";
         }
         if (weburlService.existsByName(id, name)){
-            this.msg = "添加失败:已经存在相同标题的记录";
+            this.msg = this.getText("weburl.valid.title.exists");
             return "msg";
         }
         final String url = request.getParameter("url");
@@ -49,7 +49,7 @@ public class WeburlAction extends MainAction
         if (this.weburlService.addWeburl(this.weburl)) {
             return "msg";
         }
-        this.msg = "添加失败";
+        this.msg = this.getText("main.add.fail");
         return "msg";
     }
 
@@ -84,11 +84,11 @@ public class WeburlAction extends MainAction
         final String id = request.getParameter("id");
 
         if (name.equals("")){
-            this.msg = "标题不能为空!";
+            this.msg = this.getText("weburl.valid.title.nonull");
             return "msg";
         }
         if (weburlService.existsByName(id, name)){
-            this.msg = "添加失败:已经存在相同标题的记录";
+            this.msg = this.getText("weburl.valid.title.exists");
             return "msg";
         }
         if (this.weburl == null) {

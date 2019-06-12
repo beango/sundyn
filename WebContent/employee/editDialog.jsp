@@ -21,7 +21,7 @@
             <img src="${m.picture}" id="img123" style="width: 250px;height: 280px;" border="0" />
             <div class="layui-upload">
                 <input type="hidden" name="imgName" id="imgName" value="${m.picture }" />
-                <button type="button" class="layui-btn" id="test1">选择图片</button>
+                <button type="button" class="layui-btn" id="test1"><s:text name="main.choosepic" /></button>
                 <%--<div class="layui-upload-list">
                     <img style="width: 140px;height: 147px;" class="layui-upload-img" name="img123" id="img123" value="${m.picture }">
                     <p id="demoText"></p>
@@ -114,8 +114,8 @@
         <tr>
             <td colspan="3" align="center">
                 <div class="bottom">
-                    <img src="<s:text name='sundyn.pic.ok' />"   onclick="employeeEdit()"  class="hand" />
-                    <img src="<s:text name='sundyn.pic.close' />" onclick="parent.closeDialog()"	 class="hand" />
+                    <input type="button" class="layui-btn" value="<s:text name="main.save" />" onclick="employeeEdit()" />
+                    <input type="button" class="layui-btn" value="<s:text name="main.cancel" />" onclick="parent.closeDialog()" />
                 </div>
             </td>
         </tr>
@@ -143,12 +143,12 @@
                     if(res.rst == "success" && res.path && res.path.length>0){
                         $('#imgName').val(res.path[0]); //图片链接（base64）
                         $('#img123').attr('src', res.path[0]);
-                        return layer.msg('上传成功！');
+                        return layer.msg('<s:text name="main.upload.succ" />');
                     }
                     alert(res.msg);
                 }
                 ,error: function(){
-                    layer.msg('上传失败！');
+                    layer.msg('<s:text name="main.upload.fail" />');
                 }
             });
         });

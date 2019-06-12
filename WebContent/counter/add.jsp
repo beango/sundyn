@@ -174,7 +174,7 @@ request.setAttribute("qs_deptid", qs_deptid);
     <div class="layui-form-item">
         <label class="layui-form-label"></label>
         <div class="layui-input-inline">
-            <input type="button" class="layui-btn" value="提交" onclick="formPost()" />
+            <input type="button" class="layui-btn" value="<s:text name="main.save" />" onclick="formPost()" />
         </div>
     </div>
 </form>

@@ -23,7 +23,7 @@
            cellspacing="0" style="border-color: #e9f5fd;">
         <tr>
             <td style="border-color: #e9f5fd;" width="32%" align="right">
-                菜单名<s:text name="sundyn.colon" />
+                <s:text name="menu.form.label.name" />
             </td>
             <td width="68%" align="left" style="border-color: #e9f5fd;">
                 <input name="menuName" id="menuName" class="input_comm" value="${model.menuName}"/>
@@ -31,7 +31,7 @@
         </tr>
         <tr>
             <td style="border-color: #e9f5fd;" align="right">
-                菜单地址<s:text name="sundyn.colon" />
+                <s:text name="menu.form.label.nav" />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
                 <input name="nav1" id="nav1" class="input_comm" style="width:280px;" value="${model.nav}"/>
@@ -39,7 +39,7 @@
         </tr>
         <tr>
             <td style="border-color: #e9f5fd;" align="right">
-                父级<s:text name="sundyn.colon" />
+                <s:text name="menu.form.label.parent" />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
                 <input type="hidden" name="parentId" id="parentId" class="input_comm" value="${model!=null?model.parentId:parentModel.id}"/>
@@ -48,31 +48,31 @@
         </tr>
         <tr>
             <td align="right">
-                是否警员功能<s:text name="sundyn.colon" />
+                <s:text name="menu.form.label.isjy" />
             </td>
             <td>
-                <input type="checkbox" name="isjy" id="isjy" lay-skin="switch" lay-text="是|否" value="1" />
+                <input type="checkbox" name="isjy" id="isjy" lay-skin="switch" lay-text="<s:text name="main.yes" />|<s:text name="main.no" />" value="1" />
             </td>
         </tr>
         <tr>
             <td align="right">
-                是否非常规业务<s:text name="sundyn.colon" />
+                <s:text name="menu.form.label.isgeneral" />
             </td>
             <td>
-                <input type="checkbox" name="isnotgeneral" id="isnotgeneral" lay-skin="switch" lay-text="是|否" value="1" />
+                <input type="checkbox" name="isnotgeneral" id="isnotgeneral" lay-skin="switch" lay-text="<s:text name="main.yes" />|<s:text name="main.no" />" value="1" />
             </td>
         </tr>
         <tr>
             <td align="right">
-                是否核心业务<s:text name="sundyn.colon" />
+                <s:text name="menu.form.label.iscore" />
             </td>
             <td>
-                <input type="checkbox" name="iscore" id="iscore" lay-skin="switch" lay-text="是|否" value="1" />
+                <input type="checkbox" name="iscore" id="iscore" lay-skin="switch" lay-text="<s:text name="main.yes" />|<s:text name="main.no" />" value="1" />
             </td>
         </tr>
         <tr>
             <td style="border-color: #e9f5fd;" align="right">
-                排序<s:text name="sundyn.colon" />
+                <s:text name="menu.form.label.order" />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
                 <input name="menuorder" id="menuorder" class="input_comm" value="${model.menuorder}"/>
@@ -80,7 +80,7 @@
         </tr>
         <tr>
             <td style="border-color: #e9f5fd;" align="right">
-                权限<s:text name="sundyn.colon" />
+                <s:text name="menu.form.label.auth" />
             </td>
             <td align="left" style="border-color: #e9f5fd;">
                 <ul id="zTreeMenuContent" class="ztree"></ul>
@@ -90,10 +90,8 @@
         <tr>
             <td></td>
             <td>
-                <img src="<s:text name='sundyn.pic.ok' />"  onclick="post()"
-                     class="hand" />
-                <img src="<s:text name='sundyn.pic.close' />"  onclick="closeDialog()"
-                class="hand">
+    <input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="post()" class="layui-btn"/>
+    <input type="button" value="<s:text name='main.cancel'/>" class="layui-btn layui-btn-primary" onclick="parent.closeDialog()"/>
             </td>
         </tr>
     </table>
@@ -133,20 +131,13 @@ layui.use('form', function(){
         dojo.xhrPost({url:"menuEditPost.action", content:{id:id, menuName:menuName, nav:nav, parentId:parentId,
             menuorder:menuorder, funccode: v, iscore:iscore, isjy:isjy, isnotgeneral:isnotgeneral}, load:function (resp, ioArgs) {
                 if(resp.trim()==""){
-                    layer.msg('修改成功', {
-                        icon: 1,
-                        time: 800
-                    }, function(){
+                    succ('<s:text name="main.save.succ" />', function(){
                         parent.closeDialog();
                         parent.refreshTab();
                     });
                 }
                 else{
-                    layer.msg(resp, {
-                        icon: 2,
-                        time: 800
-                    }, function(){
-                    });
+                    error(resp);
                 }
             }});
     }

@@ -39,7 +39,7 @@
 </head>
 <body class="layui-main" style="width:100%;">
 <div class="place">
-    <span>位置：</span>
+    <span><s:text name="main.placetitle" /></span>
     <ul class="placeul">
         <c:forEach items="${navbar_menuname}" var="menu">
             <li><a href="#">${menu.name}</a></li>
@@ -56,12 +56,12 @@
 <div class="layui-select-cus layui-inline">
     <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.total.startDate'/></label>
     <input type="text" id="startDate" class="scinput" <s:text name="sundyn.language.calendar.setDay"/>
-           onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+           onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})"/>
 </div>
 <div class="layui-select-cus layui-inline">
     <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.total.endDate'/></label>
     <input type="text" id="endDate" class="scinput" <s:text name="sundyn.language.calendar.setDay"/>
-           onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+           onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})"/>
 </div>
 <div class="layui-select-cus layui-inline">
     <label class="layui-form-label" style="width:60px;"><s:text name='sundyn.analyse.by'/></label>

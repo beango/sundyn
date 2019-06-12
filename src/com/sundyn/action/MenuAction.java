@@ -69,7 +69,7 @@ public class MenuAction extends MainAction {
 
         JSONObject jroot = new JSONObject();
         jroot.put("id", "");
-        jroot.put("name", "顶级菜单");
+        jroot.put("name", this.getText("menu.root.name"));
         jroot.put("parentId", "0");
         jroot.put("open", true);
         jroot.put("level", 1);
@@ -159,7 +159,7 @@ public class MenuAction extends MainAction {
             menu  = appriesMenuService.selectById(id);
             if (menu==null)
             {
-                errmsg = "系统错误";
+                errmsg = this.getText("main.systemerror");
                 request.setAttribute("msg", errmsg);
                 return "success";
             }
@@ -186,7 +186,7 @@ public class MenuAction extends MainAction {
                 menu.setFuncCode(f.getFuncCode());
             }
 
-            ValidateUtil.validate(menu);
+            ValidateUtil.validate(menu, this.getLocale());
         } catch (Exception e) {
             errmsg = e.getMessage();
             request.setAttribute("msg", errmsg);

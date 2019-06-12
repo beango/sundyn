@@ -60,7 +60,7 @@
 </head>
 <body>
 <div class="place">
-    <span>位置：</span>
+    <span><s:text name="main.placetitle" /></span>
     <ul class="placeul">
         <c:forEach items="${navbar_menuname}" var="menu">
             <li><a href="#">${menu.name}</a></li>
@@ -72,6 +72,7 @@
         <ul class="layui-tab-title">
             <li class="layui-this">参数配置</li>
             <li>接口地址</li>
+            <li>短信模板</li>
             <li>安全参数</li>
             <li>审计参数</li>
         </ul>
@@ -103,9 +104,20 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label" style="width:120px;">${dictinfo.dictname}：</label>
                         <div class="layui-input-inline">
-                            <input isdict="true" dictid="${dictinfo.id}" dictname="${dictinfo.dictname}" type="input" name="${dictinfo.dictkey}" value="${dictinfo.dictvalue}" dictgroup="dictinfos_inte" class="scinput" style="width:300px;">
+                            <input isdict="true" dictid="${dictinfo.id}" dictname="${dictinfo.dictname}" type="input" name="${dictinfo.dictkey}" value="${dictinfo.dictvalue}" dictgroup="dictinfos_inte" class="scinput" style="width:300px;" />
                         </div>
                         <div class="layui-form-mid layui-word-aux">${dictinfo.note}</div>
+                    </div>
+                </c:forEach>
+            </div>
+            <div class="layui-tab-item">
+                <c:forEach items="${dictinfos_sms}" var="dictinfo">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width:120px;">${dictinfo.dictname}：</label>
+                        <div class="layui-input-inline" style="width:600px; height:100px;">
+                            <textarea isdict="true" dictid="${dictinfo.id}" dictname="${dictinfo.dictname}" type="input" name="${dictinfo.dictkey}" dictgroup="dictinfos_inte" class="scinput" style="width:600px; height:100px;">${dictinfo.dictvalue}</textarea>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux" style="width:300px;">${dictinfo.note}</div>
                     </div>
                 </c:forEach>
             </div>
@@ -137,7 +149,7 @@
     <div style="clear: both;">
         <input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="save()"
                class="layui-btn"/>
-        <input type="button" value="重置" class="layui-btn layui-btn-primary" onclick="refreshTab()"/>
+        <input type="button" value="<s:text name='main.reset'/>" class="layui-btn layui-btn-primary" onclick="refreshTab()"/>
     </div>
 </div>
 <div id="dialog" style="width: 700px; display: none;"></div>
@@ -149,7 +161,7 @@
     });
 
     function save(){
-        var inputs = $(".layui-form").find("input");
+        var inputs = $(".layui-form").find("input,textarea");
         var postdata = [];
         for (var i=0; i<inputs.length; i++){
             if ($(inputs[i]).attr("isdict")){

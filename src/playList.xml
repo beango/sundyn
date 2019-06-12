@@ -114,6 +114,7 @@
 		<action name="playListConfigDialogAndroid" class="playListAction"
 			method="playListConfigDialogAndroid">
 			<result name="success">/playList/configDialogAndroid.jsp</result>
+            <result name="input">/playList/msg.jsp</result>
 		</action>
 		<action name="playListConfigSave" class="playListAction"
 			method="playListConfigSave">

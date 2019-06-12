@@ -10,8 +10,7 @@
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
-    <script type="text/javascript" src="lib/layui/layui.all.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
 </head>
 
@@ -29,7 +28,7 @@
         </tr>
         <tr >
             <td align="right"  style="border-color: #e9f5fd;"><s:text name="sundyn.notice.content"/><s:text name='sundyn.colon' />
-                <div style="color:red;">(不能超过4000字)</div>
+                <div style="color:red;">(<s:text name="notice.valid.content.length4000" />)</div>
             </td>
             <td align="left"  style="border-color: #e9f5fd;">
                 <textarea name="notice.content"  id="noticeContent"  style="height:400px; width:100%;"></textarea>
@@ -38,10 +37,38 @@
         <tr>
             <td></td>
             <td>
-                <img src="<s:text name="sundyn.pic.ok" />" onclick="noticAdd();"  style="cursor: pointer;"/>
-                <img src="<s:text name="sundyn.pic.close" />"  onclick="closeDialog()"   style="cursor: pointer;" />
+                <input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="noticAdd()" class="layui-btn"/>
+                <input type="button" value="<s:text name='main.cancel'/>" class="layui-btn layui-btn-primary" onclick="parent.closeDialog()"/>
             </td>
         </tr>
     </table>
+</div>
+<script type="text/javascript">
+    layui.use("layer")
+    // 添加 通知公告
+    function noticAdd(){
+        var noticeTitle = document.getElementById("noticeTitle").value;
+        var noticeContent = document.getElementById("noticeContent").value;
+        if (noticeTitle.length==0){
+            lalert("<s:text name="notice.valid.title.nonull" />");
+            return;
+        }
+        if (noticeContent.length==0){
+            lalert("<s:text name="notice.valid.content.nonull" />");
+            return;
+        }
+        dojo.xhrPost({url:"noticeAdd.action", content:{title:noticeTitle,content:noticeContent}, load:function (resp, ioArgs) {
+                if (resp.trim() == "") {
+                    succ('<s:text name="main.add.succ" />', function(){
+                        parent.closeDialog();
+                        parent.refreshTab();
+                    });
+                }
+                else{
+                    error(resp);
+                }
+            }});
+    }
+</script>
 </body>
 </html>

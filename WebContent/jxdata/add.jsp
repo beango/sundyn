@@ -19,9 +19,7 @@
         }
     </style>
     <script type="text/javascript" src="${ctx}/js/jquery.js"></script>
-    <script type="text/javascript" src="lib/jquery.form.min.js"></script>
-    <script type="text/javascript" src="lib/layer/layer.js"></script>
-    <script type="text/javascript" src="lib/layui/layui.all.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
     <script type="text/javascript" src="lib/util/deptselutil.js?1"></script>
@@ -29,25 +27,17 @@
     <script type="text/javascript">
         function formPost(){
             $("#hallid").val($("#hallsele").val());
-            $('form').ajaxForm({
-                beforeSubmit: validate,    // 提交前，验证
+            $.ajax({
+                url: "jxDataPost.action",
+                data : $("form").serialize(),
                 success: function(resp) {
                     if(resp.trim()==""){
-
-                        layer.msg('修改成功', {
-                            icon: 1,
-                            time: 800
-                        }, function(){
-                            //parent.closeDialog();
+                        succ('<s:text name="main.delete.succ" />', function(){
                             parent.refreshTab();
                         });
                     }
                     else{
-                        layer.msg(resp, {
-                            icon: 2,
-                            time: 1200
-                        }, function(){
-                        });
+                        error(resp);
                     }
                 }
             });
@@ -91,42 +81,42 @@
 <form class="layui-form" action="jxDataPost.action" method="post" lay-filter="form">
     <input type="hidden" name="id" id="id" value="${entity.id}" />
     <div class="layui-form-item">
-        <label class="layui-form-label">工号/姓名：</label>
+        <label class="layui-form-label"><s:text name="jx.query.search.name" /></label>
         <div class="layui-input-inline">
             <input type="text" name="enostr" id="enostr" class="layui-input" value="${entity.ename}${entity==null?"":"/"}${entity.eno}"/>
             <input type="hidden" name="eno" id="eno" value="${entity.eno}"/>
             <input type="hidden" name="deptid" id="deptid" value="${entity.deptid}"/>
         </div>
-        <div class="layui-form-mid layui-word-aux"><input type="button" class="layui-btn layui-btn-xs layui-btn-normal" value="查找" onclick="findEmployee()" /></div>
+        <div class="layui-form-mid layui-word-aux"><input type="button" class="layui-btn layui-btn-xs layui-btn-normal" value="<s:text name="main.query" />" onclick="findEmployee()" /></div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">考核月份：</label>
+        <label class="layui-form-label"><s:text name="jx.column.month"/></label>
         <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="servicedate" name="servicedate" value="${entity.servicedate}" onClick="WdatePicker({dateFmt:'yyyy-MM'})"/>
+            <input type="text" class="layui-input" id="servicedate" name="servicedate" value="${entity.servicedate}" onClick="WdatePicker({dateFmt:'yyyy-MM',lang:'${locale}'})"/>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">月度考勤：</label>
+        <label class="layui-form-label"><s:text name="jx.column.monthkq"/></label>
         <div class="layui-inline">
             <input type="text" name="ykq" id="ykq" class="layui-input" value="${entity.ykq}" />
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">群众表扬：</label>
+        <label class="layui-form-label"><s:text name="jx.column.qzby"/></label>
         <div class="layui-inline">
             <input type="text" name="qzby" id="qzby" class="layui-input" value="${entity.qzby}" />
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">日常巡查：</label>
+        <label class="layui-form-label"><s:text name="jx.column.rcxc"/></label>
         <div class="layui-inline">
             <input type="text" name="rcxc" id="rcxc" class="layui-input" value="${entity.rcxc}" />
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">一票否决：</label>
+        <label class="layui-form-label"><s:text name="jx.column.ypfj"/></label>
         <div class="layui-input-inline" style="width:80%;">
-            <input type="checkbox" lay-skin="switch" lay-text="启用|禁用" lay-filter="ypfjset"
+            <input type="checkbox" lay-skin="switch" lay-text="<s:text name="main.radio.enable"/>|<s:text name="main.radio.disable"/>" lay-filter="ypfjset"
                    name="ypfjset" value="on" id="ypfjset" />
                 <div style="display:none;" id="ypfjcontainer">
                     <c:forEach items="${ypfjGroup}" var="item" varStatus="index">
@@ -139,10 +129,9 @@
     <div class="layui-form-item">
         <label class="layui-form-label"></label>
         <div class="layui-input-inline">
-            <input type="submit" class="layui-btn" value="提交" onclick="formPost()" />
+            <input type="button" class="layui-btn" value="<s:text name="main.save"/>" onclick="formPost()" />
         </div>
     </div>
-
     <div id="treeContent" class="menuContent" style="position: absolute; display:none;">
         <ul id="treeDept" class="ztree" style="margin-top:0; width:380px; height: 300px;"></ul>
     </div>

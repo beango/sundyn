@@ -34,15 +34,20 @@
                 <c:if test="${dept.deptType==0}"><s:text name="sundyn.dept.xxWindow" /></c:if>
             </div>
         </div>
-        <c:if test="${dept.deptType==0 }">
+        <c:choose>
+        <c:when test="${dept.deptType==0 }">
             <div class="layui-form-item">
                 <label class="layui-form-label" style="width:130px;"><s:text name="sundyn.guide.deviceInfo" /></label>
                 <div class="layui-input-inline">
                     <input type="text" name="reMark" class="layui-input" id="reMark" value="${dept.remark}" onblur="macCheck(this.value)" style="width: 200px;"/>
                 </div>
-                <div class="layui-form-mid layui-word-aux">(<s:text name="sundyn.dept.demoOrMac" />，必须唯一不能重复)</div>
+                <div class="layui-form-mid layui-word-aux">(<s:text name="sundyn.dept.demoOrMac" />)</div>
             </div>
-        </c:if>
+        </c:when>
+            <c:otherwise>
+                <input type="hidden" id="reMark" name="reMark" value="${dept.remark}"/>
+            </c:otherwise>
+        </c:choose>
         <c:if test="${dept.deptType==0}">
             <c:if test="${bind == 'true'}">
                 <div class="layui-form-item">
@@ -138,7 +143,7 @@
         </div>
         <c:if test="${dept.deptType!=2 }">
             <div class="layui-form-item">
-                <label class="layui-form-label" style="width:130px;">上级:</label>
+                <label class="layui-form-label" style="width:130px;"><s:text name="main.parent" /></label>
                 <div class="layui-input-inline">
                         ${parentobj.name}<input type="hidden" id="fatherid" name="fatherid" value="${parentobj.id}" />
                     <%--<ul id="treeDept" class="ztree"></ul>--%>
@@ -156,8 +161,8 @@
         <div class="layui-form-item">
             <label class="layui-form-label" style="width:130px;"></label>
             <div class="layui-input-inline">
-                <button class="layui-btn" id="ok123" onclick="deptEditItem(<%=request.getParameter("deptId")%>)">保存</button>
-                <button class="layui-btn layui-btn-primary" onclick="parent.closeDialog()">取消</button></div>
+                <button class="layui-btn" id="ok123" onclick="deptEditItem(<%=request.getParameter("deptId")%>)"><s:text name="main.save" /></button>
+                <button class="layui-btn layui-btn-primary" onclick="parent.closeDialog()"><s:text name="main.cancel" /></button></div>
         </div>
     </div>
 

@@ -21,7 +21,7 @@
 </head>
 <body>
 <div class="place">
-    <span>位置：</span>
+    <span><s:text name="main.placetitle" /></span>
     <ul class="placeul">
         <c:forEach items="${navbar_menuname}" var="menu">
             <li><a href="#">${menu.name}</a></li>
@@ -539,7 +539,7 @@
         zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes = zTree.getSelectedNodes();
         if (nodes.length>0){
-            dia.iframe("authEdit.action?parentid=" + nodes[0].id, {title: '添加', resize: false, h: "300px"});
+            dia.iframe("authEdit.action?parentid=" + nodes[0].id, {title: '<s:text name="auth.rightaction.add" />', resize: false, h: "300px"});
         }
         return true;
     }
@@ -550,7 +550,7 @@
         zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
         var nodes = zTree.getSelectedNodes();
         if (nodes.length>0){
-            dia.iframe("authEdit.action?id=" + nodes[0].id, {title: '修改', resize: false, h: "300px"});
+            dia.iframe("authEdit.action?id=" + nodes[0].id, {title: '<s:text name="auth.rightaction.edit" />', resize: false, h: "300px"});
         }
         return true;
     }
@@ -562,19 +562,12 @@
         if (nodes.length>0){
             dojo.xhrPost({url:"authDelPost.action", content:{id:nodes[0].id}, load:function (resp, ioArgs) {
                     if(resp.trim()==""){
-                        layer.msg('删除成功', {
-                            icon: 1,
-                            time: 800
-                        }, function(){
+                        succ('<s:text name="main.delete.succ" />', function(){
                             refreshTab();
                         });
                     }
                     else{
-                        layer.msg(resp, {
-                            icon: 2,
-                            time: 800
-                        }, function(){
-                        });
+                        error(resp);
                     }
                 }});
         }
@@ -660,19 +653,19 @@
         <li id="m_add" onclick="addAuth();">
             <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
-                添加
+                <s:text name="auth.rightaction.add" />
             </span>
         </li>
         <li id="m_rename" onclick="editAuth();">
             <i class="fa fa-edit fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
-                修改
+                <s:text name="auth.rightaction.edit" />
             </span>
         </li>
         <li id="m_del" onclick="delAuth();">
             <i class="fa fa-close fa-lg" aria-hidden="true"></i>
             <span style="color:#1681ff;">
-                删除
+                <s:text name="auth.rightaction.delete" />
             </span>
         </li>
     </ul>

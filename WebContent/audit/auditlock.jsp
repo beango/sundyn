@@ -24,10 +24,10 @@
     }
 
     function unlock(id){
-        lconfirm("确认要解锁吗?", function(index){
+        lconfirm("<s:text name="audit.action.unlock.confirm" />", function(index){
             lsubmit("auditunlock.action?id=" + id, null,function(resp){
                 if(resp.succ){
-                    succ("解锁成功");
+                    succ("<s:text name="audit.action.unlock.succ" />");
                     refreshTab();
                 }
                 else{
@@ -38,7 +38,7 @@
     }
 </script>
 <div class="place">
-    <span>位置：</span>
+    <span><s:text name="main.placetitle" /></span>
     <ul class="placeul">
         <c:forEach items="${navbar_menuname}" var="menu">
             <li><a href="#">${menu.name}</a></li>
@@ -72,28 +72,29 @@
         <table class="tablelist" lay-filter="tbl" id="demo">
             <thead>
             <tr>
-                <th>序号 </th>
+                <th><s:text name="main.column.seq"/></th>
                 <th>
-                    锁定对象
+                    <s:text name="audit.column.lockobj"/>
                 </th>
                 <th>
-                    所属部门
+                    <s:text name="audit.column.dept"/>
                 </th>
                 <th>
-                    状态
+                    <s:text name="audit.column.status"/>
                 </th>
                 <th>
-                    锁定类型
+                    <s:text name="audit.column.locktype"/>
                 </th>
                 <th>
-                    锁定时间
+                    <s:text name="audit.column.locktime"/>
                 </th>
                 <th>
-                    解锁时间
+                    <s:text name="audit.column.unlocktime"/>
                 </th>
                 <th>
-                    解锁人
+                    <s:text name="audit.column.unlockuser"/>
                 </th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -111,8 +112,8 @@
                                 ${data.deptname}
                         </td>
                         <td>
-                            <c:if test="${data.status==0 || data.unlocktime < now}">未锁定</c:if>
-                            <c:if test="${data.status==1 && data.unlocktime > now}"><button class="layui-btn layui-btn-danger layui-btn-xs">已锁定</button>
+                            <c:if test="${data.status==0 || data.unlocktime < now}"><s:text name="audit.enum.locktype.unlocked"/></c:if>
+                            <c:if test="${data.status==1 && data.unlocktime > now}"><button class="layui-btn layui-btn-danger layui-btn-xs"><s:text name="audit.enum.locktype.locked"/></button>
                             </c:if>
                         </td>
                         <td>${data.locktype}</td>
@@ -124,13 +125,13 @@
                         </td>
                         <td>
                             <c:if test="${data.status==0 || data.unlocktime < now}">
-                                ${data.unlockuser!=null?data.unlockusername:"自动解锁"}
+                                ${data.unlockuser!=null?data.unlockusername:'<s:text name="audit.enum.locktype.autolocked"/>'}
                             </c:if>
 
                         </td>
                         <td>
                             <c:if test="${data.status==1 && data.unlocktime > now}">
-                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();unlock('${data.id}');"><i class="layui-icon layui-icon-edit"></i>解锁</a>
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();unlock('${data.id}');"><i class="layui-icon layui-icon-edit"></i><s:text name="audit.action.unlock" /></a>
                             </c:if>
                         </td>
                     </tr>
@@ -138,18 +139,12 @@
             </c:if>
             </tbody>
         </table>
-        <div id="pp"></div>
     </div>
-</div>
-<div id="treeContent" class="menuContent" style="display:none; position: absolute;">
-    <ul id="treeDept" class="ztree" style="margin-top:0; width:380px; height: 300px;"></ul>
 </div>
 </body>
 <script type="text/javascript">
     initPager(${queryData.getTotal()}, <%=request.getParameter("currentPage")==null?1:request.getParameter("currentPage")%>,<%=request.getParameter("pageSize")==null?20:request.getParameter("pageSize")%>);
 
-    layui.use(['form', 'element'], function() {
-        var form = layui.form;
-    });
+    layui.use(['form', 'element']);
 </script>
 </html>

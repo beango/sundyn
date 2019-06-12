@@ -46,7 +46,7 @@ public class CookieUtils {
                         String password = split[1];
                         System.out.println("username:" + username + " -- password:" + password);
                         String[] rst = new String[1];
-                        Map user = managerService.findManageBy(username, password,rst);
+                        Map user = managerService.findManageBy(username, password, rst);
                         if(user == null){
                             if (rst!=null && rst.length==1)
                                 System.out.println("Cookie初始化用户登录信息失败：" + rst[0]);

@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="css/common_<s:text name='sundyn.language' />.css" type="text/css" />
         <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
 
+        <script type="text/javascript" src="js/dojo.js"></script>
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/dialog.js"></script>
         <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
@@ -17,7 +18,7 @@
 	</head>
 	<body>
     <div class="place">
-        <span>位置：</span>
+        <span><s:text name="main.placetitle" /></span>
         <ul class="placeul">
             <c:forEach items="${navbar_menuname}" var="menu">
                 <li><a href="#">${menu.name}</a></li>
@@ -31,8 +32,8 @@
                     <tr>
                         <td style="border-color:#FFFFFF;" align="left">
                             <input name="keyword" id="keyword" class="input_comm" value="<%=request.getParameter("keyword")==null?"":request.getParameter("keyword")%>" />
-                            <img src="<s:text name='sundyn.pic.query' />" width="55" height="25" onclick="playListQueryAjaxAndroid()" class="hand"/>
-                            <img src="<s:text name='sundyn.pic.add' />" width="63" height="25" onclick="playListAddDialogAndroid('<s:text name="sundyn.playList.addTitle" />')" class="hand"/>
+                            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="playListQueryAjaxAndroid()" value="<s:text name="main.query" />">
+                            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="playListAddDialogAndroid('<s:text name="sundyn.playList.addTitle" />')" value="<s:text name="main.add" />">
                         </td>
                     </tr>
                 </table>
@@ -55,7 +56,7 @@
                             <a href="javascript:playListEditDialogAndroid(${playList.playListId},'<s:text name='sundyn.playList.editTitle' />');"><s:text name='sundyn.playList.editTitle' /></a><s:text name="sundyn.separator"/>
                             <a href="#" onclick="javascript:playListDelAndroid(${playList.playListId});"><s:text name='sundyn.del' /></a><s:text name="sundyn.separator"/>
                             <%--<a href="javascript:playListUpdateDialogAndroid(${playList.playListId},'<s:text name='sudnyn.playList.updateM7' />');"><s:text name='sudnyn.playList.updateM7' /></a><s:text name="sundyn.separator"/>--%>
-                            <a href="javascript:playListConfigDialogAndroid(${playList.playListId},'<s:text name='sudnyn.playList.editConfigFile' />');"><s:text name="sudnyn.playList.editConfigFile"></s:text></a>
+                            <a href="javascript:playListConfigDialogAndroid('${playList.playListId}','<s:text name="sudnyn.playList.editConfigFile" />');"><s:text name="sudnyn.playList.editConfigFile"></s:text></a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -66,5 +67,40 @@
     <script type="text/javascript">
         layui.use('layer', function() {});
         initPager(${pager.getRowsCount()}, ${pager.getCurrentPage()},${pager.getPageSize()});
+
+        // 播放列表查询 Android
+        function playListQueryAjaxAndroid() {
+            var keyword = document.getElementById("keyword").value;
+            refreshTab({keyword:keyword});
+        }
+
+        // 播放列表 添加对话框 android
+        function playListAddDialogAndroid(title) {
+            new dialog().iframe("playListAddDialogAndroid.action",{title: title, resize:false, w:"460px", h:"340px"});
+        }
+        // 播放列表修改Android
+        function playListEditDialogAndroid(playListId, title) {
+            new dialog().iframe("playListEditDialogAndroid.action?playListId="+playListId, {title: title});
+        }
+
+        // 播放列表删除Android
+        function playListDelAndroid(data) {
+            if(data == 1){
+                lalert("<s:text name="playlist.delete.defnot" />");
+                return false;
+            }
+
+            lconfirm("<s:text name="main.delete.confirm" />", function () {
+                dojo.xhrPost({url:"playListDelAndroid.action", content:{playListId:data}, load:function (resp, ioArgs) {
+                        succ(resp, function(){
+                            playListQueryAjaxAndroid();
+                        });
+                    }});
+            })
+        }
+        // 配置m7 Config.xml 文件 Android
+        function playListConfigDialogAndroid(data, title){
+            new dialog().iframe("playListConfigDialogAndroid.action?playListId="+data, {title: title});
+        }
     </script>
 </html>

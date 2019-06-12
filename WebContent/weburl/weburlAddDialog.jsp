@@ -10,14 +10,15 @@
 
     <script type="text/javascript" src="js/dojo.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
-    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
+    <script type="text/javascript">global_language='${locale}'</script>
     <!-- 配置文件 -->
     <script type="text/javascript" src="js/ueditor/ueditor.config.js"></script>
     <!-- 编辑器源码文件 -->
-    <script type="text/javascript" src="js/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="js/ueditor/ueditor.all.js"></script>
 </head>
 
 <body>
@@ -41,13 +42,30 @@
         </tr>
         <tr>
             <td colspan="2" style="text-align:center;padding-top:10px;">
-                <img src="<s:text name='sundyn.pic.ok' />" onclick="weburlAdd();" class="hand" />
-                <img src="<s:text name='sundyn.pic.close' />" onclick="parent.closeDialog();" class="hand">
+                <input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="weburlAdd()" class="layui-btn"/>
+                <input type="button" value="<s:text name='main.cancel'/>" class="layui-btn layui-btn-primary" onclick="parent.closeDialog()"/>
         </td></tr>
     </table>
 </div>
 <script type="text/javascript">
     UE.getEditor('weburl');
+    layui.use("layer")
+    // 添加信息查询
+    function weburlAdd(){
+        var ue = UE.getEditor('weburl');
+        var webname = document.getElementById("webname").value;
+        var weburl = ue.getContent();//document.getElementById("weburl").value;
+        dojo.xhrPost({url:"weburlAdd.action", content:{name:webname,url:weburl}, load:function (resp, ioArgs) {
+                if (resp.trim() == "") {
+                    lalert('<s:text name="main.save.succ" />');
+                    parent.closeDialog();
+                    parent.refreshTab();
+                }
+                else{
+                    lalert(resp);
+                }
+            }});
+    }
 </script>
 </body>
 </html>

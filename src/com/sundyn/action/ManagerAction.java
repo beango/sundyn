@@ -2,7 +2,10 @@ package com.sundyn.action;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.sundyn.entity.*;
+import com.sundyn.entity.AppriesManagerpower;
+import com.sundyn.entity.AuditLock;
+import com.sundyn.entity.AuditLog;
+import com.sundyn.entity.SysDictinfo;
 import com.sundyn.listener.ActiveSessionsListener;
 import com.sundyn.service.*;
 import com.sundyn.util.CookieUtils;
@@ -11,6 +14,8 @@ import com.sundyn.util.Mysql;
 import com.sundyn.util.Pager;
 import com.sundyn.util.impl.util;
 import com.sundyn.utils.ReqUtils;
+import com.sundyn.vo.LogTypeEnum;
+import com.sundyn.vo.LoginResultEnum;
 import com.sundyn.vo.ManagerVo;
 import com.xuan.xutils.utils.DESUtils;
 import com.xuan.xutils.utils.DateUtils;
@@ -42,6 +47,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.URLEncoder;
+import java.security.Principal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -368,11 +374,13 @@ public class ManagerAction extends MainAction
         Date pwdexpired = req.getDate("pwdexpired");
 
         String isstringverify = dictinfoService.getDictInfo("security_para", "isstringverify");
-        System.out.println("是否开启检测模式："  + isstringverify);
-
+        if (dept == 0){
+            this.msg = this.getText("manage.entity.validation.dept.notnull");
+            return "success";
+        }
         if (StringUtils.isNotBlank(isstringverify) && isstringverify.equalsIgnoreCase("1")){ //开启检测模式
             if (com.xuan.xutils.utils.StringUtils.isBlank(idcard)){
-                this.msg = "用户身份证号码不能为空!";
+                this.msg = this.getText("manage.entity.validation.idcard.notnull");
                 return "success";
             }
             String security_idcardcheck = dictinfoService.getDictInfo("security_para", "security_idcardcheck");
@@ -387,39 +395,39 @@ public class ManagerAction extends MainAction
             }
             Map managermap = this.managerService.findByIdCard(idcard);
             if  (id ==0 && managermap != null) {//新增
-                this.msg = "该用户身份证号码已经存在";
+                this.msg = this.getText("manage.entity.validation.idcard.exists");
                 return "success";
             }
             if (id > 0 && managermap != null && !Integer.valueOf(managermap.get("id").toString()).equals(id)) { //修改
-                this.msg = "该用户身份证号码已经存在";
+                this.msg = this.getText("manage.entity.validation.idcard.exists");
                 return "success";
             }
 
             if (jyflag == 1 && com.xuan.xutils.utils.StringUtils.isBlank(jyno)){
-                this.msg = "警员编号不能为空!";
+                this.msg = this.getText("manage.entity.validation.jyno.nonull");
                 return "success";
             }
             if (jyflag == 1){
                 Integer jynoexists = this.managerService.existsByjyno(name, jyno);
                 if  (id ==0 && jynoexists > 0) {//新增
-                    this.msg = "该警员编号已经存在";
+                    this.msg = this.getText("manage.entity.validation.jyno.exists");
                     return "success";
                 }
                 if (id > 0 && jynoexists > 0) { //修改
-                    this.msg = "该警员编号已经存在";
+                    this.msg = this.getText("manage.entity.validation.jyno.exists");
                     return "success";
                 }
             }
             if (id==0 || (id>0 && !com.xuan.xutils.utils.StringUtils.isBlank(pwd))){
                 String security_pwdcheck = dictinfoService.getDictInfo("security_para", "security_pwdcheck");
                 if (security_pwdcheck.equals("1") && !util.validpwd(pwd)){
-                    this.msg = "密码必须由数字,字母和特殊符号组成,长度为8-20个字符!";
+                    this.msg = this.getText("manage.entity.validation.password.valid");
                     return "success";
                 }
             }
             if (!com.xuan.xutils.utils.StringUtils.isBlank(accesstime1) || !com.xuan.xutils.utils.StringUtils.isBlank(accesstime2) || true){
                 if (com.xuan.xutils.utils.StringUtils.isBlank(accesstime1) || com.xuan.xutils.utils.StringUtils.isBlank(accesstime2)){
-                    this.msg = "访问时间段开始时间段和结束时间段不能为空!";
+                    this.msg = this.getText("manage.entity.validation.accesstime.nonull");
                     return "success";
                 }
             }
@@ -429,27 +437,27 @@ public class ManagerAction extends MainAction
                     if (powerid.equals(""))
                         continue;
                     if (powerService.checkIsJyAction(powerid)){
-                        this.msg = "非警员不允许分配该角色，该角色中存在只允许警员操作的功能!";
+                        this.msg = this.getText("manage.entity.validation.jy.jyaction");
                         return "success";
                     }
                 }
             }
             if (null == uexpired){
-                this.msg = "用户有效期不能为空!";
+                this.msg = this.getText("manage.entity.validation.account.expired");
                 return "success";
             }
             if (null == pwdexpired){
-                this.msg = "密码有效期不能为空!";
+                this.msg = this.getText("manage.entity.validation.password.expired");
                 return "success";
             }
             String accessip = req.getString("accessip");
             if (com.xuan.xutils.utils.StringUtils.isBlank(accessip)){
-                this.msg = "IP地址不能为空!";
+                this.msg = this.getText("manage.entity.validation.ipadd.notnull");
                 return "success";
             }
             if (!com.xuan.xutils.utils.StringUtils.isBlank(accessip)){
                 if (!com.sundyn.util.InetAddressUtils.isIPv4Address2(accessip)){
-                    this.msg = "IP地址格式不正确!";
+                    this.msg = this.getText("manage.entity.validation.ipadd.format");
                     return "success";
                 }
             }
@@ -469,7 +477,7 @@ public class ManagerAction extends MainAction
             this.msg = "";
         }
         else {
-            this.msg = "该用户已经存在";
+            this.msg = this.getText("manage.entity.validation.exists");
             return "success";
         }
 
@@ -514,8 +522,8 @@ public class ManagerAction extends MainAction
         t.setName(name);
         t.setCtime(new Date());
         t.setIpadd(util.getRemoteIpAddr());
-        t.setLogrst("成功");
-        t.setLogtype(id == 0 ? "新增用户" : "修改用户");
+        t.setLogrst(this.getText("main.succ"));
+        t.setLogtype(id == 0 ? this.getText("auditlog.logTypeEnumAddManager") : this.getText("auditlog.logTypeEnumEditManager"));
         String desc = new JSONObject(this.managerVo).toString();
         if(desc.length()>1000)
             desc = desc.substring(0,999);
@@ -578,7 +586,7 @@ public class ManagerAction extends MainAction
             this.msg = "";
         }
         else {
-            this.msg = "该用户已经存在";
+            this.msg = this.getText("manage.entity.validation.exists");
         }
         return "success";
     }
@@ -623,9 +631,10 @@ public class ManagerAction extends MainAction
                     int time = NumberUtils.toInt(dictarr[0]);
                     int count = NumberUtils.toInt(dictarr[1]);
                     EntityWrapper<AuditLog> w = new EntityWrapper<>();
-                    w.where("name={0} and ctime > dateadd(mi ,{1}, getdate()) and logrst='成功'", name, time*-1);
+                    w.where("name={0} and ctime > dateadd(mi ,{1}, getdate()) and logrst={2}", name, time*-1, this.getText("auditlog.agentLoginSucc"));
                     int logintimes = auditLogService.selectCount(w);
-                    msg[0] = "用户" + name + "在"+dictarr[0]+"分钟内连续访问次数达到" + logintimes + "次,超过上限" + dictarr[1] + "次";
+                    //msg[0] = "用户" + name + "在"+dictarr[0]+"分钟内连续访问次数达到" + logintimes + "次,超过上限" + dictarr[1] + "次";
+                    msg[0] = this.getText("auditlog.audit_accessmaxtimes", new String[]{name, dictarr[0], String.valueOf(logintimes), dictarr[1]});
                     return logintimes>=count;
                 }
             }
@@ -648,7 +657,8 @@ public class ManagerAction extends MainAction
                         if (dictarr!=null && dictarr.length==2){
                             if (DateUtils.compareHourAndMinute(new Date(), DateUtils.string2Date(dictarr[0],"HH:mm"))>0
                                 && DateUtils.compareHourAndMinute(new Date(), DateUtils.string2Date(dictarr[1],"HH:mm"))<0) {
-                                msg[0] = "用户" + name + "在特殊时间段" + dictarr[0] + "~" + dictarr[1] + "访问系统";
+                                //msg[0] = "用户" + name + "在特殊时间段" + dictarr[0] + "~" + dictarr[1] + "访问系统";
+                                msg[0] = this.getText("auditlog.audit_specialaccesstime", new String[]{name, dictarr[0], dictarr[1]});
                                 return true;
                             }
                         }
@@ -677,7 +687,6 @@ public class ManagerAction extends MainAction
 
     public String managerLogin() throws Exception {
         managerService.initPwdForCheck();
-
         String[] loginrst = new String[1];
         String name= req.getString("name"),
                 password = req.getString("password");
@@ -687,7 +696,7 @@ public class ManagerAction extends MainAction
         } catch (Exception e){
             jsonData.clear();
             jsonData.put("succ", false);
-            jsonData.put("msg", "系统错误");
+            jsonData.put("msg", this.getText("main.systemerror"));
             return "success";
         }
 
@@ -695,21 +704,21 @@ public class ManagerAction extends MainAction
         if (null != lockMap){
             jsonData.clear();
             jsonData.put("succ", false);
-            jsonData.put("msg", "账号" + name + "已锁定,锁定时间" + lockMap.get("locktime"));
+            jsonData.put("msg", this.getText("login.usernamelocked", new String[]{name, lockMap.get("locktime").toString()}));
             return "success";
         }
         lockMap = checkLock(ipadd);
         if (null != lockMap){
             jsonData.clear();
             jsonData.put("succ", false);
-            jsonData.put("msg", "终端" + ipadd + "已锁定,锁定时间" + lockMap.get("locktime"));
+            jsonData.put("msg", this.getText("login.agentnamelocked", new String[]{ipadd, lockMap.get("locktime").toString()}));
             return "success";
         }
 
         Date lstTime = null;
         final Map manager = this.managerService.findManageBy(name, password, loginrst);
         Map dictMap = dictinfoService.selectMap(new EntityWrapper<SysDictinfo>().where("dictkey={0} and dictgroup={1}",
-                "audit_logintrytimes_account","security_para"));
+                "audit_logintrytimes_account", "security_para"));
         int times_account = 0;
         if (dictMap != null && dictMap.get("dictvalue")!=null && !com.xuan.xutils.utils.StringUtils.isBlank(dictMap.get("dictvalue").toString())){
             try{
@@ -746,10 +755,10 @@ public class ManagerAction extends MainAction
         if (manager==null){
             this.msg = loginrst[0];
             String errmsg = loginrst[0];
-            if (com.xuan.xutils.utils.StringUtils.isBlank(errmsg) && errmsg.equalsIgnoreCase("数据被篡改")){
+            if (com.xuan.xutils.utils.StringUtils.isNotBlank(errmsg) && errmsg.equalsIgnoreCase(LoginResultEnum.数据被篡改.toString())){
                 jsonData.clear();
                 jsonData.put("succ", false);
-                jsonData.put("msg", errmsg + "，禁止登录。");
+                jsonData.put("msg", this.getText("login.denylogin"));
                 return "success";
             }
             //if ((loginrst[0].equalsIgnoreCase("账号不存在")) && times_ip>0){
@@ -761,29 +770,31 @@ public class ManagerAction extends MainAction
                     else
                         lstTime = auditLock.getUnlocktime();
                 }
-                t.setLogtype("登录");
-                t.setLogrst("终端登录失败");
+                String agentLoginError = this.getText("auditlog.agentLoginError");
+                String agentLoginSucc = this.getText("auditlog.agentLoginSucc");
+                t.setLogtype(LogTypeEnum.登录.getCode());
+                t.setLogrst(agentLoginError);
 
-                Wrapper wrapper = new EntityWrapper<AuditLog>().where("logrst='终端登录失败' and ipadd={0} and logtype='登录'", ipadd);
+                Wrapper wrapper = new EntityWrapper<AuditLog>().where("logrst={0} and ipadd={1} and logtype={2}", agentLoginError, ipadd, LogTypeEnum.登录.getCode());
                 //wrapper.where("convert(varchar(50), ctime, 23)=convert(varchar(50), {0}, 23)", new Date());
-                wrapper.where("ctime>(select isnull(max(ctime), convert(varchar(50), {0}, 23)) from audit_log where ipadd={1} and logrst='成功' and logtype='登录')", new Date(), ipadd);
+                wrapper.where("ctime>(select isnull(max(ctime), convert(varchar(50), {0}, 23)) from audit_log where ipadd={1} and logrst={2} and logtype={3})", new Date(), ipadd, agentLoginSucc, LogTypeEnum.登录.getCode());
                 if (lstTime!=null)
                     wrapper.where("ctime>{0}", lstTime);
                 int failcount = auditLogService.selectCount(wrapper)+1;
                 if (times_ip-failcount > 0)
-                    errmsg = loginrst[0] + ",当前IP地址" + ipadd + "连续登录失败次数已达"+ failcount + "次,离冻结次数还剩" + (times_ip-failcount) + "次";
+                    errmsg = loginrst[0] + this.getText("auditlog.agentLoginErrorCount", new String[]{ipadd, String.valueOf(failcount), String.valueOf(times_ip-failcount)});//",当前IP地址" + ipadd + "连续登录失败次数已达"+ failcount + "次,离冻结次数还剩" + (times_ip-failcount) + "次";
                 else {
-                    errmsg = loginrst[0] + ",当前IP地址" + ipadd + "连续登录失败次数已达" + failcount + "次,终端已冻结";
+                    errmsg = loginrst[0] + this.getText("auditlog.agentLoginErrorMAX", new String[]{ipadd, String.valueOf(failcount)});//",当前IP地址" + ipadd + "连续登录失败次数已达" + failcount + "次,终端已冻结";
                     Map map1 = dictinfoService.selectMap(new EntityWrapper<SysDictinfo>().where("isenable=1 and dictkey='audit_locktime_ip' and dictgroup='security_para'"));
                     int locktimes = 0;
                     if (map1!=null && map1.get("dictvalue")!=null){
                         locktimes = NumberUtils.toInt(map1.get("dictvalue").toString());
                     }
-                    t.setLogtype("终端冻结");
-                    t.setLogrst("终端冻结");
+                    t.setLogtype(LogTypeEnum.终端冻结.getCode());
+                    t.setLogrst(LogTypeEnum.终端冻结.toString());
                     AuditLock al = new AuditLock();
                     al.setName(ipadd);
-                    al.setLocktype("终端锁定");
+                    al.setLocktype(this.getText("auditlog.agentLocked"));
                     Date d = new Date();
                     al.setLocktime(d);
                     if (locktimes >0)
@@ -794,12 +805,11 @@ public class ManagerAction extends MainAction
                     auditLockService.insert(al);
                 }
                 t.setLogrstdesc(errmsg);
-                System.out.println(new JSONObject(t).toString());
                 auditLogService.insert(t);
             }
-            if (loginrst[0].equalsIgnoreCase("密码错误") && times_account>0){
-                t.setLogtype("登录");
-                t.setLogrst("账号登录失败");
+            if (loginrst[0].equalsIgnoreCase(LoginResultEnum.密码错误.toString()) && times_account>0){
+                t.setLogtype(LogTypeEnum.登录.getCode());
+                t.setLogrst(this.getText("auditlog.accountloginerror"));
 
                 AuditLock auditLock = getLstLock(name);
                 if (auditLock!=null){
@@ -808,28 +818,28 @@ public class ManagerAction extends MainAction
                     else
                         lstTime = auditLock.getUnlocktime();
                 }
-
-                Wrapper wrapper = new EntityWrapper<AuditLog>().where(AuditLog.LOGRST + "='账号登录失败' and " + AuditLog.NAME+ "={0} and logtype='登录'", name);
+                String agentLoginSucc = this.getText("auditlog.agentLoginSucc");
+                Wrapper wrapper = new EntityWrapper<AuditLog>().where(AuditLog.LOGRST + "={0} and " + AuditLog.NAME+ "={1} and logtype={2}", this.getText("auditlog.accountloginerror"), name, LogTypeEnum.登录.getCode());
                 //wrapper.where("convert(varchar(50), ctime, 23)=convert(varchar(50), {0}, 23)", new Date());
-                wrapper.where("ctime>(select isnull(max(ctime), convert(varchar(50), {0}, 23)) from audit_log where name={1} and logrst='成功' and logtype='登录')", new Date(), name);
+                wrapper.where("ctime>(select isnull(max(ctime), convert(varchar(50), {0}, 23)) from audit_log where name={1} and logrst={2} and logtype={3})", new Date(), name, agentLoginSucc, LogTypeEnum.登录.getCode());
                 if (lstTime!=null)
                     wrapper.where("ctime>{0}", lstTime);
                 int failcount = auditLogService.selectCount(wrapper)+1;
                 if(times_account-failcount>0){
-                    errmsg = loginrst[0] + ",当前用户" + name + "连续登录失败次数已达"+ failcount + "次,离冻结次数还剩" + (times_account-failcount) + "次";
+                    errmsg = loginrst[0] + this.getText("auditlog.accountLoginErrorCount", new String[]{name, String.valueOf(failcount), String.valueOf(times_account-failcount)});// + ",当前用户" + name + "连续登录失败次数已达"+ failcount + "次,离冻结次数还剩" + (times_account-failcount) + "次";
                 }
                 else{
-                    errmsg = loginrst[0] + ",当前用户" + name + "连续登录失败次数已达"+ failcount + "次,账号已冻结";
+                    errmsg = loginrst[0] + this.getText("auditlog.accountLoginErrorMAX", new String[]{name, String.valueOf(failcount)}); //",当前用户" + name + "连续登录失败次数已达"+ failcount + "次,账号已冻结";
                     Map map1 = dictinfoService.selectMap(new EntityWrapper<SysDictinfo>().where("isenable=1 and dictkey='audit_locktime_account' and dictgroup='security_para'"));
                     int locktimes = 0;
                     if (map1!=null && map1.get("dictvalue")!=null){
                         locktimes = NumberUtils.toInt(map1.get("dictvalue").toString());
                     }
-                    t.setLogtype("账号冻结");
-                    t.setLogrst("账号冻结");
+                    t.setLogtype(LogTypeEnum.账号冻结.getCode());
+                    t.setLogrst(LogTypeEnum.账号冻结.toString());
                     AuditLock al = new AuditLock();
                     al.setName(name);
-                    al.setLocktype("账号锁定");
+                    al.setLocktype(this.getText("auditlog.accountLocked"));
                     Date d = new Date();
                     al.setLocktime(d);
                     if (locktimes >0)
@@ -854,7 +864,7 @@ public class ManagerAction extends MainAction
             if (checkdigited.equalsIgnoreCase("1")){
                 jsonData.clear();
                 jsonData.put("succ", false);
-                jsonData.put("msg", "数据被篡改，禁止登录!");
+                jsonData.put("msg", getText("login.denylogin"));
                 return SUCCESS;
             }
         }
@@ -864,7 +874,7 @@ public class ManagerAction extends MainAction
             if (null != uexpired && DateUtils.compareDate(uexpired, new Date()) < 0){
                 jsonData.clear();
                 jsonData.put("succ", false);
-                jsonData.put("msg", "账号已经过期!");
+                jsonData.put("msg", getText("auditlog.accountExpired"));
                 return SUCCESS;
             }
         }
@@ -874,7 +884,7 @@ public class ManagerAction extends MainAction
             if (null != uexpired && DateUtils.compareDate(uexpired, new Date()) < 0){
                 jsonData.clear();
                 jsonData.put("succ", false);
-                jsonData.put("msg", "密码已经过期!");
+                jsonData.put("msg", getText("auditlog.passwordExpired"));
                 return SUCCESS;
             }
         }
@@ -884,7 +894,7 @@ public class ManagerAction extends MainAction
             if (objStatus.toString().equalsIgnoreCase("0")){
                 jsonData.clear();
                 jsonData.put("succ", false);
-                jsonData.put("msg", "账号已禁用!");
+                jsonData.put("msg", getText("auditlog.accountdeny"));
                 return SUCCESS;
             }
         }
@@ -894,7 +904,7 @@ public class ManagerAction extends MainAction
             if (null != accesstime1 && DateUtils.compareHourAndMinute(new Date(), accesstime1) < 0){
                 jsonData.clear();
                 jsonData.put("succ", false);
-                jsonData.put("msg", "不允许的访问时间段!");
+                jsonData.put("msg", getText("auditlog.noaccesstime"));
                 return SUCCESS;
             }
         }
@@ -904,7 +914,7 @@ public class ManagerAction extends MainAction
             if (null != accesstime2 && DateUtils.compareHourAndMinute(new Date(), accesstime2) > 0){
                 jsonData.clear();
                 jsonData.put("succ", false);
-                jsonData.put("msg", "不允许的访问时间段!");
+                jsonData.put("msg", getText("auditlog.noaccesstime"));
                 return SUCCESS;
             }
         }
@@ -914,26 +924,26 @@ public class ManagerAction extends MainAction
             if (needchangepwd ==1){
                 jsonData.clear();
                 jsonData.put("succ", false);
-                jsonData.put("msg", "信息被变更,请重新修改密码!");
+                jsonData.put("msg", getText("login.passwordNeedChange"));
                 return SUCCESS;
             }
         }
         if (checkSessionMax()){
             jsonData.clear();
             jsonData.put("succ", false);
-            jsonData.put("msg", "当前在线用户数已达到峰值，请稍后再访问!");
+            jsonData.put("msg", getText("auditlog.onlinemax"));
             return SUCCESS;
         }
         String[] maxAccessMsg = new String[1];
         if (checkMaxAccess(name, maxAccessMsg)){
             jsonData.clear();
             jsonData.put("succ", false);
-            jsonData.put("msg", "高频访问!");
+            jsonData.put("msg", LogTypeEnum.高频访问.toString());
             t.setLogdevice(logdevice);
             t.setCtime(logintime);
             t.setIpadd(loginadd);
-            t.setLogrst("高频访问");
-            t.setLogtype("高频访问");
+            t.setLogrst(LogTypeEnum.高频访问.toString());
+            t.setLogtype(LogTypeEnum.高频访问.getCode());
             t.setLogrstdesc(maxAccessMsg[0]);
             auditLogService.insert(t);
         }
@@ -942,8 +952,8 @@ public class ManagerAction extends MainAction
             t.setLogdevice(logdevice);
             t.setCtime(logintime);
             t.setIpadd(loginadd);
-            t.setLogrst("特殊访问时间段");
-            t.setLogtype("特殊访问时间段");
+            t.setLogrst(LogTypeEnum.特殊访问时间段.toString());
+            t.setLogtype(LogTypeEnum.特殊访问时间段.getCode());
             t.setLogrstdesc(maxAccessMsg[0]);
             auditLogService.insert(t);
         }
@@ -956,11 +966,11 @@ public class ManagerAction extends MainAction
         final String ipHouse = addr.getHostAddress();
         final Integer playListId = 1;
         final String basePath = ServletActionContext.getServletContext().getRealPath(File.separator);
-        final String filePath = String.valueOf(basePath) + "m7app" + File.separator + playListId.toString() + File.separator + "NEWCONFIG.XML";
-        final String filePath2 = String.valueOf(basePath) + "update" + File.separator + playListId.toString() + File.separator + "NEWCONFIG.XML";
-        final String filePath3 = String.valueOf(basePath) + "m7app" + File.separator + "NEWCONFIG.XML";
-        final String filePath4 = String.valueOf(basePath) + "update" + File.separator + "NEWCONFIG.XML";
-        final String updateFilepath = String.valueOf(basePath) + "UpdateFile" + File.separator + "NEWCONFIG.XML";
+        final String filePath = basePath + "m7app" + File.separator + playListId.toString() + File.separator + "NEWCONFIG.XML";
+        final String filePath2 = basePath + "update" + File.separator + playListId.toString() + File.separator + "NEWCONFIG.XML";
+        final String filePath3 = basePath + "m7app" + File.separator + "NEWCONFIG.XML";
+        final String filePath4 = basePath + "update" + File.separator + "NEWCONFIG.XML";
+        final String updateFilepath = basePath + "UpdateFile" + File.separator + "NEWCONFIG.XML";
         final SAXBuilder sb = new SAXBuilder(false);
         final Document doc = sb.build(new File(filePath));
         final Document doc2 = sb.build(new File(filePath2));
@@ -1035,16 +1045,16 @@ public class ManagerAction extends MainAction
                 }
             }
 
-            t.setLogrst("成功");
-            t.setLogtype("登录");
-            t.setLogrstdesc("登录成功");
+            t.setLogrst(this.getText("auditlog.agentLoginSucc"));
+            t.setLogtype(LogTypeEnum.登录.getCode());
+            t.setLogrstdesc(getText("auditlog.loginSucc"));
             auditLogService.insert(t);
 
             managerService.updateLoginTime(name, logintime, loginadd, logdevice);
             managerService.getAllCache(true);
             jsonData.clear();
             jsonData.put("succ", true);
-            jsonData.put("msg", "登录成功");
+            jsonData.put("msg", getText("auditlog.loginSucc"));
             login(name, password);
 
             return "success";
@@ -1052,14 +1062,13 @@ public class ManagerAction extends MainAction
         else{
             jsonData.clear();
             jsonData.put("succ", false);
-            jsonData.put("msg", "登录失败");
+            jsonData.put("msg", getText("auditlog.loginError"));
         }
-        this.msg = "登录失败";
+        this.msg = getText("auditlog.loginError");
         return SUCCESS;
     }
 
     public String login(String username, String password){
-        System.out.println("[login...]");
         //1.获取当前的用户
         Subject currentUser = SecurityUtils.getSubject();
         //2.把登录信息封装为一个 UsernamePasswordToken 对象
@@ -1070,16 +1079,12 @@ public class ManagerAction extends MainAction
             // *登录操作!
             currentUser.login(token);
         } catch (UnknownAccountException uae) {
-            System.out.println("用户名不存在: " + uae);
             return "input";
         } catch (IncorrectCredentialsException ice) {
-            System.out.println("用户名存在,但密码和用户名不匹配: " + ice);
             return "input";
         } catch (LockedAccountException lae) {
-            System.out.println("用户被锁定: " + lae);
             return "input";
         } catch (AuthenticationException ae) {
-            System.out.println("其他异常: " + ae);
             return "input";
         }
 
@@ -1092,14 +1097,12 @@ public class ManagerAction extends MainAction
         ServletContext context = ServletActionContext.getServletContext();
         final HttpSession session = request.getSession();
         Object manager = session.getAttribute("manager");
-        if (null!= manager){
+        if (null != manager){
             ConcurrentHashMap<String, Object> map = (ConcurrentHashMap<String, Object>) context.getAttribute("activeSessions");
-
+            System.out.println("用户退出2：" + (null != map));
             if (null != map)
             {
-                session.invalidate();
                 Map managermap = (Map)manager;
-
                 AuditLog t = new AuditLog();
                 t.setName(managermap.get("name").toString());
                 Date logintime = new Date();
@@ -1110,11 +1113,10 @@ public class ManagerAction extends MainAction
                 t.setLogdevice(logdevice);
                 t.setCtime(logintime);
                 t.setIpadd(loginadd);
-                t.setLogtype("退出");
-                t.setLogrst("成功");
-                t.setLogrstdesc("用户" + managermap.get("name") + "退出成功！");
+                t.setLogtype(LogTypeEnum.退出.getCode());
+                t.setLogrst(getText("auditlog.agentLoginSucc"));
+                t.setLogrstdesc(getText("auditlog.loginoutSucc", new String[]{managermap.get("name").toString()}));
                 auditLogService.insert(t);
-
                 if (map.containsKey(managermap.get("name")))
                 {
                     map.remove(managermap.get("name"));
@@ -1122,11 +1124,21 @@ public class ManagerAction extends MainAction
                 }
             }
         }
-        else
-            session.invalidate();
         //1.获取当前的用户
-        Subject currentUser = SecurityUtils.getSubject();
-        currentUser.logout();
+        try{
+            Subject currentUser = SecurityUtils.getSubject();
+            currentUser.logout();
+
+            session.invalidate();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        /*Principal principal = UserUtils.getPrincipal();
+        // 如果已经登录，则跳转到管理首页
+        if(principal != null){
+            UserUtils.getSubject().logout();
+        }*/
         return "success";
     }
 

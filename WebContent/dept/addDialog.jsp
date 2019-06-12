@@ -32,7 +32,7 @@
         <div class="layui-input-inline">
             <input type="text" name="reMark" id="reMark" value="${remark}" class="layui-input" />
         </div>
-        <div class="layui-form-mid layui-word-aux">(<s:text name="sundyn.dept.demoOrMac" />，必须唯一不能重复)</div>
+        <div class="layui-form-mid layui-word-aux">(<s:text name="sundyn.dept.demoOrMac" />)</div>
     </div>
     <c:if test="${deptType==0}">
         <c:if test="${bind == 'true'}">
@@ -132,7 +132,7 @@
     </div>
     <c:if test="${deptType!=2 }">
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width:130px;">上级:</label>
+            <label class="layui-form-label" style="width:130px;"><s:text name="main.parent" /></label>
             <div class="layui-input-inline">
                     ${parentobj.name}<input type="hidden" id="fatherid" name="fatherid" value="${parentobj.id}" />
             </div>
@@ -149,8 +149,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label" style="width:130px;"></label>
         <div class="layui-input-inline">
-            <button class="layui-btn" onclick="addChildItem(<%=request.getParameter("deptId")%>)">保存</button>
-            <button class="layui-btn layui-btn-primary" onclick="parent.closeDialog()">取消</button>
+            <button class="layui-btn" onclick="addChildItem(<%=request.getParameter("deptId")%>)"><s:text name="main.save" /></button>
+            <button class="layui-btn layui-btn-primary" onclick="parent.closeDialog()"><s:text name="main.cancel" /></button>
         </div>
     </div>
 </div>

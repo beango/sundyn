@@ -863,10 +863,19 @@ public class TotalAction extends MainAction
                 m.put("m" + (j++), temp.get("ticketcount"));
                 m.put("m" + (j++), temp.get("servercount"));
                 m.put("m" + (j++), temp.get("cancelcount"));
-                m.put("m" + (j++), temp.get("waittimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
-                m.put("m" + (j++), temp.get("servicetimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
-                m.put("m" + (j++), temp.get("pausetime")==null||temp.get("pausetime").toString().equals("null")
+                if(temp.get("waittimeavg")!=null)
+                    m.put("m" + (j++), temp.get("waittimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                else
+                    m.put("m" + (j++), "");
+                if(temp.get("servicetimeavg")!=null)
+                    m.put("m" + (j++), temp.get("servicetimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                else
+                    m.put("m" + (j++), "");
+                if(temp.get("pausetime")!=null)
+                    m.put("m" + (j++), temp.get("pausetime")==null||temp.get("pausetime").toString().equals("null")
                         ?"":temp.get("pausetime").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                else
+                    m.put("m" + (j++), "");
                 for (Object item: (ArrayList)(temp.get("km"))){
                     m.put("m" + (j++), item);
                 }
@@ -2925,10 +2934,19 @@ public class TotalAction extends MainAction
                 m.put("m" + (j++), temp.get("ticketcount"));
                 m.put("m" + (j++), temp.get("servercount"));
                 m.put("m" + (j++), temp.get("cancelcount"));
-                m.put("m" + (j++), temp.get("waittimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
-                m.put("m" + (j++), temp.get("servicetimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
-                m.put("m" + (j++), temp.get("pausetime")==null||temp.get("pausetime").toString().equals("null")
+                if(temp.get("waittimeavg")!=null)
+                    m.put("m" + (j++), temp.get("waittimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                else
+                    m.put("m" + (j++), "");
+                if(temp.get("servicetimeavg")!=null)
+                    m.put("m" + (j++), temp.get("servicetimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                else
+                    m.put("m" + (j++), "");
+                if(temp.get("pausetime")!=null)
+                    m.put("m" + (j++), temp.get("pausetime")==null||temp.get("pausetime").toString().equals("null")
                         ?"":temp.get("pausetime").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                else
+                    m.put("m" + (j++), "");
                 for (Object item: (ArrayList)(temp.get("km"))){
                     m.put("m" + (j++), item);
                 }

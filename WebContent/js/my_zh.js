@@ -1,3 +1,16 @@
+var loadingstr = "加载中...";
+var savestr = "保存";
+var cancelstr = "取消";
+var confirmstr = "确认";
+var confirmtodelstr = "确认要删除吗?";
+var confirmdelsuccstr = "删除成功";
+var savesuccstr = "保存成功"
+var saveerrorstr = "保存失败"
+var dept_save_deptidnotnul = "请选择部门"
+var dept_save_deptnamenotnul = "请输入名称"
+var dept_save_deptdelnotroot = "不能删除最高机构"
+var employee_password_reset_succ = "密码重置成功！";
+
 //导入包
 // dojo.require("dojo.io.parser");
 // dojo.require("dojo.io.script");
@@ -650,14 +663,15 @@ function regId(data) {
 		document.getElementById("deptView").innerHTML = resp;
 	}});
 }
+
 // 添加机构节点
 function addChildItem(deptId) {
 	if (!deptId) {
-		alert("请选择部门");
+        lalert(dept_save_deptidnotnul);
 		return false;
 	}
 	if (document.getElementById("deptName").value == "") {
-		alert("请输入名称");
+        lalert(dept_save_deptnamenotnul);
 		return false;
 	}
 	var deptName = document.getElementById("deptName").value;
@@ -716,7 +730,7 @@ function addChildItem(deptId) {
 	        error(resp);
         }
 	    else{
-	        succ("提交成功！", function () {
+	        succ(savesuccstr, function () {
                 var _newUrl = parent.location.href;
                 parent.location.href = _newUrl;
             })
@@ -728,11 +742,11 @@ function addChildItem(deptId) {
 function del() {
 	var deptId = document.getElementById("deptId").value;
 	if(deptId=="1"){
-	alert("不能删除最高机构")
+	    lalert(dept_save_deptdelnotroot)
 	return false;
 	}
-	if(!confirm("你确认要删除么？")){
-	return false;
+	if(!confirm(confirmtodelstr)){
+	    return false;
 	}
 	dojo.xhrPost({url:"deptDel.action", content:{deptId:deptId}, load:function (resp, ioArgs) {
 		var deptList = eval(resp);
@@ -761,7 +775,7 @@ function deptCfgDialog(title, deptname) {
 }
 //窗口参数配置
 function counterCfgDialog(title, deptname, fatherId, deptid) {
-    new dialog().iframe('counterAdd.action?deptid='+deptid + "&fatherId="+fatherId + "&deptName=" + encodeURI(deptname), {title: title+"11", resize:false, w:'700px', h:"650px"});
+    new dialog().iframe('counterAdd.action?deptid='+deptid + "&fatherId="+fatherId + "&deptName=" + encodeURI(deptname), {title: title, resize:false, w:'700px', h:"650px"});
 }
 function deptGenCer(mac, batchname){
     dojo.xhrPost({url:"deptGenCer.action", content:{mac:mac, batchname:batchname}, load:function (resp, ioArgs) {
@@ -957,9 +971,9 @@ function getFileName2() {
 }
 // 删除员工
 function employeeDel(data) {
-	if(confirm('确定要删除该员工吗')){
+	if(confirm(confirmtodelstr)){
         dojo.xhrPost({url:"employeeDel.action", content:{employeeId:data}, load:function (resp, ioArgs) {
-                layer.msg('删除成功', {
+                layer.msg(confirmdelsuccstr, {
                     icon: 1,
                     time: 800
                 }, function(){
@@ -1101,10 +1115,11 @@ function keywordpage(data) {
 		document.getElementById("employeeView").innerHTML = resp;
 	}});
 }
+
 // 密码初始化123456
 function employeeReset(data) {
 	dojo.xhrPost({url:"employeeReset.action", content:{employeeId:data}, load:function (resp, ioArgs) {
-		alert("\u5bc6\u7801\u91cd\u7f6e\u6210\u529f");
+		lalert(employee_password_reset_succ);
 	}});
 }
 // 修改按键值对话框
@@ -1214,166 +1229,15 @@ function managerAddDialog() {
 		dia.show("dialog");
 	}});
 }
-// 添加低等级用户对话框
-function lowerManagerAddDialog(title) {
-    var dia = new dialog();
-    dia.iframe("managerEditDialog.action",{title:title, w:'700px', h:'600px'});
-}
-// 验证用户不为空
-function managerCheck(){
-	var name = document.getElementById("name").value;
-	if(name==""){
-		error("用户名不能为空");
-		return false;
-	}
-	var realname = document.getElementById("realname").value;
-	if(realname==""){
-        error("真实姓名不能为空");
-		return false;
-	}
-	return true;
-}
+
 function managerExist(){
 	var name = document.getElementById("name").value;
     var id = $("#id").val();
 	dojo.xhrPost({url:"managerExist.action",content:{id:id, name:name},load:function (resp, ioArgs) {
  		document.getElementById("tip").innerHTML = resp;
 	}});
-
 }
-// 添加用户
-function managerAdd() {
-	if(document.getElementById("tip").innerHTML=='该用户已经存在 '){
-		alert("该用户已经存在");
-		return false;
-	}
-	var check=managerCheck();
-	if(!check){
-		return false;
-	}
-	var name = document.getElementById("name").value;
-	var realname = document.getElementById("realname").value;
-	var remark = document.getElementById("remark").value;
-	var ext1 = document.getElementById("ext1").value;
-	var ext2 = document.getElementById("ext2").value;
-	var userGroupId = document.getElementById("userGroupId").value;
-    var powers = "";
-    var managerPowers = $("input[name=managerPowers]");
-    var localuser = $('input:radio[name="localuser"]:checked').val();
-	if(managerPowers.length!=1){
-		alert("只能选择一个角色！");
-		//return false;
-	}
-    for (var i=0; i<managerPowers.length; i++){
-        if(managerPowers[i].checked){
-            powers += (managerPowers[i].value) + ",";
-        }
-    }
-    var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
-    var nodes=zTree.getCheckedNodes(true),
-        v="";
-    if(nodes && nodes.length>0)
-        v = nodes[0].id;
-    if (v == ""){
-        alert("选择部门机构");
-        return false;
-    }
-	dojo.xhrPost({url:"managerAdd.action", content:{name:name, powers:powers, realname:realname, remark:remark, ext1:ext1, ext2:ext2, userGroupId:userGroupId, dept:v, localuser:localuser}, load:function (resp, ioArgs) {
-		if (resp.trim() == "") {
-            layer.msg('添加成功', {
-                icon: 1,
-                time: 800
-            }, function(){
-                parent.closeDialog();
-                parent.lowerManagerQueryAjax();
-            });
-        }
-        else{
-            layer.msg(resp, {
-                icon: 2,
-                time: 800
-            }, function(){
 
-            });
-        }
-	}});
-}
-// 修改用户对话框
-function managerEditDialog(data, title) {
-    var dia = new dialog();
-    dia.iframe("managerEditDialog.action?id="+data, {title: title, w:'700px', h:'600px'});
-}
-// 修改用户
-function managerEdit() {
-	if(document.getElementById("tip").innerHTML=='该用户已经存在'){
-        error("该用户已经存在");
-		return false;
-	}
-	var check=managerCheck();
-	if(!check){
-		return false;
-	}
-	var id = document.getElementById("id").value;
-	var name = document.getElementById("name").value;
-	var realname = document.getElementById("realname").value;
-	var remark = document.getElementById("remark").value;
-	var ext1 = document.getElementById("ext1").value;
-	var ext2 = document.getElementById("ext2").value;
-	var userGroupId = document.getElementById("userGroupId").value;
-	var powers = "";
-	var managerPowers = $("input[name=managerPowers]");
-    var localuser = $('input:radio[name="localuser"]:checked').val();
-    var pwd = document.getElementById("pwd").value;
-    var accessip = document.getElementById("accessip").value;
-    var userid = document.getElementById("userid").value;
-    if (id=="" && pwd == "") {
-        error("密码不能为空!");
-        return false;
-    }
-
-	var powerLen = 0;
-	for (var i=0; i<managerPowers.length; i++){
-        if(managerPowers[i].checked){
-            powers += (managerPowers[i].value) + ",";
-			powerLen++;
-        }
-    }
-	if(powerLen != 1){
-		//error("只能选择一个角色！");
-		//return false;
-	}
-    var deptId = getCheck();
-    var deptname = getCheckName();
-    if (deptId == "") {
-        error("选择部门机构");
-        return false;
-    }
-    var idcard = document.getElementById("idcard").value;
-    var jyflag = document.getElementById("jyflag").checked?1:0;
-    var status=$('input:radio[name="status"]:checked').val();
-    var jyno = document.getElementById("jyno").value;
-    var uexpried = document.getElementById("uexpired").value;
-    var pwdexpired = document.getElementById("pwdexpired").value;
-    var accesstime1 = document.getElementById("accesstime1").value;
-    var accesstime2 = document.getElementById("accesstime2").value;
-
-	dojo.xhrPost({url:"managerEdit.action", content:{id:id, name:name, realname:realname, pwd: pwd, remark:remark, ext1:ext1,
-            ext2:ext2, userGroupId:userGroupId, powers:powers, dept:deptId, localuser: localuser,
-            idcard: idcard, jyflag: jyflag, jyno: jyno, uexpired: uexpried, pwdexpired: pwdexpired, status: status,
-            accesstime1: accesstime1, accesstime2:accesstime2, aname:(id==""||id==0)?"新增用户" : "修改用户",
-            accessip:accessip, userid:userid
-        }, load:function (resp, ioArgs) {
-            if(resp.trim()==""){
-                succ("修改成功", function(){
-                    parent.closeDialog();
-                    parent.lowerManagerQueryAjax();
-                });
-            }
-            else{
-                error(resp);
-            }
-	}});
-}
 function managerQueryAjax() {
 	var keyword = document.getElementById("keyword").value;
 	dojo.xhrPost({url:"managerQueryAjax.action", content:{name:keyword}, load:function (resp, ioArgs) {
@@ -1381,23 +1245,6 @@ function managerQueryAjax() {
 	}});
 }
 
-function lowerManagerQueryAjax() {
-	var keyword = document.getElementById("keyword").value;
-    var myURL = parseURL(location.href);
-    var _newUrl = replaceUrlParams(myURL, { name: keyword });
-    if(parent.qc && parent.qc.main.mainTabs){
-        var currTab = parent.qc.main.mainTabs.tabs('getSelected');
-        parent.qc.main.mainTabs.tabs('update', {
-            tab : currTab,
-            options : {
-                content: '<iframe class="iframe-fluid" src="'+_newUrl+'"></iframe>'
-            }
-        });
-    }
-    else{
-        location.href = _newUrl;
-    }
-}
 function managerPage(data) {
 	var name = document.getElementById("keyword").value;
 	dojo.xhrPost({url:"managerQueryAjax.action", content:{name:name, currentPage:data}, load:function (resp, ioArgs) {
@@ -1410,63 +1257,6 @@ function lowerManagerPage(data) {
 		document.getElementById("man_zone").innerHTML = resp;
 	}});
 }
-function managerDel(data) {
-	var managerId=document.getElementById("managerId").value;
-	if(data==1){
-		lalert("不能删除此超级用户！");
-	}else if(managerId==data){
-		lalert("不能删除自己！");
-	}else{
-        lconfirm("确认要删除吗?",function(){
-            dojo.xhrPost({url:"managerDel.action", content:{id:data}, load:function (resp, ioArgs) {
-                    layer.msg('删除成功', {
-                        icon: 1,
-                        time: 800
-                    }, function(){
-                        lowerManagerQueryAjax();
-                    });
-                }});
-        });
-	}
-}
-// 重置密码
-function managerEditStatus(id, editname) {
-    lconfirm("确认要"+editname+"该账户吗?",function(){
-        dojo.xhrPost({url:"managerResetStatus.action", content:{id:id}, load:function (resp) {
-                if(resp.trim()==''){
-                    succ('状态修改成功!', function () {
-                        refreshTab();
-                    });
-                }
-                else{
-                    error(resp);
-                }
-            }});
-    });
-}
-// 重置密码
-function managerReset(data) {
-     lconfirm("确认要重置该用户密码吗?",function(){
-         dojo.xhrPost({url:"managerReset.action", content:{id:data}, load:function (resp, ioArgs) {
-                 if(resp.trim()==''){
-                     layer.msg('密码已重置为初始密码', {
-                         icon: 1,
-                         time: 800
-                     }, function(){
-                         closeDialog();
-                     });
-                 }
-                 else{
-                     layer.msg('密码重置失败!', {
-                         icon: 2,
-                         time: 1800
-                     }, function(){
-                         closeDialog();
-                     });
-                 }
-             }});
-     });
-}
 // 角色管理
 function powerQueryAjax() {
 	var keyword = document.getElementById("keyword").value;
@@ -1474,15 +1264,7 @@ function powerQueryAjax() {
 		document.getElementById("man_zone").innerHTML = resp;
 	}});
 }
-// 查找权限低于自身角色的角色
-function lowerPowerQueryAjax() {
-    var keyword = document.getElementById("keyword").value;
-	/*var keyword = document.getElementById("keyword").value;
-	dojo.xhrPost({url:"lowerPowerQueryAjax.action", content:{name:keyword}, load:function (resp, ioArgs) {
-		document.getElementById("man_zone").innerHTML = resp;
-	}});*/
-	refreshTab({name: keyword});
-}
+
 // 分页
 function powerPage(data) {
 	var keyword = document.getElementById("keyword").value;
@@ -1495,19 +1277,6 @@ function lowerPowerPage(data) {
 	dojo.xhrPost({url:"lowerPowerQueryAjax.action", content:{keyword:keyword, currentPage:data}, load:function (resp, ioArgs) {
 		document.getElementById("man_zone").innerHTML = resp;
 	}});
-}
-// 删除
-function powerDel(data) {
-	if (confirm("确认要删除吗?")){
-        dojo.xhrPost({url:"powerDel.action", content:{id:data}, load:function (resp, ioArgs){
-                layer.msg(resp, {
-                    icon: 1,
-                    time: 800
-                }, function(){
-                    lowerPowerQueryAjax();
-                });
-        }});
-    }
 }
 // 添加角色对话框
 function powerAddDialog(title) {
@@ -1568,75 +1337,6 @@ function powerAdd() {
                 }, function(){
                 });
             }
-	}});
-}
-// 修改角色对话框
-function powerEditDialog(data, title) {
-    new dialog().iframe("powerEditDialog.action?id="+data, {title: title});
-}
-function powerCopy(data, title) {
-     if (confirm("确认要复制该角色吗？")){
-         dojo.xhrPost({url:"powerCopy.action", content:{id:data},load:function(res){
-             layer.msg('修改成功', {
-                 icon: 1,
-                 time: 800
-             }, function(){
-                 refreshTab();
-             });
-         }});
-     }
-}
- function powerEdit() {
-	var id = document.getElementById("id").value;
-	var name = document.getElementById("name").value;
-	if(name==""){
-		error("角色名不能为空");
-		return false;
-	}
-	if (document.getElementById("tip").innerHTML=="该角色名存在") {
-		error("该角色名存在");
-		return false;
-	}
-	var baseSet = document.getElementById("baseSet");
-	if (baseSet.checked) {
-		baseSet = 1;
-	} else {
-		baseSet = 0;
-	}
-	var dataManage = document.getElementById("dataManage");
-	if (dataManage.checked) {
-		dataManage = 1;
-	} else {
-		dataManage = 0;
-	}
-	var deptId = document.getElementById("deptId").value;
-	var zTree = jQuery.fn.zTree.getZTreeObj("zTreeMenuContent");
-    var nodes=zTree.getCheckedNodes(true),
-         v="";
-    for(var i=0;i<nodes.length;i++){
-         v+=nodes[i].id + ",";
-    }
-    var powertype = $("#powertype").val();
-    var status = $('input:radio[name="status"]:checked').val();
-
-	dojo.xhrPost({url:"powerEdit.action", content:{id:id,funcid:v, name:name, baseSet:baseSet, dataManage:dataManage,
-            deptId:deptId, powertype:powertype, status:status}, load:function (resp, ioArgs) {
-		if(resp.trim()==""){
-            layer.msg(id==''?'添加成功':'修改成功', {
-                icon: 1,
-                time: 800
-            }, function(){
-                parent.closeDialog();
-                parent.refreshTab();
-            });
-        }
-        else{
-            layer.msg(resp, {
-                icon: 2,
-                time: 800
-            }, function(){
-            });
-        }
 	}});
 }
 // 汇总
@@ -1874,11 +1574,7 @@ function tipChange(data) {
 		}
 	}
 }
-// 播放查詢
-function playQueryAjax() {
-	var keyword = document.getElementById("keyword").value;
-	refreshTab({keyword:keyword});
-}
+
 // 播放翻页面
 function playPage(data) {
 	var keyword = document.getElementById("keyword").value;
@@ -1886,10 +1582,7 @@ function playPage(data) {
 		document.getElementById("man_zone").innerHTML = resp;
 	}});
 }
-// 播放 添加对话框
-function playAddDialog(title) {
-     new dialog().iframe("playAddDialog.action",{title:title});
-}
+
 // 上传
 function playupload() {
 	dojo.io.iframe.send({url:"playUpload.action", method:"post", handleAs:"text", form:dojo.byId("pic"), handle:function (data, ioArgs) {
@@ -1910,90 +1603,6 @@ function playTypeChange(data) {
         document.getElementById("other").style.display="";
     }
 }
-// 添加播放
-function playAdd() {
-	var playName = document.getElementById("playName").value;
-	var playType = document.getElementById("playType").value;
-	var playSource = document.getElementById("playSource").value;
-	var playTimes=document.getElementById("playTimes").value;
-	var playIndex=document.getElementById("playIndex").value;
-	var playTitle=document.getElementById("playTitle").value;
-    var orgname=document.getElementById("orgname").value;
-
-	var playContent = document.getElementById("playContent").value;
-	var patrn=/^[0-9]{1,20}$/;
-	if (!patrn.exec(playIndex)){alert("序列只能为数字");document.getElementById("playIndex").focus();return false;}
- 	dojo.xhrPost({url:"playAdd.action", content:{playName:playName, playType:playType, playSource:playSource,playTimes:playTimes,playIndex:playIndex,
-            playTitle:playTitle,playContent:playContent,orgname:orgname}, load:function (resp, ioArgs) {
-            if (resp.trim() == "") {
-                layer.msg('添加成功', {
-                    icon: 1,
-                    time: 800
-                }, function(){
-                    parent.closeDialog();
-                    parent.refreshTab();
-                });
-            }
-            else{
-                layer.msg(resp, {
-                    icon: 2,
-                    time: 800
-                }, function(){
-                });
-            }
-	}});
-}
-// 播放修改对话框
-function playEditDialog(playId, title) {
-     new dialog().iframe("playEditDialog.action?playId="+playId, {title: title});
-}
-// 播放修改
-function playEdit(data) {
-	var playName = document.getElementById("playName").value;
-	var playType = document.getElementById("playType").value;
-	var playSource = document.getElementById("playSource").value;
-	var playId = document.getElementById("playId").value;
-	var playTimes=document.getElementById("playTimes").value;
-	var playIndex=document.getElementById("playIndex").value;
-	var playTitle=document.getElementById("playTitle").value;
-	var orgname=document.getElementById("orgname").value;
-// var playContent=FCKeditorAPI.GetInstance("playContent").GetXHTML(true);
-	var playContent = document.getElementById("playContent").value;
-	var patrn=/^[0-9]{1,20}$/;
-	if (!patrn.exec(playIndex)){alert("序列只能为数字");document.getElementById("playIndex").focus();return false;}
-	dojo.xhrPost({url:"playEdit.action", content:{playName:playName, playType:playType, playSource:playSource, playId:playId,playTimes:playTimes,
-            playIndex:playIndex,playTitle:playTitle,playContent:playContent,orgname:orgname}, load:function (resp, ioArgs) {
-            if (resp.trim() == "") {
-                layer.msg('修改成功', {
-                    icon: 1,
-                    time: 800
-                }, function(){
-                    parent.closeDialog();
-                    parent.refreshTab();
-                });
-            }
-            else{
-                layer.msg(resp, {
-                    icon: 2,
-                    time: 800
-                }, function(){
-                });
-            }
-	}});
-}
-// 播放删除
-function playDel(data) {
-     if (confirm("确定要删除吗?")){
-         dojo.xhrPost({url:"playDel.action", content:{playId:data}, load:function (resp, ioArgs) {
-                 layer.msg('删除成功', {
-                     icon: 1,
-                     time: 800
-                 }, function(){
-                     refreshTab();
-                 });
-             }});
-     }
-}
 // 播放列表查询
 function playListQueryAjax() {
 	var keyword = document.getElementById("keyword").value;
@@ -2001,11 +1610,7 @@ function playListQueryAjax() {
 		document.getElementById("man_zone").innerHTML = resp;
 	}});
 }
-// 播放列表查询 Android
-function playListQueryAjaxAndroid() {
-	var keyword = document.getElementById("keyword").value;
-    refreshTab({keyword:keyword});
-}
+
 function playListPage(data){
 	var keyword = document.getElementById("keyword").value;
 	dojo.xhrPost({url:"playListQueryAjax.action", content:{keyword:keyword, currentPage:data}, load:function (resp, ioArgs) {
@@ -2020,10 +1625,6 @@ function playListAddDialog() {
 		dia.show("dialog");
 	}});
 }
-// 播放列表 添加对话框 android
-function playListAddDialogAndroid(title) {
-     new dialog().iframe("playListAddDialogAndroid.action",{title: title, resize:false, w:"460px", h:"340px"});
-}
 
 // 播放列表添加
 function playListAdd() {
@@ -2035,30 +1636,6 @@ function playListAdd() {
 		closeDialog();
 	}});
 }
-// 播放列表添加
-function playListAddAndroid() {
-	var playListName = document.getElementById("playListName").value;
-	var playListDescription = document.getElementById("playListDescription").value;
-	var playIds = getAllKey();
-	dojo.xhrPost({url:"playListAddAndroid.action", content:{playListName:playListName, playListDescription:playListDescription, playIds:playIds}, load:function (resp, ioArgs) {
-            if (resp.trim() == "") {
-                layer.msg('添加成功', {
-                    icon: 1,
-                    time: 800
-                }, function(){
-                    parent.closeDialog();
-                    parent.refreshTab();
-                });
-            }
-            else{
-                layer.msg(resp, {
-                    icon: 2,
-                    time: 800
-                }, function(){
-                });
-            }
-        }});
-}
 
 // 播放列表修改
 function playListEditDialog(data) {
@@ -2068,10 +1645,7 @@ function playListEditDialog(data) {
 		dia.show("dialog");
 	}});
 }
-// 播放列表修改Android
-function playListEditDialogAndroid(playListId, title) {
-     new dialog().iframe("playListEditDialogAndroid.action?playListId="+playListId, {title: title});
-}
+
 // 生成在线升级包
 function playListCreateUpdateFile(data){
 	alert(playListCreateUpdateFile);
@@ -2092,21 +1666,6 @@ function playListCreateUpdateZip(data){
 		alert("Zip生成成功");
 		closeDialog();
 	}});
-}
-
-// 生成在线升级包,Zip格式和Bin格式
-function playListCreateUpdateZipFile(data){
-    //document.getElementById("pbar").src="images/update_processbar.gif";
-    var l = layer.msg('正在生成升级包...', {icon: 16, shade: 0.1, time: 999999});
-
-    var playIds = getAllKey();
-    dojo.xhrPost({url:"playListCreateUpdateZip.action", content:{playListId:data,playIds:playIds}, load:function (resp, ioArgs) {
-            document.getElementById("pbar").src="images/update_processend.gif";
-            succ('生成升级成功');
-            layer.close(l);
-        }, error:function(){
-            error("系统错误");layer.close(l);
-        }});
 }
 
 // 给文本框值
@@ -2154,24 +1713,6 @@ function playListDel(data) {
 		playListQueryAjax();
 	}});
 }
-// 播放列表删除Android
-function playListDelAndroid(data) {
-	if(data == 1){
-		alert("默认列表不可删除！");
-		return false;
-	}
-
-	if (confirm("确认要删除吗?")){
-        dojo.xhrPost({url:"playListDelAndroid.action", content:{playListId:data}, load:function (resp, ioArgs) {
-                layer.msg(resp, {
-                    icon: 1,
-                    time: 800
-                }, function(){
-                    refreshTab();
-                });
-        }});
-    }
-}
 // 更新M7程序
 function playListUpdateDialog(data) {
 	dojo.xhrPost({url:"playListUpdateDialog.action", content:{playListId:data}, load:function (resp, ioArgs) {
@@ -2192,10 +1733,6 @@ function playListConfigDialog(data){
 		var dia = new dialog();
 		dia.show("dialog");
  }});
-}
-// 配置m7 Config.xml 文件 Android
-function playListConfigDialogAndroid(data, title){
-     new dialog().iframe("playListConfigDialogAndroid.action?playListId="+data, {title: title});
 }
 
 // 保存m7 Config.xml 文件
@@ -3986,62 +3523,6 @@ function autoDeal2() {
 	document.location.href = "autoDeal2?weekend="+weekend+"&employeeId=" + employeeId +"&deptId="+deptId+ "&startDate=" + startDate + "&endDate=" + endDate + "&deptIds=" + deptIds + "&key=" + key+ "&amUp=" + amUp+ "&amDown=" + amDown+ "&pmUp=" + pmUp+"&pmDown=" + pmDown+"&num="+num;
 }
 // ================================================================
-// weburl 信息查询添加框
-function weburToAdd(data, title) {
-    new dialog().iframe("weburlToAdd.action", {title:title, full:true,w:'100%',h:'100%'});
-}
-
-// 添加信息查询
-function weburlAdd(){
-	var ue = UE.getEditor('weburl');
-	var webname = document.getElementById("webname").value;
-	var weburl = ue.getContent();//document.getElementById("weburl").value;
-	dojo.xhrPost({url:"weburlAdd.action", content:{name:webname,url:weburl}, load:function (resp, ioArgs) {
-            if (resp.trim() == "") {
-                alert('添加成功');
-                parent.closeDialog();
-                parent.refreshTab();
-            }
-            else{
-                alert(resp);
-            }
-	}});
-}
-// weburl 信息查询更新框
-function weburlToUpate(data, title) {
-    new dialog().iframe("weburlToUpdate.action?id=" + data, {title:title, full:true,w:'100%',h:'100%'});
-}
-// 更新信息查询
-function weburlUpate(){
-	var ue = UE.getEditor('weburl');
-	var webname = document.getElementById("webname").value;
-	var weburl = ue.getContent();
-	var id = document.getElementById("uid").value;
-	dojo.xhrPost({url:"weburlUpdate.action", content:{name:webname,url:weburl,id:id}, load:function (resp, ioArgs) {
-	    if (resp.trim() == "") {
-            alert('修改成功');
-            parent.closeDialog();
-            parent.refreshTab();
-        }
-        else{
-            alert(resp);
-        }
-	}});
-}
-
-// 删除 信息查询
-function weburlDelete(data){
-    if (confirm("确认要删除吗?")){
-        dojo.xhrPost({url:"weburlDelete.action", content:{id:data}, load:function (resp, ioArgs) {
-                layer.msg('删除成功', {
-                    icon: 1,
-                    time: 800
-                }, function(){
-                    refreshTab();
-                });
-        }});
-    }
-}
 // weburl 信息查询 分页
 function weburlPageAjax(data) {
 	$('#pp').pagination('select');
@@ -4054,98 +3535,6 @@ function weburlPage(data) {
 
 
 // ================================================================
-// notice 通知公告添加框
-function noticToAdd(title) {
-    new dialog().iframe("noticeToAdd.action", {title: title,w:'100%',h:"100%",full:true});
-}
-
-// 添加 通知公告
-function noticAdd(){
-	var noticeTitle = document.getElementById("noticeTitle").value;
-	var noticeContent = document.getElementById("noticeContent").value;
-	if (noticeTitle.length==0){
-	    new dialog().warn("标题不能为空!");
-	    return;
-    }
-    if (noticeContent.length==0){
-        new dialog().warn("内容不能为空!");
-        return;
-    }
-	dojo.xhrPost({url:"noticeAdd.action", content:{title:noticeTitle,content:noticeContent}, load:function (resp, ioArgs) {
-            if (resp.trim() == "") {
-                layer.msg('添加成功', {
-                    icon: 1,
-                    time: 800
-                }, function(){
-                    parent.closeDialog();
-                    parent.refreshTab();
-                });
-            }
-            else{
-                layer.msg(resp, {
-                    icon: 2,
-                    time: 800
-                }, function(){
-                });
-            }
-	}});
-}
-// weburl 通知公告 更新框
-function noticToUpate(data, title) {
-    new dialog().iframe("noticeToUpdate.action?id="+data,{title:title,w:'100%',h:"100%",full:true});
-}
-// 更新通知公告
-function noticUpate(){
-	var noticeTitle = document.getElementById("noticeTitle").value;
-	var noticeContent = document.getElementById("noticeContent").value;
-	var id = document.getElementById("nid").value;
-    if (!id){
-        new dialog().warn("系统错误,请重试!");
-        return;
-    }
-    if (noticeTitle.length==0){
-        new dialog().warn("标题不能为空!");
-        return;
-    }
-    if (noticeContent.length==0){
-        new dialog().warn("内容不能为空!");
-        return;
-    }
-
-	dojo.xhrPost({url:"noticeUpdate.action", content:{title:noticeTitle,content:noticeContent,id:id}, load:function (resp, ioArgs) {
-            if (resp.trim() == "") {
-                layer.msg('更新成功', {
-                    icon: 1,
-                    time: 800
-                }, function(){
-                    parent.closeDialog();
-                    parent.refreshTab();
-                });
-            }
-            else{
-                layer.msg(resp, {
-                    icon: 2,
-                    time: 800
-                }, function(){
-                });
-            }
-	}});
-}
-
-// 删除 通知公告
-function noticDelete(data){
-    if (confirm("确实要删除吗?")){
-        dojo.xhrPost({url:"noticeDelete.action", content:{id:data}, load:function (resp, ioArgs) {
-                layer.msg('删除成功', {
-                    icon: 1,
-                    time: 800
-                }, function(){
-                    refreshTab();
-                });
-            }});
-    }
-}
-
 // advice 通知公告 分页
 function noticPageAjax(data) {
 // var name = document.getElementById("keyword").value;
@@ -4208,7 +3597,7 @@ function adviceUpate(){
 function adviceDelete(data){
 	if(confirm("确定要删除吗?")){
         dojo.xhrPost({url:"adviceDelete.action", content:{id:data}, load:function (resp, ioArgs) {
-                layer.msg('删除成功', {
+                layer.msg(confirmdelsuccstr, {
                     icon: 1,
                     time: 800
                 }, function(){
@@ -4345,7 +3734,7 @@ function batchAdd(){
 
 // 删除 通知公告
 function batchDelete(data){
-    if (confirm("确实要删除吗?")){
+    if (confirm(confirmtodelstr)){
         dojo.xhrPost({url:"batchDelete.action", content:{id:data}, load:function (resp, ioArgs) {
                 layer.msg(resp, {
                     icon: 1,
@@ -4379,13 +3768,9 @@ function deviceToAdd(id,title) {
 }
 
 function deviceDelete(data){
-    if (confirm("确实要删除吗?")){
+    if (confirm(confirmtodelstr)){
         dojo.xhrPost({url:"deviceDelete.action", content:{id:data}, load:function (resp, ioArgs) {
-            console.log("批次删除"+resp);
-                layer.msg('删除成功', {
-                    icon: 1,
-                    time: 800
-                }, function(){
+                succ(confirmdelsuccstr, function(){
                     refreshTab();
                 });
             }});
@@ -4462,7 +3847,6 @@ function initPager(_count, _curr, _limit){
                     var _newUrl = replaceUrlParams(myURL, { pageSize: obj.limit, currentPage:obj.curr });
                     if(parent.qc&&parent.qc.main.mainTabs){
                         var currTab = parent.qc.main.mainTabs.tabs('getSelected');
-                        console.log("创建层1");
                         parent.qc.main.mainTabs.tabs('update', {
                             tab : currTab,
                             options : {
@@ -4481,8 +3865,6 @@ function initPager(_count, _curr, _limit){
         });
     });
 }
-
-
 
 function getQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -4508,7 +3890,7 @@ function sleep (time) {
 }
 
 function lsubmit(url, data, cb){
-    var l = layer.msg('加载中', {icon: 16, shade: 0.1, time: 999999}, function(){
+    var l = layer.msg(loadingstr, {icon: 16, shade: 0.1, time: 999999}, function(){
     });
 
     $.ajax({
@@ -4524,14 +3906,14 @@ function lsubmit(url, data, cb){
 }
 
 function lalert(msg){
-    layer.msg(msg, {icon: 4, time: 5800});
+    layer.msg(msg, {icon: 5, time: 2000});
 }
 
 function lalert2(msg, yesclick){
     layer.alert(msg, {icon: 6});
     layer.msg(msg, {
         time: 0 //不自动关闭
-        ,btn: ['确定']
+        ,btn: [confirmstr]
         ,yes: function(index){
             layer.close(index);
             if(yesclick)yesclick();
@@ -4541,7 +3923,7 @@ function lalert2(msg, yesclick){
 
 function lconfirm(msg, yescall){
     layer.confirm(msg, {
-        btn: ['确认','取消'] //按钮
+        btn: [confirmstr,cancelstr] //按钮
     }, function(){
         if(yescall)
             yescall();
