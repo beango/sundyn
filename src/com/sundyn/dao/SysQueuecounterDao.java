@@ -18,7 +18,7 @@ import java.util.List;
  * @author oKong
  * @since 2018-09-11
  */
-public interface SysQueuecounterDao extends BaseMapper<SysQueuecounter> {
+public interface SysQueuecounterDao extends MainDao<SysQueuecounter> {
     @Select("selectListEx")
     List<SysQueuecounter> selectListEx(Page<SysQueuecounter> page, @Param("ew") Wrapper<SysQueuecounter> wrapper);
 }

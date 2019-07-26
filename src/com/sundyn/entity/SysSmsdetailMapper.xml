@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.SysSmsdetailDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, smId, mobile, content, deptid, deptname, ywlsh, type, sendtime, sendresult, rptdesc, rpttime, ctime, cuser, senddesc
+    </sql>
+
+    <select id="selectListEx" resultType="Map">
+       SELECT sys_smsdetail.*, v_queuedetail.deptname, sys_queuehall.hallname
+        FROM dbo.sys_smsdetail LEFT JOIN dbo.v_queuedetail on sys_smsdetail.ywlsh=v_queuedetail.ywlsh
+        LEFT JOIN dbo.sys_queuehall on v_queuedetail.hallno = sys_queuehall.hallno
+        WHERE 1=1 ${ew.sqlSegment}
+    </select>
+
+    <select id="querypagemap" resultType="Map">
+       SELECT sys_smsdetail.*
+        FROM dbo.sys_smsdetail
+        WHERE 1=1 ${ew.sqlSegment}
+    </select>
+
+</mapper>

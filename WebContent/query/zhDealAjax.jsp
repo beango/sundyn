@@ -51,27 +51,27 @@
         <label class="layui-form-label" style="width:90px;"><s:text name='sundyn.query.selectEmployee'/></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
-        <input id="deptSel" class="scinput" type="text" readonly value="<%=request.getParameter("deptname")==null||request.getParameter("deptname").equals("")?"全部":request.getParameter("deptname")%>" style="width:120px;" onclick="showDeptTree(this,null);" />
+        <input id="deptSel" class="scinput" type="text" readonly value="${param.getOrDefault("deptname", main_all)}" style="width:120px;" onclick="showDeptTree(this,null);" />
     </div>
     <div class="layui-inline">
         <label class="layui-form-label"><s:text name='sundyn.total.startDate'/></label>
         <div class="layui-input-inline">
             <input type="text" class="scinput" id="startDate" value="${startDate}"
-                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})"/>
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label"><s:text name='sundyn.total.endDate'/></label>
         <div class="layui-input-inline">
             <input type="text" class="scinput" id="endDate" value="${endDate}"
-                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})"/>
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label" style="width: 100px;"><s:text name='sundyn.query.selectResult'/></label>
         <div class="layui-input-inline" style="width:120px;">
             <select id="result" class="select2">
-                <option value="" <c:if test="${keys == \"\"}">selected="selected"</c:if>>--全部--</option>
+                <option value="" <c:if test="${keys == \"\"}">selected="selected"</c:if>><s:text name="main.all"/></option>
                 <c:forEach items="${keyList}" var="key" varStatus="index">
                     <option value="${key.keyNo}"
                             <c:if test="${keys == key.keyNo.toString()}">selected="selected"</c:if>>${key.name}</option>
@@ -80,14 +80,14 @@
         </div>
     </div>
     <div class="layui-inline">
-        <label class="layui-form-label">业务名称：</label>
+        <label class="layui-form-label"><s:text name="serial.field.serialname"/></label>
         <div class="layui-input-inline">
             <input type="text" class="scinput" id="bizname" name="bizname" value="<%=request.getParameter("bizname")==null?"":request.getParameter("bizname")%>" />
         </div>
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">
-            <img src="<s:text name='sundyn.total.pic.query'/>" width="81" height="25" style="cursor: pointer;" onclick="queryZhDeal1()" class="hand"/>
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="queryZhDeal1()" value="<s:text name="main.query" />" />
         </div>
     </div>
     <table width="100%" class="tablelist">
@@ -100,18 +100,18 @@
                 <s:text name='sundyn.column.atDating'/>
             </th>
             <th style="text-align: center;">
-                业务名称
+                <s:text name='sundyn.column.atSerial'/>
             </th>
             <th style="text-align: center;">
-                排队号码
+                <s:text name='sundyn.column.atQueue'/>
             </th>
             <th style="text-align: center;">
-                取号类型
+                <s:text name='sundyn.column.tickettype'/>
             </th>
             <th style="text-align: center;">
-                取号／叫号时间／等待时长
+                <s:text name='sundyn.column.tickettime'/>／<s:text name='sundyn.column.calltime'/>／<s:text name='sundyn.column.waittime'/>
             </th>
-            <th style="text-align: center;">办理／办结时间</th>
+            <th style="text-align: center;"><s:text name='sundyn.column.processtime'/>／<s:text name='sundyn.column.endtime'/></th>
             <th style="text-align: center;">
                 <s:text name='sundyn.column.appriesResult'/>
             </th>
@@ -119,7 +119,7 @@
                 <s:text name="sundyn.inquiry.result.obtainEvidence"/>
             </th>
             <th style="text-align: center;">
-                状态
+                <s:text name='sundyn.column.status'/>
             </th>
         </tr>
         </thead>
@@ -139,19 +139,21 @@
                         ${query.queuenum}
                 </td>
                 <td align="center">
-                    <c:if test="${query.queuetype==0}">现场号</c:if><c:if test="${query.queuetype==1}">预约号</c:if><c:if test="${query.queuetype==2}">线上取号</c:if>
+                    <c:if test="${query.queuetype==0}"><s:text name="queuedetail.queuetype.scene"/></c:if>
+                    <c:if test="${query.queuetype==1}"><s:text name="queuedetail.queuetype.reservation"/></c:if>
+                    <c:if test="${query.queuetype==2}"><s:text name="queuedetail.queuetype.online"/></c:if>
                 </td>
                 <td align="left">
                     <label style="height:20px;"><fmt:formatDate value="${query.tickettime}" type="both" /></label><c:if test="${query.hjtime!=null}">　／　<label style="height:20px;"><fmt:formatDate value="${query.hjtime}" type="both" /></label></c:if>
                     <c:if test="${query.hjtime==null}">　／　-- </c:if>
-                    <c:if test="${query.waittimename!=null}">　／　${query.waittimename.replace("0天00时00分","").replace("0天00时","").replace("0天","")}</c:if><c:if test="${query.waitout}"><font style="color:red;">(等候超时)</font></c:if>
+                    <c:if test="${query.waittimename!=null}">　／　${query.waittimename}</c:if><c:if test="${query.waitout}"><font style="color:red;">(<s:text name="queuedetail.waittimeout"/>)</font></c:if>
                     <c:if test="${query.waittimename==null}">　／　-- </c:if>
                 </td>
                 <td>
                     <c:if test="${query.starttime==null}">--</c:if>
                     <label style="height:20px;"><fmt:formatDate value="${query.starttime}" type="both" /></label><c:if test="${query.endtime!=null}">　／　<label style="height:20px;"><fmt:formatDate value="${query.endtime}" type="both" /></label></c:if>
                     <c:if test="${query.endtime==null}">　／　-- </c:if>
-                    <c:if test="${query.servicetimename!=null}">　／　${query.servicetimename.replace("0天00时00分","").replace("0天00时","").replace("0天","")}</c:if><c:if test="${query.serviceout}"><font style="color:red;">(办理超时)</font></c:if>
+                    <c:if test="${query.servicetimename!=null}">　／　${query.servicetimename}</c:if><c:if test="${query.serviceout}"><font style="color:red;">(<s:text name="queuedetail.processout"/>)</font></c:if>
                     <c:if test="${query.servicetimename==null}">　／　-- </c:if>
                 </td>
                 <td align="center">
@@ -159,7 +161,7 @@
                 </td>
                 <td align="center">
                     <c:if test="${not empty query.imgfile}">
-                        <a class="layui-btn layui-btn-sm" href="${pageContext.request.contextPath }/download/recorder/${query.imgfile}" target="_blank" >截图</a>
+                        <a class="layui-btn layui-btn-sm" href="${pageContext.request.contextPath }/download/recorder/${query.imgfile}" target="_blank" ><s:text name="queuedetail.cutimg"/></a>
                     </c:if>
                     <c:if test="${empty query.videofile}">
                         <s:text name="sundyn.inquiry.result.noVideo"/>
@@ -202,9 +204,7 @@
 <script type="text/javascript">
     initPager(${pager.getRowsCount()}, ${pager.getCurrentPage()}, ${pager.getPageSize()});
 
-    layui.use('form', function () {
-        var form = layui.form;
-    });
+    layui.use('form');
 
     $(document).ready(function () {
         initTree("?depttype=3", '${qs_deptval}');

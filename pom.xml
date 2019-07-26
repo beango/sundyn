@@ -200,7 +200,18 @@
             <version>1.4</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>com.tencent.mm.opensdk</groupId>
+            <artifactId>wechat-sdk-android-with-mta</artifactId>
+            <version>5.4.0</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
         <!--<dependency>
             <groupId>org.apache.struts</groupId>
             <artifactId>struts2-convention-plugin</artifactId>

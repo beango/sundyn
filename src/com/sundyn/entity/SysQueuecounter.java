@@ -63,11 +63,11 @@ public class SysQueuecounter extends Model<SysQueuecounter> {
         this.counterno = counterno;
     }
 
-    @Size(min=1,message = "窗口号不能为空")
+    @Size(min=1,message = "{counter.valid.counterno.notnull}")
     private String counterno;
     private String counterid;
     private String busno;
-    @Size(min=1,message = "窗口名不能为空")
+    @Size(min=1,message = "{counter.valid.countername.notnull}")
     private String countername;
     private String pysicalcallpadaddr;
     private String counterledaddr;

@@ -17,15 +17,9 @@
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
-    <script type="text/javascript" src="lib/layui/layui.all.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script type="text/javascript" src="js/myAjax.js"></script>
     <script type="text/javascript" src="js/application.js?1"></script>
-    <script language="javascript" type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
-    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.core.js"></script>
-    <script type="text/javascript" src="lib/ztree/js/jquery.ztree.excheck.js"></script>
-    <style type="text/css">
-        ul.ztree {margin-top: 10px;border: 1px solid #617775;background: #f0f6e4;width:420px;height:360px;overflow-y:scroll;overflow-x:auto;}
-    </style>
 </head>
 <body>
 <script type="text/javascript">
@@ -45,7 +39,7 @@
 <input type="hidden" id="deptId" value="${deptId}"/>
 <div class="layui-form">
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label" style="width:60px;">设备名：</label>
+        <label class="layui-form-label" style="width:60px;"><s:text name="sysdevices.field.name"/></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
         <div class="layui-input-inline">
@@ -54,20 +48,18 @@
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">
-            <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" onclick="query('')" class="hand" style="vertical-align: middle;cursor:pointer;"/>
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="query('')" value="<s:text name="main.query" />" />
         </div>
     </div>
     <div>
         <table class="tablelist">
             <thead>
             <tr>
-                <th style="text-align: center;">序号</th>
-                <th style="text-align: center;">
-                    设备名 / 设备标识
-                </th>
-                <th style="text-align: center;">状态</th>
-                <th style="text-align: center;">设备描述</th>
-                <th style="text-align: center;">状态更新时间</th>
+                <th style="text-align: center;"><s:text name="main.column.seq"/></th>
+                <th style="text-align: center;"><s:text name="sysdevices.column.identity"/></th>
+                <th style="text-align: center;"><s:text name="sysdevices.column.status"/></th>
+                <th style="text-align: center;"><s:text name="sysdevices.column.desc"/></th>
+                <th style="text-align: center;"><s:text name="sysdevices.column.updatetime"/></th>
             </tr>
             </thead>
             <tbody>
@@ -90,7 +82,6 @@
                         <td style="text-align: center;">
                             <label style="height:20px;"><fmt:formatDate value="${data.lastonlinetime}" type="both" /></label>
                         </td>
-
                         <td>
                             <c:if test="{data.endtime!=null}">　／　</c:if><label style="height:20px;"><fmtformatDate value="{data.endtime}" type="both" /></label>
                         </td>

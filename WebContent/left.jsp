@@ -40,16 +40,26 @@
 <body style="background:#f0f9fd;">
 <%
 String id = request.getParameter("id");
+String menualert = "监控与预警";
 List menuList = (List)request.getAttribute("json");
-if (StringUtils.isBlank(id)){//参数没有指定显示哪个模块的菜单，找到第一个模块并显示其菜单
+if (StringUtils.isBlank(id)){//参数没有指定显示哪个模块的菜单，默认显示监控与预警
     for (int i=0; i< menuList.size(); i++){
         Map m = (Map)menuList.get(i);
-        if (m.get("parentId").toString().equals("0")) {
+        if(menualert.equals(m.get("text").toString())){
             id = m.get("id").toString();
             break;
         }
     }
 }
+    if (StringUtils.isBlank(id)){//参数没有指定显示哪个模块的菜单，找到第一个模块并显示其菜单
+        for (int i=0; i< menuList.size(); i++){
+            Map m = (Map)menuList.get(i);
+            if (m.get("parentId").toString().equals("0")) {
+                id = m.get("id").toString();
+                break;
+            }
+        }
+    }
     request.setAttribute("pid", id);
 %>
 <dl class="leftmenu">
@@ -93,7 +103,7 @@ if (StringUtils.isBlank(id)){//参数没有指定显示哪个模块的菜单，�
         $(document).ready(function () {
             var firstUrl = $(".leftmenu .menuson li:eq(0) a").attr("href");
             var isHome = '<%=request.getParameter("isHome")%>';
-            if(isHome != 'null')
+            //if(isHome != 'null')
             {
                 $(".leftmenu .menuson li:eq(0) a").trigger("click");
                 $("#rightFrame", window.parent.document).attr("src", firstUrl);

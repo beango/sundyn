@@ -23,7 +23,7 @@
                 data: $("form").serialize(),
                 success: function(resp) {
                     if(resp.trim()==""){
-                        succ($("#id").val() == '' ? '增加成功' : "修改成功", function(){
+                        succ($("#id").val() == '' ? '<s:text name="main.add.succ"/>' : "<s:text name="main.save.succ"/>", function(){
                             parent.closeDialog();
                             parent.refreshTab();
                         });
@@ -43,25 +43,25 @@
     <input type="hidden" name="level" id="level" value="${entity.level==null?0:entity.level}" />
     <input type="hidden" name="isenable" id="isenable" value="${entity.isenable==null?0:entity.isenable}" />
     <div class="layui-form-item">
-        <label class="layui-form-label">机构姓名：</label>
+        <label class="layui-form-label"> <s:text name="proxyorg.field.name" /></label>
         <div class="layui-input-inline">
             <input type="text" name="orgname" id="orgname" class="layui-input" value="${entity.orgname}"/>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">机构识别号码：</label>
+        <label class="layui-form-label"><s:text name="proxyorg.field.no" /></label>
         <div class="layui-input-inline">
             <input type="text" name="orgcode" id="orgcode" class="layui-input" value="${entity.orgcode}" />
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">联系人：</label>
+        <label class="layui-form-label"><s:text name="proxyorg.field.contact" /></label>
         <div class="layui-inline">
             <input type="text" name="mainname" id="mainname" class="layui-input" value="${entity.mainname}" />
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">联系方式：</label>
+        <label class="layui-form-label"><s:text name="proxyorg.field.contactphone" /></label>
         <div class="layui-inline">
             <input type="text" name="maintel" id="maintel" class="layui-input" value="${entity.maintel}" />
         </div>
@@ -69,15 +69,12 @@
     <div class="layui-form-item">
         <label class="layui-form-label"></label>
         <div class="layui-input-inline">
-            <input type="button" class="layui-btn" value="提交" onclick="formPost()" />
+            <input type="button" class="layui-btn" value="<s:text name="main.save" />" onclick="formPost()" />
         </div>
     </div>
 </form>
 <script type="text/javascript">
-    layui.use(['form', 'element'], function() {
-        var form = layui.form;
-    });
-
+    layui.use(['form', 'element']);
 </script>
 </body>
 </html>

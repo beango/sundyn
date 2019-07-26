@@ -8,31 +8,125 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" href="${ctx}/css/common_<s:text name='sundyn.language' />.css" type="text/css" />
-		<link rel="stylesheet" href="${ctx}/css/dialog.css" type="text/css" />
-		<link rel="stylesheet" href="${ctx}/css/dtree.css" type="text/css" />
+        <link rel="stylesheet" href="lib/layui/css/layui.2.4.5.css" media="all">
+        <link rel="stylesheet" href="css/admin2.css" media="all">
+        <link rel="stylesheet" href="css/login2.css" media="all">
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/mmain.js"></script>
+        <script type="text/javascript" src="js/my_<s:text name='sundyn.language' />.js"></script>
 		<title><s:text name='zx.title'/></title>
-        <script type="text/javascript" src="${ctx}/js/jquery.js"></script>
-		<script type="text/javascript" src="${ctx}/js/ddtree.js"></script>
-		<script type="text/javascript" src="${ctx}/js/dojo.js"></script>
-		<script type="text/javascript" src="${ctx}/js/dialog.js"></script>
-		<script type="text/javascript" src="${ctx}/js/my_<s:text name='sundyn.language' />.js"></script>
-		<style type="text/css">
-		 table{
-		  border: 0px solid red;
-		 }
-		 td{
-		   border: 0px solid red;
-		 }
-		
-		</style>
-		
 	</head>
-	<body>
-	<script>
-	</script>
+	<body style="background-image:image('imagesm/bg.jpg') repeat">
+    <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
+        <div class="layadmin-user-login-main">
+            <div class="layadmin-user-login-box layadmin-user-login-header">
+                <h2>账号注册</h2>
+                <p></p>
+            </div>
+            <form>
+                <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+
+                    <div class="layui-form-item">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-nickname"></label>
+                        <input type="text" name="name" id="name" placeholder="账号" class="layui-input">
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
+                        <input type="password" name="password" id="password" placeholder="密码" class="layui-input">
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-repass"></label>
+                        <input type="password" name="password2" id="password2" placeholder="确认密码" class="layui-input">
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-cellphone" for="LAY-user-login-cellphone"></label>
+                        <input type="text" name="cellphone" id="cellphone" placeholder="手机" class="layui-input">
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-cellphone" for="LAY-user-login-cellphone"></label>
+                        <input type="text" name="contact" value="" placeholder="联系人" class="layui-input">
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-cellphone" for="LAY-user-login-cellphone"></label>
+                        <input type="text" name="realname" value="" placeholder="真实姓名" class="layui-input" >
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-cellphone" for="LAY-user-login-cellphone"></label>
+                        <input type="text" name="orgname" value="" placeholder="公司名称" class="layui-input">
+                    </div>
+                    <%--<div class="layui-form-item">
+                        <input type="checkbox" name="agreement" lay-skin="primary" title="同意用户协议" checked>
+                    </div>--%>
+                    <div class="layui-form-item">
+                        <input type="button" class="layui-btn layui-btn-fluid" onclick="reg()" value="注 册"></input>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript" src="lib/layui/layui.js"></script>
+    <script>
+        layui.use("layer");
+        if (browserRedirect()){
+            location.href="mregister.action";
+        }
+        function reg() {
+            var name = $("#name").val();
+            var password = $("#password").val();
+            var password2 = $("#password2").val();
+            var cellphone = $("#cellphone").val();
+            var contact = $("#contact").val();
+            var realname = $("#realname").val();
+            var orgname = $("#orgname").val();
+            if ("" == name){
+                return error("账号不能为空！");
+            }
+            if ("" == password){
+                return error("密码不能为空！");
+            }
+            if ("" == password2){
+                return error("确认密码不能为空！");
+            }
+            if(password !== password2){
+                return error('两次密码输入不一致！');
+            }
+            if(cellphone == ""){
+                return error('手机不能为空！');
+            }
+            if(contact == ""){
+                return error('联系人不能为空！');
+            }
+            if(realname == ""){
+                return error('真实姓名不能为空！');
+            }
+            if(orgname == ""){
+                return error('公司名称不能为空！');
+            }
+            //请求接口
+            $.ajax({
+                url: 'registerPost.action' //实际使用请改成服务端真实接口
+                ,type: "POST"
+                ,data: $("form").serialize()
+                ,success: function(res){
+                    console.log(res)
+                    if(res.succ){
+                        succ(res.msg, function(){
+                            location.href = 'login.jsp'; //跳转到登入页
+                        });
+                    }
+                    if (res.succ === false)
+                        error(res.msg);
+                }
+            });
+        }
+    </script>
+
+
+
+
+<%--
+
  	   <div id="man_zone">
- 	   <div class="fengge" style="height: 49px;"></div>
  	   	  <div class="register_top"></div>
  	   	  <div class="register_2">
  	   	    <table width="463" border="0" cellspacing="0" cellpadding="0" style="border:0px; "   >
@@ -59,6 +153,6 @@
  	   	  </div>
  	   </div>
 		<div id="dialog" style="width: 600px; display: none;">
-		</div>
+		</div>--%>
 	</body>
 </html>

@@ -150,11 +150,11 @@ td {
 				     <table width="75%" height="150" border="0" cellpadding="0" cellspacing="0" style="border-color:#FFFFFF;">
  					  <tr>
 					    <td align="right" style="border-color:#FFFFFF;"><s:text name='sundyn.total.startDate'/></td>
-					    <td align="left" style="border-color:#FFFFFF;"><input type="text" id="startDate" <s:text name="sundyn.language.calendar.setDay"/> onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /></td>
+					    <td align="left" style="border-color:#FFFFFF;"><input type="text" id="startDate" <s:text name="sundyn.language.calendar.setDay"/> onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})" /></td>
 					  </tr>
 					  <tr>
 					    <td align="right" style="border-color:#FFFFFF;"><s:text name='sundyn.total.endDate'/></td>
-					    <td align="left" style="border-color:#FFFFFF;"><input type="text" id="endDate" <s:text name="sundyn.language.calendar.setDay"/> onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" /></td>
+					    <td align="left" style="border-color:#FFFFFF;"><input type="text" id="endDate" <s:text name="sundyn.language.calendar.setDay"/> onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})" /></td>
 					  </tr>
 					  <tr>
 					    <td align="right" style="border-color:#FFFFFF;"><s:text name='sundyn.total.selectDating'/></td>

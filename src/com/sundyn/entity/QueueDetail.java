@@ -1,16 +1,18 @@
 package com.sundyn.entity;
 
-import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.annotations.Version;
-
+import com.opensymphony.xwork2.util.LocalizedTextUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.apache.struts2.ServletActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * <p>
@@ -87,14 +89,21 @@ public class QueueDetail extends Model<QueueDetail> {
         if(this.status==null)
             return null;
         StatusNameEnum e = StatusNameEnum.codeOf(this.status);
-        if (e!=null)
-            return e.msg;
+        if (e!=null){
+            HttpServletRequest req = ServletActionContext.getRequest();
+            String str = LocalizedTextUtil.findDefaultText(e.getMsg(), (Locale)req.getAttribute("Locale"));
+            return str;
+        }
+
         return null;
     }
     public static String getStatusname(int status) {
         StatusNameEnum e = StatusNameEnum.codeOf(status);
-        if (e!=null)
-            return e.msg;
+        if (e!=null){
+            HttpServletRequest req = ServletActionContext.getRequest();
+            String str = LocalizedTextUtil.findDefaultText(e.getMsg(), (Locale)req.getAttribute("Locale"));
+            return str;
+        }
         return null;
     }
     @TableField(exist = false)
@@ -171,8 +180,10 @@ public class QueueDetail extends Model<QueueDetail> {
     }
 
     public enum QueueTypeEnum {
+        Y(0, "queuedetail.queuetype.scene"),
+        N(1, "queuedetail.queuetype.reservation"),
+        S(2, "queuedetail.queuetype.online");
 
-        Y(0, "现场号"), N(1, "预约号"), S(2, "线上取号");
         private int code;
 
         private String msg;
@@ -208,7 +219,10 @@ public class QueueDetail extends Model<QueueDetail> {
     }
     public enum StatusNameEnum {
 
-        Y(0, "未呼叫"), N(1, "未办理"), S(2, "已受理"), D(-1, "弃号");
+        Y(0, "queuedetail.status.nocall"),
+        N(1, "queuedetail.status.noprocess"),
+        S(2, "queuedetail.status.processed"),
+        D(-1, "queuedetail.status.canceled");
         private int code;
 
         private String msg;

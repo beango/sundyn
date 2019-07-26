@@ -1,5 +1,8 @@
 package com.sundyn.vo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
 public class ManagerVo
@@ -19,7 +22,13 @@ public class ManagerVo
     private Date pwdexpried;
     private String idcard;
     private String userid;
+    @Getter @Setter
+    private String telphone;
     private Integer cuser;
+    @Getter @Setter
+    private String contact;
+    @Getter @Setter
+    private String orgname;
 
     public Integer getCuser() {
         return cuser;

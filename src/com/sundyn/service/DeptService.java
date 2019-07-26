@@ -1,18 +1,18 @@
 package com.sundyn.service;
 
 import com.sundyn.cache.CacheManager1;
+import com.sundyn.cer.CertifacateGenerate;
 import com.sundyn.dao.SuperDao;
 import com.sundyn.util.EhCacheHelper;
 import com.sundyn.util.impl.util;
 import com.sundyn.utils.StringUtils;
 import com.sundyn.vo.DeptVo;
+import org.apache.struts2.ServletActionContext;
 import org.jsoup.helper.StringUtil;
 
+import java.io.File;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DeptService extends SuperDao
 {
@@ -853,5 +853,33 @@ public class DeptService extends SuperDao
         catch (Exception e) {
             return null;
         }
+    }
+
+    public boolean DeviceCer(String mac, String batchname){
+        try{
+            String rootpath= ServletActionContext.getServletContext().getRealPath("/");
+            CertifacateGenerate cer = new CertifacateGenerate();
+            String userCerPub = rootpath + "WEB-INF/cer/root/test.public";
+            String userCerPri = rootpath + "WEB-INF/cer/root/test.private";
+            System.out.println(userCerPub);
+            if (!new File(userCerPub).exists() || !new File(userCerPri).exists()){
+                //cer.ZhangsanKeyPair(userCerPub,userCerPri);//生成密钥
+                System.out.println(userCerPub);
+                throw new Exception("test.public证书不存在");
+            }
+
+            String dnuser = "CN="+mac+",OU="+batchname+",O="+batchname+",L=GuangZhou,ST=GuangDong,C=CN";
+            cer.GenZhangsanCert(rootpath +"WEB-INF/cer/"+mac+".cer",new Date(System.currentTimeMillis()+ 3650*100 * 24 * 60 * 60 * 1000), userCerPub,dnuser);//生成用户证书
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean licenseXF(int id) {
+        String sql = "update appries_device set isxf=1 where id=?";
+        return this.getJdbcTemplate().update(sql, new Object[]{id}) > 0;
     }
 }

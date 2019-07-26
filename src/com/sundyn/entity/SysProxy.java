@@ -1,17 +1,16 @@
 package com.sundyn.entity;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.activerecord.Model;
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.annotations.Version;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -80,6 +79,7 @@ public class SysProxy extends Model<SysProxy> {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String idtype;
+    @Size(min=1,message = "{proxy.valid.no.notnull}")
     private String idcard;
     private String name;
     private Date ctime;

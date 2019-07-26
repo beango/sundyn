@@ -18,7 +18,7 @@ import java.util.List;
  * @author oKong
  * @since 2018-09-07
  */
-public interface SysQueueserialDao extends BaseMapper<SysQueueserial> {
+public interface SysQueueserialDao extends MainDao<SysQueueserial> {
     @Select("selectListEx")
     List<SysQueueserial> selectListEx(Page<SysQueueserial> page, @Param("ew") Wrapper<SysQueueserial> wrapper);
 }

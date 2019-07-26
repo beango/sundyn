@@ -7,8 +7,7 @@
         <interceptors>
             <interceptor name="userCheckR" class="com.sundyn.util.UserCheckR"></interceptor>
             <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
-            <interceptor name="registerCheck"
-                         class="registerCheck">
+            <interceptor name="registerCheck" class="registerCheck">
             </interceptor>
             <interceptor-stack name="mydefault">
                 <interceptor-ref name="operationInterceptor" />
@@ -62,6 +61,10 @@
                 method="deptGenCer">
             <result name="success">/dept/json.jsp</result>
             <result name="camera">/dept/editDialog_camera.jsp</result>
+        </action>
+		<action name="licenseXF" class="deptAction"
+                method="licenseXF">
+            <result name="success">/dept/json.jsp</result>
         </action>
 		<action name="deptEditItem" class="deptAction"
 			method="deptEditItem">

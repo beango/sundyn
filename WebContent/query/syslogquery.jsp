@@ -46,32 +46,30 @@
 <input type="hidden" id="deptId" value="${deptId}"/>
 <div class="layui-form">
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label" style="width:43px;">用户：</label>
-        <div class="layui-form-mid layui-word-aux">
-        </div>
+        <label class="layui-form-label" style="width:63px;"><s:text name="syslog.field.user" /></label>
         <div class="layui-input-inline">
-            <input id="managername" class="scinput" type="text" value="<%=request.getParameter("managername")==null?"":request.getParameter("managername")%>" style="width:120px;" />
+            <input id="managername" class="scinput" type="text" value="${param.get("managername")}" style="width:120px;" />
         </div>
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">
-            <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" onclick="query('')" class="hand" style="vertical-align: middle;cursor:pointer;"/>
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="query('')" value="<s:text name="main.query" />" />
         </div>
     </div>
     <div>
         <table class="tablelist">
             <thead>
             <tr>
-                <th style="text-align: center;">序号</th>
+                <th style="text-align: center;"><s:text name="main.column.seq"/></th>
                 <th style="text-align: center;">
-                    用户
+                    <s:text name="syslog.column.name"/>
                 </th>
-                <th style="text-align: center;">模块</th>
-                <th style="text-align: center;">页面操作</th>
-                <th style="text-align: center;">类型</th>
-                <th style="text-align: center;">IP地址</th>
-                <th style="text-align: center;">时间</th>
-                <th style="text-align: center;">描述</th>
+                <th style="text-align: center;"><s:text name="syslog.column.moudle"/></th>
+                <th style="text-align: center;"><s:text name="syslog.column.action"/></th>
+                <th style="text-align: center;"><s:text name="syslog.column.type"/></th>
+                <th style="text-align: center;"><s:text name="syslog.column.ip"/></th>
+                <th style="text-align: center;"><s:text name="syslog.column.time"/></th>
+                <th style="text-align: center;"><s:text name="syslog.column.desc"/></th>
             </tr>
             </thead>
             <tbody>

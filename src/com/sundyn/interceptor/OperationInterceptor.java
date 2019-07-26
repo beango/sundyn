@@ -10,10 +10,12 @@ import com.sundyn.service.IAppriesMenuService;
 import com.sundyn.service.IAuditLogService;
 import com.sundyn.service.ManagerService;
 import com.sundyn.util.impl.util;
+import com.sundyn.vo.LogTypeEnum;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -38,14 +40,15 @@ public class OperationInterceptor extends AbstractInterceptor {
             "authDeptTree",
             "menuQueryJson",
             "deptReg",
-            "authQueryJSON"
+            "authQueryJSON",
+            "loginmsg","errorProcessor","authDeptTree"
     };
 
     private static HashMap<String,String> actionNameMap = new HashMap<String, String>(){{
         put("managerLogin", "用户登录");
         put("managerLogout", "用户退出");
         put("hall", "大厅管理");
-        put("authDeptTree", "部门组织权树");
+        put("authDeptTree", "部门组织树");
         put("dept", "部门查询");
         put("deptEditDialog", "部门修改");
         put("serial", "业务管理");
@@ -84,6 +87,17 @@ public class OperationInterceptor extends AbstractInterceptor {
             Object key = entry.getKey();
             if (actionname.toLowerCase().contains(key.toString()))
                 return entry.getValue().toString();
+        }
+        return null;
+    }
+
+    private String getMoudleName2(AppriesMenu menu){
+        if (menu == null)
+            return null;
+        List<AppriesMenu> allMenus = appriesMenuService.getAllCache();
+        for (AppriesMenu m : allMenus){
+            if (m.getId().equals(menu.getParentId()))
+                return m.getMenuName();
         }
         return null;
     }
@@ -128,12 +142,14 @@ public class OperationInterceptor extends AbstractInterceptor {
 
         Date startTime = new Date();
         String menuName = "";
-
+        AppriesMenu menu = null;
         try{
             String reqmethod = req.getMethod();
             if (reqmethod.toLowerCase().equals("get") && UserManager!=null){
-                String u = req.getRequestURI().replace("/","");
-                AppriesMenu menu = null;//appriesMenuService.selectOne(new EntityWrapper<AppriesMenu>().like("nav",u));
+                String u = req.getRequestURI();//.replace("/","");
+                String[] uArr = u.split("/");
+                if (uArr.length>1);
+                    u = uArr[uArr.length-1];
                 List<AppriesMenu> allMenus = appriesMenuService.getAllCache();
                 for(AppriesMenu m : allMenus){
                     if (StringUtils.isNotBlank(m.getNav()) && m.getNav().indexOf(u)>-1)
@@ -147,13 +163,15 @@ public class OperationInterceptor extends AbstractInterceptor {
                         t.setName(UserManager.get("name").toString());
                         t.setCtime(new Date());
                         t.setIpadd(util.getRemoteIpAddr());
-                        t.setLogrst("访问非常规业务");
-                        t.setLogtype("访问非常规业务");
+                        t.setLogrst(LogTypeEnum.访问非常规业务.toString());
+                        t.setLogtype(LogTypeEnum.访问非常规业务.getCode());
                         String logdevice = util.getRemoteBowser();
                         if (StringUtils.isBlank(logdevice) && logdevice.length()>150)
                             logdevice = logdevice.substring(0, 149);
                         t.setLogdevice(logdevice);
-                        t.setLogrstdesc("用户"+UserManager.get("name")+"访问非常规业务:\"" + menu.getMenuName() + "\"");
+                        String accessNoGeneral = LocalizedTextUtil.findDefaultText("auditlog.logTypeEnumNotGeneral.desc"
+                                , (Locale)req.getAttribute("Locale"), new Object[]{UserManager.get("name"), menu.getMenuName()});
+                        t.setLogrstdesc(accessNoGeneral);
                         auditLogService.insert(t);
                     }
                     if (menu.getIscore() != null && menu.getIscore() == 1){
@@ -161,13 +179,15 @@ public class OperationInterceptor extends AbstractInterceptor {
                         t.setName(UserManager.get("name").toString());
                         t.setCtime(new Date());
                         t.setIpadd(util.getRemoteIpAddr());
-                        t.setLogrst("访问核心功能");
-                        t.setLogtype("访问核心功能");
+                        t.setLogrst(LogTypeEnum.访问核心功能.toString());
+                        t.setLogtype(LogTypeEnum.访问核心功能.getCode());
                         String logdevice = util.getRemoteBowser();
                         if (StringUtils.isBlank(logdevice) && logdevice.length()>150)
                             logdevice = logdevice.substring(0, 149);
                         t.setLogdevice(logdevice);
-                        t.setLogrstdesc("用户"+UserManager.get("name")+"访问核心功能:\"" + menu.getMenuName() + "\"");
+                        String accessCore = LocalizedTextUtil.findDefaultText("auditlog.logTypeEnumCoreService.desc"
+                                , (Locale)req.getAttribute("Locale"), new Object[]{UserManager.get("name"), menu.getMenuName()});
+                        t.setLogrstdesc(accessCore);
                         auditLogService.insert(t);
                     }
                     AppriesMenu pmenu = null; //appriesMenuService.selectOne(new EntityWrapper<AppriesMenu>().where("id={0}", menu.getParentId()));
@@ -188,7 +208,7 @@ public class OperationInterceptor extends AbstractInterceptor {
                     menuStrs.add(jo);
                 }
                 req.setAttribute("navbar_menuname", menuStrs);//所有上级菜单，用于显示在页面面包屑位置
-                req.setAttribute("Locale", req.getLocale());
+                req.setAttribute("Locale", invocation.getInvocationContext().getLocale());
             }
             //实际方法执行阶段
             invocation.invoke();
@@ -206,14 +226,20 @@ public class OperationInterceptor extends AbstractInterceptor {
                 while(param.length()>0){
                     SysLog log = new SysLog();
                     log.setAction(actionName);
-                    log.setMoudlename(actionNameMap.containsKey(actionName)?actionNameMap.get(actionName).toString():menuName);
-                    if (actionNameMap.containsKey(actionName))
-                        log.setMoudlename(actionNameMap.get(actionName).toString());
-                    else if (StringUtils.isNotBlank(menuName))
-                        log.setMoudlename(menuName);
-                    else {
-                        log.setMoudlename(getMoudleName(actionName));
-                    }
+//                    log.setMoudlename(actionNameMap.containsKey(actionName)?actionNameMap.get(actionName).toString():menuName);
+//                    if (actionNameMap.containsKey(actionName))
+//                        log.setMoudlename(actionNameMap.get(actionName).toString());
+//                    else if (StringUtils.isNotBlank(menuName))
+//                        log.setMoudlename(menuName);
+//                    else {
+//                        log.setMoudlename(getMoudleName(actionName));
+//                    }
+
+                    //System.out.println("1: " + menuName + ", 2: " + actionName);
+                    String moudleName = getMoudleName2(menu);
+                    //System.out.println("1: " + menuName + ", 2: " + actionName + ", 3: " + moudleName);
+                    log.setMoudlename(moudleName);
+
                     if (StringUtils.isNotBlank(req.getParameter("aname")))
                         log.setActionname(req.getParameter("aname"));
                     else
@@ -231,7 +257,8 @@ public class OperationInterceptor extends AbstractInterceptor {
                     log.setIpaddress(ipaddr);
                     log.setManagerid(userid);
                     log.setActionmethod(req.getMethod());
-                    log.setNote("处理时长：" + costTime);
+                    String Processingtime = LocalizedTextUtil.findDefaultText("main.handletime", (Locale)req.getAttribute("Locale"));
+                    log.setNote(Processingtime + costTime);
                     log.insert();
                 }
             }

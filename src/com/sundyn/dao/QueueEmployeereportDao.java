@@ -16,7 +16,7 @@ import java.util.List;
  * @author huangding
  * @since 2018-09-21
  */
-public interface QueueEmployeereportDao extends BaseMapper<QueueEmployeereport> {
+public interface QueueEmployeereportDao extends MainDao<QueueEmployeereport> {
 
     List<QueueEmployeereport> report_queueemployee(Page<QueueEmployeereport> page, @Param("ew") Wrapper<QueueEmployeereport> wrapper);
 }

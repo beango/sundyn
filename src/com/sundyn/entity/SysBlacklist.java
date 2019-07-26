@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -79,6 +80,7 @@ public class SysBlacklist extends Model<SysBlacklist> {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String idtype;
+    @Size(min=1,message = "{black.valid.no.notnull}")
     private String idcard;
     private String name;
     private Date ctime;

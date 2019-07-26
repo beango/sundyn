@@ -107,7 +107,9 @@
                         <div class="center_04_right_03">
                             <table width="60%" border="0" cellspacing="0" cellpadding="0" style="border-color:#d6ecf8">
                                 <tr>
-                                    <td width="40%" align="right" style="border-color:#d6ecf8" colspan="3"><img src="<s:text name='sundyn.total.pic.query'/>" width="81" height="25" style="cursor: pointer;" onclick="queryZhDeal1()" class="hand" /></td>
+                                    <td width="40%" align="right" style="border-color:#d6ecf8" colspan="3">
+                                        <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="queryZhDeal1()" value="<s:text name="main.query" />" />
+                                    </td>
                                 </tr>
                             </table>
                         </div>

@@ -181,8 +181,8 @@
 	</bean>
 	<bean id="registerAction" class="com.sundyn.action.RegisterAction"
 		scope="prototype">
-		<property name="deptService" ref="deptService"></property>
-		<property name="reg" ref="reg"></property>
+		<!--<property name="deptService" ref="deptService"></property>
+		<property name="reg" ref="reg"></property>-->
 	</bean>
 	<!-- 云南普耳移动 结合   业务数据和评价数据 一一绑定 -->
 	<bean id="threeAction" class="com.sundyn.action.ThreeAction"
@@ -247,5 +247,6 @@
     <bean id="jxEmployeeAction" class="com.sundyn.action.JxEmployeeAction" scope="prototype" ></bean>
     <bean id="auditAction" class="com.sundyn.action.AuditAction" scope="prototype" ></bean>
     <bean id="smsAction" class="com.sundyn.action.SysSmsdetailAction" scope="prototype" ></bean>
+    <bean id="orderAction" class="com.sundyn.action.OrderAction" scope="prototype" ></bean>
 
 </beans>

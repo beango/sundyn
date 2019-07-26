@@ -24,7 +24,7 @@
                 data: $("form").serialize(),
                 success: function(resp) {
                     if(resp.trim()==""){
-                        succ($("#id").val() == '' ? '增加成功' : "修改成功", function(){
+                        succ($("#id").val() == '' ? '<s:text name="main.save.succ" />' : "<s:text name="main.save.succ" />", function(){
                             parent.closeDialog();
                             parent.refreshTab();
                         });
@@ -43,7 +43,7 @@
     <input type="hidden" name="id" id="id" value="${entity.id}" />
     <input type="hidden" name="hallid" id="hallid" value="" />
     <div class="layui-form-item">
-        <label class="layui-form-label">服务厅：</label>
+        <label class="layui-form-label"><s:text name="serial.field.hall" /></label>
         <div class="layui-input-inline">
             <select id="hallsele">
                 <c:forEach items="${hallList}" var="hall" varStatus="index">
@@ -53,13 +53,13 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">业务事项id：</label>
+        <label class="layui-form-label"><s:text name="serial.field.serialid" /></label>
         <div class="layui-input-inline">
             <input type="text" name="bizid" id="bizid" class="layui-input" value="${entity.bizid}"/>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">业务名称：</label>
+        <label class="layui-form-label"><s:text name="serial.field.serialname" /></label>
         <div class="layui-input-inline">
             <input type="text" name="bizname" id="bizname" class="layui-input" value="${entity.bizname}" />
         </div>
@@ -160,16 +160,16 @@
         </div>
     </div>--%>
     <div class="layui-form-item">
-        <label class="layui-form-label">超时办理时长：</label>
+        <label class="layui-form-label"><s:text name="serial.field.csservicetime" /></label>
         <div class="layui-input-inline">
             <input type="text" name="serviceouttime" id="serviceouttime" class="layui-input" value="${entity.serviceouttime}" />
-        </div>分钟
+        </div><s:text name="main.minu"/>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">等候超时时长：</label>
+        <label class="layui-form-label"><s:text name="serial.field.waitservicetime" /></label>
         <div class="layui-input-inline">
             <input type="text" name="waitouttime" id="waitouttime" class="layui-input" value="${entity.waitouttime}" />
-        </div>分钟
+        </div><s:text name="main.minu"/>
     </div>
     <%--<div class="layui-form-item">
         <div class="layui-inline">

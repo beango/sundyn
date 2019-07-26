@@ -781,17 +781,9 @@ function deptGenCer(mac, batchname){
     dojo.xhrPost({url:"deptGenCer.action", content:{mac:mac, batchname:batchname}, load:function (resp, ioArgs) {
         var j = JSON.parse(resp)
             if (j.rst)
-                layer.msg('生成成功', {
-                    icon: 1,
-                    time: 800
-                }, function(){
-                });
+                succ('生成成功');
         else
-                layer.msg('生成失败', {
-                    icon: 1,
-                    time: 800
-                }, function(){
-                });
+                error('生成失败');
         }});
 }
 // 修改机构
@@ -3760,7 +3752,8 @@ function deviceQuery(){
     var endDate = document.getElementById("endDate1").value;
     var batchno = document.getElementById("batchno").value;
     var mac = document.getElementById("mac").value;
-    window.location.href = "deviceList.action?startDate=" + startDate + "&endDate=" + endDate + "&batchno=" + batchno + "&mac=" + mac;
+    var name = document.getElementById("name").value;
+    window.location.href = "deviceList.action?startDate=" + startDate + "&endDate=" + endDate + "&batchno=" + batchno + "&mac=" + mac +"&name="+name;
 }
 
 function deviceToAdd(id,title) {
@@ -3881,7 +3874,7 @@ function succ(msg, calback){
 }
 
 function error(msg){
-    layer.msg(msg, {icon: 2, time: 2800});
+    return layer.msg(msg, {icon: 2, time: 2800});
 }
 
 // https://zeit.co/blog/async-and-await
@@ -3890,8 +3883,8 @@ function sleep (time) {
 }
 
 function lsubmit(url, data, cb){
-    var l = layer.msg(loadingstr, {icon: 16, shade: 0.1, time: 999999}, function(){
-    });
+    var l = layer.msg(loadingstr, {icon: 16, shade: 0.3, time: 999999});
+    //var l = layer.load(1);
 
     $.ajax({
         type: 'POST',
@@ -3911,6 +3904,17 @@ function lalert(msg){
 
 function lalert2(msg, yesclick){
     layer.alert(msg, {icon: 6});
+    layer.msg(msg, {
+        time: 0 //不自动关闭
+        ,btn: [confirmstr]
+        ,yes: function(index){
+            layer.close(index);
+            if(yesclick)yesclick();
+        }
+    });
+}
+
+function lalert3(msg, yesclick){
     layer.msg(msg, {
         time: 0 //不自动关闭
         ,btn: [confirmstr]

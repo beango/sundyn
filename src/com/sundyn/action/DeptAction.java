@@ -257,22 +257,10 @@ public class DeptAction extends MainAction
         final String batchname = request.getParameter("batchname");
         final JSONObject json = new JSONObject();
         String rootpath=ServletActionContext.getServletContext().getRealPath("/");
-        if (!new File(rootpath+"/cer/").exists()){
-            new File(rootpath+"/cer/").mkdir();
-        }
         if (mac != null || !mac.equals("")){
             try {
-
-                CertifacateGenerate cer = new CertifacateGenerate();
-                String userCerPub = rootpath + "/cer/test.public";
-                String userCerPri = rootpath + "/cer/test.private";
-                if (!new File(userCerPub).exists() || !new File(userCerPri).exists()){
-                    cer.ZhangsanKeyPair(userCerPub,userCerPri);//生成密钥
-                }
-
-                String dnuser = "CN="+mac+",OU="+batchname+",O="+batchname+",L=GuangZhou,ST=GuangDong,C=CN";
-                cer.GenZhangsanCert(rootpath +"/cer/"+mac+".cer",new Date(System.currentTimeMillis()+ 3650*100 * 24 * 60 * 60 * 1000), userCerPub,dnuser);//生成用户证书
-                json.put("rst", true);
+                boolean isgen = deptService.DeviceCer(mac, batchname);
+                json.put("rst", isgen);
             } catch (Exception e) {
                 e.printStackTrace();
                 json.put("rst", false);
@@ -280,6 +268,23 @@ public class DeptAction extends MainAction
         }
         else
             json.put("rst", false);
+        request.setAttribute("json", json);
+        return "success";
+    }
+
+    public String licenseXF() throws Exception{
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final int id = req.getInt("id");
+        final JSONObject json = new JSONObject();
+        String rootpath=ServletActionContext.getServletContext().getRealPath("/");
+
+            try {
+                boolean isgen = deptService.licenseXF(id);
+                json.put("rst", isgen);
+            } catch (Exception e) {
+                e.printStackTrace();
+                json.put("rst", false);
+            }
         request.setAttribute("json", json);
         return "success";
     }

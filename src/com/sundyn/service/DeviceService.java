@@ -116,9 +116,9 @@ public class DeviceService extends SuperDao
         }
     }
 
-    public boolean addDevice(String batchid, String mac, boolean verifyFlag, String ver, String ctime) {
-        final String sql = "{call deviceAdd(?,?,?,?)}";
-        final Object[] args = { "",batchid, ctime, mac};
+    public boolean addDevice(final String id, String batchid, String mac, String ver, String ctime, String prdcode, String androidVer) {
+        final String sql = "{call deviceAdd(?,?,?,?,?,?)}";
+        final Object[] args = {id, batchid, ctime, mac, prdcode, androidVer};
         try {
             return this.getJdbcTemplate().update(sql, args)>0;
         }
@@ -127,25 +127,27 @@ public class DeviceService extends SuperDao
         }
     }
 
-    public void findAndAddByMac(String mac) {
-        if (findByMac(mac)==null){
-            addDevice("", mac, false, "", DateHelper.getInstance().getDataString_1(null));
-        }
+    public void findAndAddByMac(String mac, String prdcode, String androidVer) {
+        Map deviceMap = findByMac(mac);
+        addDevice(deviceMap==null?"":deviceMap.get("id").toString(), "", mac, "", DateHelper.getInstance().getDataString_1(null), prdcode, androidVer);
         String sql = "update appries_device set lastonlinetime=? where mac=?";
         final Object[] arg = {DateHelper.getInstance().getNow(), mac};
         try {
             this.getJdbcTemplate().update(sql, arg);
         }
         catch (Exception e) {
-            e.printStackTrace();
             logger.error(e);
         }
     }
 
-    public List findDevice(final String batchno, final String mac, final String startDate, final String endDate, final int startrow, final int pageSize, int[] total) {
+    public List findDevice(final String namagername, final String batchno, final String mac, final String startDate, final String endDate, final int startrow, final int pageSize, int[] total) {
         String sql = "";
-        sql = "select row_number() over(order by t1.ctime desc) as rows, t1.*,t2.batchid batchid2,t2.batchname " +
-                "from appries_device t1 left join appries_devicebatch t2 on t1.batchid=t2.id where 1=1 ";
+        sql = "select row_number() over(order by t1.ctime desc) as rows, t1.*,t2.batchid batchid2,t2.batchname,t3.name managername, " +
+                "t4.productname, t4.productcode,t5.orgname, t6.totaldowntimes, t6.downedtimes, t6.lstdowntime " +
+                "from appries_device t1 left join appries_devicebatch t2 on t1.batchid=t2.id " +
+                "left join appries_manager t3 on t3.id=t1.managerid " +
+                "left join order_product t4 on t4.id=t1.productid left join appries_managerext t5 on t3.id=t5.userid " +
+                "left join order_licensedetail t6 on t6.devicemac=t1.mac where 1=1 ";
         if (startDate!=null && !startDate.equals(""))
             sql += "and ctime>='" + startDate+"' ";
         if (endDate!=null && !endDate.equals(""))
@@ -154,6 +156,8 @@ public class DeviceService extends SuperDao
             sql += "and t2.batchid='" + batchno+"' ";
         if (mac!=null && !mac.equals(""))
             sql += "and t1.mac like '%" + mac+"%' ";
+        if (namagername!=null && !namagername.equals(""))
+            sql += "and (t3.name like '%" + namagername+"%' or t5.orgname like '%"+namagername+"%')";
 
         String totalsql = "select count(*) c from ("+sql+") t2";
         total[0] =this.getJdbcTemplate().queryForObject(totalsql, null, Integer.class);
@@ -228,5 +232,16 @@ public class DeviceService extends SuperDao
             e.printStackTrace();
         }
         return false;
+    }
+
+    public void updateDeviceInfo(String mac, String prdcode, String androidVer) {
+        try{
+            String sql = "update appries_device set curver=? where mac=? and (installver is not null and installver != '');" +
+                    "update appries_device set installver=? where mac=? and (installver is null or installver='')";
+            this.getJdbcTemplate().update(sql, new Object[]{androidVer, mac, androidVer, mac});
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

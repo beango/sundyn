@@ -53,5 +53,23 @@
         </action>
 	    <action name="getRecorderTime" class="baseAction" method="getRecorderTime">
 		</action>
+        <action name="cerdownload" class="managerAction" method="cerdownload">
+            <result name="error">/msg.jsp</result>
+            <result name="success" type="stream">
+                <param name="contentType">text/plain</param>
+                <param name="contentDisposition">attachment;fileName="${fileName}"</param>
+                <param name="inputName">cerFile</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
+        <action name="download" class="managerAction" method="download">
+            <result name="error">/msg.jsp</result>
+            <result name="success" type="stream">
+                <param name="contentType">application/octet-stream</param>
+                <param name="contentDisposition">attachment;fileName="${fileName}"</param>
+                <param name="inputName">downloadFile</param>
+                <param name="bufferSize">1024</param>
+            </result>
+        </action>
   	</package>
 </struts>

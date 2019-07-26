@@ -211,7 +211,6 @@ public class AppriesAction extends ActionSupport
     }
     
     public String appriesAdd() {
-        System.out.println("++++++++++++++++1");
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String serviceDate = request.getParameter("serviceDate");
         final String serviceCycle = request.getParameter("serviceCycle");

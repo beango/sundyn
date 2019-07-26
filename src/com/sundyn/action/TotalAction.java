@@ -1411,6 +1411,7 @@ public class TotalAction extends MainAction
         this.list = getStar(this.list);
         this.list = getD(this.list);
         String sort = req.getString("sort");
+        request.setAttribute("main_all", this.getText("main.all"));
         if(StringUtils.isNotBlank(sort))
             Collections.sort(this.list, new SortByServiceCount(sort.split(",")[0], sort.split(",")[1]));
         /*List ls = new ArrayList();
@@ -1457,10 +1458,10 @@ public class TotalAction extends MainAction
                 m.put("m" + (j++), temp.get("ticketcount"));
                 m.put("m" + (j++), temp.get("servercount"));
                 m.put("m" + (j++), temp.get("cancelcount"));
-                m.put("m" + (j++), temp.get("waittimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
-                m.put("m" + (j++), temp.get("servicetimeavg").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                m.put("m" + (j++), temp.get("waittimeavg"));//waittimeavg
+                m.put("m" + (j++), temp.get("servicetimeavg"));//waittimeavg
                 m.put("m" + (j++), temp.get("pausetime")==null||temp.get("pausetime").toString().equals("null")
-                        ?"":temp.get("pausetime").toString().replace("0天00时00分","").replace("0天00时","").replace("0天",""));//waittimeavg
+                        ?"":temp.get("pausetime"));//waittimeavg
                 for (Object item: (ArrayList)(temp.get("km"))){
                     m.put("m" + (j++), item);
                 }
@@ -1480,14 +1481,14 @@ public class TotalAction extends MainAction
              * 开始添加第一个标题行
              *****************************************/
             List<String> args = new ArrayList<String>();
-            args.add("排名");
+            args.add(this.getText("main.column.rank"));
             args.add(this.getText("sundyn.column.deptName"));
-            args.add("取号量");
-            args.add("业务量");
-            args.add("弃号量");
-            args.add("平均等待时长");
-            args.add("平均办理时长");
-            args.add("暂停时长");
+            args.add(this.getText("queuereport.column.ticketcount"));
+            args.add(this.getText("queuereport.column.serialcount"));
+            args.add(this.getText("queuereport.column.cancelcount"));
+            args.add(this.getText("queuereport.column.waittimeavg"));
+            args.add(this.getText("queuereport.column.processtimeavg"));
+            args.add(this.getText("queuereport.column.pausetime"));
             for (Object item : mls){
                 args.add(this.getText("sundyn.column.content"));
             }
@@ -1497,14 +1498,15 @@ public class TotalAction extends MainAction
             }
             args.add(this.getText("sundyn.column.nocontent"));
             args.add(this.getText("sundyn.column.noappries"));
-            args.add("评价"+this.getText("sundyn.column.sum"));
+            args.add(this.getText("sundyn.column.appries")+this.getText("sundyn.column.sum"));
             args.add(this.getText("sundyn.column.contentRate"));
             args.add(this.getText("sundyn.column.contentDegree"));
             String deptname = req.getString("deptname");
             String deptNamT = "";
             if (StringUtils.isNotBlank(deptname))
                 deptNamT = "（" + deptname + "）";
-            poi.addTitle("按照机构统计" + deptNamT,  this.startDate + " 至 " + this.endDate, 1, args.size()-1); //添加报表标题，合并
+            poi.addTitle(this.getText("queuereport.report.dept") + deptNamT,  this.startDate + " " +
+                    this.getText("manage.label.accesstime2") + " " + this.endDate, 1, args.size()-1); //添加报表标题，合并
             poi.addListTitle(args.toArray(), 1);
             int mergStepN = 8;//需要合并行（不是列）的n列，如机构名称，业务量，弃号量等
             poi.addMerge(2,mergStepN,2,mergStepN + mls.size());
@@ -1612,7 +1614,7 @@ public class TotalAction extends MainAction
 
             poi.createFile(String.valueOf(path) + "standard.xls");
             this.excel = new FileInputStream(String.valueOf(path) + "standard.xls");
-            this.fileName = new String("按照机构统计报表.xls".getBytes("gb2312"), "iso8859-1");;
+            this.fileName = new String((this.getText("queuereport.report.dept.filename") + ".xls").getBytes("gb2312"), "iso8859-1");;
             return "excel";
         }
         return "success";

@@ -22,6 +22,10 @@ import java.util.Map;
  */
 @Service
 public class AppriesPowerfuncServiceImpl extends ServiceBaseImpl<AppriesPowerfuncDao, AppriesPowerfunc> implements IAppriesPowerfuncService {
+    public AppriesPowerfuncServiceImpl(){
+        FILTERDEPT = false;
+    }
+
     public List<AppriesPowerfunc> selectListEx(@Param("ew") Wrapper<AppriesPowerfunc> wrapper){
         return baseMapper.selectListEx(wrapper);
     }

@@ -109,8 +109,6 @@
     <div class="layui-select-cus layui-inline">
         <label class="layui-form-label"><s:text name="sundyn.column.unitName"/></label>
         <div class="layui-input-inline">
-            <%=request.getAttribute("all")%>
-            ${all}
             <input id="deptSel" class="scinput" type="text" readonly value="${param.deptname==null||param.deptname.equals("")?all:param.deptname}" style="width:120px;" onclick="showDeptTree();" />
         </div>
     </div>

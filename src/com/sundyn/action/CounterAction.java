@@ -94,7 +94,7 @@ public class CounterAction extends MainAction
         SysQueuecounter entity = new SysQueuecounter();
         try {
             BeanUtils.populate(entity, request.getParameterMap());
-            ValidateUtil.validate(entity);
+            ValidateUtil.validate(entity, this.getLocale());
             SysQueuehall hallentity = hallService.selectById(entity.getHallid());
             if (hallentity!=null)
                 entity.setHallno(hallentity.getHallno());
@@ -121,31 +121,31 @@ public class CounterAction extends MainAction
             boolean succ = false;
             if(entity.getId()==null || entity.getId() == 0){
                 if (counterService.selectCount(new EntityWrapper<SysQueuecounter>().where("hallid={0} and counterno={1}", entity.getHallid(), entity.getCounterno()))>0){
-                    request.setAttribute("msg", "新增窗口号失败，窗口号已经存在");
+                    request.setAttribute("msg",  this.getText("counter.valid.counterno.exists"));
                     return "success";
                 }
                 succ = entity.insert();
             }
             else{
                 if (counterService.selectCount(new EntityWrapper<SysQueuecounter>().where("hallid={0} and counterno={1} and id!={2}", entity.getHallid(), entity.getCounterno(), entity.getId()))>0){
-                    request.setAttribute("msg", "修改窗口号失败，窗口号已经存在");
+                    request.setAttribute("msg", this.getText("counter.valid.counterno.exists"));
                     return "success";
                 }
 
                 succ = entity.updateById();
             }
             if (!succ){
-                request.setAttribute("msg", "提交失败");
+                request.setAttribute("msg", this.getText("main.save.fail"));
                 return "success";
             }
         } catch (IllegalAccessException e) {e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         } catch (InvocationTargetException e) {e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }  catch (ValidException e) {
             request.setAttribute("msg", e.getMessage());
         } catch (Exception e) { e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }
         ClearCache_DEPT();
         return "success";
@@ -158,7 +158,7 @@ public class CounterAction extends MainAction
         int id = req.getInt("id");
         boolean succ = counterService.deleteById(id);
         if (!succ){
-            request.setAttribute("msg", "删除失败");
+            request.setAttribute("msg", this.getText("main.delete.fail"));
         }
         ClearCache_DEPT();
         return "success";

@@ -20,7 +20,7 @@ function dialog()
         });
     }
 
-    this.iframe=function(url, args, cb){
+    this.iframe=function(url, args, cb, type){
         var l = layer.open({
             type: 2,
             title: args && args.title ? args.title : '',

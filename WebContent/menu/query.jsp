@@ -3,6 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -83,7 +84,7 @@
             return null;
         }
         for (var i = 0, l = childNodes.length; i < l; i++) {
-            childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+            //childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
         }
         return childNodes;
     }

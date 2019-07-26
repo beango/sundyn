@@ -62,7 +62,7 @@ public class DefaultAction extends ActionSupport
         return "success";
     }
 	
-	public String TopFrame2() throws IOException {
+	public String topframejson() throws IOException {
 		final HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response=ServletActionContext.getResponse();  
         response.setContentType("text/html;UTF-8");

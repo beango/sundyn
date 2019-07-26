@@ -27,15 +27,15 @@
     }
 
     function vipAdd(id){
-        var action = id == undefined ? "增加" : "编辑";
+        var action = id == undefined ? "<s:text name="main.add" />" : "<s:text name="main.edit" />";
         new dialog().iframe("vipAdd.action?id=" + id, {title: action+"VIP名单", resize:false, w:"460px", h:"340px"});
     }
 
     function vipDel(id){
-        layer.confirm('真的删除么', function(index){
+        lconfirm('<s:text name="main.delete.confirm" />', function(index){
             $.post("vipDel.action?id=" + id, function(resp){
                 if(resp.trim()=="") {
-                    succ('删除成功', function(){
+                    succ('<s:text name="main.delete.succ" />', function(){
                         closeDialog();
                         refreshTab();
                     });
@@ -59,7 +59,7 @@
 <input type="hidden" id="deptId" value="${deptId}"/>
 <div class="layui-form" lay-filter="f">
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label">VIP卡号：</label>
+        <label class="layui-form-label"><s:text name="vip.field.vipno" /></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
         <div class="layui-input-inline">
@@ -67,7 +67,7 @@
         </div>
     </div>
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label">VIP姓名：</label>
+        <label class="layui-form-label"><s:text name="vip.field.vipname" /></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
         <div class="layui-input-inline">
@@ -76,23 +76,23 @@
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">
-            <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" class="hand" onclick="vipQuery('')"/>
-            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="vipAdd()" value="增    加" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="vipQuery('')" value="<s:text name="main.query" />" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="vipAdd()" value="<s:text name="main.add" />" />
         </div>
     </div>
     <div>
         <table class="tablelist" lay-filter="tbl" id="demo">
             <thead>
             <tr>
-                <th>序号 </th>
+                <th><s:text name="main.column.seq" /> </th>
                 <th>
-                    VIP卡号
+                    <s:text name="vip.column.vipno" />
                 </th>
                 <th>
-                    客户姓名
+                    <s:text name="vip.column.vipname" />
                 </th>
                 <th>
-                    VIP级别
+                    <s:text name="vip.column.viplevel" />
                 </th>
                 <th></th>
             </tr>
@@ -115,8 +115,8 @@
                                 ${data.vipgrade}
                         </td>
                         <td>
-                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();vipAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="event.stopPropagation();vipDel('${data.id}','删除');"><i class="layui-icon layui-icon-delete"></i>删除</a>
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();vipAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i><s:text name="main.edit" /></a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="event.stopPropagation();vipDel('${data.id}','<s:text name="main.delete" />');"><i class="layui-icon layui-icon-delete"></i><s:text name="main.delete" /></a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -126,16 +126,11 @@
         <div id="pp"></div>
     </div>
 </div>
-<div id="treeContent" class="menuContent" style="display:none; position: absolute;">
-    <ul id="treeDept" class="ztree" style="margin-top:0; width:380px; height: 300px;"></ul>
-</div>
 </body>
 <script type="text/javascript" src="lib/util/deptselutil.js"></script>
 <script type="text/javascript">
     initPager(${queryData.getTotal()}, <%=request.getParameter("currentPage")==null?1:request.getParameter("currentPage")%>,<%=request.getParameter("pageSize")==null?20:request.getParameter("pageSize")%>);
 
-    layui.use(['form', 'element'], function() {
-        var form = layui.form;
-    });
+    layui.use(['form', 'element']);
 </script>
 </html>

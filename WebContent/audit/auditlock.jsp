@@ -116,7 +116,7 @@
                             <c:if test="${data.status==1 && data.unlocktime > now}"><button class="layui-btn layui-btn-danger layui-btn-xs"><s:text name="audit.enum.locktype.locked"/></button>
                             </c:if>
                         </td>
-                        <td>${data.locktype}</td>
+                        <td>${data.locktypei18n}</td>
                         <td>
                                 ${data.locktime}
                         </td>

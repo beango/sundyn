@@ -54,7 +54,7 @@ public class MenuAction extends MainAction {
 
         final JSONArray json = JSONArray.fromObject((Object)menuAll);
         request.setAttribute("json", (Object)json);
-        return "success";
+        return SUCCESS;
     }
 
     public String menuQuery(){
@@ -113,7 +113,7 @@ public class MenuAction extends MainAction {
         jo.add(jroot);
         request.setAttribute("msg", jo.toString());
 
-        return "success";
+        return SUCCESS;
     }
 
     public String menuEdit(){
@@ -135,7 +135,7 @@ public class MenuAction extends MainAction {
             }
         }
 
-        return "success";
+        return SUCCESS;
     }
 
     public String menuEditPost(){
@@ -199,7 +199,7 @@ public class MenuAction extends MainAction {
             boolean isAdd = appriesMenuService.insert(menu);
         }
         appriesMenuService.getAllCache(true);
-        return "success";
+        return SUCCESS;
     }
 
     public String menuDelPost(){
@@ -217,6 +217,6 @@ public class MenuAction extends MainAction {
             appriesMenuService.getAllCache(true);
         }
 
-        return "success";
+        return SUCCESS;
     }
 }

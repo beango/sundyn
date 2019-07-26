@@ -32,7 +32,7 @@ public class SysQueueserial extends Model<SysQueueserial> {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    @Min(value=1, message="大厅不能为空")
+    @Min(value=1, message="{serial.valid.hall.notnull}")
     private Integer hallid;
 
     public String getHallname() {
@@ -45,7 +45,7 @@ public class SysQueueserial extends Model<SysQueueserial> {
 
     @TableField(exist=false)
     private String hallname;
-    @Size(min=1,max=50,message="业务事项id不能为空")
+    @Size(min=1,max=50,message="{serial.valid.serialid.notnull}")
     private String bizid;
     private String bizlsh;
     private String bizotherid;

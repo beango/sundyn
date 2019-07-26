@@ -35,9 +35,9 @@ public class MysqlGenerator {
      * JDBC相关配置
      */
     private static final String DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private static final String URL = "jdbc:sqlserver://localhost:1433;DatabaseName=CGS";
+    private static final String URL = "jdbc:sqlserver://192.168.1.199:1433;DatabaseName=ZXPortal";
     private static final String USER_NAME = "sa";
-    private static final String PASSWORD = "sa123456.";
+    private static final String PASSWORD = "sa";
 
     /**
      * <p>
@@ -62,7 +62,7 @@ public class MysqlGenerator {
         AutoGenerator mpg = new AutoGenerator().setGlobalConfig(
                 // 全局配置
                 new GlobalConfig().setOutputDir(OUT_PATH)// 输出目录
-                        .setFileOverride(false)// 是否覆盖文件
+                        .setFileOverride(true)// 是否覆盖文件
                         .setActiveRecord(true)// 开启 activeRecord 模式
                         .setEnableCache(false)// XML 二级缓存
                         .setBaseResultMap(false)// XML ResultMap
@@ -90,7 +90,7 @@ public class MysqlGenerator {
                                 .setDbColumnUnderline(true)// 全局下划线命名
                                 // .setTablePrefix(new String[]{"unionpay_"})// 此处可以修改为您的表前缀
                                 .setNaming(NamingStrategy.underline_to_camel)// 表名生成策略
-                                .setInclude(new String[] {"qrz_schedulejob"}) // 需要生成的表
+                                .setInclude(new String[] {"appries_managerrate"}) // 需要生成的表
                                 // .setExclude(new String[]{"test"}) // 排除生成的表
                                 // 自定义实体，公共字段
                                 // .setSuperEntityColumns(new String[]{"test_id"})

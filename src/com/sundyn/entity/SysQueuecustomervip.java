@@ -1,17 +1,16 @@
 package com.sundyn.entity;
 
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.activerecord.Model;
-import java.io.Serializable;
-
-import com.baomidou.mybatisplus.annotations.Version;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -71,6 +70,7 @@ public class SysQueuecustomervip extends Model<SysQueuecustomervip> {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+    @Size(min=1,message = "{vip.valid.vipno.notnull}")
     private String vipcardno;
     private String vipname;
     private Integer vipgrade;

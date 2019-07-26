@@ -16,7 +16,7 @@ import java.util.List;
  * @author oKong
  * @since 2018-08-22
  */
-public interface AppriesPowerfuncDao extends BaseMapper<AppriesPowerfunc> {
+public interface AppriesPowerfuncDao extends MainDao<AppriesPowerfunc> {
 
     @Select("selectListEx")
     List<AppriesPowerfunc> selectListEx(@Param("ew") Wrapper<AppriesPowerfunc> wrapper);

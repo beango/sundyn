@@ -61,7 +61,7 @@
 	<!-- 中原国税 -->
 <!--	<include file="read.xml"></include>-->
 	<!-- 注册 -->
-<!--	<include file="register.xml"></include>-->
+    <include file="register.xml"></include>
 	<!--第三方 业务结合，一条业务绑定一条评价数据 -->
 <!--	<include file="three.xml"></include>-->
 	<!--天气预报 -->
@@ -86,4 +86,5 @@
     <include file="jx.xml"></include>
     <include file="audit.xml"></include>
     <include file="sms.xml"></include>
+    <include file="order.xml"></include>
 </struts>

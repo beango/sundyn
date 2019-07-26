@@ -14,10 +14,11 @@ public class SysLogAction extends MainAction {
     private ISysLogService sysLogService;
     @Resource
     private ISysDevicesService sysDevicesService;
+
     /*
     字典配置
      */
-    public String query() {
+    public String syslog() {
         try {
             String managername = req.getString("managername");
 
@@ -37,12 +38,9 @@ public class SysLogAction extends MainAction {
     public String sysdevices() {
         try {
             String devicename = req.getString("devicename");
-
             Wrapper<Map> ew =new EntityWrapper<Map>();
-
             if (null!=devicename && !"".equals(devicename))
-                ew = ew.where("devicename like '%"+devicename+"%'");
-
+                ew = ew.like("devicename", devicename);
             Page<Map> queryData = sysDevicesService.querypagemap(new Page<Map>(pageindex, pageSize), ew.orderBy("lastonlinetime desc"));
             request.setAttribute("queryData", queryData);
         } catch (Exception e) {

@@ -219,7 +219,7 @@ public class MyRequest
         return getInt(key, 0);
     }
 
-    public int getInt(String key, int defaultValue)
+    public Integer getInt(String key, Integer defaultValue)
     {
         try
         {
@@ -341,6 +341,18 @@ public class MyRequest
     {
         String value = this.request.getParameter(key);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = format.parse(value);
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
+        return date;
+    }
+    public Date getTime(String key)
+    {
+        String value = this.request.getParameter(key);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = null;
         try {
             date = format.parse(value);

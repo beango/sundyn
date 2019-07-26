@@ -82,7 +82,7 @@ public class QueueDetailAction extends MainAction
         for (QueueDetail.StatusNameEnum ynEnum : QueueDetail.StatusNameEnum.values()) {
             JSONObject jo = new JSONObject();
             jo.put("id", ynEnum.getCode());
-            jo.put("name", ynEnum.getMsg());
+            jo.put("name", this.getText(ynEnum.getMsg()));
             ja.put(jo);
         }
         request.setAttribute("statusList", ja.toString());
@@ -122,7 +122,7 @@ public class QueueDetailAction extends MainAction
         for (QueueDetail.StatusNameEnum ynEnum : QueueDetail.StatusNameEnum.values()) {
             JSONObject jo = new JSONObject();
             jo.put("id", ynEnum.getCode());
-            jo.put("name", ynEnum.getMsg());
+            jo.put("name", this.getText(ynEnum.getMsg()));
             ja.put(jo);
         }
         request.setAttribute("statusList", ja.toString());

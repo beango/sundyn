@@ -11,6 +11,7 @@ import com.sundyn.service.EmployeeService;
 import com.sundyn.service.IAuditLockService;
 import com.sundyn.service.IAuditLogService;
 import com.sundyn.util.impl.util;
+import com.sundyn.vo.LockTypeEnum;
 import com.sundyn.vo.LogTypeEnum;
 import com.xuan.xutils.utils.DateUtils;
 import com.xuan.xutils.utils.StringUtils;
@@ -83,6 +84,15 @@ public class AuditAction extends MainAction {
             }
             request.setAttribute("ypfj", ypfj);
             Page<Map> queryData = auditLoginService.querypagemap(new Page<Map>(pageindex, pageSize), ew.orderBy(sort));
+            for (Map obj : queryData.getRecords()){
+                String lt = obj.get("logtype").toString();
+                LogTypeEnum l = LogTypeEnum.codeOf(lt);
+                if (l!=null)
+                    obj.put("logtypei18n", l.toString());
+                else{
+                    obj.put("logtypei18n", lt);
+                }
+            }
             request.setAttribute("queryData", queryData);
             request.setAttribute("logtype", logtype);
         } catch (Exception e) {
@@ -113,7 +123,7 @@ public class AuditAction extends MainAction {
             String ypfj = req.getString("ypfj");
 
             Wrapper<Map> ew =new EntityWrapper<Map>();
-            ew.in("logtype", new String[]{LogTypeEnum.登录.toString(), LogTypeEnum.退出.toString()});
+            ew.in("logtype", new String[]{LogTypeEnum.登录.getCode(), LogTypeEnum.退出.getCode()});
 
             if (StringUtils.isNotBlank(logtype)){
                 ew = ew.where("logtype='" + logtype + "'");
@@ -127,7 +137,20 @@ public class AuditAction extends MainAction {
             request.setAttribute("ypfj", ypfj);
             Page<Map> queryData = auditLoginService.querypagemap(new Page<Map>(pageindex, pageSize), ew.orderBy(sort));
             request.setAttribute("queryData", queryData);
+            for (Map obj : queryData.getRecords()){
+                String lt = obj.get("logtype").toString();
+                LogTypeEnum l = LogTypeEnum.codeOf(lt);
+                if (l!=null)
+                    obj.put("logtypei18n", l.toString());
+                else{
+                    obj.put("logtypei18n", lt);
+                }
+            }
             request.setAttribute("logtype", logtype);
+            request.setAttribute("logTypeEnumLogin", LogTypeEnum.登录.getCode());
+            request.setAttribute("logTypeEnumLoginStr", LogTypeEnum.登录.toString());
+            request.setAttribute("logTypeEnumLoginout", LogTypeEnum.退出.getCode());
+            request.setAttribute("logTypeEnumLoginoutStr", LogTypeEnum.退出.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -188,6 +211,17 @@ public class AuditAction extends MainAction {
             if (exportExcel != null && exportExcel.toLowerCase().equals("true"))
                 pageSize = 999999;
             Page<Map> queryData = auditLockService.querypagemap(new Page<Map>(pageindex, pageSize), ew.orderBy(sort));
+            if (null != queryData){
+                for (Map obj : queryData.getRecords()){
+                    String lt = obj.get("locktype").toString();
+                    LockTypeEnum l = LockTypeEnum.codeOf(lt);
+                    if (l!=null)
+                        obj.put("locktypei18n", l.toString());
+                    else{
+                        obj.put("locktypei18n", lt);
+                    }
+                }
+            }
             request.setAttribute("queryData", queryData);
             request.setAttribute("servicedate", servicedate);
         } catch (Exception e) {
@@ -240,23 +274,23 @@ public class AuditAction extends MainAction {
 
         Wrapper<Map> ew = new EntityWrapper<Map>();
         if (null != startDate)
-            ew.where("ctime>={0}", startDate);
+            ew.where("audit_log.ctime>={0}", startDate);
         if (null != endDate)
-            ew.where("ctime<{0}", DateUtils.addDay(endDate, 1));
+            ew.where("audit_log.ctime<{0}", DateUtils.addDay(endDate, 1));
         List<Map> list = this.auditLoginService.securitylogrpt(ew);
         request.setAttribute("data", list);
         ArrayList xAxisData = new ArrayList(),
         seriesData1 = new ArrayList(), seriesData2 = new ArrayList();
         for (Map map : list) {
-            xAxisData.add(map.get("realname"));
+            xAxisData.add(map.get("realname") + "/" + map.get("name"));
             seriesData1.add(map.get("succtimes"));
             seriesData2.add(map.get("errortimes"));
         }
         request.setAttribute("xAxisData", new Gson().toJson(xAxisData));
         request.setAttribute("seriesData1", new Gson().toJson(seriesData1));
         request.setAttribute("seriesData2", new Gson().toJson(seriesData2));
-        request.setAttribute("startDate", DateUtils.date2String(startDate));
-        request.setAttribute("endDate", DateUtils.date2String(endDate));
+        request.setAttribute("startDate", DateUtils.date2String(startDate, "yyyy-MM-dd HH:mm:ss"));
+        request.setAttribute("endDate", DateUtils.date2String(endDate, "yyyy-MM-dd HH:mm:ss"));
         return SUCCESS;
     }
 
@@ -279,8 +313,8 @@ public class AuditAction extends MainAction {
         }
         request.setAttribute("xAxisData", new Gson().toJson(xAxisData));
         request.setAttribute("seriesData", new Gson().toJson(seriesData));
-        request.setAttribute("startDate", DateUtils.date2String(startDate));
-        request.setAttribute("endDate", DateUtils.date2String(endDate));
+        request.setAttribute("startDate", DateUtils.date2String(startDate, "yyyy-MM-dd HH:mm:ss"));
+        request.setAttribute("endDate", DateUtils.date2String(endDate, "yyyy-MM-dd HH:mm:ss"));
         return SUCCESS;
     }
 
@@ -304,8 +338,8 @@ public class AuditAction extends MainAction {
         }
         request.setAttribute("xAxisData", new Gson().toJson(xAxisData));
         request.setAttribute("seriesData", new Gson().toJson(seriesData));
-        request.setAttribute("startDate", DateUtils.date2String(startDate));
-        request.setAttribute("endDate", DateUtils.date2String(endDate));
+        request.setAttribute("startDate", DateUtils.date2String(startDate, "yyyy-MM-dd HH:mm:ss"));
+        request.setAttribute("endDate", DateUtils.date2String(endDate, "yyyy-MM-dd HH:mm:ss"));
         return SUCCESS;
     }
 }

@@ -34,15 +34,15 @@
         }
 
         function counterAdd(id){
-            var action = id==undefined?"增加":"编辑";
-            new dialog().iframe("counterAdd.action?id=" + id + "&halldef=" + $("#hallsele").val(), {title: action+"窗口", resize:false, w:"500px", h:"400px"});
+            var action = id==undefined?"<s:text name="main.add" />":"<s:text name="main.edit" />";
+            new dialog().iframe("counterAdd.action?id=" + id + "&halldef=" + $("#hallsele").val(), {title: action+"", resize:false, w:"500px", h:"400px"});
         }
 
         function counterDel(id){
-            layer.confirm('真的删除么', function(index){
+            lconfirm('<s:text name="main.delete.confirm" />', function(index){
                 $.post("counterDel.action?id=" + id, function(resp){
                     if(resp.trim()==""){
-                        succ('删除成功', function(){
+                        succ('<s:text name="main.delete.succ" />', function(){
                             refreshTab();
                         });
                     }
@@ -68,10 +68,10 @@
 <input type="hidden" id="deptId" value="${deptId}"/>
 <div class="layui-form" lay-filter="f">
     <div class="layui-inline">
-        <label class="layui-form-label" style="width:70px;">服务厅：</label>
+        <label class="layui-form-label" style="width:70px;"><s:text name="counter.field.hall" /></label>
         <div class="layui-input-inline">
             <select id="hallsele" class="select3">
-                <option <c:if test="${''==hallid || hallid==null}"> selected="selected"</c:if> value="">全部</option>
+                <option <c:if test="${''==hallid || hallid==null}"> selected="selected"</c:if> value=""><s:text name="main.all" /></option>
                 <c:forEach items="${hallList}" var="hall" varStatus="index">
                     <option <c:if test="${hall.id==hallid}"> selected="selected"</c:if> value="${hall.id}">${hall.hallname}</option>
                 </c:forEach>
@@ -79,7 +79,7 @@
         </div>
     </div>
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label">窗口名称：</label>
+        <label class="layui-form-label"><s:text name="counter.field.countername" /></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
         <div class="layui-input-inline">
@@ -88,23 +88,23 @@
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">
-            <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" class="hand" onclick="counterQuery('')"/>
-            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="counterAdd()" value="增    加" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="counterQuery('')" value="<s:text name="main.query" />" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="counterAdd()" value="<s:text name="main.add" />" />
         </div>
     </div>
     <div>
         <table class="tablelist" lay-filter="tbl" id="demo">
             <thead>
             <tr>
-                <th>序号 </th>
+                <th><s:text name="main.column.seq" /> </th>
                 <th>
-                    服务厅
+                    <s:text name="counter.column.hall" />
                 </th>
                 <th>
-                    窗口号
+                    <s:text name="counter.column.counterno" />
                 </th>
                 <th>
-                    窗口名称
+                    <s:text name="counter.column.countername" />
                 </th>
                 <%--<th>
                     窗口类型
@@ -133,8 +133,8 @@
                                 ${data.countertypename}
                         </td>--%>
                         <td>
-                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();counterAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="event.stopPropagation();counterDel('${data.id}','删除');"><i class="layui-icon layui-icon-delete"></i>删除</a>
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();counterAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i><s:text name="main.edit" /></a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="event.stopPropagation();counterDel('${data.id}','<s:text name="main.delete" />');"><i class="layui-icon layui-icon-delete"></i><s:text name="main.delete" /></a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -152,8 +152,6 @@
 <script type="text/javascript">
     initPager(${queryData.getTotal()}, <%=request.getParameter("currentPage")==null?1:request.getParameter("currentPage")%>,<%=request.getParameter("pageSize")==null?20:request.getParameter("pageSize")%>);
 
-    layui.use(['form', 'element'], function() {
-        var form = layui.form;
-    });
+    layui.use(['form', 'element']);
 </script>
 </html>

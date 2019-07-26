@@ -55,33 +55,27 @@
         <label class="layui-form-label"><s:text name='sundyn.total.startDate'/></label>
         <div class="layui-input-inline">
             <input type="text" class="scinput" id="startDate" value="${startDate}"
-                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})"/>
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label"><s:text name='sundyn.total.endDate'/></label>
         <div class="layui-input-inline">
             <input type="text" class="scinput" id="endDate" value="${endDate}"
-                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                   onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})"/>
         </div>
     </div>
     <input type="hidden" id="deptId" name="deptId" value="${deptId}"/>
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label" style="width:100px;">请选择机构：</label>
-        <div class="layui-form-mid layui-word-aux">
-        </div>
+        <label class="layui-form-label" style="width:100px;"><s:text name='sundyn.query.selectDept'/></label>
         <input id="deptSel" class="scinput" type="text" readonly
-               value="<%=request.getParameter("deptname")==null||request.getParameter("deptname").equals("")?"全部":request.getParameter("deptname")%>"
+               value="${param.getOrDefault("deptname", main_all)}"
                style="width:120px;cursor: pointer;" onclick="showDeptTree(this,null);"/>
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">
-            <a href="#" onclick="totalDeptDeal(false)">
-                <img src="<s:text name='sundyn.total.pic.query'/>"/>
-            </a>
-            <a href="#" onclick="totalDeptDeal(true, '<%=request.getParameter("sort")%>')">
-                <img src="<s:text name='sundyn.total.pic.excel'/>"/>
-            </a>
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="totalDeptDeal(false)" value="<s:text name="main.query" />" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="totalDeptDeal(true, '<%=request.getParameter("sort")%>')" value="<s:text name="main.export" />" />
         </div>
     </div>
     <div style="width: 100%; margin: 0 auto;">
@@ -89,21 +83,21 @@
             <thead>
             <tr>
                 <td rowspan="2" align="center" valign="middle"
-                    background="images/03_02_07.jpg" class="px13_1">排名</td>
+                    background="images/03_02_07.jpg" class="px13_1"><s:text name="main.column.rank" /></td>
                 <td rowspan="2" align="center" background="../images/03_02_07.jpg">
                     <s:text name="sundyn.column.deptName"/></td>
                 <td rowspan="2" align="center" valign="middle"
-                    background="../images/03_02_07.jpg" sort="ticketcount">取号量<img src="../images/nor.png" /></td>
+                    background="../images/03_02_07.jpg" sort="ticketcount"><s:text name="queuereport.column.ticketcount" /> <img src="../images/nor.png" /></td>
                 <td rowspan="2" align="center" valign="middle"
-                    background="../images/03_02_07.jpg" sort="servercount">业务量<img src="../images/nor.png" /></td>
+                    background="../images/03_02_07.jpg" sort="servercount"><s:text name="queuereport.column.serialcount" /> <img src="../images/nor.png" /></td>
                 <td rowspan="2" align="center" valign="middle"
-                    background="../images/03_02_07.jpg" sort="cancelcount">弃号量<img src="../images/nor.png" /></td>
+                    background="../images/03_02_07.jpg" sort="cancelcount"><s:text name="queuereport.column.cancelcount" /> <img src="../images/nor.png" /></td>
                 <td rowspan="2" align="center" valign="middle"
-                    background="../images/03_02_07.jpg" sort="waittime">平均等待时长<img src="../images/nor.png" /></td>
+                    background="../images/03_02_07.jpg" sort="waittime"><s:text name="queuereport.column.waittimeavg" /> <img src="../images/nor.png" /></td>
                 <td rowspan="2" align="center" valign="middle"
-                    background="../images/03_02_07.jpg" sort="servicetime">平均办理时长<img src="../images/nor.png" /></td>
+                    background="../images/03_02_07.jpg" sort="servicetime"><s:text name="queuereport.column.processtimeavg" /> <img src="../images/nor.png" /></td>
                 <td rowspan="2" align="center" valign="middle"
-                    background="../images/03_02_07.jpg" sort="pausetime">暂停时长<img src="../images/nor.png" /></td>
+                    background="../images/03_02_07.jpg" sort="pausetime"><s:text name="queuereport.column.pausetime" /> <img src="../images/nor.png" /></td>
                 <td colspan="${fn:length(mls)+1}" align="center" valign="middle" background="images/03_02_07.jpg"
                     class="px13_2"><s:text name="sundyn.column.content"/></td>
                 <td colspan="${fn:length(bmls)+1}" align="center" valign="middle" background="images/03_02_07.jpg"
@@ -116,7 +110,7 @@
                         class="px13_1"><s:text name="sundyn.column.appriesNum"/><img src="../images/nor.png" /></td><%--合计--%>
                 </c:if>
                 <td rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg"
-                    class="px13_1" sort="totalkey">评价<s:text name="sundyn.column.sum"/><img src="../images/nor.png" /></td>
+                    class="px13_1" sort="totalkey"><s:text name="sundyn.column.appries"/><s:text name="sundyn.column.sum"/><img src="../images/nor.png" /></td>
                 <td rowspan="2" align="center" valign="middle" background="images/03_02_07.jpg"
                     class="px13_1" sort="mrate"><s:text name="sundyn.column.contentRate"/><img src="../images/nor.png" /><span id="lblcontentRate" class="layui-badge layui-bg-orange" style="text-indent:0px;"> ? </span>
                 </td>
@@ -157,9 +151,9 @@
                     <td align="center" valign="middle">${total.ticketcount}</td>
                     <td align="center" valign="middle">${total.servercount}</td>
                     <td align="center" valign="middle">${total.cancelcount}</td>
-                    <td align="center" valign="middle">${total.waittimeavg.replace("0天00时00分","").replace("0天00时","").replace("0天","")}</td>
-                    <td align="center" valign="middle">${total.servicetimeavg.replace("0天00时00分","").replace("0天00时","").replace("0天","")}</td>
-                    <td align="center" valign="middle">${total.pausetime.equals("null")?"":total.pausetime.replace("0天00时00分","").replace("0天00时","").replace("0天","")}</td>
+                    <td align="center" valign="middle">${total.waittimeavg}</td>
+                    <td align="center" valign="middle">${total.servicetimeavg}</td>
+                    <td align="center" valign="middle">${total.pausetime == null ? "" : total.pausetime.replace("null","")}</td>
                     <c:forEach items="${total.km}" var="k">
                         <td align="center" valign="middle">${k}</td>
                     </c:forEach>
@@ -306,13 +300,13 @@
 <script type="text/javascript">
     var t = "";
     <c:forEach items="${mls}" var="key">
-    t += "${key.ext2}" + "*权值 + ";
+    t += "${key.ext2}" + "*<s:text name="sundyn.column.quanValue"/> + ";
     </c:forEach>
     <c:forEach items="${bmls}" var="key">
-    t += "${key.ext2}" + "*权值 + ";
+    t += "${key.ext2}" + "*<s:text name="sundyn.column.quanValue"/> + ";
     </c:forEach>
     t = t.substr(0, t.length - 2);
-    t += " <hr />业务量 * 10";
+    t += " <hr /><s:text name="queuereport.column.serialcount"/> * 10";
     <%--<c:forEach items="${mls}" var="key">
     t += "${key.ext2}" + " + ";
     </c:forEach>
@@ -336,7 +330,7 @@
     </c:forEach>
     t2 = t2.substr(0, t2.length - 2);
 
-    t2 = "满意合计 <hr /> 业务量"
+    t2 = "<s:text name="sundyn.column.appries"/><s:text name="sundyn.column.sum"/> <hr /> <s:text name="queuereport.column.serialcount"/>"
     layui.use(['form','table'], function () {
         var form = layui.form;
 
@@ -346,7 +340,7 @@
             $('#lblContentDegree').click(function (event) {
                 event.stopPropagation();
                 if (null == tip1) {
-                    tip1 = layer.tips('计算公式：<br />' + t, '#lblContentDegree', {
+                    tip1 = layer.tips('<s:text name="sundyn.column.cal"/><br />' + t, '#lblContentDegree', {
                         tips: 3,
                         time: 0
                     });
@@ -359,7 +353,7 @@
             $('#lblcontentRate').click(function (event) {
                 event.stopPropagation();
                 if (null == tip2) {
-                    tip2 = layer.tips('计算公式：<br />' + t2, '#lblcontentRate', {
+                    tip2 = layer.tips('<s:text name="sundyn.column.cal"/><br />' + t2, '#lblcontentRate', {
                         tips: 3,
                         time: 0
                     });

@@ -19,7 +19,7 @@ import java.util.Map;
  * @author oKong
  * @since 2018-09-14
  */
-public interface SysLogDao extends BaseMapper<SysLog> {
+public interface SysLogDao extends MainDao<SysLog> {
     @Select("selectListEx")
     List<Map> selectListEx(Page<Map> page, @Param("ew") Wrapper<Map> wrapper);
 }

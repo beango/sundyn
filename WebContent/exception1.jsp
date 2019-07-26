@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -147,7 +148,7 @@
         <div class="w7">
             <table>
                 <tr><td><img src="${ctx}/images/exception.png"></td>
-                    <td><h2 id="errplace">页面异常，请与管理员联系</h2>
+                    <td><h2 id="errplace"><s:text name="main.exception"/></h2><%--<s:property />--%>
                     </td>
                 </tr>
             </table>

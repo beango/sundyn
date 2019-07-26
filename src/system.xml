@@ -24,7 +24,7 @@
 		<!--  验证用户登录 结束 -->
         <!--  大厅 -->
 		<action name="syslog" class="sysLogAction"
-			method="query">
+			method="syslog">
             <result name="success">/query/syslogquery.jsp</result>
 		</action>
         <action name="sysdevices" class="sysLogAction"

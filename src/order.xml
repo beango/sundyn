@@ -1,0 +1,126 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="order" extends="json-default">
+		<!-- 验证用户登录 开始-->
+        <interceptors>
+            <interceptor name="userCheckR" class="com.sundyn.util.UserCheckR"></interceptor>
+            <interceptor name="operationInterceptor" class="com.sundyn.interceptor.OperationInterceptor" />
+            <interceptor name="registerCheck"
+                         class="registerCheck">
+            </interceptor>
+            <interceptor-stack name="mydefault">
+                <interceptor-ref name="operationInterceptor" />
+                <interceptor-ref name="userCheckR" />
+                <interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+        </interceptors>
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/login.jsp</result>
+            <result name="noauth">/noauth.jsp</result>
+		</global-results>
+		<!--  验证用户登录 结束 -->
+        <action name="saveOrder" class="managerAction" method="saveOrder">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="order" class="managerAction" method="order">
+            <result name="success">order/order.jsp</result>
+        </action>
+        <action name="morder" class="managerAction" method="morder">
+            <result name="success">order/morder.jsp</result>
+        </action>
+        <action name="mlicense" class="managerAction" method="mlicense">
+            <result name="success">order/mlicense.jsp</result>
+        </action>
+        <action name="mlogin" class="managerAction" method="mlogin">
+            <result name="success">order/mloginmsg.jsp</result>
+        </action>
+        <action name="mprofile" class="managerAction" method="mprofile">
+            <result name="success">order/mprofile.jsp</result>
+        </action>
+        <action name="orderCancel" class="managerAction" method="orderCancel">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="orderClose" class="managerAction" method="orderClose">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="orderAudit" class="managerAction" method="orderAudit">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="orderquery" class="managerAction" method="orderquery">
+            <result name="success">order/orderquery.jsp</result>
+        </action>
+        <action name="orderlicense" class="orderAction" method="orderlicense">
+            <result name="success">order/orderlicense.jsp</result>
+        </action>
+        <action name="dialoglicensedetail" class="managerAction" method="dialoglicensedetail">
+            <result name="success">order/dialoglicensedetail.jsp</result>
+        </action>
+        <action name="dialogdown" class="managerAction" method="dialogdown">
+            <result name="success">order/dialogdown.jsp</result>
+        </action>
+        <action name="orderLincese" class="orderAction" method="orderLincese">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="productmanage" class="managerAction" method="productmanage">
+            <result name="success">order/productmanage.jsp</result>
+        </action>
+        <action name="productFileUpload" class="managerAction" method="productFileUpload">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="macUpload" class="managerAction" method="macUpload">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="productversion" class="managerAction" method="productversion">
+            <result name="success">order/productversion.jsp</result>
+        </action>
+        <action name="productversionpost" class="managerAction" method="productversionpost">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="productversiondel" class="managerAction" method="productversiondel">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="productform" class="managerAction" method="productform">
+            <result name="success">order/productform.jsp</result>
+        </action>
+        <action name="productformpost" class="managerAction" method="productformpost">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="productdel" class="orderAction" method="productdel">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="managerrate" class="managerAction" method="managerrate">
+            <result name="success">order/managerrate.jsp</result>
+        </action>
+        <action name="managerratepost" class="managerAction" method="managerratepost">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+
+    </package>
+</struts>

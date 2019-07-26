@@ -114,7 +114,17 @@ public class PowerService extends SuperDao
             return null;
         }
     }
-    
+
+    public Map<String, Object> findByName(final String name) {
+        final String sql = "select * from appries_power where name = '" + name + "'";
+        try {
+            return this.getJdbcTemplate().queryForMap(sql);
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
     public List findByName(final String name, final int start, final int num) {
         final String sql = "select * from appries_power where name like '%" + name + "%' order by id desc limit " + start + "," + num + " ";
         try {

@@ -99,7 +99,6 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     public AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
-        System.out.println("进入用户登录");
         String username = (String) authcToken.getPrincipal();
         Map user = managerService.findByName(username);
         if (user == null) {

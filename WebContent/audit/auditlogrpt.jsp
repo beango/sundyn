@@ -38,18 +38,18 @@
     <div class="layui-inline">
         <label class="layui-form-label"><s:text name='sundyn.total.startDate'/></label>
         <div class="layui-input-inline">
-            <input type="text" class="scinput" id="startDate" value="${startDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
+            <input type="text" class="scinput" id="startDate" value="${startDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd',lang:'${locale}'})"/>
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label"><s:text name='sundyn.total.endDate'/></label>
         <div class="layui-input-inline">
-            <input type="text" class="scinput" id="endDate" value="${endDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
+            <input type="text" class="scinput" id="endDate" value="${endDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd',lang:'${locale}'})"/>
         </div>
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">
-            <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" class="hand" onclick="query('')"/>
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="query('')" value="<s:text name="main.query" />" />
         </div>
     </div>
     <div>
@@ -57,12 +57,12 @@
         <table class="tablelist" lay-filter="tbl" id="demo">
             <thead>
             <tr>
-                <th>序号 </th>
+                <th><s:text name="main.column.seq"/></th>
                 <th>
-                    姓名
+                    <s:text name="securitylogrpt.column.name"/>
                 </th>
                 <th>
-                    成功次数
+                    <s:text name="securitylogrpt.column.succtimes"/>
                 </th>
             </tr>
             </thead>

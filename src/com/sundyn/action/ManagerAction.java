@@ -2,16 +2,10 @@ package com.sundyn.action;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.sundyn.entity.AppriesManagerpower;
-import com.sundyn.entity.AuditLock;
-import com.sundyn.entity.AuditLog;
-import com.sundyn.entity.SysDictinfo;
+import com.sundyn.entity.*;
 import com.sundyn.listener.ActiveSessionsListener;
 import com.sundyn.service.*;
-import com.sundyn.util.CookieUtils;
-import com.sundyn.util.IDCardUtils;
-import com.sundyn.util.Mysql;
-import com.sundyn.util.Pager;
+import com.sundyn.util.*;
 import com.sundyn.util.impl.util;
 import com.sundyn.utils.ReqUtils;
 import com.sundyn.vo.LogTypeEnum;
@@ -23,6 +17,8 @@ import com.xuan.xutils.utils.StringUtils;
 import com.xuan.xutils.utils.UUIDUtils;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -34,6 +30,7 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -41,15 +38,15 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.URLEncoder;
-import java.security.Principal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static org.apache.struts2.ServletActionContext.getResponse;
+import static org.apache.struts2.ServletActionContext.getServletContext;
 
 /*
 *
@@ -65,6 +62,8 @@ public class ManagerAction extends MainAction
     private IAppriesManagerpowerService managerpowerService;
     @Resource
     private IAppriesPowerfuncService appriesPowerFuncService;
+    @Resource
+    private DeviceService deviceService;
     private List list;
     private ManagerService managerService;
     private DeptService deptService;
@@ -87,7 +86,16 @@ public class ManagerAction extends MainAction
     public List getList() {
         return this.list;
     }
-
+    @Resource
+    private IAppriesManagerextService managerextService;
+    @Resource
+    private IOrderProductService productService;
+    @Resource
+    IOrderDetailService orderDetailService;
+    @Resource
+    IOrderProductdetailService orderProductdetailService;
+    @Resource
+    IOrderLicensedetailService orderLicensedetailService;
     /**
      *
      * @return
@@ -118,6 +126,14 @@ public class ManagerAction extends MainAction
     @Resource
     private ISysDictinfoService dictinfoService;
 
+    private String getExtFileName(final String fileName) {
+        if(StringUtils.isBlank(fileName))
+            return "";
+        if (fileName.lastIndexOf(".")==-1)
+            return "";
+        return fileName.substring(fileName.lastIndexOf("."));
+    }
+
     public String managerAdd() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         String name = req.getString("name");
@@ -131,7 +147,7 @@ public class ManagerAction extends MainAction
             this.msg = "";
         }
         else {
-            this.msg = "该用户已经存在";
+            this.msg =  this.getText("manager.field.name.exists");
             return "error";
         }
 
@@ -161,7 +177,7 @@ public class ManagerAction extends MainAction
         if (addsucc)
             return "success";
         else{
-            request.setAttribute("msg","添加失败!");
+            request.setAttribute("msg", this.getText("main.save.fail"));
             return "error";
         }
     }
@@ -245,7 +261,7 @@ public class ManagerAction extends MainAction
         {
             manager = managerService.findByName(name);
             if (manager == null){
-                request.setAttribute("msg", "系统错误");
+                request.setAttribute("msg", this.getText("main.systemerror"));
                 return SUCCESS;
             }
             orgpwd = manager.get("ext1").toString();
@@ -256,14 +272,14 @@ public class ManagerAction extends MainAction
         if(manager == null){
             jsonData.clear();
             jsonData.put("succ", true);
-            jsonData.put("msg", "系统错误");
+            jsonData.put("msg", this.getText("main.systemerror"));
             return SUCCESS;
         }
         String oldpsw = request.getParameter("oldPsw");
         final String newpsw = request.getParameter("newPsw");
         final String newpsw2 = request.getParameter("newPsw2");
         if (com.xuan.xutils.utils.StringUtils.isBlank(oldpsw)){
-            this.msg = "旧密码不能为空!";
+            this.msg = this.getText("manager.changepwd.oldpwd.notnull");
             this.type = "input";
             return "input";
         }
@@ -278,16 +294,16 @@ public class ManagerAction extends MainAction
             return "input";
         }
         if (!newpsw2.equalsIgnoreCase(newpsw)) {
-            this.msg = "两次新密码输入不一致";
+            this.msg = this.getText("manager.changepwd.newpwd.confirmerror");
             this.type = "input";
             return "input";
         }
         if (!oldpsw.equalsIgnoreCase(manager.get("ext1").toString())) {
-            this.msg = "旧密码错误";
-            request.setAttribute("msg", "旧密码错误");
+            this.msg = this.getText("manager.changepwd.oldpwd.error");
+            request.setAttribute("msg", this.msg);
             jsonData.clear();
             jsonData.put("succ", false);
-            jsonData.put("msg", "旧密码错误");
+            jsonData.put("msg", this.msg);
             return SUCCESS;
         }
         try {
@@ -295,7 +311,7 @@ public class ManagerAction extends MainAction
             if (type==1){
                 Map m = this.managerService.findByName(name);
                 if (null == m) {
-                    this.msg = "参数错误,请重新再试";
+                    this.msg = this.getText("main.systemerror");
                     this.type = "input";
                     return "input";
                 }
@@ -305,26 +321,26 @@ public class ManagerAction extends MainAction
                 Id = Integer.valueOf(manager.get("id").toString());
             boolean change = this.managerService.UpdateManage(Id, newpsw, type);
             if (change) {
-                this.msg = "密码修改成功";
+                this.msg = this.getText("manager.changepwd.succ");
                 jsonData.clear();
                 jsonData.put("succ", true);
-                jsonData.put("msg", "密码修改成功");
+                jsonData.put("msg", this.msg);
                 jsonData.put("home", type==1?true:false);
 
                 manager.put("password", newpsw);
                 request.getSession().setAttribute("manager", (Object)manager);
                 return SUCCESS;
             }
-            this.msg = "密码修改失败!";
+            this.msg = this.getText("manager.changepwd.fail");
             this.type = "error";
             jsonData.clear();
             jsonData.put("succ", false);
-            jsonData.put("msg", "密码修改失败");
+            jsonData.put("msg", this.msg);
             return SUCCESS;
         }
         catch (Exception e) {
             e.printStackTrace();
-            this.msg = "系统错误";
+            this.msg = this.getText("main.systemerror");
             this.type = "error";
             return "error";
         }
@@ -341,9 +357,9 @@ public class ManagerAction extends MainAction
     public String managerReset() throws Exception {
         final HttpServletRequest request = ServletActionContext.getRequest();
         final Integer id = Integer.valueOf(request.getParameter("id"));
-        boolean b = this.managerService.reSetManage(id);
+        boolean b = this.managerService.reSetManage(id,util.md5("123456"));
         if (!b)
-            request.setAttribute("msg", "系统错误,重置密码失败.");
+            request.setAttribute("msg", this.getText("manager.password.reset.fail"));
         return b ? "success" : "input";
     }
 
@@ -352,7 +368,7 @@ public class ManagerAction extends MainAction
         final Integer id = Integer.valueOf(request.getParameter("id"));
         boolean b = this.managerService.reSetManageStatus(id);
         if (!b)
-            request.setAttribute("msg", "状态修改失败.");
+            request.setAttribute("msg", this.getText("manager.status.reset.fail"));
         return b ? "success" : "input";
     }
 
@@ -420,6 +436,7 @@ public class ManagerAction extends MainAction
             }
             if (id==0 || (id>0 && !com.xuan.xutils.utils.StringUtils.isBlank(pwd))){
                 String security_pwdcheck = dictinfoService.getDictInfo("security_para", "security_pwdcheck");
+                System.out.println("aa security_pwdcheckaaaa:" + security_pwdcheck);
                 if (security_pwdcheck.equals("1") && !util.validpwd(pwd)){
                     this.msg = this.getText("manage.entity.validation.password.valid");
                     return "success";
@@ -689,7 +706,8 @@ public class ManagerAction extends MainAction
         managerService.initPwdForCheck();
         String[] loginrst = new String[1];
         String name= req.getString("name"),
-                password = req.getString("password");
+                password = req.getString("password"),
+                isremote = req.getString("isremote");
         String ipadd = util.getRemoteIpAddr();
         try{
             name = new String(DESUtils.decode(name));
@@ -782,9 +800,9 @@ public class ManagerAction extends MainAction
                     wrapper.where("ctime>{0}", lstTime);
                 int failcount = auditLogService.selectCount(wrapper)+1;
                 if (times_ip-failcount > 0)
-                    errmsg = loginrst[0] + this.getText("auditlog.agentLoginErrorCount", new String[]{ipadd, String.valueOf(failcount), String.valueOf(times_ip-failcount)});//",当前IP地址" + ipadd + "连续登录失败次数已达"+ failcount + "次,离冻结次数还剩" + (times_ip-failcount) + "次";
+                    errmsg = this.getText("logintype.accountnotexists") + this.getText("auditlog.agentLoginErrorCount", new String[]{ipadd, String.valueOf(failcount), String.valueOf(times_ip-failcount)});//",当前IP地址" + ipadd + "连续登录失败次数已达"+ failcount + "次,离冻结次数还剩" + (times_ip-failcount) + "次";
                 else {
-                    errmsg = loginrst[0] + this.getText("auditlog.agentLoginErrorMAX", new String[]{ipadd, String.valueOf(failcount)});//",当前IP地址" + ipadd + "连续登录失败次数已达" + failcount + "次,终端已冻结";
+                    errmsg = this.getText("logintype.accountnotexists") + this.getText("auditlog.agentLoginErrorMAX", new String[]{ipadd, String.valueOf(failcount)});//",当前IP地址" + ipadd + "连续登录失败次数已达" + failcount + "次,终端已冻结";
                     Map map1 = dictinfoService.selectMap(new EntityWrapper<SysDictinfo>().where("isenable=1 and dictkey='audit_locktime_ip' and dictgroup='security_para'"));
                     int locktimes = 0;
                     if (map1!=null && map1.get("dictvalue")!=null){
@@ -826,10 +844,10 @@ public class ManagerAction extends MainAction
                     wrapper.where("ctime>{0}", lstTime);
                 int failcount = auditLogService.selectCount(wrapper)+1;
                 if(times_account-failcount>0){
-                    errmsg = loginrst[0] + this.getText("auditlog.accountLoginErrorCount", new String[]{name, String.valueOf(failcount), String.valueOf(times_account-failcount)});// + ",当前用户" + name + "连续登录失败次数已达"+ failcount + "次,离冻结次数还剩" + (times_account-failcount) + "次";
+                    errmsg = this.getText("logintype.passerror") + this.getText("auditlog.accountLoginErrorCount", new String[]{name, String.valueOf(failcount), String.valueOf(times_account-failcount)});// + ",当前用户" + name + "连续登录失败次数已达"+ failcount + "次,离冻结次数还剩" + (times_account-failcount) + "次";
                 }
                 else{
-                    errmsg = loginrst[0] + this.getText("auditlog.accountLoginErrorMAX", new String[]{name, String.valueOf(failcount)}); //",当前用户" + name + "连续登录失败次数已达"+ failcount + "次,账号已冻结";
+                    errmsg = this.getText("logintype.passerror") + this.getText("auditlog.accountLoginErrorMAX", new String[]{name, String.valueOf(failcount)}); //",当前用户" + name + "连续登录失败次数已达"+ failcount + "次,账号已冻结";
                     Map map1 = dictinfoService.selectMap(new EntityWrapper<SysDictinfo>().where("isenable=1 and dictkey='audit_locktime_account' and dictgroup='security_para'"));
                     int locktimes = 0;
                     if (map1!=null && map1.get("dictvalue")!=null){
@@ -1128,11 +1146,10 @@ public class ManagerAction extends MainAction
         try{
             Subject currentUser = SecurityUtils.getSubject();
             currentUser.logout();
-
             session.invalidate();
         }
         catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         /*Principal principal = UserUtils.getPrincipal();
         // 如果已经登录，则跳转到管理首页
@@ -1173,6 +1190,82 @@ public class ManagerAction extends MainAction
         this.pager = new Pager("currentPage", pageSize, rowNum[0], request, "lowerManagerPage", this);
         this.pager.setPageList(this.list);
         return "success";
+    }
+
+    public String RemoteManagerQuery() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        String name = request.getParameter("name");
+        if (name == null) {
+            name = "";
+        }
+        name = name.trim();
+        final Map manager = (Map)request.getSession().getAttribute("manager");
+        final String managerId = manager.get("id").toString();
+        request.setAttribute("managerId", (Object)managerId);
+        final String deptGroups = this.deptService.findChildALLStr1234(super.getUserDept().toString());
+        this.pager = new Pager("currentPage", pageSize, 0, request, "lowerManagerPage", this);
+        int[] rowNum = new int[1];
+        this.list = this.managerService.findRemoteManagerByName(name, deptGroups, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), rowNum);
+        this.pager = new Pager("currentPage", pageSize, rowNum[0], request, "lowerManagerPage", this);
+        this.pager.setPageList(this.list);
+
+        List prdlicensedetails = this.managerService.prdlicensedetail(null);
+
+        for (Object m : this.pager.getPageList()){
+            Map map = (Map)m;
+            int totalnum = 0;
+            int usednum=0;
+            StringBuilder sb1 = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
+            for (Object m2 : prdlicensedetails){
+                Map map2 = (Map)m2;
+                if (map2.get("managerid").toString().equals(map.get("id").toString()))
+                {
+                    totalnum += Integer.valueOf(map2.get("totalnum").toString());
+                    usednum += Integer.valueOf(map2.get("usednum").toString());
+                    sb1.append("<br>"+map2.get("productname").toString() + ": " + map2.get("totalnum").toString());
+                    sb2.append("<br>"+map2.get("productname").toString() + ": " + map2.get("usednum").toString());
+                }
+            }
+            map.put("totalnum", totalnum);
+            map.put("totalnumdetail", sb1.toString());
+            map.put("usednumdetail", sb2.toString());
+            map.put("usednum", usednum);
+        }
+        request.setAttribute("prdlicensedetails", prdlicensedetails);
+
+        return "success";
+    }
+
+    public String remoteManagerEdit(){
+        int managerid = req.getInt("managerid");
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        ServletContext context = ServletActionContext.getServletContext();
+        String agentLoginError = this.getText("auditlog.agentLoginError");
+        String agentLoginSucc = this.getText("auditlog.agentLoginSucc");
+        Date startDate  = req.getDate("startDate");
+        Date endDate  = req.getDate("endDate");
+
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+
+        Map manager = (Map) session.getAttribute("manager");
+        request.setAttribute("curlogintime", manager.get("logintime"));
+        request.setAttribute("curlogindevice", manager.get("logindevice"));
+        request.setAttribute("curloginadd", manager.get("loginadd"));
+        request.setAttribute("powers", manager.get("powers"));
+
+        Map user = this.managerService.findManageById(managerid);
+
+        if (null != user){
+            request.setAttribute("uexpired", user.get("uexpired"));
+            request.setAttribute("pwdexpired", user.get("pwdexpired"));
+        }
+
+        request.setAttribute("managerentity", user);
+        request.setAttribute("managerextentity", managerextService.selectMap(new EntityWrapper<AppriesManagerext>().where("userid={0}", managerid)));
+
+        return SUCCESS;
     }
 
     private String genCheckDigit(Map model){
@@ -1246,26 +1339,31 @@ public class ManagerAction extends MainAction
     public String loginmsg(){
         HttpSession session = ServletActionContext.getRequest().getSession();
         ServletContext context = ServletActionContext.getServletContext();
-
+        String agentLoginError = this.getText("auditlog.agentLoginError");
+        String agentLoginSucc = this.getText("auditlog.agentLoginSucc");
         EntityWrapper<AuditLog> ew = new EntityWrapper<>();
 
         ew = new EntityWrapper<>();
-        ew.where("logtype='登录' and audit_log.name={0} and audit_log.logrst='成功' and datediff(d,audit_log.ctime,getdate())=0", super.UserName);
+        ew.where("logtype={0} and audit_log.name={1} and audit_log.logrst={2} and datediff(d,audit_log.ctime,getdate())=0"
+                , LogTypeEnum.登录.getCode(), super.UserName, agentLoginSucc);
         List<Map> data2 = auditLogService.querymap(ew.orderBy("audit_log.ctime desc"));
-        if (data2!=null && data2.size()>1)
+        if (data2!=null && data2.size()>1){
             request.setAttribute("data2", data2.get(1));
-
-        ew = new EntityWrapper<>();
-        ew.where("logtype='登录' and audit_log.name={0} and audit_log.logrst like '%失败%' and audit_log.ctime>(select isnull(max(ctime), convert(varchar(50), getdate(), 23)) from audit_log where name={0} and logrst='成功' and logtype='登录' and ctime<{1})", super.UserName, data2.get(1).get("ctime").toString());
-        List<Map> data = auditLogService.querymap(ew.orderBy("audit_log.ctime desc"));
-        request.setAttribute("data", data);
-
-
+            ew = new EntityWrapper<>();
+            ew.where("logtype={0} and audit_log.name={1} and audit_log.logrst in ({2}) " +
+                            "and audit_log.ctime>(select isnull(max(ctime), convert(varchar(50), getdate(), 23)) from audit_log " +
+                            "where name={3} and logrst={4} and logtype={5} and ctime<{6})"
+                    , LogTypeEnum.登录.getCode(), super.UserName, agentLoginError, super.UserName
+                    , agentLoginSucc, LogTypeEnum.登录.getCode(), data2.get(1).get("ctime").toString());
+            List<Map> data = auditLogService.querymap(ew.orderBy("audit_log.ctime desc"));
+            request.setAttribute("data", data);
+        }
 
         Map manager = (Map) session.getAttribute("manager");
         request.setAttribute("curlogintime", manager.get("logintime"));
         request.setAttribute("curlogindevice", manager.get("logindevice"));
         request.setAttribute("curloginadd", manager.get("loginadd"));
+        request.setAttribute("powers", manager.get("powers"));
 
         Map user = this.managerService.findByName(super.UserName);
 
@@ -1275,8 +1373,10 @@ public class ManagerAction extends MainAction
         }
         ConcurrentHashMap<String, Object> map = (ConcurrentHashMap<String, Object>) context.getAttribute("activeSessions");
         request.setAttribute("activeSessions", map);
+
         return SUCCESS;
     }
+
 
     public void setList(final List list) {
         this.list = list;
@@ -1321,5 +1421,871 @@ public class ManagerAction extends MainAction
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String saveManagerExt(){
+        try{
+            String realname = req.getString("realname");
+            String orgname = req.getString("orgname");
+            String contact = req.getString("contact");
+            String telphone = req.getString("telphone");
+            String email = req.getString("email");
+            String password = req.getString("password");
+
+            managerService.updateManagerExt(super.UserID, password, realname, orgname, contact, telphone, email);
+            this.jsonData.clear();
+            jsonData.put("succ", true);
+            jsonData.put("msg", "资料变更成功！");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            this.jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "资料变更失败！");
+        }
+        return SUCCESS;
+    }
+
+    public String saveRemoteManagerExt(){
+        try{
+            int id = req.getInt("id");
+            String realname = req.getString("realname");
+            String orgname = req.getString("orgname");
+            String contact = req.getString("contact");
+            String telphone = req.getString("telphone");
+            String email = req.getString("email");
+            String password = req.getString("password");
+
+            managerService.updateManagerExt(id, password, realname, orgname, contact, telphone, email);
+            this.jsonData.clear();
+            jsonData.put("succ", true);
+            jsonData.put("msg", "资料变更成功！");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            this.jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "资料变更失败！");
+        }
+        return SUCCESS;
+    }
+
+    public String saveOrder(){
+        try{
+            int[] idArray = req.getIntArray("id", 0);
+            int[] numArray = req.getIntArray("txtprodnum", 0);
+            String comment = req.getString("comment");
+
+            if (idArray.length != numArray.length)
+            {
+                this.jsonData.clear();
+                jsonData.put("succ", false);
+                jsonData.put("msg", "系統錯誤！");
+                return SUCCESS;
+            }
+            List<OrderProduct> productList = productService.selectList(null);
+            List<AppriesManagerrate> rateList = managerrateService.selectList(new EntityWrapper<AppriesManagerrate>().where("managerid={0}", super.UserID));
+            List<Map> orderprods = new ArrayList<>();
+            float totalfee = 0f;
+            for (int i=0; i< idArray.length; i++){
+                if (numArray[i]==0)
+                    continue;
+                OrderProduct product = null;
+                for(OrderProduct pro : productList){
+                    if (pro.getId() == idArray[i])
+                        product = pro;
+                }
+                AppriesManagerrate rate = null;
+                for(AppriesManagerrate _rate : rateList){
+                    if (_rate.getProductid() == idArray[i]) {
+                        rate = _rate;
+                        break;
+                    }
+                }
+                if (product!=null){
+                    Map map = new HashMap();
+                    map.put("productid", idArray[i]);
+                    map.put("num", numArray[i]);
+                    map.put("prdprice", product.getPrice());
+                    map.put("rate", rate==null? 1.0f : rate.getRate());
+                    map.put("realprice", product.getPrice().floatValue() * (rate==null? 1.0f : rate.getRate()));
+                    orderprods.add(map);
+                    totalfee += product.getPrice().floatValue() * numArray[i] * (rate==null? 1.0f : rate.getRate());
+                }
+            }
+            Map orders = new HashMap();
+            orders.put("orderno", CommonUtil.getOrderIdByTime());
+            orders.put("managerid", super.UserID);
+            orders.put("totalfee", CommonUtil.formatFloat(totalfee));
+            orders.put("status", 0);
+            orders.put("comment", "");
+            orders.put("cuser", super.UserID);
+            orders.put("ctime", new Date());
+            orders.put("comment", comment);
+            managerService.addOrder(orders, orderprods);
+            this.jsonData.clear();
+            jsonData.put("succ", true);
+            jsonData.put("msg", "下单成功！");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            this.jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "下单失败！");
+        }
+        return SUCCESS;
+    }
+
+    public String order()
+    {
+        /*HttpSession session = ServletActionContext.getRequest().getSession();
+        ServletContext context = ServletActionContext.getServletContext();
+        String agentLoginError = this.getText("auditlog.agentLoginError");
+        String agentLoginSucc = this.getText("auditlog.agentLoginSucc");
+        Date startDate  = req.getDate("startDate");
+        Date endDate  = req.getDate("endDate");
+
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+
+        EntityWrapper<AuditLog> ew = new EntityWrapper<>();
+
+        ew = new EntityWrapper<>();
+        ew.where("logtype={0} and audit_log.name={1} and audit_log.logrst={2} and datediff(d,audit_log.ctime,getdate())=0"
+                , LogTypeEnum.登录.getCode(), super.UserName, agentLoginSucc);
+        List<Map> data2 = auditLogService.querymap(ew.orderBy("audit_log.ctime desc"));
+        if (data2!=null && data2.size()>1){
+            request.setAttribute("data2", data2.get(1));
+            ew = new EntityWrapper<>();
+            ew.where("logtype={0} and audit_log.name={1} and audit_log.logrst in ({2}) " +
+                            "and audit_log.ctime>(select isnull(max(ctime), convert(varchar(50), getdate(), 23)) from audit_log " +
+                            "where name={3} and logrst={4} and logtype={5} and ctime<{6})"
+                    , LogTypeEnum.登录.getCode(), super.UserName, agentLoginError, super.UserName
+                    , agentLoginSucc, LogTypeEnum.登录.getCode(), data2.get(1).get("ctime").toString());
+            List<Map> data = auditLogService.querymap(ew.orderBy("audit_log.ctime desc"));
+            request.setAttribute("data", data);
+        }
+
+        Map manager = (Map) session.getAttribute("manager");
+        request.setAttribute("curlogintime", manager.get("logintime"));
+        request.setAttribute("curlogindevice", manager.get("logindevice"));
+        request.setAttribute("curloginadd", manager.get("loginadd"));
+        request.setAttribute("powers", manager.get("powers"));
+
+        Map user = this.managerService.findByName(super.UserName);
+
+        if (null != user){
+            request.setAttribute("uexpired", user.get("uexpired"));
+            request.setAttribute("pwdexpired", user.get("pwdexpired"));
+        }
+        ConcurrentHashMap<String, Object> map = (ConcurrentHashMap<String, Object>) context.getAttribute("activeSessions");
+        request.setAttribute("activeSessions", map);
+
+        request.setAttribute("managerentity", managerService.findByName(super.UserName));
+        request.setAttribute("managerextentity", managerextService.selectMap(new EntityWrapper<AppriesManagerext>().where("userid={0}", super.UserID)));
+        request.setAttribute("productlist", productService.selectList(new EntityWrapper<OrderProduct>().where("canbuy=1")));
+        List orderlist = managerService.getOrders(super.UserID);
+        request.setAttribute("orderlist", orderlist);
+        List orderprdlist = managerService.getOrdersProduct(super.UserID);
+        request.setAttribute("orderprdlist", orderprdlist);
+
+
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
+        int[] totalrecords = new int[]{0};
+        this.list = this.managerService.orderlicense(super.UserID, "", totalrecords, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        this.pager = new Pager("currentPage", pageSize, totalrecords[0], request, this);
+        this.pager.setPageList(this.list);
+        request.setAttribute("licenselist", this.pager);
+
+        List useridAy = new ArrayList();
+        for (Object detail : pager.getPageList())
+            useridAy.add(((Map)detail).get("id"));
+
+        List details = this.managerService.orderlicensedetail(useridAy);
+        request.setAttribute("licensedetails", details);*/
+
+        m_order();
+        mlicense();
+        mlogin();
+        mprofile();
+        return SUCCESS;
+    }
+
+    public String morder() {
+        m_order();
+        return SUCCESS;
+    }
+
+    public void m_order() {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        ServletContext context = ServletActionContext.getServletContext();
+        String agentLoginError = this.getText("auditlog.agentLoginError");
+        String agentLoginSucc = this.getText("auditlog.agentLoginSucc");
+        Date startDate  = req.getDate("startDate");
+        Date endDate  = req.getDate("endDate");
+
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+
+        EntityWrapper<AuditLog> ew = new EntityWrapper<>();
+
+        ew = new EntityWrapper<>();
+        ew.where("logtype={0} and audit_log.name={1} and audit_log.logrst={2} and datediff(d,audit_log.ctime,getdate())=0"
+                , LogTypeEnum.登录.getCode(), super.UserName, agentLoginSucc);
+        List<Map> data2 = auditLogService.querymap(ew.orderBy("audit_log.ctime desc"));
+        if (data2!=null && data2.size()>1){
+            request.setAttribute("data2", data2.get(1));
+            ew = new EntityWrapper<>();
+            ew.where("logtype={0} and audit_log.name={1} and audit_log.logrst in ({2}) " +
+                            "and audit_log.ctime>(select isnull(max(ctime), convert(varchar(50), getdate(), 23)) from audit_log " +
+                            "where name={3} and logrst={4} and logtype={5} and ctime<{6})"
+                    , LogTypeEnum.登录.getCode(), super.UserName, agentLoginError, super.UserName
+                    , agentLoginSucc, LogTypeEnum.登录.getCode(), data2.get(1).get("ctime").toString());
+            List<Map> data = auditLogService.querymap(ew.orderBy("audit_log.ctime desc"));
+            request.setAttribute("data", data);
+        }
+
+        Map manager = (Map) session.getAttribute("manager");
+        request.setAttribute("curlogintime", manager.get("logintime"));
+        request.setAttribute("curlogindevice", manager.get("logindevice"));
+        request.setAttribute("curloginadd", manager.get("loginadd"));
+        request.setAttribute("powers", manager.get("powers"));
+
+        Map user = this.managerService.findByName(super.UserName);
+
+        if (null != user){
+            request.setAttribute("uexpired", user.get("uexpired"));
+            request.setAttribute("pwdexpired", user.get("pwdexpired"));
+        }
+        ConcurrentHashMap<String, Object> map = (ConcurrentHashMap<String, Object>) context.getAttribute("activeSessions");
+        request.setAttribute("activeSessions", map);
+
+        request.setAttribute("managerentity", managerService.findByName(super.UserName));
+        request.setAttribute("managerextentity", managerextService.selectMap(new EntityWrapper<AppriesManagerext>().where("userid={0}", super.UserID)));
+
+        //request.setAttribute("productrate", );
+        List<Map> productList = productService.querymap(new EntityWrapper<OrderProduct>().where("canbuy=1", super.UserID));
+        List<AppriesManagerrate> rateList = managerrateService.selectList(new EntityWrapper<AppriesManagerrate>().where("managerid={0}", super.UserID));
+        if(null!=rateList)
+            for (int i=0; i<rateList.size(); i++){
+                for (int j=0; j<productList.size(); j++){
+                    if (rateList.get(i).getProductid().toString().equals(productList.get(j).get("id").toString()))
+                    {
+                        float f = Float.parseFloat(productList.get(j).get("price").toString())  * rateList.get(i).getRate();
+                        productList.get(j).put("rateprice", CommonUtil.formatFloat(f));
+                        break;
+                    }
+                }
+            }
+        for (int j=0; j<productList.size(); j++){
+            if (!productList.get(j).containsKey("rateprice"))
+            {
+                productList.get(j).put("rateprice",  productList.get(j).get("price"));
+            }
+        }
+        request.setAttribute("productlist", productList);
+        for (int j=0; j<productList.size(); j++){
+            System.out.println(new JSONObject(productList.get(j)).toString());
+            System.out.println("rateprice//" + productList.get(j).get("rateprice"));
+            Map m = productList.get(j);
+        }
+
+        List orderlist = managerService.getOrders(super.UserID);
+        request.setAttribute("orderlist", orderlist);
+        List orderprdlist = managerService.getOrdersProduct(super.UserID);
+        request.setAttribute("orderprdlist", orderprdlist);
+    }
+
+    @Autowired
+    private IAppriesManagerrateService managerrateService;
+
+    public String mlicense()
+    {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        ServletContext context = ServletActionContext.getServletContext();
+        String agentLoginError = this.getText("auditlog.agentLoginError");
+        String agentLoginSucc = this.getText("auditlog.agentLoginSucc");
+        Date startDate  = req.getDate("startDate");
+        Date endDate  = req.getDate("endDate");
+
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
+        int[] totalrecords = new int[]{0};
+        this.list = this.managerService.orderlicense(super.UserID, "", totalrecords, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        this.pager = new Pager("currentPage", pageSize, totalrecords[0], request, this);
+        this.pager.setPageList(this.list);
+        request.setAttribute("licenselist", this.pager);
+
+        List useridAy = new ArrayList();
+        for (Object detail : pager.getPageList())
+            useridAy.add(((Map)detail).get("id"));
+
+        List prdlicensedetails = this.managerService.prdlicensedetail(useridAy);
+        request.setAttribute("prdlicensedetails", prdlicensedetails);
+        request.setAttribute("licensedetails", orderLicensedetailService.selectList(new EntityWrapper<OrderLicensedetail>().where("type=2 and managerid={0}", super.UserID)));
+        return SUCCESS;
+    }
+
+    public String mlogin()
+    {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        ServletContext context = ServletActionContext.getServletContext();
+        String agentLoginError = this.getText("auditlog.agentLoginError");
+        String agentLoginSucc = this.getText("auditlog.agentLoginSucc");
+        Date startDate  = req.getDate("startDate");
+        Date endDate  = req.getDate("endDate");
+
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+
+        EntityWrapper<AuditLog> ew = new EntityWrapper<>();
+
+        ew = new EntityWrapper<>();
+        ew.where("logtype={0} and audit_log.name={1} and audit_log.logrst={2} and datediff(d,audit_log.ctime,getdate())=0"
+                , LogTypeEnum.登录.getCode(), super.UserName, agentLoginSucc);
+        List<Map> data2 = auditLogService.querymap(ew.orderBy("audit_log.ctime desc"));
+        if (data2!=null && data2.size()>1){
+            request.setAttribute("data2", data2.get(1));
+            ew = new EntityWrapper<>();
+            ew.where("logtype={0} and audit_log.name={1} and audit_log.logrst in ({2}) " +
+                            "and audit_log.ctime>(select isnull(max(ctime), convert(varchar(50), getdate(), 23)) from audit_log " +
+                            "where name={3} and logrst={4} and logtype={5} and ctime<{6})"
+                    , LogTypeEnum.登录.getCode(), super.UserName, agentLoginError, super.UserName
+                    , agentLoginSucc, LogTypeEnum.登录.getCode(), data2.get(1).get("ctime").toString());
+            List<Map> data = auditLogService.querymap(ew.orderBy("audit_log.ctime desc"));
+            request.setAttribute("data", data);
+        }
+
+        Map manager = (Map) session.getAttribute("manager");
+        request.setAttribute("curlogintime", manager.get("logintime"));
+        request.setAttribute("curlogindevice", manager.get("logindevice"));
+        request.setAttribute("curloginadd", manager.get("loginadd"));
+        request.setAttribute("powers", manager.get("powers"));
+
+        Map user = this.managerService.findByName(super.UserName);
+
+        if (null != user){
+            request.setAttribute("uexpired", user.get("uexpired"));
+            request.setAttribute("pwdexpired", user.get("pwdexpired"));
+        }
+
+        request.setAttribute("managerentity", managerService.findByName(super.UserName));
+        request.setAttribute("managerextentity", managerextService.selectMap(new EntityWrapper<AppriesManagerext>().where("userid={0}", super.UserID)));
+
+        return SUCCESS;
+    }
+
+    public String mprofile()
+    {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        ServletContext context = ServletActionContext.getServletContext();
+        String agentLoginError = this.getText("auditlog.agentLoginError");
+        String agentLoginSucc = this.getText("auditlog.agentLoginSucc");
+        Date startDate  = req.getDate("startDate");
+        Date endDate  = req.getDate("endDate");
+
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+
+        EntityWrapper<AuditLog> ew = new EntityWrapper<>();
+
+        ew = new EntityWrapper<>();
+        ew.where("logtype={0} and audit_log.name={1} and audit_log.logrst={2} and datediff(d,audit_log.ctime,getdate())=0"
+                , LogTypeEnum.登录.getCode(), super.UserName, agentLoginSucc);
+        List<Map> data2 = auditLogService.querymap(ew.orderBy("audit_log.ctime desc"));
+        if (data2!=null && data2.size()>1){
+            request.setAttribute("data2", data2.get(1));
+            ew = new EntityWrapper<>();
+            ew.where("logtype={0} and audit_log.name={1} and audit_log.logrst in ({2}) " +
+                            "and audit_log.ctime>(select isnull(max(ctime), convert(varchar(50), getdate(), 23)) from audit_log " +
+                            "where name={3} and logrst={4} and logtype={5} and ctime<{6})"
+                    , LogTypeEnum.登录.getCode(), super.UserName, agentLoginError, super.UserName
+                    , agentLoginSucc, LogTypeEnum.登录.getCode(), data2.get(1).get("ctime").toString());
+            List<Map> data = auditLogService.querymap(ew.orderBy("audit_log.ctime desc"));
+            request.setAttribute("data", data);
+        }
+
+        Map manager = (Map) session.getAttribute("manager");
+        request.setAttribute("curlogintime", manager.get("logintime"));
+        request.setAttribute("curlogindevice", manager.get("logindevice"));
+        request.setAttribute("curloginadd", manager.get("loginadd"));
+        request.setAttribute("powers", manager.get("powers"));
+
+        Map user = this.managerService.findByName(super.UserName);
+
+        if (null != user){
+            request.setAttribute("uexpired", user.get("uexpired"));
+            request.setAttribute("pwdexpired", user.get("pwdexpired"));
+        }
+
+        request.setAttribute("managerentity", managerService.findByName(super.UserName));
+        request.setAttribute("managerextentity", managerextService.selectMap(new EntityWrapper<AppriesManagerext>().where("userid={0}", super.UserID)));
+
+        return SUCCESS;
+    }
+
+    public String orderCancel(){
+        int orderid = req.getInt("id");
+        String canceldesc = req.getString("canceldesc");
+
+        int r = managerService.cancelOrder(orderid, canceldesc, super.UserID);
+        if (r>0){
+            this.jsonData.clear();
+            jsonData.put("succ", true);
+            jsonData.put("msg", "订单取消成功！");
+        }
+        else{
+            this.jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "订单取消失败！");
+        }
+        return SUCCESS;
+    }
+
+    public String orderClose(){
+        int orderid = req.getInt("id");
+        String closedesc = req.getString("closedesc");
+
+        int r = managerService.orderClose(orderid, closedesc, super.UserID);
+        if (r>0){
+            this.jsonData.clear();
+            jsonData.put("succ", true);
+            jsonData.put("msg", "订单已经关闭！");
+        }
+        else{
+            this.jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "订单关闭失败！");
+        }
+        return SUCCESS;
+    }
+
+    public String orderAudit(){
+        int orderid = req.getInt("id");
+        float pay = req.getFloat("pay");
+        String auditdesc = req.getString("auditdesc");
+        if (pay <= 0){
+            /*this.jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "订单审核失败，付款金额不能为0！");
+            return SUCCESS;*/
+        }
+        Object[] rst = managerService.orderAudit(orderid, pay, auditdesc, super.UserID);
+        if ((boolean)rst[0]){
+            this.jsonData.clear();
+            jsonData.put("succ", true);
+            jsonData.put("msg", "订单审核成功！");
+            return SUCCESS;
+        }
+        else{
+            this.jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "订单审核失败:"+rst[1]);
+            return SUCCESS;
+        }
+    }
+
+    public String orderquery(){
+        Date startDate  = req.getTime("startDate");
+        Date endDate  = req.getTime("endDate");
+        Integer status = req.getInt("status", null),
+                ispay = req.getInt("ispay", null);
+
+        request.setAttribute("startDate", DateUtils.date2String(startDate));
+        request.setAttribute("endDate", DateUtils.date2String(endDate));
+        request.setAttribute("status", status);
+        request.setAttribute("ispay", ispay);
+
+        Wrapper<OrderDetail> ew =new EntityWrapper<OrderDetail>();
+        if (null!=status && !"".equals(status))
+            ew = ew.eq("status", status);
+        if (null!=ispay && !"".equals(ispay))
+            ew = ew.eq("ispay", ispay);
+        if (startDate!=null)
+            ew = ew.where("ctime>={0}", startDate);
+        if (endDate!=null)
+            ew = ew.where("ctime<={0}", endDate);
+
+
+        this.pager = new Pager("currentPage", pageSize, 0, request, this);
+        int[] totalrecords = new int[]{0};
+        this.list = this.managerService.findOrderDetail(status, ispay, startDate, endDate, totalrecords, (this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize());
+        this.pager = new Pager("currentPage", pageSize, totalrecords[0], request, this);
+        this.pager.setPageList(this.list);
+        request.setAttribute("orderlist", this.pager);
+
+        List orderidAy = new ArrayList();
+        if (null!=this.pager){
+            for (Object detail : this.pager.getPageList()){
+                orderidAy.add(((Map)detail).get("id"));
+            }
+        }
+        //Page<OrderDetail> queryData = orderDetailService.selectPage(new Page<OrderDetail>(pageindex, pageSize), ew.orderBy("id desc"));
+        //request.setAttribute("orderlist", queryData);
+
+        //for (OrderDetail detail : queryData.getRecords())
+        //    orderidAy.add(detail.getId());
+
+        List orderprdlist = orderProductdetailService.selectList(new EntityWrapper<OrderProductdetail>().in("orderid", orderidAy));
+
+        List details = this.managerService.getListOfproductdetail(orderidAy);
+        request.setAttribute("orderprdlist", details);
+        return SUCCESS;
+    }
+
+    public String dialoglicensedetail() {
+        int productid= req.getInt("productid");
+        request.setAttribute("details", orderLicensedetailService.selectList(new EntityWrapper<OrderLicensedetail>().where("type=2 and managerid={0} and productid={1}", super.UserID, productid)));
+        return SUCCESS;
+    }
+
+    public String dialogdown() {
+        int productid= req.getInt("productid");
+        request.setAttribute("details", productversionService.selectList(new EntityWrapper<OrderProductversion>().where("productid={0}", productid)));
+        return SUCCESS;
+    }
+
+    @Getter @Setter
+    private String fileName;
+
+    public String cerdownload() throws Exception {
+        String mac = req.getString("mac");
+        String prdcode = request.getParameter("prdcode"); // ZXEval-XF
+        String androidVer = request.getParameter("androidVer");
+        if (StringUtils.isNotBlank(mac) && StringUtils.isNotBlank(prdcode))
+        {
+            OrderProduct prd = productService.selectOne(new EntityWrapper<OrderProduct>().where("productcode={0}", prdcode));
+            if (prd == null){
+                request.setAttribute("msg", "不存在该产品编码！");
+                getResponse().sendError(299, "不存在该产品编码！");
+                return ERROR;
+            }
+            OrderLicensedetail detail = orderLicensedetailService.selectOne(new EntityWrapper<OrderLicensedetail>()
+                    .where("type=2 and devicemac={0} and productid={1}", mac, prd.getId()));
+            if (detail == null){
+                request.setAttribute("msg", "设备未授权，请在授权页面对该设备进行授权！");
+                getResponse().sendError(299, "设备未授权，请在授权页面对该设备进行授权！");
+                return ERROR;
+            }
+            if (detail.getDownedtimes()>=detail.getTotaldowntimes()){
+                request.setAttribute("msg", "该设备授权文件下载次数已经达到最大值，请与管理员联系！");
+                getResponse().sendError(299, "该设备授权文件下载次数已经达到最大值，请与管理员联系！");
+                return ERROR;
+            }
+
+            this.fileName = mac + ".cer" ;
+            String cerfile = getServletContext().getRealPath("/") + "WEB-INF/cer/" + this.fileName;
+            File f = new File(cerfile);
+            if (!f.exists()){
+                request.setAttribute("msg", "该设备授权文件不存在，请与管理员联系！");
+                getResponse().sendError(299, "该设备授权文件不存在，请与管理员联系！");
+                return ERROR;
+            }
+            detail.setLstdowntime(new Date());
+            detail.setDownedtimes(detail.getDownedtimes() + 1);
+            orderLicensedetailService.updateById(detail);
+            return SUCCESS;
+        }
+        else{
+            request.setAttribute("msg", "参数不正确！");
+            getResponse().sendError(299, "参数不正确！");
+            return ERROR;
+        }
+    }
+
+    public InputStream getCerFile() throws Exception{
+        String mac = req.getString("mac");
+        if (StringUtils.isNotBlank(mac))
+        {
+            this.fileName = mac + ".cer" ;
+            String cerfile = getServletContext().getRealPath("/") + "WEB-INF/cer/" + this.fileName;
+            System.out.println(cerfile);
+            File f = new File(cerfile);
+            if (!f.exists()){
+                return null;
+            }
+            try {
+                return new FileInputStream(f);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public String download() throws Exception {
+        final HttpServletResponse response = ServletActionContext.getResponse();
+        HttpServletRequest request = ServletActionContext.getRequest();
+        String Agent = request.getHeader("User-Agent");
+        request.setAttribute("agent", Agent);
+        String filepath = req.getString("filepath");
+        if (StringUtils.isNotBlank(filepath))
+        {
+            String file = getServletContext().getRealPath("/") + filepath;
+            File f = new File(file);
+            if (!f.exists()){
+                request.setAttribute("msg", "文件不存在！");
+                getResponse().sendError(298, "文件不存在！");
+                return ERROR;
+            }
+            String filename = req.getString("filename");
+            filename = java.net.URLDecoder.decode(filename,"UTF-8");
+            //byte filenamebuf[] = request.getParameter("filename").getBytes("iso8859-1");
+            //String filename = new String(filenamebuf);
+
+            if (StringUtils.isNotBlank(filename))
+                this.fileName = filename;
+            else
+                this.fileName = filepath.lastIndexOf("/")>-1? filepath.substring(filepath.lastIndexOf("/")+1):filepath;
+            System.out.println(this.fileName);
+            try {
+                //this.fileName = new String(this.fileName.getBytes("UTF-8"), "ISO-8859-1");
+                this.fileName = java.net.URLEncoder.encode(this.fileName, "utf-8");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            //response.setHeader("Content-Disposition", "attachment;filename="+new String(fileName.getBytes(),"iso-8859-1")+".xls");
+            return SUCCESS;
+        }
+        else{
+            request.setAttribute("msg", "参数不正确！");
+            getResponse().sendError(298, "参数不正确！");
+            return ERROR;
+        }
+    }
+
+    public InputStream getDownloadFile() throws Exception{
+        String filepath = req.getString("filepath");
+        if (StringUtils.isNotBlank(filepath))
+        {
+            String file = getServletContext().getRealPath("/") + filepath;
+            File f = new File(file);
+            if (!f.exists()){
+                return null;
+            }
+            try {
+                return new FileInputStream(f);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public String productmanage(){
+        List list = productService.querymap(new EntityWrapper<Map>());
+        request.setAttribute("list", list);
+        return SUCCESS;
+    }
+
+    @Getter @Setter
+    private File file;
+
+    public String productFileUpload() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final HttpServletResponse response = ServletActionContext.getResponse();
+        String dstPath = getServletContext().getRealPath("/");
+        String contentType = request.getContentType();
+
+        final long curTime = System.currentTimeMillis();
+        String filename = request.getParameter("filename");
+        final String nfilename = "upload/" + curTime + Math.round(Math.random() * 100.0) + this.getExtFileName(filename);
+        if (this.file != null) {
+            dstPath = dstPath.replaceAll("%20", " ");
+            final File dst = new File(String.valueOf(dstPath) + nfilename);
+            CommonUtil.copy(this.file, dst);
+
+            jsonData.clear();
+            jsonData.put("succ", true);
+            jsonData.put("filepath", nfilename);
+            jsonData.put("filename", filename);
+            jsonData.put("msg", this.getText("main.upload.succ"));
+        }
+        else{
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", this.getText("main.upload.fail"));
+        }
+        return SUCCESS;
+    }
+
+    public String macUpload() throws Exception {
+        final HttpServletRequest request = ServletActionContext.getRequest();
+        final HttpServletResponse response = ServletActionContext.getResponse();
+        String dstPath = getServletContext().getRealPath("/");
+        String contentType = request.getContentType();
+
+        final long curTime = System.currentTimeMillis();
+        final String nfilename = "upload/" + curTime + Math.round(Math.random() * 100.0) + ".txt";
+        if (this.file != null) {
+            FileInputStream inputStream = new FileInputStream(this.file);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String str = null;
+            StringBuffer sb = new StringBuffer();
+
+            while((str = bufferedReader.readLine()) != null)
+            {
+                sb.append(str).append(",");
+            }
+
+            //close
+            inputStream.close();
+            bufferedReader.close();
+
+            jsonData.clear();
+            jsonData.put("succ", true);
+            jsonData.put("filecontent", sb.toString());
+            jsonData.put("msg", this.getText("main.upload.succ"));
+        }
+        else{
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", this.getText("main.upload.fail"));
+        }
+        return SUCCESS;
+    }
+
+    public String productversion(){
+        int prdid = req.getInt("productid");
+        request.setAttribute("list", productversionService.selectList(new EntityWrapper<OrderProductversion>().where("productid={0}", prdid)));
+        return SUCCESS;
+    }
+
+    @Autowired
+    private IOrderProductversionService productversionService;
+
+    public String productversionpost(){
+        Integer prdid = req.getInt("productid", 0);
+        String filename = req.getString("filename");
+        String filepath = req.getString("filepath");
+        String comment = req.getString("comment");
+        if (prdid == 0){
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "系统错误");
+        }
+        if (StringUtils.isBlank(filename)){
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "上传文件错误");
+        }
+        if (StringUtils.isBlank(filepath)){
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "上传文件错误");
+        }
+        OrderProductversion orderProductversion = new OrderProductversion();
+        orderProductversion.setProductid(prdid);
+        orderProductversion.setFilename(filename);
+        orderProductversion.setFilepath(filepath);
+        orderProductversion.setCtime(new Date());
+        if (filename.indexOf(".") == -1)
+            orderProductversion.setApkver(filename);
+        else
+            orderProductversion.setApkver(filename.substring(0, filename.lastIndexOf(".")));
+        orderProductversion.setComment(comment);
+        orderProductversion.insert();
+
+        jsonData.clear();
+        jsonData.put("succ", true);
+        jsonData.put("msg", "成功");
+        return SUCCESS;
+    }
+
+    public String productversiondel(){
+        int id = req.getInt("id");
+        OrderProductversion orderProductversion = productversionService.selectById(id);
+        if (null!=orderProductversion){
+            String dstPath = getServletContext().getRealPath("/");
+            File f = new File(dstPath + orderProductversion.getFilepath());
+            f.deleteOnExit();
+            productversionService.deleteById(id);
+            jsonData.clear();
+            jsonData.put("succ", true);
+        }
+        else
+        {
+            jsonData.clear();
+            jsonData.put("succ", false);
+        }
+        return SUCCESS;
+    }
+
+    public String productform(){
+        int productid = req.getInt("productid");
+        request.setAttribute("model", productService.selectById(productid));
+        return SUCCESS;
+    }
+
+    public String productformpost(){
+        OrderProduct entity = new OrderProduct();
+
+        try {
+            BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
+            BeanUtils.populate(entity, request.getParameterMap());
+            ValidateUtil.validate(entity, this.getLocale());
+            if(entity.getId() == null || entity.getId()==0)
+            {
+                entity.setCuser(super.UserID);
+                entity.setCtime(new Date());
+            }
+
+            boolean b = entity.insertOrUpdate();
+
+            if (b){
+                jsonData.clear();
+                jsonData.put("succ", true);
+                jsonData.put("msg", "保存成功");
+            }
+            else{
+                jsonData.clear();
+                jsonData.put("succ", false);
+                jsonData.put("msg", "保存失败");
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "保存失败" + e.getMessage());
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "保存失败" + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            jsonData.clear();
+            jsonData.put("succ", false);
+            jsonData.put("msg", "保存失败" + e.getMessage());
+        }
+        return SUCCESS;
+    }
+
+    public String managerrate(){
+        int managerid = req.getInt("managerid");
+        List list = managerService.findManagerRate(managerid);
+        request.setAttribute("list", list);
+        return SUCCESS;
+    }
+
+    public String managerratepost(){
+        int managerid = req.getInt("managerid");
+        int[] id = req.getIntArray("id", 0);
+        int[] productid = req.getIntArray("productid", 0);
+        float[] rates = req.getFloatArray("rate", 1);
+
+        for (int i=0; i< productid.length; i++){
+            AppriesManagerrate rate = new AppriesManagerrate();
+            if(id[i]>0)
+                rate.setId(id[i]);
+            rate.setManagerid(managerid);
+            rate.setProductid(productid[i]);
+            rate.setRate(rates[i]);
+            rate.insertOrUpdate();
+        }
+        jsonData.clear();
+        jsonData.put("succ", true);
+        jsonData.put("msg", this.getText("main.save.succ"));
+        return SUCCESS;
     }
 }

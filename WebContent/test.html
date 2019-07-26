@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo</title>
+</head>
+<style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .t-ctn {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .t-ctn .s-ctn {
+        height: 150px;
+        white-space: nowrap;
+        font-size: 0;
+    }
+
+    .t-ctn .s-ctn div {
+        font-size: 14px;
+        box-sizing: border-box;
+        white-space: normal;
+        word-wrap: break-word;
+        word-break: break-all;
+        overflow: hidden;
+        display: inline-block;
+        width: 200px;
+        height: 100%;
+        border: 10px solid red;
+    }
+
+      .navBarBox {
+          width: 750px;
+          overflow-x: auto;
+      }
+    .navBar {
+        width: auto;
+        margin-left: 25px;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    li{
+        display: inline-block;
+        height: 50px;
+        line-height: 50px;
+        padding-left:  35px;
+        padding-right: 35px;
+        margin-right: 12.5px;
+        border-radius: 10px;
+        background: #EEEEEE;
+        font-family:" PingFangSC-Regular";
+        font-size: 30px;
+        color: #333333;
+        text-align: center;
+    }
+    .active{
+        background: #CB1E36;
+        color: #ffffff!important;
+    }
+</style>
+
+<body>
+<!-- 导航栏 -->
+<div class="navBarBox">
+    <ul class="navBar">
+        <li class="active" >123</li>
+        <li class="active" >123</li>
+        <li class="active" >123</li>
+        <li class="active" >123</li>
+        <li class="active" >123</li>
+        <li class="active" >123</li>
+        <li class="active" >123</li>
+        <li class="active" >123</li>
+        <li class="active" >123</li>
+    </ul>
+</div>
+<ul class="showMoreNChildren" pagesize="5">
+    <li>a</li>
+    <li>b</li>
+    <li>c</li>
+    <li>d</li>
+    <li>e</li>
+    <li>f</li>
+    <li>g</li>
+    <li>h</li>
+    <li>i</li>
+    <li>j</li>
+    <li>k</li>
+    <li>m</li>
+</ul>
+<div class="t-ctn">
+    <div class="s-ctn">
+        <div>
+            <p>titletitletitletitletitletitletitletitletitletitletitletitletitle</p>
+            <p>body</p>
+            <img src="./logo.png" alt="">
+        </div>
+        <div>
+            <p>title</p>
+            <p>body</p>
+        </div>
+        <div>
+            <p>title</p>
+            <p>body</p>
+        </div>
+        <div>
+            <p>title</p>
+            <p>body</p>
+        </div>
+        <div>
+            <p>title</p>
+            <p>body</p>
+        </div>
+        <div>
+            <p>title</p>
+            <p>body</p>
+        </div>
+        <div>
+            <p>title</p>
+            <p>body</p>
+        </div>
+        <div>
+            <p>title</p>
+            <p>body</p>
+        </div>
+        <div>
+            <p>title</p>
+            <p>body</p>
+        </div>
+        <div>
+            <p>title</p>
+            <p>body</p>
+        </div>
+        <div>
+            <p>title</p>
+            <p>body</p>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script>
+
+<script type="text/javascript">
+    (function () {
+        var showMoreNChildren = function ($children, n) {
+            //显示某jquery元素下的前n个隐藏的子元素
+            var $hiddenChildren = $children.filter(":hidden");
+            var cnt = $hiddenChildren.length;
+            for ( var i = 0; i < n && i < cnt ; i++) {
+                $hiddenChildren.eq(i).show();
+            }
+            return cnt-n;//返回还剩余的隐藏子元素的数量
+        }
+
+        //对页中现有的class=showMorehandle的元素，在之后添加显示更多条，并绑定点击行为
+        $(".showMoreNChildren").each(function () {
+            var pagesize = $(this).attr("pagesize") || 10;
+            var $children = $(this).children();
+            if ($children.length > pagesize) {
+                for (var i = pagesize; i < $children.length; i++) {
+                    $children.eq(i).hide();
+                }
+
+                $("<div class='showMorehandle' >显示更多</div>").insertAfter($(this)).click(function () {
+                    if (showMoreNChildren($children, pagesize) <= 0) {
+                        //如果目标元素已经没有隐藏的子元素了，就隐藏“点击更多的按钮条”
+                        $(this).hide();
+                    };
+                });
+            }
+        });
+    })();
+</script>
+</body>
+
+</html>

@@ -73,35 +73,35 @@ public class CustomerVipAction extends MainAction
         SysQueuecustomervip entity = new SysQueuecustomervip();
         try {
             BeanUtils.populate(entity, request.getParameterMap());
-            ValidateUtil.validate(entity);
+            ValidateUtil.validate(entity, this.getLocale());
             boolean succ = false;
             if(entity.getId()==null || entity.getId() == 0){
                 if (customerVipService.selectCount(new EntityWrapper<SysQueuecustomervip>().where("vipcardno={0}", entity.getVipcardno()))>0){
-                    request.setAttribute("msg", "VIP卡号已经存在");
+                    request.setAttribute("msg", this.getText("vip.valid.vipno.exists"));
                     return "success";
                 }
                 succ = entity.insert();
             }
             else{
                 if (customerVipService.selectCount(new EntityWrapper<SysQueuecustomervip>().where("vipcardno={0} and id!={1}", entity.getVipcardno(), entity.getId()))>0){
-                    request.setAttribute("msg", "VIP卡号已经存在");
+                    request.setAttribute("msg", this.getText("vip.valid.vipno.exists"));
                     return "success";
                 }
 
                 succ = entity.updateById();
             }
             if (!succ){
-                request.setAttribute("msg", "提交失败");
+                request.setAttribute("msg", this.getText("main.save.fail"));
                 return "success";
             }
         } catch (IllegalAccessException e) {e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         } catch (InvocationTargetException e) {e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }  catch (ValidException e) {
             request.setAttribute("msg", e.getMessage());
         } catch (Exception e) { e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }
         return "success";
     }
@@ -113,7 +113,7 @@ public class CustomerVipAction extends MainAction
         int id = req.getInt("id");
         boolean succ = customerVipService.deleteById(id);
         if (!succ){
-            request.setAttribute("msg", "删除失败");
+            request.setAttribute("msg", this.getText("main.delete.fail"));
         }
         return "success";
     }

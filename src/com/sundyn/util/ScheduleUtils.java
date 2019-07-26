@@ -30,12 +30,13 @@ public class ScheduleUtils {
     /**
      * 获取表达式触发器
      */
-    public static CronTrigger getCronTrigger(Scheduler scheduler, Long jobId) {
-        try {
+    public static CronTrigger getCronTrigger(org.quartz.Scheduler scheduler, Long jobId) {
+        /*try {
             return (CronTrigger) scheduler.getTrigger(getTriggerKey(jobId));
         } catch (SchedulerException e) {
             throw new RRException("getCronTrigger异常，请检查qrtz开头的表，是否有脏数据", e);
-        }
+        }*/
+        return null;
     }
 
     /**
@@ -87,19 +88,19 @@ public class ScheduleUtils {
             CronTrigger trigger = getCronTrigger(scheduler, scheduleJob.getJobid());
 
             //按新的cronExpression表达式重新构建trigger
-            trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
+            //trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
 
             //参数
             trigger.getJobDataMap().put(QrzSchedulejob.JOB_PARAM_KEY, new Gson().toJson(scheduleJob));
 
-            scheduler.rescheduleJob(triggerKey, trigger);
+            //scheduler.rescheduleJob(triggerKey, trigger);
 
             //暂停任务
             if(scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
             	pauseJob(scheduler, scheduleJob.getJobid());
             }
 
-        } catch (SchedulerException e) {
+        } catch (Exception e) {
             throw new RRException("更新定时任务失败", e);
         }
     }
@@ -113,8 +114,8 @@ public class ScheduleUtils {
         	JobDataMap dataMap = new JobDataMap();
         	dataMap.put(QrzSchedulejob.JOB_PARAM_KEY, new Gson().toJson(scheduleJob));
 
-            scheduler.triggerJob(getJobKey(scheduleJob.getJobid()), dataMap);
-        } catch (SchedulerException e) {
+            //scheduler.triggerJob(getJobKey(scheduleJob.getJobid()), dataMap);
+        } catch (Exception e) {
             throw new RRException("立即执行定时任务失败", e);
         }
     }
@@ -124,8 +125,8 @@ public class ScheduleUtils {
      */
     public static void pauseJob(Scheduler scheduler, Long jobId) {
         try {
-            scheduler.pauseJob(getJobKey(jobId));
-        } catch (SchedulerException e) {
+            //scheduler.pauseJob(getJobKey(jobId));
+        } catch (Exception e) {
             throw new RRException("暂停定时任务失败", e);
         }
     }
@@ -135,8 +136,8 @@ public class ScheduleUtils {
      */
     public static void resumeJob(Scheduler scheduler, Long jobId) {
         try {
-            scheduler.resumeJob(getJobKey(jobId));
-        } catch (SchedulerException e) {
+            //scheduler.resumeJob(getJobKey(jobId));
+        } catch (Exception e) {
             throw new RRException("暂停定时任务失败", e);
         }
     }
@@ -146,8 +147,8 @@ public class ScheduleUtils {
      */
     public static void deleteScheduleJob(Scheduler scheduler, Long jobId) {
         try {
-            scheduler.deleteJob(getJobKey(jobId));
-        } catch (SchedulerException e) {
+           // scheduler.deleteJob(getJobKey(jobId));
+        } catch (Exception e) {
             throw new RRException("删除定时任务失败", e);
         }
     }

@@ -29,28 +29,21 @@
     }
 
     function serialAdd(id){
-        var action = id==undefined?"增加":"编辑";
-        new dialog().iframe("serialAdd.action?id=" + id + "&halldef=" + $("#hallsele").val(), {title: action + "业务", resize:false, w:"500px", h:"400px"});
+        var action = id==undefined?"<s:text name="main.add" />":"<s:text name="main.edit" />";
+        new dialog().iframe("serialAdd.action?id=" + id + "&halldef=" + $("#hallsele").val(), {title: action, resize:false, w:"500px", h:"400px"});
     }
 
     function serialDel(id){
-        layer.confirm('真的删除么', function(index){
+        lconfirm('<s:text name="main.delete.confirm" />', function(index){
             $.post("serialDel.action?id=" + id, function(resp){
                 if(resp.trim()==""){
-                    layer.msg('删除成功', {
-                        icon: 1,
-                        time: 800
-                    }, function(){
-                        parent.closeDialog();
-                        parent.refreshTab();
+                    succ('<s:text name="main.delete.succ" />', function(){
+                        closeDialog();
+                        refreshTab();
                     });
                 }
                 else{
-                    layer.msg(resp, {
-                        icon: 2,
-                        time: 1200
-                    }, function(){
-                    });
+                    error(resp);
                 }
             });
             layer.close(index);
@@ -68,10 +61,10 @@
 <input type="hidden" id="deptId" value="${deptId}"/>
 <div class="layui-form" lay-filter="f">
     <div class="layui-inline">
-        <label class="layui-form-label" style="width:60px;">服务厅：</label>
+        <label class="layui-form-label" style="width:60px;"><s:text name="hall.field.hallname" /></label>
         <div class="layui-input-inline">
             <select id="hallsele" class="select2">
-                <option <c:if test="${''==hallid || hallid==null}"> selected="selected"</c:if> value="">全部</option>
+                <option <c:if test="${''==hallid || hallid==null}"> selected="selected"</c:if> value=""><s:text name="main.all" /></option>
                 <c:forEach items="${hallList}" var="hall" varStatus="index">
                     <option <c:if test="${hall.id==hallid}"> selected="selected"</c:if> value="${hall.id}">${hall.hallname}</option>
                 </c:forEach>
@@ -79,7 +72,7 @@
         </div>
     </div>
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label">业务名称：</label>
+        <label class="layui-form-label"><s:text name="serial.field.serialname" /></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
         <div class="layui-input-inline">
@@ -88,23 +81,23 @@
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">
-            <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" class="hand" onclick="serialQuery('')"/>
-            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="serialAdd('')" value="增    加" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="serialQuery('')" value="<s:text name="main.query" />" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="serialAdd()" value="<s:text name="main.add" />" />
         </div>
     </div>
     <div>
         <table class="tablelist" lay-filter="tbl" id="demo">
             <thead>
             <tr>
-                <th>序号 </th>
+                <th><s:text name="main.column.seq" /></th>
                 <th>
-                    服务厅
+                    <s:text name="serial.column.head.hallname" />
                 </th>
                 <th>
-                    业务事项id
+                    <s:text name="serial.column.head.serialid" />
                 </th>
                 <th>
-                    业务名称
+                    <s:text name="serial.column.head.serialname" />
                 </th>
                 <%--<th>
                     业务类型
@@ -133,8 +126,8 @@
                                 ${data.biztypename}
                         </td>--%>
                         <td>
-                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();serialAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="event.stopPropagation();serialDel('${data.id}','删除');"><i class="layui-icon layui-icon-delete"></i>删除</a>
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();serialAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i><s:text name="main.edit" /></a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="event.stopPropagation();serialDel('${data.id}','<s:text name="main.delete" />');"><i class="layui-icon layui-icon-delete"></i><s:text name="main.delete" /></a>
                         </td>
                     </tr>
                 </c:forEach>

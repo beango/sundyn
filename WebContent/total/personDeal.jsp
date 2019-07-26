@@ -50,13 +50,13 @@
     <div class="layui-inline">
         <label class="layui-form-label"><s:text name='sundyn.total.startDate'/></label>
         <div class="layui-input-inline">
-            <input type="text" class="scinput" id="startDate" value="${startDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+            <input type="text" class="scinput" id="startDate" value="${startDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})" />
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label"><s:text name='sundyn.total.endDate'/></label>
         <div class="layui-input-inline">
-            <input type="text" class="scinput" id="endDate" value="${endDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+            <input type="text" class="scinput" id="endDate" value="${endDate}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})" />
         </div>
     </div>
     <input type="hidden" id="deptId" name="deptId" value="${deptId}"/>

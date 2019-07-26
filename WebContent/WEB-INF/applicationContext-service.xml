@@ -109,8 +109,16 @@
     <bean id="auditLockService" class="com.sundyn.service.impl.AuditLockServiceImpl"/>
     <bean id="smsdetailService" class="com.sundyn.service.impl.SysSmsdetailServiceImpl"/>
     <bean id="qrzSchedulejobService" class="com.sundyn.service.impl.QrzSchedulejobServiceImpl"/>
+    <bean id="managerextService" class="com.sundyn.service.impl.AppriesManagerextServiceImpl"/>
+    <bean id="productService" class="com.sundyn.service.impl.OrderProductServiceImpl"/>
+    <bean id="orderDetailService" class="com.sundyn.service.impl.OrderDetailServiceImpl"/>
+    <bean id="orderProductdetailService" class="com.sundyn.service.impl.OrderProductdetailServiceImpl"/>
+    <bean id="orderLicensedetailService" class="com.sundyn.service.impl.OrderLicensedetailServiceImpl"/>
+    <bean id="productdetailService" class="com.sundyn.service.impl.OrderProductdetailServiceImpl"/>
+    <bean id="productversionService" class="com.sundyn.service.impl.OrderProductversionServiceImpl"/>
+    <bean id="managerrateService" class="com.sundyn.service.impl.AppriesManagerrateServiceImpl"/>
 
-    <bean id="managerService" class="com.sundyn.service.ManagerService" parent="superDao"/>
+    <bean id="managerService" class="com.sundyn.service.ManagerService"/>
 	<bean id="menuService" class="com.sundyn.service.MenuService" parent="superDao"/>
 	<bean id="quicklyService" class="com.sundyn.service.QuicklyService" parent="superDao"/>
 	<bean id="powerService" class="com.sundyn.service.PowerService" parent="superDao"/>

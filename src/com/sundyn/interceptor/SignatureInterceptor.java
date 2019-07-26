@@ -17,9 +17,7 @@ import org.springframework.http.MediaType;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Scanner;
@@ -96,10 +94,10 @@ public class SignatureInterceptor extends AbstractInterceptor {
             return invocation.invoke();
         }
         catch (Exception e){
-            e.printStackTrace();
             JSONObject j = new JSONObject();
             j.put("succ", false);
             j.put("msg", "系统错误，请检查参数是否正确");
+            j.put("desc", FormatStackTrace(e));
             this.returnJson(response, j.toString());
             return Action.ERROR;
         }
@@ -119,6 +117,25 @@ public class SignatureInterceptor extends AbstractInterceptor {
             if (writer != null)
                 writer.close();
         }
+    }
+
+    public static String FormatStackTrace(Throwable throwable) {
+        if(throwable==null) return "";
+        String rtn = throwable.getStackTrace().toString();
+        try {
+            Writer writer = new StringWriter();
+            PrintWriter printWriter = new PrintWriter(writer);
+            throwable.printStackTrace(printWriter);
+            printWriter.flush();
+            writer.flush();
+            rtn = writer.toString();
+            printWriter.close();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception ex) {
+        }
+        return rtn;
     }
 
     private Integer addLog(HttpServletRequest request, String body, String ywlsh) throws UnsupportedEncodingException {

@@ -56,15 +56,15 @@
 		<script language="javascript">
 		function check(){
 			if(document.getElementById("oldPsw").value==""){
-					lalert("旧密码不能为空！");
+					lalert("<s:text name="manager.changepwd.oldpwd.notnull"/>");
 					return false;
 			}
 			if(document.getElementById("newPsw").value==""){
-					lalert("新密码不能为空！");
+					lalert("<s:text name="manager.changepwd.newpwd.notnull"/>");
 					return false;
 			}
 			if(document.getElementById("newPsw2").value==""){
-					lalert("确认新密码不能为空！");
+					lalert("<s:text name="manager.changepwd.newpwd.confirmnotnull"/>");
 					return false;
 			}
 			submit();
@@ -72,15 +72,15 @@
 
         function submit(){
             var s = "";
-            if(!_$('oldPsw').value){s += "旧密码不能为空!";}
-            if(!_$('newPsw').value){s += "新密码不能为空!";}
-            if(!_$('newPsw2').value){s += "确认新密码不能为空!";}
+            if(!_$('oldPsw').value){s += "<s:text name="manager.changepwd.oldpwd.notnull"/>";}
+            if(!_$('newPsw').value){s += "<s:text name="manager.changepwd.newpwd.notnull"/>";}
+            if(!_$('newPsw2').value){s += "<s:text name="manager.changepwd.newpwd.confirmerror"/>";}
             if(s != ""){
                 layer.msg(s, {icon: 2});
                 return;
             }
             if(_$('newPsw').value!=_$('newPsw2').value){
-                layer.msg("确认新密码错误！", {icon: 2});
+                layer.msg("<s:text name="manager.changepwd.newpwd.confirmerror"/>", {icon: 2});
                 return;
             }
             lsubmit("managerChangePswDeal2.action", {
@@ -99,7 +99,7 @@
                 }
                 else
                 {
-                    if (resp.msg == "信息被变更,请重新修改密码!"){
+                    if (resp.msg == "<s:text name="audit.action.musteditpwd"/>"){
                         lalert2(resp.msg, redir2Changepwd);
                     }
                     else
@@ -113,7 +113,7 @@
     <div class="place">
         <span><s:text name="main.placetitle" /></span>
         <ul class="placeul">
-            <li><a href="#">修改密码</a></li>
+            <li><a href="#"><s:text name="sundyn.changePassword.title"/></a></li>
         </ul>
     </div>
     <div class="layui-main">
@@ -146,10 +146,10 @@
                 </tr>
                 <tr>
                     <td align="right">
-                        <input name="" type="button" class="scbtn" onclick="return check()" value="提交">
+                        <input name="" type="button" class="scbtn" onclick="return check()" value="<s:text name="main.save"/>">
                     </td>
                     <td align="left">
-                        <input name="" type="button" class="scbtnn" onclick="return f.reset()" value="重置">
+                        <input name="" type="button" class="scbtnn" onclick="return f.reset()" value="<s:text name="main.reset"/>">
                     </td>
                 </tr>
                 <c:if test="${not empty type}">

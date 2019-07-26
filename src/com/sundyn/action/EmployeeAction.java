@@ -90,40 +90,6 @@ public class EmployeeAction extends MainAction
         logger = Logger.getLogger((Class)EmployeeAction.class.getClass());
     }
 
-    private static void copy(final File src, final File dst) {
-        try {
-            InputStream in = null;
-            OutputStream out = null;
-            try {
-                in = new BufferedInputStream(new FileInputStream(src));
-                out = new BufferedOutputStream(new FileOutputStream(dst));
-                final byte[] buffer = new byte[16384];
-                int byteread = 0;
-                final int len = 0;
-                while ((byteread = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, byteread);
-                }
-            }
-            finally {
-                if (in != null) {
-                    in.close();
-                }
-                if (out != null) {
-                    out.close();
-                }
-            }
-            if (in != null) {
-                in.close();
-            }
-            if (out != null) {
-                out.close();
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public CompressPicDemo getcPic() {
         return this.cPic;
     }
@@ -1035,11 +1001,13 @@ public class EmployeeAction extends MainAction
         final HttpServletRequest request = ServletActionContext.getRequest();
         final HttpServletResponse response = ServletActionContext.getResponse();
         String mac = request.getParameter("mac");
+        String prdcode = request.getParameter("prdcode");
         final String ip = request.getRemoteAddr();
         this.url = "";
         String playListName = "";
         String windowName = "";
         String version = request.getParameter("version");
+        String androidVer = request.getParameter("androidVer");
         final String config = request.getParameter("config");
         final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         final String basepath = getServletContext().getRealPath("/");
@@ -1056,7 +1024,7 @@ public class EmployeeAction extends MainAction
         }
         final String m7binpath = String.valueOf(basepath) + "update" + File.separator + playListId;
         if (mac != null && config != null && config.equals("true")) {
-            this.deviceService.findAndAddByMac(mac);
+            this.deviceService.findAndAddByMac(mac, prdcode, androidVer);
             deptService.hasAdnAddDeptByMac(mac);
             final Map dept = this.deptService.findByMac(mac);
             if (dept != null) {
@@ -1092,7 +1060,6 @@ public class EmployeeAction extends MainAction
         else if (mac != null && config != null && config.equals("false")) {
             final Map dept = this.deptService.findByMac(mac);
             if (dept != null) {
-
                 final File cf = new File(String.valueOf(m7binpath) + File.separator + "CONFIG.XML");
                 if (cf.exists()) {
                     this.excel = new FileInputStream(cf);
@@ -1109,6 +1076,7 @@ public class EmployeeAction extends MainAction
                     version = Software.getChild("Version").getText();
 
                     playListId = dept.get("dept_playListId").toString();
+                    logger.info("升级资源路径： " + String.valueOf(m7binpath) + File.separator + "M7Update"+version+".zip");
                     final File fd = new File(String.valueOf(m7binpath) + File.separator + "M7Update"+version+".zip");
                     if (fd.exists()) {
                         this.excel = new FileInputStream(fd);
@@ -1117,7 +1085,9 @@ public class EmployeeAction extends MainAction
                         this.filename = "M7Update"+version+".zip";
                     }
                     else {
-                        this.msg = String.valueOf(fd.getAbsolutePath()) + "\u627e\u4e0d\u5230";
+                        System.out.println("fd not exists");
+                        this.url = "";
+                        this.msg = "找不到资源文件" + fd.getAbsolutePath();
                         this.excel = new ByteArrayInputStream(this.msg.getBytes());
                         this.filename = "error.txt";
                     }
@@ -1180,7 +1150,6 @@ public class EmployeeAction extends MainAction
         }
         else {
             m.put("version", version);
-            logger.info("getUpdateVersin-version=" + version);
         }
         m.put("windowName", windowName);
         m.put("date", dd);
@@ -1288,7 +1257,7 @@ public class EmployeeAction extends MainAction
                 final long curTime = System.currentTimeMillis();
                 final String filename = "upload/" + curTime + Math.round(Math.random() * 100.0) + this.getExtFileName(imgName);
                 final File dst = new File(String.valueOf(dstPath) + filename);
-                copy(this.img2, dst);
+                CommonUtil.copy(this.img2, dst);
                 this.cPic.dealPic(dstPath, dstPath, filename, filename, 150, 160);
                 impPath = filename;
             }
@@ -1304,7 +1273,7 @@ public class EmployeeAction extends MainAction
                 final long curTime = System.currentTimeMillis();
                 final String filename = "upload/" + curTime + Math.round(Math.random() * 100.0) + this.getExtFileName(imgName);
                 final File dst = new File(String.valueOf(dstPath) + filename);
-                copy(this.img, dst);
+                CommonUtil.copy(this.img, dst);
                 this.cPic.dealPic(dstPath, dstPath, filename, filename, 150, 160);
                 impPath = filename;
             }

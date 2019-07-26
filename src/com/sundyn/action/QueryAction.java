@@ -518,6 +518,7 @@ public class QueryAction extends MainAction
             return "excel";
         }
         request.setAttribute("QueueDetailBean", new QueueDetail());
+        request.setAttribute("main_all", getText("main.all"));
         return "success";
     }
 
@@ -1290,6 +1291,7 @@ public class QueryAction extends MainAction
         request.setAttribute("strXML1", (Object)strXML1.toString());
         request.setAttribute("chatList", (Object)chatList);
         request.setAttribute("QueueDetailBean", new QueueDetail());
+        request.setAttribute("main_all", this.getText("main.all"));
         if (this.getCamera().equals("true")) {
             return "camera";
         }

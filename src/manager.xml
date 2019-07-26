@@ -2,7 +2,7 @@
         "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
-	<package name="manager" extends="struts-default">
+	<package name="manager" extends="json-default">
 		<!-- 验证用户登录 开始-->
 		<interceptors>
 			<interceptor name="userCheckR" class="com.sundyn.util.UserCheckR"></interceptor>
@@ -21,11 +21,15 @@
 			<result name="login">/login.jsp</result>
             <result name="noauth">/noauth.jsp</result>
 			<result name="register">/base/register.jsp</result>
-			<result name="defExceptionResult" type="redirect">/exception1.jsp</result>
+			<!--<result name="defExceptionResult" type="redirect">/exception1.jsp</result>-->
+			<result name="defExceptionResult" type="chain"><param name="actionName">errorProcessor</param></result>
 		</global-results>
 		<global-exception-mappings>
 			<exception-mapping result="defExceptionResult" exception="java.lang.Exception"></exception-mapping>
 		</global-exception-mappings>
+        <action name="errorProcessor" class="com.sundyn.util.ErrorProcess">
+            <result>/exception1.jsp</result>
+        </action>
 		<!--  验证用户登录 结束 -->
 		<action name="managerChangePswDeal" class="managerAction"
 			method="managerChangePswDeal">
@@ -37,6 +41,14 @@
 		<action name="LowerManagerQuery" class="managerAction"
 			method="LowerManagerQuery">
 			<result name="success">/manager/query.jsp</result>
+		</action>
+		<action name="RemoteManagerQuery" class="managerAction"
+			method="RemoteManagerQuery">
+			<result name="success">/manager/RemoteManagerQuery.jsp</result>
+		</action>
+		<action name="remoteManagerEdit" class="managerAction"
+			method="remoteManagerEdit">
+			<result name="success">/manager/remoteManagerEdit.jsp</result>
 		</action>
 		<action name="managerAddDialog" class="managerAction"
 			method="managerAddDialog">
@@ -81,30 +93,37 @@
             <result name="input">/msg.jsp</result>
             <result name="success">manager/success.jsp</result>
         </action>
-		<action name="managerLogout" class="managerAction"
-			method="managerLogout">
+		<action name="managerLogout" class="managerAction" method="managerLogout">
 			<result name="success" type="redirect">login.jsp</result>
 		</action>
-		<action name="managerExist" class="managerAction"
-			method="managerExist">
+		<action name="managerExist" class="managerAction" method="managerExist">
 			<result name="success">manager/success.jsp</result>
 		</action>
 		<action name="managerQx" class="managerAction"
 			method="managerQx">
 			<result name="success">manager/success.jsp</result>
 		</action>
-		<action name="deleteVideoFile" class="queryAction"
-			method="deleteVideoFile">
+		<action name="deleteVideoFile" class="queryAction" method="deleteVideoFile">
 			<result name="success">manager/deleteVideoFile.jsp</result>
 		</action>
-		<action name="deleteVideoFileDeal" class="queryAction"
-			method="deleteVideoFileDeal">
+		<action name="deleteVideoFileDeal" class="queryAction" method="deleteVideoFileDeal">
 			<result name="success">manager/success.jsp</result>
 		</action>
-        <action name="loginmsg" class="managerAction"
-                method="loginmsg">
+        <action name="loginmsg" class="managerAction" method="loginmsg">
             <result name="success">/manager/loginmsg.jsp</result>
         </action>
+        <action name="saveManagerExt" class="managerAction" method="saveManagerExt">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+        <action name="saveRemoteManagerExt" class="managerAction" method="saveRemoteManagerExt">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
+
+
 	</package>
 	<package name="login" extends="struts-default">
         <interceptors>
@@ -127,12 +146,15 @@
                 <interceptor-ref name="operationInterceptor" />
             </interceptor-stack>
         </interceptors>
-		<global-results>
-			<result name="defExceptionResult" type="redirect">/exception1.jsp</result>
-		</global-results>
-		<global-exception-mappings>
-			<exception-mapping result="defExceptionResult" exception="java.lang.Exception"></exception-mapping>
-		</global-exception-mappings>
+        <global-results>
+            <result name="defExceptionResult" type="chain"><param name="actionName">errorProcessor</param></result>
+        </global-results>
+        <global-exception-mappings>
+            <exception-mapping result="defExceptionResult" exception="java.lang.Exception"></exception-mapping>
+        </global-exception-mappings>
+        <action name="errorProcessor" class="com.sundyn.util.ErrorProcess">
+            <result>/exception1.jsp</result>
+        </action>
         <action name="managerLogin" class="managerAction" method="managerLogin">
             <interceptor-ref name="defualtSecurityStackWithAuthentication"></interceptor-ref>
             <result name="success" type="json">
@@ -150,5 +172,6 @@
 				<param name="root">jsonData</param>
 			</result>
         </action>
+
     </package>
 </struts>

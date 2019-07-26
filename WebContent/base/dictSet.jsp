@@ -147,8 +147,7 @@
     </div>
 
     <div style="clear: both;">
-        <input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="save()"
-               class="layui-btn"/>
+        <input type="button" value="<s:text name='sundyn.softSetup.save'/>" onclick="save()" class="layui-btn"/>
         <input type="button" value="<s:text name='main.reset'/>" class="layui-btn layui-btn-primary" onclick="refreshTab()"/>
     </div>
 </div>

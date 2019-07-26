@@ -76,11 +76,11 @@ public class BlackListAction extends MainAction
         SysBlacklist entity = new SysBlacklist();
         try {
             BeanUtils.populate(entity, request.getParameterMap());
-            ValidateUtil.validate(entity);
+            ValidateUtil.validate(entity, this.getLocale());
             boolean succ = false;
             if(entity.getId() == 0){
                 if (sysBlacklistService.selectCount(new EntityWrapper<SysBlacklist>().where("idcard={0}", entity.getIdcard()))>0){
-                    request.setAttribute("msg", "黑名单已经存在");
+                    request.setAttribute("msg", this.getText("blacklist.valid.no.exists"));
                     return "success";
                 }
                 entity.setCtime(new Date());
@@ -88,24 +88,24 @@ public class BlackListAction extends MainAction
             }
             else{
                 if (sysBlacklistService.selectCount(new EntityWrapper<SysBlacklist>().where("idcard={0} and id!={1}", entity.getIdcard(), entity.getId()))>0){
-                    request.setAttribute("msg", "黑名单已经存在");
+                    request.setAttribute("msg", this.getText("blacklist.valid.no.exists"));
                     return "success";
                 }
 
                 succ = entity.updateById();
             }
             if (!succ){
-                request.setAttribute("msg", "提交失败");
+                request.setAttribute("msg", this.getText("main.save.fail"));
                 return "success";
             }
         } catch (IllegalAccessException e) {e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         } catch (InvocationTargetException e) {e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }  catch (ValidException e) {
             request.setAttribute("msg", e.getMessage());
         } catch (Exception e) { e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }
         return "success";
     }
@@ -117,7 +117,7 @@ public class BlackListAction extends MainAction
         int id = req.getInt("id");
         boolean succ = sysBlacklistService.deleteById(id);
         if (!succ){
-            request.setAttribute("msg", "删除失败");
+            request.setAttribute("msg", this.getText("main.delete.fail"));
         }
         return "success";
     }
@@ -165,12 +165,11 @@ public class BlackListAction extends MainAction
         SysProxy entity = new SysProxy();
         try {
             BeanUtils.populate(entity, request.getParameterMap());
-            ValidateUtil.validate(entity);
+            ValidateUtil.validate(entity, this.getLocale());
             boolean succ = false;
-            System.out.println("++++" + JSONObject.fromObject(entity).toString());
-            if(entity.getId() == 0){
+            if(entity.getId() == 0) {
                 if (sysProxyService.selectCount(new EntityWrapper<SysProxy>().where("idcard={0}", entity.getIdcard()))>0){
-                    request.setAttribute("msg", "代理人已经存在");
+                    request.setAttribute("msg", this.getText("proxy.valid.no.exists"));
                     return "success";
                 }
                 entity.setCtime(new Date());
@@ -178,24 +177,24 @@ public class BlackListAction extends MainAction
             }
             else{
                 if (sysProxyService.selectCount(new EntityWrapper<SysProxy>().where("idcard={0} and id!={1}", entity.getIdcard(), entity.getId()))>0){
-                    request.setAttribute("msg", "代理人已经存在");
+                    request.setAttribute("msg", this.getText("proxy.valid.no.exists"));
                     return "success";
                 }
 
                 succ = entity.updateById();
             }
             if (!succ){
-                request.setAttribute("msg", "提交失败");
+                request.setAttribute("msg", this.getText("main.save.fail"));
                 return "success";
             }
         } catch (IllegalAccessException e) {e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         } catch (InvocationTargetException e) {e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }  catch (ValidException e) {e.getMessage();
             request.setAttribute("msg", e.getMessage());
         } catch (Exception e) { e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }
         return "success";
     }
@@ -207,7 +206,7 @@ public class BlackListAction extends MainAction
         int id = req.getInt("id");
         boolean succ = sysProxyService.deleteById(id);
         if (!succ){
-            request.setAttribute("msg", "删除失败");
+            request.setAttribute("msg", this.getText("main.delete.fail"));
         }
         return "success";
     }

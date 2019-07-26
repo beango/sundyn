@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>VIP客户信息管理</title>
+    <title>代理人管理</title>
     <link rel="stylesheet" href="css/style.css" type="text/css"/>
     <link rel="stylesheet" href="lib/layui/css/layui.css"  media="all">
     <link rel="stylesheet" href="lib/ztree/css/metroStyle/metroStyle.css" type="text/css" />
@@ -25,27 +25,20 @@
     }
 
     function proxyAdd(id){
-        var action = id==undefined?"增加":"编辑";
-        new dialog().iframe("proxyAdd.action?id=" + id, {title: action+"代理人", resize:false, w:"460px", h:"340px"});
+        var action = id==undefined?"<s:text name="main.add" />":"<s:text name="main.edit" />";
+        new dialog().iframe("proxyAdd.action?id=" + id, {title: action+"", resize:false, w:"460px", h:"340px"});
     }
 
     function proxyDel(id){
-        layer.confirm('真的删除么', function(index){
+        lconfirm('<s:text name="main.delete.confirm" />', function(index){
             $.post("proxyDel.action?id=" + id, function(resp){
                 if(resp.trim()==""){
-                    layer.msg('删除成功', {
-                        icon: 1,
-                        time: 800
-                    }, function(){
+                    succ('<s:text name="main.delete.succ" />', function(){
                         refreshTab();
                     });
                 }
                 else{
-                    layer.msg(resp, {
-                        icon: 2,
-                        time: 1200
-                    }, function(){
-                    });
+                    error(resp);
                 }
             });
             layer.close(index);
@@ -63,7 +56,7 @@
 <input type="hidden" id="deptId" value="${deptId}"/>
 <div class="layui-form" lay-filter="f">
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label" style="width:100px;">身份识别号码：</label>
+        <label class="layui-form-label" style="width:100px;"><s:text name="proxy.field.no" /></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
         <div class="layui-input-inline">
@@ -71,7 +64,7 @@
         </div>
     </div>
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label" style="width:100px;">代理人姓名：</label>
+        <label class="layui-form-label" style="width:100px;"><s:text name="proxy.field.name" /></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
         <div class="layui-input-inline">
@@ -80,26 +73,26 @@
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">
-            <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" class="hand" onclick="proxyQuery('')"/>
-            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="proxyAdd()" value="增    加" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="proxyQuery('')" value="<s:text name="main.query" />" />
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="proxyAdd()" value="<s:text name="main.add" />" />
         </div>
     </div>
     <div>
         <table class="tablelist" lay-filter="tbl" id="demo">
             <thead>
             <tr>
-                <th>序号 </th>
+                <th><s:text name="main.column.seq" /> </th>
                 <th>
-                    代理人姓名
+                    <s:text name="proxy.column.name" />
                 </th>
                 <th>
-                    身份识别号码
+                    <s:text name="proxy.column.no" />
                 </th>
                 <th>
-                    所属机构
+                    <s:text name="proxy.column.dept" />
                 </th>
                 <th>
-                    号码类型
+                    <s:text name="proxy.column.type" />
                 </th>
                 <th></th>
             </tr>
@@ -125,8 +118,8 @@
                                 ${data.idtype}
                         </td>
                         <td>
-                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();proxyAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="event.stopPropagation();proxyDel('${data.id}','删除');"><i class="layui-icon layui-icon-delete"></i>删除</a>
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" onclick="event.stopPropagation();proxyAdd('${data.id}','<s:text name='sundyn.modifyOrupdate' />');"><i class="layui-icon layui-icon-edit"></i><s:text name="main.edit" /></a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="event.stopPropagation();proxyDel('${data.id}','<s:text name="main.delete" />');"><i class="layui-icon layui-icon-delete"></i><s:text name="main.delete" /></a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -136,15 +129,10 @@
         <div id="pp"></div>
     </div>
 </div>
-<div id="treeContent" class="menuContent" style="display:none; position: absolute;">
-    <ul id="treeDept" class="ztree" style="margin-top:0; width:380px; height: 300px;"></ul>
-</div>
 </body>
 <script type="text/javascript">
     initPager(${queryData.getTotal()}, <%=request.getParameter("currentPage")==null?1:request.getParameter("currentPage")%>,<%=request.getParameter("pageSize")==null?20:request.getParameter("pageSize")%>);
 
-    layui.use(['form', 'element'], function() {
-        var form = layui.form;
-    });
+    layui.use(['form', 'element']);
 </script>
 </html>

@@ -116,7 +116,7 @@ public class HallAction extends MainAction
         SysQueuehall hall = new SysQueuehall();
         try {
             BeanUtils.populate(hall, request.getParameterMap());
-            ValidateUtil.validate(hall);
+            ValidateUtil.validate(hall, this.getLocale());
             hall.setCheckdigit(genCheckDigit(hall));
             boolean succ = false;
             if(hall.getId() == null || hall.getId() == 0){

@@ -1,23 +1,38 @@
+<%@ page import="com.sundyn.util.CommonUtil" %>
+<%@ page import="java.util.regex.Matcher" %>
+<%@ page import="java.util.regex.Pattern" %>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="/struts-tags" prefix="s"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="qloginmsg" value="${pageContext.request.getParameter('msg')==null?'':com.sundyn.utils.ReqUtils.format(pageContext.request.getAttribute('msg').toString())}" />
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    if(CommonUtil.isMobileAgent()){
+        response.sendRedirect(basePath+"mlogin.jsp");
+    }
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title><s:text name="login.title" /></title>
-    <link href="css/style.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="lib/layui/css/layui.2.4.5.css" media="all">
+    <link rel="stylesheet" href="css/login_admin.css" media="all">
+    <link rel="stylesheet" href="css/login_login.css" media="all">
     <script type="text/javascript" src="lib/layui/layui.js"></script>
     <script language="JavaScript" src="js/md5.min.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script language="JavaScript" src="js/dojo.js"></script>
+    <script type="text/javascript">
+        layui.use("layer")
+    </script>
     <script language="JavaScript" src="js/my_<s:text name='sundyn.language' />.js"></script>
+    <script type="text/javascript" src="js/mmain.js"></script>
     <script language="javascript">
         $(function () {
             layui.use("layer")
-
             var loginmsg = '${loginmsg}';
             if(loginmsg=='')
                 loginmsg = '${msg}';
@@ -88,24 +103,38 @@
     </script>
 
 </head>
+<body>
 
-<body style="background-color:#1c77ac; background-image:url(<s:text name="login.pic.loginBg" />); background-repeat:no-repeat; background-position:center top; overflow:hidden;">
-<div class="loginbody" id="loginbody">
-    <span class="systemlogo"></span>
-    <div class="loginbox">
-        <form method="post" id="v" action="managerLogin.action" class="form-condensed">
-            <ul>
-                <li><label style="font-size:13pt;color:#fff;font-weight:bold;"><s:text name="login.userName" /></label><input  name="managerVo.name" id="name" type="text" class="loginuser" value="" onclick="JavaScript:this.value=''"/></li>
-                <li><label style="font-size:13pt;color:#fff;font-weight:bold;"><s:text name="login.password" /></label><input name="password1" id="password1" type="password" class="loginpwd" value="" onclick="JavaScript:this.value=''"/></li>
-                <li style="padding-left:75px;"><input name="" type="button" class="loginbtn" value="<s:text name="login.login" />" onclick="doclick()"/>
-                    <input type="hidden" name="managerVo.password" id="password" value="" />
-                    <label class="msg" style="height:20px;color:red;">${msg}</label>
-                </li>
-                <li></li>
-            </ul>
-        </form>
+<div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login">
+
+    <div class="layadmin-user-login-main">
+        <div class="layadmin-user-login-box layadmin-user-login-header">
+            <h2><s:text name="login.title" /></h2>
+        </div>
+        <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+            <div class="layui-form-item">
+                <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
+                <input type="text" name="managerVo.name" id="name" lay-verify="required" placeholder="用户名" class="layui-input">
+            </div>
+            <div class="layui-form-item">
+                <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
+                <input type="password" name="password1" id="password1" lay-verify="required" placeholder="密码" class="layui-input">
+            </div>
+            <div class="layui-form-item">
+                <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit" onclick="doclick()">登 入</button>
+            </div>
+            <div class="layui-trans layui-form-item layadmin-user-login-other">
+                <input type="hidden" name="managerVo.password" id="password" value="" />
+                <label class="msg" style="height:20px;color:red;">${msg}</label>
+                <a href="registerView.action" class="layadmin-user-jump-change layadmin-link">注册帐号</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-trans layadmin-user-login-footer">
+        <p>© 2019 众鑫</p>
     </div>
 </div>
-<div class="loginbm"></div>
+
 </body>
 </html>

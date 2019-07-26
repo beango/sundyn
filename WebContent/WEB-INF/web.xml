@@ -117,7 +117,7 @@
 		<session-timeout>20</session-timeout>
 	</session-config>
 	<welcome-file-list>
-		<welcome-file>/login.jsp</welcome-file>
+		<welcome-file>/default.jsp</welcome-file>
 	</welcome-file-list>
 	<mime-mapping>
 		<extension>rar</extension>
@@ -157,4 +157,8 @@
 		<error-code>500</error-code>
 		<location>/404.jsp</location>
 	</error-page>-->
+    <error-page>
+        <error-code>299</error-code>
+        <location>/msg.jsp</location>
+    </error-page>
 </web-app>

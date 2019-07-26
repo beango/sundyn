@@ -1,32 +1,24 @@
 package com.sundyn.service.impl;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.sundyn.dao.MainDao;
 import com.sundyn.service.DeptService;
 import com.sundyn.util.CookieUtils;
-import com.xuan.xutils.cache.Cache;
 import com.xuan.xutils.cache.CacheManager;
-import com.xuan.xutils.cache.provider.SimpleCache;
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class ServiceBaseImpl<dao extends BaseMapper<T>, T> extends ServiceImpl<dao, T> {
+public class ServiceBaseImpl<dao extends MainDao<T>, T> extends ServiceImpl<dao, T> {
     public boolean isFILTERDEPT() {
         return FILTERDEPT;
     }
@@ -35,7 +27,7 @@ public class ServiceBaseImpl<dao extends BaseMapper<T>, T> extends ServiceImpl<d
         this.FILTERDEPT = FILTERDEPT;
     }
 
-    private boolean FILTERDEPT = true;
+    protected boolean FILTERDEPT = true;
     @Resource
     private CacheManager dCacheManager;
     @Resource
@@ -292,5 +284,13 @@ public class ServiceBaseImpl<dao extends BaseMapper<T>, T> extends ServiceImpl<d
             wrapper = wrapper.in("deptid", filterDept.split(","));
         }
         return super.selectPage(page, wrapper);
+    }
+
+    public List<Map> querymap(Wrapper wrapper) {
+        return super.baseMapper.querymap(wrapper);
+    }
+
+    public Page<Map> querypagemap(Page<Map> page, Wrapper<Map> wrapper) {
+        return page.setRecords(baseMapper.querypagemap(page, wrapper));
     }
 }

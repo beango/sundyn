@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotations.Version;
 
+import com.sundyn.vo.LogTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -41,6 +42,21 @@ public class AuditLog extends Model<AuditLog> {
     @TableField(exist = false)
     private String ncheckdigit;
     private Integer checkdigited;
+    @TableField(exist = false)
+    private String logtypei18n;
+
+    public String getLogtypei18n() {
+        System.out.println(logtype);
+        LogTypeEnum l = LogTypeEnum.codeOf(logtype);
+        if (l!=null)
+            return l.toString();
+        return logtype;
+    }
+
+    public void setLogtypei18n(String str) {
+        System.out.println(logtype);
+        logtypei18n = str;
+    }
 
     public String getCheckdigit() {
         return checkdigit;

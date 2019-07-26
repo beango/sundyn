@@ -69,7 +69,7 @@ public class SysProxyorgAction extends MainAction {
         SysProxyorg entity = new SysProxyorg();
         try {
             BeanUtils.populate(entity, request.getParameterMap());
-            ValidateUtil.validate(entity);
+            ValidateUtil.validate(entity, this.getLocale());
             System.out.println("null:" + (entity==null) + ":" + (new JSONObject(request.getParameterMap()).toString()));
 
             boolean succ = false;

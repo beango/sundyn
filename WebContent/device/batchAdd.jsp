@@ -42,7 +42,7 @@
         <tr >
             <td align="right"  style="border-color: #e9f5fd;">日期<s:text name='sundyn.colon' /></td>
             <td align="left"  style="border-color: #e9f5fd;">
-                <input name="batchdate" class="input_comm" id="batchdate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="${vo.batchdate}" />
+                <input name="batchdate" class="input_comm" id="batchdate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',lang:'${locale}'})" value="${vo.batchdate}" />
             </td>
         </tr>
         <tr>

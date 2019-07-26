@@ -32,22 +32,22 @@
 <input type="hidden" id="deptId" value="${deptId}"/>
 <form class="layui-form" action="">
     <div class="layui-form-item">
-        <label class="layui-form-label" style="width:60px;">类型：</label>
+        <label class="layui-form-label" style="width:60px;"><s:text name="auditlog.field.type" /></label>
         <div class="layui-input-inline">
             <select name="logtype" id="logtype">
-                <option value="" <c:if test="${logtype==null || logtype==''}"> selected="selected"</c:if>>所有</option>
-                <option value="高频访问" <c:if test="${logtype=='高频访问'}"> selected="selected"</c:if>>高频访问</option>
-                <option value="特殊访问时间段" <c:if test="${logtype=='特殊访问时间段'}"> selected="selected"</c:if>>特殊访问时间段</option>
-                <option value="账号长期未使用" <c:if test="${logtype=='账号长期未使用'}"> selected="selected"</c:if>>账号长期未使用</option>
-                <option value="访问非常规业务" <c:if test="${logtype=='访问非常规业务'}"> selected="selected"</c:if>>访问非常规业务</option>
-                <option value="访问核心功能" <c:if test="${logtype=='访问核心功能'}"> selected="selected"</c:if>>访问核心功能</option>
-                <option value="数据被篡改" <c:if test="${logtype=='数据被篡改'}"> selected="selected"</c:if>>数据被篡改</option>
+                <option value="" <c:if test="${logtype==null || logtype==''}"> selected="selected"</c:if>><s:text name="main.all"/></option>
+                <option value="高频访问" <c:if test="${logtype=='高频访问'}"> selected="selected"</c:if>><s:text name="auditlog.logTypeEnumAccessPerTimes"/></option>
+                <option value="特殊访问时间段" <c:if test="${logtype=='特殊访问时间段'}"> selected="selected"</c:if>><s:text name="auditlog.logTypeEnumSpecialTime"/></option>
+                <option value="账号长期未使用" <c:if test="${logtype=='账号长期未使用'}"> selected="selected"</c:if>><s:text name="auditlog.logTypeEnumAccountLongTimeUnused"/></option>
+                <option value="访问非常规业务" <c:if test="${logtype=='访问非常规业务'}"> selected="selected"</c:if>><s:text name="auditlog.logTypeEnumNotGeneral"/></option>
+                <option value="访问核心功能" <c:if test="${logtype=='访问核心功能'}"> selected="selected"</c:if>><s:text name="auditlog.logTypeEnumCoreService"/></option>
+                <option value="数据被篡改" <c:if test="${logtype=='数据被篡改'}"> selected="selected"</c:if>><s:text name="auditlog.logTypeEnumDataTampered"/></option>
             </select>
         </div>
         <div class="layui-input-line">
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" class="hand" onclick="query('')"/>
+                    <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="query('')" value="<s:text name="main.query" />" />
                 </div>
             </div>
         </div>
@@ -56,30 +56,30 @@
         <table class="tablelist" lay-filter="tbl" id="demo">
             <thead>
             <tr>
-                <th>序号 </th>
+                <th><s:text name="main.column.seq"/></th>
                 <th>
-                    姓名
+                    <s:text name="auditlogin.column.name"/>
                 </th>
                 <th>
-                    所属部门
+                    <s:text name="auditlogin.column.dept"/>
                 </th>
                 <th>
-                    事件类型
+                    <s:text name="auditlogin.column.type"/>
                 </th>
                 <th>
-                    操作时间
+                    <s:text name="auditlogin.column.time"/>
                 </th>
                 <th>
-                    操作结果
+                    <s:text name="auditlogin.column.result"/>
                 </th>
                 <th>
-                    操作IP
+                    <s:text name="auditlogin.column.ip"/>
                 </th>
                 <th align="center">
-                    终端
+                    <s:text name="auditlogin.column.client"/>
                 </th>
                 <th>
-                    详情
+                    <s:text name="auditlogin.column.desc"/>
                 </th>
             </tr>
             </thead>
@@ -97,7 +97,7 @@
                         <td>
                                 ${data.deptname}
                         </td>
-                        <td>${data.logtype}<font style="color:red;">${data.checkdigited==1?"(数据被篡改)":""}</font></td>
+                        <td>${data.logtypei18n}<c:if test="${data.checkdigited==1}"><font style="color:red;"><s:text name="main.data.noverify" /></font></c:if>
                         <td>
                                 ${data.ctime}
                         </td>
@@ -124,6 +124,6 @@
 </body>
 <script type="text/javascript">
     initPager(${queryData.getTotal()}, <%=request.getParameter("currentPage")==null?1:request.getParameter("currentPage")%>,<%=request.getParameter("pageSize")==null?20:request.getParameter("pageSize")%>);
-    layui.use(['form','element'], function() {});
+    layui.use(['form','element']);
 </script>
 </html>

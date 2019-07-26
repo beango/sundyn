@@ -96,7 +96,7 @@ public class SerialAction extends MainAction
         SysQueueserial entity = new SysQueueserial();
         try {
             BeanUtils.populate(entity, request.getParameterMap());
-            ValidateUtil.validate(entity);
+            ValidateUtil.validate(entity, this.getLocale());
             SysQueuehall hallentity = hallService.selectById(entity.getHallid());
             Map deptentity = deptService.findDeptById(hallentity.getDeptid());
             entity.setDeptid(Integer.valueOf(deptentity.get("id").toString()));
@@ -104,31 +104,31 @@ public class SerialAction extends MainAction
             boolean succ = false;
             if(entity.getId() == 0){
                 if (serialService.selectCount(new EntityWrapper<SysQueueserial>().where("hallid={0} and bizid={1}", entity.getHallid(), entity.getBizid()))>0){
-                    request.setAttribute("msg", "业务事项id已经存在");
+                    request.setAttribute("msg", this.getText("serial.valid.serialid.exists"));
                     return "success";
                 }
                 succ = entity.insert();
             }
             else{
                 if (serialService.selectCount(new EntityWrapper<SysQueueserial>().where("hallid={0} and bizid={1} and id!={2}", entity.getHallid(), entity.getBizid(), entity.getId()))>0){
-                    request.setAttribute("msg", "业务事项id已经存在");
+                    request.setAttribute("msg", this.getText("serial.valid.serialid.exists"));
                     return "success";
                 }
 
                 succ = entity.updateById();
             }
             if (!succ){
-                request.setAttribute("msg", "提交失败");
+                request.setAttribute("msg", this.getText("main.save.fail"));
                 return "success";
             }
         } catch (IllegalAccessException e) {e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         } catch (InvocationTargetException e) {e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }  catch (ValidException e) {
             request.setAttribute("msg", e.getMessage());
         } catch (Exception e) { e.printStackTrace();
-            request.setAttribute("msg", "提交失败，系统错误");
+            request.setAttribute("msg", this.getText("main.save.fail"));
         }
         return "success";
     }
@@ -140,7 +140,7 @@ public class SerialAction extends MainAction
         int id = req.getInt("id");
         boolean succ = serialService.deleteById(id);
         if (!succ){
-            request.setAttribute("msg", "删除失败");
+            request.setAttribute("msg", this.getText("main.delete.fail"));
         }
         return "success";
     }

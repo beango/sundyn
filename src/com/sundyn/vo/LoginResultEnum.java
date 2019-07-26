@@ -17,7 +17,6 @@ public enum LoginResultEnum {
     LoginResultEnum(String code, String key) {
         HttpServletRequest req = ServletActionContext.getRequest();
         this.msg = LocalizedTextUtil.findDefaultText(key, (Locale)req.getAttribute("Locale"));
-        System.out.println("mmmmmmmmmmmmmmmmmmmm//" + this.msg + req.getAttribute("Locale"));
         this.code = code;
     }
 

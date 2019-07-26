@@ -97,14 +97,14 @@ public class SysProxyorg extends Model<SysProxyorg> {
     }
 
     private Integer id;
-    @Size(min=1,max=50,message="机构名称不能为空")
+    @Size(min=1,max=50,message="{proxyorg.valid.orgname.notnull}")
     private String orgname;
-    @Size(min=1,max=50,message="机构识别号码不能为空")
+    @Size(min=1,max=50,message="{proxyorg.valid.orgno.notnull}")
     private String orgcode;
     private Boolean isenable;
-    @Size(min=1,max=50,message="联系方式不能为空")
+    @Size(min=1,max=50,message="{proxyorg.valid.contactphone.notnull}")
     private String maintel;
-    @Size(min=1,max=50,message="联系人不能为空")
+    @Size(min=1,max=50,message="{proxyorg.valid.contact.notnull}")
     private String mainname;
     private Integer level;
     private Date ctime;

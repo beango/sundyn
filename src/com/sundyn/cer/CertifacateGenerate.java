@@ -68,15 +68,17 @@ public class CertifacateGenerate {
         algorithmMap.put("1.2.840.113549.1.1.1", KEY_PAIR_ALG);
     }
 
-    public CertifacateGenerate(){
+    public CertifacateGenerate() throws Exception{
         rootpath=ServletActionContext.getServletContext().getRealPath("/");
-        if (!new File(rootpath+"/cer/zxroot.cer").exists()){
-            try {
+        File rootcer = new File(ServletActionContext.getServletContext().getRealPath("/WEB-INF/cer/root/zxroot.cer"));
+        if (!rootcer.exists()){
+            throw new Exception("zxroot.cer根证书文件不存在");
+            /*try {
                 GenRootKeyPair();//生成密钥
                 GenRootCert();//生成根证书
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
         }
         //注冊BC Provider，由于有些关于证书的操作使用到了BouncyCastle这个第三方库就顺便注冊上了，事实上不注冊也行
         Provider provider = new BouncyCastleProvider();
@@ -199,7 +201,6 @@ public class CertifacateGenerate {
         X509Certificate certificate = certGen.generate(getRootPrivateKey(),"BC");
 
         writeFile(cerpath, certificate.getEncoded());
-        System.out.println(certificate);
     }
 
 
@@ -248,7 +249,7 @@ public class CertifacateGenerate {
         BcRSAContentSignerBuilder contentSignerBuilder = new BcRSAContentSignerBuilder(sigAlgId, digAlgId);
         PKCS10CertificationRequest certificationRequest = certificationRequestBuilder.build(contentSignerBuilder.build(keyParameter));
         System.out.println(certificationRequest);
-        writeFile("D:/certtest/zhangsan.csr", certificationRequest.getEncoded());
+        writeFile("/home/beango/zhangsan.csr", certificationRequest.getEncoded());
     }
 
     /**
@@ -275,16 +276,16 @@ public class CertifacateGenerate {
         certGen.setSubjectDN(new X500Principal(certificationRequest.getSubject().toString()));
         X509Certificate certificate = certGen.generate(getRootPrivateKey());
 
-        writeFile("D:/certtest/zhangsan.cer", certificate.getEncoded());
+        writeFile("/home/beango/zhangsan.cer", certificate.getEncoded());
     }
 
     @Test
     public void verify() throws Exception {
-        InputStream i1 = new FileInputStream("D:/certtest/ca.cer");
-        InputStream i2 = new FileInputStream("D:/certtest/zhangsan.cer");
+        InputStream i1 = new FileInputStream("/work/workspace/gzcgs/out/artifacts/gzcgs_Web_exploded/cer/zxroot.cer");
+        InputStream i2 = new FileInputStream("/work/workspace/gzcgs/out/artifacts/gzcgs_Web_exploded/cer/10D07AEA2A44.cer");
 
         X509Certificate x509Certificate = (X509Certificate) getCertificate(i1);
-        x509Certificate.verify(((X509Certificate) getCertificate(i2)).getPublicKey());
+        //x509Certificate.verify(((X509Certificate) getCertificate(i2)).getPublicKey());
     }
 
     /**
@@ -327,19 +328,19 @@ public class CertifacateGenerate {
     }
 
     public PrivateKey getRootPrivateKey() throws Exception {
-        return PrivateKey.class.cast(readKey(rootpath+"/cer/zxroot.private"));
+        return PrivateKey.class.cast(readKey(rootpath+"WEB-INF/cer/root/zxroot.private"));
     }
     public PublicKey getRootPublicKey() throws Exception {
-        return PublicKey.class.cast(readKey(rootpath+"/cer/zxroot.public"));
+        return PublicKey.class.cast(readKey(rootpath+"WEB-INF/cer/root/zxroot.public"));
     }
 
     public PrivateKey getZhangsanPrivateKey() throws Exception {
         return PrivateKey.class.cast(readKey("D:/certtest/test.private"));
     }
+
     public PublicKey getZhangsanPublicKey(String userCerpath) throws Exception {
         return PublicKey.class.cast(readKey(userCerpath));
     }
-
 
     public byte[] readFile(String path) throws Exception {
         FileInputStream cntInput = new FileInputStream(path);

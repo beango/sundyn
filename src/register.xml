@@ -2,14 +2,23 @@
         "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
-	<package name="register" extends="struts-default">
-		<action name="registerView" class="registerAction"
-			method="registerView">
+	<package name="register" extends="json-default">
+        <result-types>
+            <result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+        </result-types>
+		<action name="registerView" class="registerAction" method="registerView">
 			<result name="success">base/register.jsp</result>
 		</action>
-		<action name="registerReg" class="registerAction"
-			method="registerReg">
-			<result name="success" type="chain"> registerView</result>
+        <action name="mregister" class="registerAction" method="mregister">
+			<result name="success">base/mregister.jsp</result>
 		</action>
+		<action name="registerReg" class="registerAction" method="registerReg">
+			<result name="success">registerView</result>
+		</action>
+        <action name="registerPost" class="registerAction" method="registerPost">
+            <result name="success" type="json">
+                <param name="root">jsonData</param>
+            </result>
+        </action>
   	</package>
 </struts>

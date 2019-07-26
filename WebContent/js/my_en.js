@@ -3857,7 +3857,7 @@ function getQueryString(name) {
 }
 
 function succ(msg, calback){
-    layer.msg(msg, {icon: 1, time: 800}, function(){
+    return layer.msg(msg, {icon: 1, time: 800}, function(){
         if (calback) {
             calback();
         }
@@ -3865,7 +3865,7 @@ function succ(msg, calback){
 }
 
 function error(msg){
-    layer.msg(msg, {icon: 2, time: 2800});
+    return layer.msg(msg, {icon: 2, time: 2800});
 }
 
 // https://zeit.co/blog/async-and-await
@@ -3907,6 +3907,7 @@ function lalert2(msg, yesclick){
 
 function lconfirm(msg, yescall){
     layer.confirm(msg, {
+        title:"Confirm",
         btn: [confirmstr,cancelstr] //按钮
     }, function(){
         if(yescall)

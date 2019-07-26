@@ -239,7 +239,7 @@ public abstract class DateUtils {
         if (date == null) {
             return null;
         }
-        return (new SimpleDateFormat(pattern)).format(date);
+        return new SimpleDateFormat(pattern).format(date);
     }
 
     /**

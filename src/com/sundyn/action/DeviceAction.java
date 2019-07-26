@@ -94,8 +94,15 @@ public class DeviceAction extends MainAction
     public String androidAddDeviceByMac(){
         final HttpServletRequest request = ServletActionContext.getRequest();
         final String mac = request.getParameter("mac");
-        if(mac!=null && !"".equals(mac))
-            this.deviceService.findAndAddByMac(mac);
+        String prdcode = request.getParameter("prdcode"); // ZXEval-XF
+        String androidVer = request.getParameter("androidVer");
+        if(mac!=null && !"".equals(mac)) {
+            Map deviceMap = deviceService.findByMac(mac);
+            deviceService.addDevice(deviceMap==null?"":deviceMap.get("id").toString(), "", mac, "", DateHelper.getInstance().getDataString_1(null), prdcode, androidVer);
+            this.deviceService.findAndAddByMac(mac, prdcode, androidVer);
+
+            deviceService.updateDeviceInfo(mac, prdcode, androidVer);
+        }
         return "success";
     }
 
@@ -242,28 +249,32 @@ public class DeviceAction extends MainAction
         String startDate = request.getParameter("startDate"),
                 endDate = request.getParameter("endDate"),
                 batchno = request.getParameter("batchno"),
+                name = request.getParameter("name"),
                 keymac = request.getParameter("mac");
 
-        List list = this.deviceService.findDevice(batchno, keymac, startDate, endDate,(this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), total);
+        List list = this.deviceService.findDevice(name, batchno, keymac, startDate, endDate,(this.pager.getCurrentPage() - 1) * this.pager.getPageSize(), this.pager.getPageSize(), total);
         this.pager = new Pager("currentPage", pageSize, total[0], request, this);
         this.pager.setPageList(list);
         String spath = ServletActionContext.getServletContext().getRealPath("/");
-        for (int i=0; i<pager.getPageList().size(); i++){
-            Map m = (Map)pager.getPageList().get(i);
+        if (null != this.pager.getPageList()){
+            for (int i=0; i<pager.getPageList().size(); i++){
+                Map m = (Map)pager.getPageList().get(i);
 
-            String mac = m.get("mac").toString();
-            File macfile = new File(spath+"cer\\" + mac + ".cer");
-            if (macfile.exists()){
-                m.put("cerfile", spath+"cer\\" + mac + ".cer");
+                String mac = m.get("mac").toString();
+                File macfile = new File(spath+"WEB-INF/cer/" + mac + ".cer");
+                if (macfile.exists()){
+                    m.put("cerfile", spath+"WEB-INF/cer/" + mac + ".cer");
+                }
+                else
+                    m.put("cerfile", "");
             }
-            else
-                m.put("cerfile", "");
         }
 
         request.setAttribute("startDate", startDate);
         request.setAttribute("endDate", endDate);
         request.setAttribute("mac", keymac);
         request.setAttribute("batchno", batchno);
+        request.setAttribute("name", name);
         return "success";
     }
 
@@ -306,7 +317,7 @@ public class DeviceAction extends MainAction
                 return "success";
             }
 
-            this.deviceService.addDevice(batchid, mac, false,"", ctime);
+            this.deviceService.addDevice("", batchid, mac, "", ctime, null, null);
             jo.put("succ", true);
             jo.put("errmsg", "添加成功");
             request.setAttribute("msg", jo);

@@ -202,7 +202,7 @@
 	</package>
 	<package name="test" extends="json-default">
 		<action name="topframejson" class="defaultAction"
-			method="TopFrame2">
+			method="topframejson">
 			<result type="json">
                 <param name="root">result</param>
             </result>

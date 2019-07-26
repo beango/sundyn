@@ -33,7 +33,7 @@
                 data: data,
                 success:function (resp) {
                     if (resp.trim() == "") {
-                        succ("修改成功",function () {
+                        succ("<s:text name="main.save.succ" />",function () {
                             parent.closeDialog();
                             parent.refreshTab();
                         });
@@ -66,7 +66,7 @@ request.setAttribute("qs_deptid", qs_deptid);
     <input type="hidden" name="hallid" id="hallid" value="" />
     <input type="hidden" name="deptid" id="deptid" value="${deptid}" />
     <div class="layui-form-item">
-        <label class="layui-form-label">服务厅：</label>
+        <label class="layui-form-label"><s:text name="counter.field.hall" /></label>
         <div class="layui-input-inline">
             <select id="hallsele">
                 <c:forEach items="${hallList}" var="hall" varStatus="index">
@@ -76,13 +76,13 @@ request.setAttribute("qs_deptid", qs_deptid);
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">窗口号：</label>
+        <label class="layui-form-label"><s:text name="counter.field.counterno" /></label>
         <div class="layui-input-inline">
             <input type="text" name="counterno" id="counterno" class="layui-input" value="${entity.counterno}"/>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">窗口名称：</label>
+        <label class="layui-form-label"><s:text name="counter.field.countername" /></label>
         <div class="layui-input-inline">
             <c:if test="${qs_deptid!=null && qs_deptid.length()>0}">
                 <label class="layui-form-label" style="text-align: left;">${entity.countername}</label>
@@ -182,9 +182,7 @@ request.setAttribute("qs_deptid", qs_deptid);
     <ul id="treeDept" class="ztree" style="margin-top:0; width:380px; height: 300px;"></ul>
 </div>
 <script type="text/javascript">
-    layui.use(['form', 'element'], function() {
-        var form = layui.form;
-    });
+    layui.use(['form', 'element']);
     initTree("?depttype=0&isOnlyLeaf=1");
 </script>
 </body>

@@ -48,10 +48,10 @@
 <input type="hidden" id="deptId" value="${deptId}"/>
 <div class="layui-form">
     <div class="layui-inline">
-        <label class="layui-form-label" style="width:55px;">服务厅：</label>
+        <label class="layui-form-label" style="width:55px;"><s:text name="serial.field.hall"/></label>
         <div class="layui-input-inline">
             <select id="hallsele" lay-filter="hallsele">
-                <option <c:if test="${''==hallid || hallid==null}"> selected="selected"</c:if> value="">全部</option>
+                <option <c:if test="${''==hallid || hallid==null}"> selected="selected"</c:if> value=""><s:text name="main.all"/></option>
                 <c:forEach items="${hallList}" var="hall" varStatus="index">
                     <option <c:if test="${hall.id==hallid}"> selected="selected"</c:if> value="${hall.id}">${hall.hallname}</option>
                 </c:forEach>
@@ -59,17 +59,17 @@
         </div>
     </div>
     <div class="layui-inline">
-        <label class="layui-form-label" style="width:70px;">事件类型：</label>
+        <label class="layui-form-label" style="width:70px;"><s:text name="managerlogin.column.logtype"/></label>
         <div class="layui-input-inline">
             <select id="action" lay-filter="action">
-                <option value=""<c:if test="${action==action || ''==action}"> selected="selected"</c:if>>全部</option>
-                <option value="login"<c:if test="${'login'==action}"> selected="selected"</c:if>>登录</option>
-                <option value="pause"<c:if test="${'pause'==action}"> selected="selected"</c:if>>暂停</option>
+                <option value=""<c:if test="${action==action || ''==action}"> selected="selected"</c:if>><s:text name="main.all"/></option>
+                <option value="login"<c:if test="${'login'==action}"> selected="selected"</c:if>><s:text name="queuetype.actiontype.login"/></option>
+                <option value="pause"<c:if test="${'pause'==action}"> selected="selected"</c:if>><s:text name="queuetype.actiontype.pause"/></option>
             </select>
         </div>
     </div>
     <div class="layui-select-cus layui-inline">
-        <label class="layui-form-label" style="width:43px;">员工：</label>
+        <label class="layui-form-label" style="width:43px;"><s:text name="sundyn.column.people" /></label>
         <div class="layui-form-mid layui-word-aux">
         </div>
         <div class="layui-input-inline">
@@ -78,20 +78,20 @@
     </div>
     <div class="layui-inline">
         <div class="layui-input-inline">
-            <img src="<s:text name='sundyn.total.pic.query'/>" width="80" height="25" onclick="query('')" class="hand" style="vertical-align: middle;cursor:pointer;"/>
+            <input type="button" class="button" style="background: url(images/button_bg.gif)" onclick="query('')" value="<s:text name="main.query" />" />
         </div>
     </div>
     <div>
         <table class="tablelist">
             <thead>
             <tr>
-                <th style="text-align: center;">序号</th>
+                <th style="text-align: center;"><s:text name="main.column.seq"/></th>
                 <th style="text-align: center;">
-                    服务厅
+                    <s:text name="sundyn.column.dating"/>
                 </th>
                 <th style="text-align: center;"><s:text name='sundyn.column.employeeName'/></th>
-                <th style="text-align: center;">事件类型</th>
-                <th style="text-align: center;">开始／结束时间</th>
+                <th style="text-align: center;"><s:text name='employeereport.column.eventtype'/></th>
+                <th style="text-align: center;"><s:text name='employeereport.column.eventtime'/></th>
             </tr>
             </thead>
             <tbody>
@@ -109,7 +109,7 @@
                                 ${data.ename}<c:if test="${data.countername!=null}"> （${data.countername}） </c:if>
                         </td>
                         <td>
-                            <c:if test="${data.action=='login'}"><img src="images/管理员认证.png" style="width:20px;height:20px;" />登录</c:if><c:if test="${data.action=='pause'}"><img src="images/暂停_o.png" style="width:20px;height:20px;" />暂停</c:if>
+                            <c:if test="${data.action=='login'}"><img src="images/管理员认证.png" style="width:20px;height:20px;" /><s:text name="queuetype.actiontype.login"/></c:if><c:if test="${data.action=='pause'}"><img src="images/暂停_o.png" style="width:20px;height:20px;" /><s:text name="queuetype.actiontype.pause"/></c:if>
                         </td>
                         <td>
                             <label style="height:20px;"><fmt:formatDate value="${data.starttime}" type="both" /></label><c:if test="${data.endtime!=null}">　／　</c:if><label style="height:20px;"><fmt:formatDate value="${data.endtime}" type="both" /></label>
@@ -138,9 +138,6 @@
         layui.use(['form', 'element'], function() {
             var form = layui.form;
             form.on('select(hallsele)', function(data){
-                console.log(data.elem); //得到select原始DOM对象
-                console.log(data.value); //得到被选中的值
-                console.log(data.othis); //得到美化后的DOM对象
                 loadHallSerial(form, data.value);
             });
 
@@ -176,7 +173,7 @@
         $.post("getHallSerial.action?hallid=" + hallid, function(data){
             var serialList = JSON.parse(data.data);
             $("#seriid").empty();
-            $("#seriid").append("<option value=''>全部</option>");
+            $("#seriid").append("<option value=''><s:text name="main.all"/></option>");
             for (var i=0; i< serialList.length; i++){
                 var item = serialList[i];
                 if (qs_seriid == item.id)

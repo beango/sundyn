@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sundyn.dao.OrderProductDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, productname, productcode, price, comment, ctime, cuser, canbuy
+    </sql>
+
+    <select id="querymap" resultType="Map">
+        SELECT order_product.*, (select sum(num) from order_licensedetail where order_product.id=order_licensedetail.productid and order_licensedetail.type=1) totalnum
+        ,(select count(usednums) from order_licensedetail where order_product.id=order_licensedetail.productid and order_licensedetail.type=2) usednum
+        FROM order_product WHERE 1=1 ${ew.sqlSegment}
+    </select>
+</mapper>
+

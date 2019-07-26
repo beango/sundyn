@@ -25,7 +25,7 @@
                 data: data,
                 success:function (resp) {
                     if (resp.trim() == "") {
-                        succ("<s:text name="main.save.scuc" />", function () {
+                        succ("<s:text name="main.save.succ" />", function () {
                             parent.closeDialog();
                             parent.refreshTab();
                         });

@@ -18,7 +18,7 @@ import java.util.Map;
  * @author oKong
  * @since 2018-09-13
  */
-public interface QueueDetailDao extends BaseMapper<QueueDetail> {
+public interface QueueDetailDao extends MainDao<QueueDetail> {
     public void ProcQueueTicket(Map<String, Object> paramMap);
 
     public void ProcQueueEmployee(Map<String, Object> paramMap);

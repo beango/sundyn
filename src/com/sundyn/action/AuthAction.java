@@ -263,7 +263,7 @@ public class AuthAction extends MainAction
             func.setFuncCode(funcCode);
             func.setOrderId(orderId);
             func.setParentId(parentId);
-            ValidateUtil.validate(func);
+            ValidateUtil.validate(func, this.getLocale());
         } catch (Exception e) {
             errmsg = e.getMessage();
             request.setAttribute("msg", errmsg);
