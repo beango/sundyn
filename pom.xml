@@ -29,7 +29,7 @@
         <commons-pool.version>1.6</commons-pool.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <!--<spring.version>4.2.5.RELEASE</spring.version>-->
-        <spring.version>5.0.7.RELEASE</spring.version>
+        <spring.version>6.0.0</spring.version>
         <shiro.version>1.4.0</shiro.version>
     </properties>
 
